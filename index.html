@@ -1,256 +1,758 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#020617"
+  >
+
   <title>SS Rank Up Season</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- =========================
+       GOOGLE FONT
+  ========================== -->
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- =========================
+       CSS
+  ========================== -->
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
 
 <body>
 
-  <header class="navbar">
-    <div class="brand">
-      <div class="brand-icon"></div>
 
-      <div>
-        <div class="brand-title">SS RANK UP</div>
-        <div class="brand-sub">SEASON</div>
-      </div>
-    </div>
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
-    <nav>
-      <button class="nav-item active">OVERVIEW</button>
-      <button class="nav-item">MY PROGRESS</button>
-      <button class="nav-item">MY SS</button>
-      <button class="nav-item">RANK</button>
-    </nav>
+<header class="navbar">
 
-    <div class="profile">
-      <div>
-        <small>WELCOME</small>
-        <strong>CHAMPION</strong>
+
+  <!-- BRAND -->
+
+  <div class="brand">
+
+    <div class="brand-icon"></div>
+
+
+    <div>
+
+      <div class="brand-title">
+        SS RANK UP
       </div>
 
-      <button class="logout">↗</button>
+      <div class="brand-sub">
+        SEASON
+      </div>
+
     </div>
-  </header>
+
+  </div>
 
 
-  <main>
 
-    <section class="hero">
+  <!-- NAVIGATION -->
 
-      <div class="aurora a1"></div>
-      <div class="aurora a2"></div>
+  <nav>
 
-      <div class="hero-content">
+    <button
+      class="nav-item active"
+      data-page="overview"
+    >
+      OVERVIEW
+    </button>
 
-        <span class="program-label">
-          PROGRAM SS 3 BULAN
+
+    <button
+      class="nav-item"
+      data-page="progress"
+    >
+      MY PROGRESS
+    </button>
+
+
+    <button
+      class="nav-item"
+      data-page="myss"
+    >
+      MY SS
+    </button>
+
+
+    <button
+      class="nav-item"
+      data-page="rank"
+    >
+      RANK
+    </button>
+
+  </nav>
+
+
+
+  <!-- PROFILE -->
+
+  <div class="profile">
+
+
+    <!-- MUSIC -->
+
+    <button
+      id="musicBtn"
+      class="music-btn"
+      type="button"
+      onclick="toggleMusic()"
+      title="Play Music"
+      aria-label="Play or pause background music"
+    >
+
+      ♪
+
+    </button>
+
+
+
+    <!-- USER -->
+
+    <div class="profile-user">
+
+      <small>
+        WELCOME
+      </small>
+
+      <strong id="profileName">
+        CHAMPION
+      </strong>
+
+    </div>
+
+
+
+    <!-- LOGOUT -->
+
+    <button
+      id="logoutBtn"
+      class="logout"
+      type="button"
+      title="Logout"
+      aria-label="Logout"
+    >
+
+      ↗
+
+    </button>
+
+
+  </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section
+  class="hero"
+  id="overview"
+>
+
+
+  <!-- BACKGROUND EFFECT -->
+
+  <div class="aurora a1"></div>
+
+  <div class="aurora a2"></div>
+
+
+
+  <!-- =========================
+       HERO CONTENT
+  ========================== -->
+
+  <div class="hero-content">
+
+
+    <span class="program-label">
+      PROGRAM SS 3 BULAN
+    </span>
+
+
+
+    <p class="season-label">
+      SEASON 2026
+    </p>
+
+
+
+    <h1>
+
+      SS RANK UP
+
+      <span>
+        SEASON
+      </span>
+
+    </h1>
+
+
+
+    <h3>
+      + SUPERIOR SUPPORT SCORE
+    </h3>
+
+
+
+    <!-- PROGRAM STATS -->
+
+    <div class="meta">
+
+
+      <div>
+
+        <strong>
+          3
+        </strong>
+
+        <span>
+          MONTHS
         </span>
 
-        <p class="season-label">
-          SEASON 2026
-        </p>
+      </div>
 
-        <h1>
-          SS RANK UP
-          <span>SEASON</span>
-        </h1>
 
-        <h3>
-          + SUPERIOR SUPPORT SCORE
-        </h3>
+      <i></i>
 
-        <div class="meta">
-          <div>
-            <strong>3</strong>
-            <span>MONTHS</span>
-          </div>
 
-          <i></i>
+      <div>
 
-          <div>
-            <strong>3</strong>
-            <span>MATCHES</span>
-          </div>
+        <strong>
+          3
+        </strong>
 
-          <i></i>
-
-          <div>
-            <strong>3</strong>
-            <span>IMPROVEMENTS</span>
-          </div>
-        </div>
-
-        <p class="objective">
-          Bukan hanya submit lebih banyak, tapi memastikan setiap ide
-          bergerak sampai <b>Approved Implementasi.</b>
-        </p>
-
-        <div class="target-row">
-
-          <div class="target yellow">
-            <small>MONTHLY MISSION</small>
-            <strong>1 BULAN</strong>
-            <span>1 SS COMPLETE</span>
-          </div>
-
-          <div class="arrow">→</div>
-
-          <div class="target green">
-            <small>SEASON TARGET</small>
-            <strong>3 BULAN</strong>
-            <span>3 IMPACT</span>
-          </div>
-
-        </div>
+        <span>
+          MATCHES
+        </span>
 
       </div>
 
 
-      <div class="stage">
+      <i></i>
 
-        <div class="glow"></div>
 
-        <div class="trophy"></div>
+      <div>
 
-        <div class="step s1"></div>
-        <div class="step s2"></div>
-        <div class="step s3"></div>
-        <div class="step s4"></div>
+        <strong>
+          3
+        </strong>
+
+        <span>
+          IMPROVEMENTS
+        </span>
 
       </div>
 
-    </section>
+
+    </div>
 
 
-    <section class="information">
 
-      <div class="section-title">
+    <!-- OBJECTIVE -->
+
+    <p class="objective">
+
+      Bukan hanya submit lebih banyak,
+      tapi memastikan setiap ide bergerak sampai
+
+      <b>
+        Approved Implementasi.
+      </b>
+
+    </p>
+
+
+
+    <!-- TARGET -->
+
+    <div class="target-row">
+
+
+      <!-- MONTHLY -->
+
+      <div class="target yellow">
+
+        <small>
+          MONTHLY MISSION
+        </small>
+
+        <strong>
+          1 BULAN
+        </strong>
+
+        <span>
+          1 SS COMPLETE
+        </span>
+
+      </div>
+
+
+
+      <div class="arrow">
+        →
+      </div>
+
+
+
+      <!-- SEASON -->
+
+      <div class="target green">
+
+        <small>
+          SEASON TARGET
+        </small>
+
+        <strong>
+          3 BULAN
+        </strong>
+
+        <span>
+          3 IMPACT
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+
+  <!-- =================================================
+       CHAMPIONSHIP STAGE
+  ================================================== -->
+
+  <div class="stage">
+
+
+    <div class="glow"></div>
+
+
+    <!-- TROPHY -->
+
+    <div class="trophy"></div>
+
+
+
+    <!-- RANK STAIRS -->
+
+    <div class="step s1"></div>
+
+    <div class="step s2"></div>
+
+    <div class="step s3"></div>
+
+    <div class="step s4"></div>
+
+
+  </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     INFORMASI PROGRAM
+===================================================== -->
+
+<section class="information">
+
+
+  <!-- SECTION HEADER -->
+
+  <div class="section-title">
+
+
+    <div>
+
+      <small>
+        ABOUT THE SEASON
+      </small>
+
+
+      <h2>
+        INFORMASI PROGRAM
+      </h2>
+
+    </div>
+
+
+
+    <span>
+      SS RANK UP SEASON 2026
+    </span>
+
+
+  </div>
+
+
+
+  <!-- =================================================
+       INFO GRID
+  ================================================== -->
+
+  <div class="info-grid">
+
+
+    <!-- ===============================================
+         CARD 01
+    ================================================ -->
+
+    <article class="card">
+
+
+      <div class="number">
+        01
+      </div>
+
+
+
+      <span class="card-label">
+        LATAR BELAKANG
+      </span>
+
+
+
+      <h2>
+
+        One Month.
+
+        <br>
+
+        One Complete SS.
+
+      </h2>
+
+
+
+      <p>
+
+        SS Rank Up Season merupakan
+        program gamifikasi Sumbang Saran
+        yang dilaksanakan dalam periode
+
+        <b>
+          3 bulan.
+        </b>
+
+      </p>
+
+
+
+      <!-- MONTHLY MISSION -->
+
+      <div class="mission">
+
+
+        <span>
+          01
+        </span>
+
+
+        <p>
+
+          1 Bulan = 1 Sumbang Saran sampai
+
+          <b>
+            Approved Implementasi
+          </b>
+
+        </p>
+
+
+      </div>
+
+
+
+      <!-- SEASON MISSION -->
+
+      <div class="mission">
+
+
+        <span>
+          03
+        </span>
+
+
+        <p>
+
+          3 Bulan = Minimal
+
+          <b>
+            3 SS Approved Implementasi
+          </b>
+
+        </p>
+
+
+      </div>
+
+
+    </article>
+
+
+
+    <!-- ===============================================
+         CARD 02
+    ================================================ -->
+
+    <article class="card">
+
+
+      <div class="number">
+        02
+      </div>
+
+
+
+      <span class="card-label">
+        PROGRAM OBJECTIVE
+      </span>
+
+
+
+      <h2>
+        Goals Program
+      </h2>
+
+
+
+      <div class="goals">
+
+
+        <!-- GOAL 01 -->
+
         <div>
-          <small>ABOUT THE SEASON</small>
-          <h2>INFORMASI PROGRAM</h2>
-        </div>
-
-        <span>SS RANK UP SEASON 2026</span>
-      </div>
 
 
-      <div class="info-grid">
-
-        <article class="card">
-
-          <div class="number">01</div>
-
-          <span class="card-label">
-            LATAR BELAKANG
+          <span>
+            01
           </span>
 
-          <h2>
-            One Month.<br>
-            One Complete SS.
-          </h2>
 
           <p>
-            SS Rank Up Season merupakan program gamifikasi
-            Sumbang Saran yang dilaksanakan dalam periode
-            <b>3 bulan.</b>
+
+            Meningkatkan jumlah
+
+            <b>
+              submission, approved,
+              implementasi dan Approved Implementasi
+            </b>
+
+            serta mempercepat lead time
+            penyelesaian SS.
+
           </p>
 
-          <div class="mission">
-            <span>01</span>
 
-            <p>
-              1 Bulan = 1 Sumbang Saran sampai
-              Approved Implementasi
-            </p>
-          </div>
-
-          <div class="mission">
-            <span>03</span>
-
-            <p>
-              3 Bulan = Minimal 3 SS Approved Implementasi
-            </p>
-          </div>
-
-        </article>
+        </div>
 
 
-        <article class="card">
 
-          <div class="number">02</div>
+        <!-- GOAL 02 -->
 
-          <span class="card-label">
-            PROGRAM OBJECTIVE
+        <div>
+
+
+          <span>
+            02
           </span>
 
-          <h2>
-            Goals Program
-          </h2>
 
-          <div class="goals">
+          <p>
 
-            <div>
-              <span>01</span>
-              <p>
-                Meningkatkan jumlah <b>submission, approved,
-                implementasi dan Approved Implementasi</b>
-                serta mempercepat lead time penyelesaian SS.
-              </p>
-            </div>
+            Mengurangi jumlah SS yang
 
-            <div>
-              <span>02</span>
-              <p>
-                Mengurangi jumlah SS yang <b>pending/stuck</b>
-                dan mengurangi jumlah Not Approved.
-              </p>
-            </div>
+            <b>
+              pending / stuck
+            </b>
 
-            <div>
-              <span>03</span>
-              <p>
-                Mendorong peserta melakukan perbaikan terhadap
-                SS yang <b>Not Approved.</b>
-              </p>
-            </div>
+            dan mengurangi jumlah
+            Not Approved.
 
-            <div>
-              <span>04</span>
-              <p>
-                Membangun konsistensi improvement
-                <b>setiap bulan.</b>
-              </p>
-            </div>
+          </p>
 
-            <div class="highlight">
-              <span>05</span>
-              <p>
-                Mendorong budaya <b>IDEA TO IMPACT</b>,
-                bukan hanya budaya submit ide.
-              </p>
-            </div>
 
-          </div>
+        </div>
 
-        </article>
+
+
+        <!-- GOAL 03 -->
+
+        <div>
+
+
+          <span>
+            03
+          </span>
+
+
+          <p>
+
+            Mendorong peserta melakukan
+            perbaikan terhadap SS yang
+
+            <b>
+              Not Approved.
+            </b>
+
+          </p>
+
+
+        </div>
+
+
+
+        <!-- GOAL 04 -->
+
+        <div>
+
+
+          <span>
+            04
+          </span>
+
+
+          <p>
+
+            Membangun konsistensi
+            improvement
+
+            <b>
+              setiap bulan.
+            </b>
+
+          </p>
+
+
+        </div>
+
+
+
+        <!-- GOAL 05 -->
+
+        <div class="highlight">
+
+
+          <span>
+            05
+          </span>
+
+
+          <p>
+
+            Mendorong budaya
+
+            <b>
+              IDEA TO IMPACT
+            </b>,
+
+            bukan hanya budaya submit ide.
+
+          </p>
+
+
+        </div>
+
 
       </div>
 
-    </section>
 
-  </main>
+    </article>
 
-  <script src="app.js"></script>
+
+  </div>
+
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     BACKGROUND MUSIC
+===================================================== -->
+
+<audio
+  id="bgMusic"
+  loop
+  preload="metadata"
+>
+
+  <source
+    src="assets/music/Rank%20Up%20Season.mp3"
+    type="audio/mpeg"
+  >
+
+  Browser Anda tidak mendukung audio.
+
+</audio>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="app.js"></script>
+
 
 </body>
+
 </html>
