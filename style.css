@@ -673,3 +673,116 @@ main{
     grid-template-columns:1fr;
   }
 }
+
+/* =====================================================
+   MUSIC BUTTON
+===================================================== */
+
+.music-btn{
+
+  width:38px;
+  height:38px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  flex-shrink:0;
+
+  border-radius:10px;
+
+  border:
+    1px solid
+    rgba(105,120,178,.30);
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #4fb8ff,
+      #9945ff
+    );
+
+  color:white;
+
+  font-size:16px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  box-shadow:
+
+    0 0 18px
+    rgba(102,84,255,.25);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    opacity .25s ease;
+
+}
+
+
+/* HOVER */
+
+.music-btn:hover{
+
+  transform:
+    translateY(-1px)
+    scale(1.06);
+
+  box-shadow:
+
+    0 0 28px
+    rgba(108,87,255,.55);
+
+}
+
+
+/* MUSIC ACTIVE */
+
+.music-btn.playing{
+
+  animation:
+
+    musicPulse
+    1.6s
+    ease-in-out
+    infinite;
+
+}
+
+
+/* MUSIC GLOW */
+
+@keyframes musicPulse{
+
+
+  0%,
+  100%{
+
+    box-shadow:
+
+      0 0 12px
+      rgba(79,184,255,.30),
+
+      0 0 22px
+      rgba(79,184,255,.12);
+
+  }
+
+
+  50%{
+
+    box-shadow:
+
+      0 0 24px
+      rgba(153,69,255,.70),
+
+      0 0 42px
+      rgba(153,69,255,.25);
+
+  }
+
+}
