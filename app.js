@@ -1153,4 +1153,6 @@ async function tryAutoPlayMusic() {
   }
 
 }
+tryAutoPlayMusic();
+
 loadDashboard();
