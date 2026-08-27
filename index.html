@@ -1,45 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
+
+  <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  />
+  >
 
   <title>SS Rank Up Season</title>
 
   <link
     rel="preconnect"
     href="https://fonts.googleapis.com"
-  />
+  >
 
   <link
     rel="preconnect"
     href="https://fonts.gstatic.com"
     crossorigin
-  />
+  >
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap"
     rel="stylesheet"
-  />
+  >
 
   <link
     rel="stylesheet"
     href="/style.css"
-  />
+  >
+
 </head>
 
+
 <body>
+
+  <!-- ===============================
+       NAVBAR
+  ================================ -->
 
   <header class="topbar">
 
     <div class="brand">
 
-      <div class="brand-mark"></div>
+      <div class="brand-icon">
+        <span></span>
+      </div>
 
-      <div>
+      <div class="brand-copy">
+
         <div class="brand-title">
           SS RANK UP
         </div>
@@ -47,6 +59,7 @@
         <div class="brand-subtitle">
           SEASON
         </div>
+
       </div>
 
     </div>
@@ -55,41 +68,45 @@
     <div class="user-panel">
 
       <button
-        class="music-button"
         id="musicButton"
+        class="music-button"
         type="button"
+        title="Music"
       >
         II
       </button>
 
+
       <div
-        class="avatar"
         id="avatar"
+        class="avatar"
       >
         --
       </div>
 
-      <div class="user-copy">
+
+      <div class="user-info">
 
         <div
-          class="user-name"
-          id="userName"
+          id="headerUserName"
+          class="header-user-name"
         >
           LOADING...
         </div>
 
         <div
-          class="user-role"
-          id="userRole"
+          id="headerUserRole"
+          class="header-user-role"
         >
           USER
         </div>
 
       </div>
 
+
       <button
-        class="logout-button"
         id="logoutButton"
+        class="logout-button"
         type="button"
       >
         LOGOUT
@@ -100,91 +117,138 @@
   </header>
 
 
+  <!-- ===============================
+       DASHBOARD
+  ================================ -->
+
   <main class="page">
 
     <section class="hero">
 
-      <div class="hero-content">
+      <div class="hero-light hero-light-blue"></div>
+      <div class="hero-light hero-light-purple"></div>
 
-        <div class="hero-copy">
 
-          <div class="season-chip">
+      <!-- LEFT -->
 
-            <span class="season-dot"></span>
+      <div class="hero-left">
 
+        <div class="season-chip">
+
+          <span class="season-dot"></span>
+
+          <span id="seasonState">
             SEASON ACTIVE
+          </span>
+
+        </div>
+
+
+        <div class="welcome-label">
+          Welcome back,
+        </div>
+
+
+        <h1
+          id="heroUserName"
+          class="hero-user-name"
+        >
+          LOADING...
+        </h1>
+
+
+        <p class="hero-description">
+
+          Turn every idea into impact.
+          Complete your improvement and climb the rank.
+
+        </p>
+
+
+        <div class="identity-info">
+
+          <span id="departmentText">
+            -
+          </span>
+
+          <span class="identity-divider">
+            •
+          </span>
+
+          <span id="locationText">
+            -
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- RIGHT / RANK -->
+
+      <div
+        id="rankPanel"
+        class="rank-panel rank-warrior"
+      >
+
+        <div class="outer-ring"></div>
+        <div class="inner-ring"></div>
+
+        <div class="rank-glow"></div>
+
+
+        <div
+          id="rankBadge"
+          class="rank-badge"
+        >
+
+          <div class="rank-badge-core">
+
+            <span
+              id="rankBadgeText"
+              class="rank-badge-text"
+            >
+              W
+            </span>
 
           </div>
 
-          <div class="welcome">
-            Welcome back,
-          </div>
+        </div>
 
-          <h1
-            class="hero-name"
-            id="heroName"
-          >
-            LOADING...
-          </h1>
 
-          <p class="hero-description">
-            Turn every idea into impact.
-            Complete your improvement and climb the rank.
-          </p>
-
+        <div class="rank-label">
+          SEASON RANK
         </div>
 
 
         <div
-          class="rank-zone"
-          id="rankZone"
+          id="rankName"
+          class="rank-name"
         >
-
-          <div class="rank-aura aura-one"></div>
-          <div class="rank-aura aura-two"></div>
-
-          <div
-            class="rank-emblem"
-            id="rankEmblem"
-          >
-
-            <img
-              id="rankImage"
-              src="/assets/ranks/warrior.png"
-              alt="Rank emblem"
-            />
-
-          </div>
-
-          <div class="rank-label">
-            SEASON RANK
-          </div>
-
-          <div
-            class="rank-name"
-            id="rankName"
-          >
-            WARRIOR
-          </div>
-
-          <div
-            class="rank-count"
-            id="rankCount"
-          >
-            0 SS
-          </div>
-
-          <div
-            class="season-result"
-            id="seasonResult"
-          ></div>
-
-          <div
-            class="missed-months"
-            id="missedMonths"
-          ></div>
-
+          WARRIOR
         </div>
+
+
+        <div
+          id="rankTotal"
+          class="rank-total"
+        >
+          0 SS
+        </div>
+
+
+        <div
+          id="seasonStatus"
+          class="season-status"
+        >
+          -
+        </div>
+
+
+        <div
+          id="missedMonths"
+          class="missed-months"
+        ></div>
 
       </div>
 
@@ -192,6 +256,8 @@
 
   </main>
 
+
+  <!-- MUSIC -->
 
   <audio
     id="bgMusic"
@@ -203,4 +269,5 @@
   <script src="/app.js"></script>
 
 </body>
+
 </html>
