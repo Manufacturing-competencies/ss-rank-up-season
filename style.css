@@ -3686,3 +3686,1018 @@ body::after {
   }
 
 }
+
+/* ==========================================================
+   FINAL RESPONSIVE SYSTEM
+   DESKTOP + TABLET + MOBILE
+   FIX OVERLAP + PERFORMANCE
+========================================================== */
+
+
+/* ==========================================================
+   GLOBAL SAFETY
+========================================================== */
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+.hero-left,
+.rank-panel,
+.user-panel,
+.brand {
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   DESKTOP
+   >= 1101px
+========================================================== */
+
+@media (min-width: 1101px) {
+
+  .hero {
+    grid-template-columns:
+      minmax(0, 1.1fr)
+      minmax(420px, .9fr);
+
+    min-height: 610px;
+  }
+
+  .rank-panel {
+    min-height: 500px;
+  }
+
+}
+
+
+/* ==========================================================
+   SMALL LAPTOP / TABLET LANDSCAPE
+   769px - 1100px
+========================================================== */
+
+@media (min-width: 769px) and (max-width: 1100px) {
+
+  .topbar {
+    height: 84px;
+    padding: 0 18px;
+  }
+
+  .page {
+    padding:
+      105px
+      16px
+      24px;
+  }
+
+  .hero {
+    min-height: 520px;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(330px, .8fr);
+
+    gap: 12px;
+
+    padding:
+      38px
+      4%;
+
+    border-radius: 32px;
+  }
+
+  .hero-user-name {
+    font-size:
+      clamp(40px, 5vw, 58px);
+
+    letter-spacing: -2px;
+  }
+
+  .welcome-label {
+    margin-top: 30px;
+    font-size: 18px;
+  }
+
+  .hero-description {
+    margin-top: 22px;
+
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .rank-panel {
+    min-height: 420px;
+  }
+
+  .rank-badge {
+    width: 220px;
+    height: 205px;
+
+    transform: none !important;
+
+    margin: 0 0 4px;
+  }
+
+  .rank-shield {
+    width: 140px;
+    height: 164px;
+  }
+
+  .rank-shield-inner {
+    width: 92px;
+    height: 108px;
+  }
+
+  .orbit-one {
+    width: 290px;
+    height: 290px;
+  }
+
+  .orbit-two {
+    width: 235px;
+    height: 235px;
+  }
+
+  .orbit-three {
+    width: 185px;
+    height: 185px;
+  }
+
+}
+
+
+/* ==========================================================
+   MOBILE / TABLET PORTRAIT
+   <= 768px
+========================================================== */
+
+@media (max-width: 768px) {
+
+  /* -----------------------------------------
+     MATIKAN EFEK BERAT
+  ----------------------------------------- */
+
+  body::before,
+  body::after,
+  .page::before,
+  .hero::before,
+  .hero::after,
+  .hero-light,
+  .orbit-three,
+  .rank-star {
+    display: none !important;
+  }
+
+  /*
+     Jangan jalankan filter blur berat di HP.
+  */
+
+  .rank-glow {
+    filter: blur(18px) !important;
+  }
+
+  .topbar {
+    backdrop-filter: none !important;
+  }
+
+
+  /* -----------------------------------------
+     NAVBAR
+  ----------------------------------------- */
+
+  .topbar {
+    position: fixed;
+
+    height: 66px;
+
+    padding:
+      0
+      10px;
+
+    gap: 8px;
+
+    background:
+      #020714;
+
+    border-bottom:
+      1px solid rgba(94, 108, 255, .16);
+  }
+
+
+  .brand {
+    flex: 0 0 auto;
+
+    gap: 0;
+  }
+
+
+  .brand-icon {
+    width: 34px;
+    height: 42px;
+
+    animation: none !important;
+
+    filter:
+      drop-shadow(
+        0 0 8px rgba(99, 92, 255, .45)
+      );
+  }
+
+
+  .brand-copy {
+    display: none !important;
+  }
+
+
+  .user-panel {
+    flex: 1;
+
+    justify-content: flex-end;
+
+    gap: 7px;
+  }
+
+
+  .user-info {
+    display: none !important;
+  }
+
+
+  .music-button {
+    width: 39px;
+    height: 39px;
+
+    flex: 0 0 39px;
+
+    padding: 0;
+
+    border-radius: 12px;
+
+    font-size: 12px;
+  }
+
+
+  .avatar {
+    width: 39px;
+    height: 39px;
+
+    flex: 0 0 39px;
+
+    border-radius: 12px;
+
+    font-size: 12px;
+
+    animation: none !important;
+  }
+
+
+  .logout-button {
+    height: 39px;
+
+    flex: 0 0 auto;
+
+    padding:
+      0
+      10px;
+
+    border-radius: 12px;
+
+    font-size: 8px;
+
+    letter-spacing: 0;
+  }
+
+
+  /* -----------------------------------------
+     PAGE
+  ----------------------------------------- */
+
+  .page {
+    min-height: 100vh;
+
+    padding:
+      80px
+      7px
+      12px;
+
+    background:
+      linear-gradient(
+        180deg,
+        #020714,
+        #051123
+      );
+  }
+
+
+  /* -----------------------------------------
+     HERO
+  ----------------------------------------- */
+
+  .hero {
+    width: 100%;
+
+    min-height: 0 !important;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+
+    padding:
+      20px
+      16px
+      18px;
+
+    border-radius: 22px;
+
+    overflow: hidden;
+
+    /*
+      Background tetap dipakai,
+      tetapi statis agar HP ringan.
+    */
+
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(3, 10, 29, .52) 0%,
+        rgba(4, 10, 30, .38) 46%,
+        rgba(17, 5, 37, .42) 100%
+      ),
+      url("/assets/hero-bg.png");
+
+    background-size: cover;
+
+    background-position:
+      66% center;
+
+    background-repeat: no-repeat;
+
+    box-shadow:
+      0 12px 35px rgba(0,0,0,.28);
+  }
+
+
+  /* -----------------------------------------
+     LEFT CONTENT
+  ----------------------------------------- */
+
+  .hero-left {
+    width: 100%;
+
+    text-align: center;
+
+    animation: none !important;
+  }
+
+
+  .season-chip {
+    margin:
+      0
+      auto;
+
+    padding:
+      7px
+      12px;
+
+    gap: 7px;
+
+    font-size: 8px;
+
+    letter-spacing: 1.4px;
+  }
+
+
+  .season-dot {
+    width: 7px;
+    height: 7px;
+
+    animation: none !important;
+  }
+
+
+  .welcome-label {
+    margin-top: 16px;
+
+    font-size: 12px;
+  }
+
+
+  .hero-user-name {
+    margin-top: 5px;
+
+    width: 100%;
+
+    font-size:
+      clamp(
+        27px,
+        8vw,
+        38px
+      );
+
+    line-height: 1.1;
+
+    letter-spacing: -1px;
+
+    animation: none !important;
+  }
+
+
+  .hero-description {
+    max-width: 430px;
+
+    margin:
+      11px
+      auto
+      0;
+
+    font-size: 10px;
+
+    line-height: 1.45;
+  }
+
+
+  .identity-info {
+    width: auto;
+
+    margin:
+      9px
+      auto
+      0;
+
+    padding-bottom: 6px;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    font-size: 7px;
+
+    line-height: 1.3;
+
+    flex-wrap: wrap;
+  }
+
+
+  .identity-info::after {
+    left: 50%;
+
+    width: 105px;
+
+    transform:
+      translateX(-50%);
+  }
+
+
+  /* -----------------------------------------
+     RANK SECTION
+  ----------------------------------------- */
+
+  .rank-panel {
+    width: 100%;
+
+    min-height: 0 !important;
+
+    margin: 8px 0 0;
+
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: center;
+
+    animation: none !important;
+
+    overflow: visible;
+  }
+
+
+  /*
+     PENTING:
+     Jangan scale badge.
+     Ukurannya benar-benar dibuat kecil.
+  */
+
+  .rank-badge {
+    width: 150px !important;
+    height: 155px !important;
+
+    margin:
+      0
+      0
+      2px !important;
+
+    transform: none !important;
+
+    animation:
+      mobileBadgeFloat
+      4s
+      ease-in-out
+      infinite !important;
+  }
+
+
+  .rank-shield {
+    width: 105px !important;
+    height: 123px !important;
+
+    animation: none !important;
+
+    filter:
+      brightness(1.06)
+      drop-shadow(
+        0 0 9px
+        var(--rank-glow)
+      ) !important;
+  }
+
+
+  .rank-shield-inner {
+    width: 70px !important;
+    height: 82px !important;
+  }
+
+
+  .rank-crystal {
+    width: 36px !important;
+    height: 36px !important;
+
+    animation: none !important;
+  }
+
+
+  .rank-symbol::before {
+    font-size:
+      24px !important;
+  }
+
+
+  .rank-wing {
+    transform-origin: center !important;
+  }
+
+
+  .rank-crown {
+    transform:
+      scale(.72) !important;
+
+    transform-origin:
+      center bottom;
+  }
+
+
+  /* -----------------------------------------
+     ORBIT MOBILE
+  ----------------------------------------- */
+
+  .rank-orbit {
+    top: 77px !important;
+
+    animation: none !important;
+  }
+
+
+  .orbit-one {
+    width: 150px !important;
+    height: 150px !important;
+
+    opacity: .38;
+  }
+
+
+  .orbit-two {
+    width: 122px !important;
+    height: 122px !important;
+
+    opacity: .30;
+  }
+
+
+  .orbit-three {
+    display: none !important;
+  }
+
+
+  /* -----------------------------------------
+     GLOW MOBILE
+  ----------------------------------------- */
+
+  .rank-glow {
+    left: 50% !important;
+    top: 77px !important;
+
+    width: 135px !important;
+    height: 135px !important;
+
+    opacity: .40;
+
+    animation:
+      mobileGlow
+      4s
+      ease-in-out
+      infinite !important;
+  }
+
+
+  .rank-badge::before {
+    width: 115px !important;
+    height: 115px !important;
+
+    filter:
+      blur(15px) !important;
+
+    opacity: .38;
+
+    animation: none !important;
+  }
+
+
+  .rank-badge::after {
+    width: 80px !important;
+    height: 10px !important;
+
+    bottom: 8px !important;
+
+    filter:
+      blur(11px) !important;
+
+    animation: none !important;
+  }
+
+
+  /* -----------------------------------------
+     RANK TEXT
+  ----------------------------------------- */
+
+  .rank-label {
+    margin-top: 3px;
+
+    font-size: 7px;
+
+    letter-spacing: 2.4px;
+
+    color: #d1dbf6;
+
+    text-shadow:
+      0 1px 3px rgba(0,0,0,.8);
+  }
+
+
+  .rank-name {
+    margin-top: 5px;
+
+    font-size:
+      clamp(
+        24px,
+        8vw,
+        32px
+      );
+
+    line-height: 1.05;
+
+    letter-spacing: -1px;
+
+    color: #fff !important;
+
+    animation: none !important;
+
+    filter: none !important;
+
+    text-shadow:
+      0 2px 4px rgba(0,0,0,.90),
+      0 0 8px rgba(255,255,255,.45),
+      0 0 14px var(--rank-glow);
+  }
+
+
+  /*
+     Background gelap tipis
+     di belakang WARRIOR.
+  */
+
+  .rank-name::before {
+    width: 115%;
+    height: 130%;
+
+    background:
+      radial-gradient(
+        ellipse,
+        rgba(2, 6, 18, .70),
+        rgba(2, 6, 18, .24) 60%,
+        transparent
+      );
+
+    filter: blur(3px);
+  }
+
+
+  .rank-total {
+    margin-top: 7px;
+
+    font-size: 17px;
+
+    line-height: 1;
+  }
+
+
+  .season-status {
+    margin-top: 8px;
+
+    padding:
+      5px
+      12px;
+
+    font-size: 8px;
+
+    letter-spacing: 1.3px;
+
+    backdrop-filter: none !important;
+
+    animation: none !important;
+  }
+
+
+  .missed-months {
+    min-height: 12px;
+
+    margin-top: 6px;
+
+    font-size: 8px;
+
+    line-height: 1.2;
+  }
+
+}
+
+
+/* ==========================================================
+   SMALL PHONE
+   <= 420px
+========================================================== */
+
+@media (max-width: 420px) {
+
+  .topbar {
+    height: 62px;
+  }
+
+
+  .page {
+    padding-top: 73px;
+  }
+
+
+  .hero {
+    padding:
+      17px
+      12px
+      15px;
+
+    border-radius: 19px;
+  }
+
+
+  .hero-user-name {
+    font-size:
+      clamp(
+        24px,
+        8vw,
+        31px
+      );
+  }
+
+
+  .hero-description {
+    font-size: 9px;
+  }
+
+
+  .identity-info {
+    font-size: 6.5px;
+  }
+
+
+  .rank-badge {
+    width: 138px !important;
+    height: 142px !important;
+  }
+
+
+  .rank-shield {
+    width: 96px !important;
+    height: 112px !important;
+  }
+
+
+  .rank-shield-inner {
+    width: 64px !important;
+    height: 75px !important;
+  }
+
+
+  .rank-orbit {
+    top: 70px !important;
+  }
+
+
+  .rank-glow {
+    top: 70px !important;
+  }
+
+
+  .orbit-one {
+    width: 138px !important;
+    height: 138px !important;
+  }
+
+
+  .orbit-two {
+    width: 110px !important;
+    height: 110px !important;
+  }
+
+
+  .rank-name {
+    font-size:
+      24px;
+  }
+
+
+  .rank-total {
+    font-size:
+      16px;
+  }
+
+
+  .music-button,
+  .avatar {
+    width: 36px;
+    height: 36px;
+
+    flex-basis: 36px;
+  }
+
+
+  .logout-button {
+    height: 36px;
+
+    padding:
+      0
+      8px;
+
+    font-size: 7px;
+  }
+
+}
+
+
+/* ==========================================================
+   VERY SMALL PHONE
+   <= 350px
+========================================================== */
+
+@media (max-width: 350px) {
+
+  .music-button {
+    display: none;
+  }
+
+
+  .hero-user-name {
+    font-size: 23px;
+  }
+
+
+  .hero-description {
+    font-size: 8.5px;
+  }
+
+
+  .rank-name {
+    font-size: 22px;
+  }
+
+}
+
+
+/* ==========================================================
+   LANDSCAPE PHONE
+========================================================== */
+
+@media
+(max-height: 520px)
+and
+(orientation: landscape) {
+
+  .topbar {
+    height: 58px;
+  }
+
+
+  .page {
+    padding:
+      68px
+      10px
+      12px;
+  }
+
+
+  .hero {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(250px, .75fr);
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+      18px
+      24px;
+  }
+
+
+  .welcome-label {
+    margin-top: 12px;
+  }
+
+
+  .rank-panel {
+    margin: 0;
+  }
+
+
+  .rank-badge {
+    width: 125px !important;
+    height: 128px !important;
+  }
+
+
+  .rank-shield {
+    width: 88px !important;
+    height: 103px !important;
+  }
+
+
+  .rank-name {
+    font-size: 22px;
+  }
+
+}
+
+
+/* ==========================================================
+   MOBILE LIGHT ANIMATION
+========================================================== */
+
+@keyframes mobileBadgeFloat {
+
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-3px);
+  }
+
+}
+
+
+@keyframes mobileGlow {
+
+  0%,
+  100% {
+    transform:
+      translate(-50%, -50%)
+      scale(.94);
+
+    opacity: .32;
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.04);
+
+    opacity: .43;
+  }
+
+}
