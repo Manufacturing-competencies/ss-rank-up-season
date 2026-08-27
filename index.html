@@ -38,9 +38,9 @@
 
 <body>
 
-  <!-- ===============================
+  <!-- =====================================================
        NAVBAR
-  ================================ -->
+  ====================================================== -->
 
   <header class="topbar">
 
@@ -71,7 +71,8 @@
         id="musicButton"
         class="music-button"
         type="button"
-        title="Music"
+        title="Play / Pause Music"
+        aria-label="Play or pause background music"
       >
         II
       </button>
@@ -117,25 +118,34 @@
   </header>
 
 
-  <!-- ===============================
+  <!-- =====================================================
        DASHBOARD
-  ================================ -->
+  ====================================================== -->
 
   <main class="page">
 
     <section class="hero">
 
-      <div class="hero-light hero-light-blue"></div>
-      <div class="hero-light hero-light-purple"></div>
+      <div
+        class="hero-light hero-light-blue"
+      ></div>
+
+      <div
+        class="hero-light hero-light-purple"
+      ></div>
 
 
-      <!-- LEFT -->
+      <!-- =================================================
+           LEFT HERO
+      ================================================== -->
 
       <div class="hero-left">
 
         <div class="season-chip">
 
-          <span class="season-dot"></span>
+          <span
+            class="season-dot"
+          ></span>
 
           <span id="seasonState">
             SEASON ACTIVE
@@ -184,104 +194,177 @@
       </div>
 
 
-      <!-- RIGHT / RANK -->
-<div
-  id="rankPanel"
-  class="rank-panel rank-warrior"
->
+      <!-- =================================================
+           RIGHT / RANK
+      ================================================== -->
 
-  <div class="rank-orbit orbit-one"></div>
-  <div class="rank-orbit orbit-two"></div>
-  <div class="rank-orbit orbit-three"></div>
+      <div
+        id="rankPanel"
+        class="rank-panel rank-warrior"
+      >
 
-  <div class="rank-glow"></div>
-
-  <div
-    id="rankBadge"
-    class="rank-badge"
-  >
-
-    <div class="rank-wing rank-wing-left"></div>
-    <div class="rank-wing rank-wing-right"></div>
-
-    <div class="rank-crown">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <div class="rank-shield">
-
-      <div class="rank-shield-inner">
-
-        <div class="rank-crystal"></div>
+        <!-- ORBIT -->
 
         <div
-          id="rankSymbol"
-          class="rank-symbol"
+          class="rank-orbit orbit-one"
+        ></div>
+
+        <div
+          class="rank-orbit orbit-two"
+        ></div>
+
+        <div
+          class="rank-orbit orbit-three"
+        ></div>
+
+
+        <!-- GLOW -->
+
+        <div
+          class="rank-glow"
+        ></div>
+
+
+        <!-- EMBLEM -->
+
+        <div
+          id="rankBadge"
+          class="rank-badge"
         >
-          W
+
+          <!-- WINGS -->
+
+          <div
+            class="rank-wing rank-wing-left"
+          ></div>
+
+          <div
+            class="rank-wing rank-wing-right"
+          ></div>
+
+
+          <!-- CROWN -->
+
+          <div class="rank-crown">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+          </div>
+
+
+          <!-- SHIELD -->
+
+          <div class="rank-shield">
+
+            <div class="rank-shield-inner">
+
+              <div
+                class="rank-crystal"
+              ></div>
+
+
+              <div
+                id="rankSymbol"
+                class="rank-symbol"
+              >
+                W
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- PARTICLES -->
+
+          <div
+            class="rank-star rank-star-one"
+          ></div>
+
+          <div
+            class="rank-star rank-star-two"
+          ></div>
+
+          <div
+            class="rank-star rank-star-three"
+          ></div>
+
         </div>
+
+
+        <!-- RANK LABEL -->
+
+        <div class="rank-label">
+          SEASON RANK
+        </div>
+
+
+        <!-- RANK NAME -->
+
+        <div
+          id="rankName"
+          class="rank-name"
+        >
+          WARRIOR
+        </div>
+
+
+        <!-- TOTAL APPROVED IMPLEMENTATION -->
+
+        <div
+          id="rankTotal"
+          class="rank-total"
+        >
+          0 SS
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div
+          id="seasonStatus"
+          class="season-status failed"
+        >
+          FAILED
+        </div>
+
+
+        <!-- MISSED MONTHS
+             Tidak ditulis statis.
+             JavaScript akan mengisi berdasarkan
+             month_1_name, month_2_name, month_3_name
+             dari Supabase.
+        -->
+
+        <div
+          id="missedMonths"
+          class="missed-months"
+        ></div>
 
       </div>
 
-    </div>
+    </section>
 
-    <div class="rank-star rank-star-one"></div>
-    <div class="rank-star rank-star-two"></div>
-    <div class="rank-star rank-star-three"></div>
-
-  </div>
+  </main>
 
 
-  <div class="rank-label">
-    SEASON RANK
-  </div>
-
-
-  <div
-    id="rankName"
-    class="rank-name"
-  >
-    WARRIOR
-  </div>
-
-
-  <div
-    id="rankTotal"
-    class="rank-total"
-  >
-    0 SS
-  </div>
-
-
-  <div
-    id="seasonStatus"
-    class="season-status failed"
-  >
-    FAILED
-  </div>
-
-
-  <div
-    id="missedMonths"
-    class="missed-months"
-  >
-    Missed: MEI, JUNI, JULI
-  </div>
-
-</div>
-      
-
-
-  <!-- MUSIC -->
+  <!-- =====================================================
+       BACKGROUND MUSIC
+  ====================================================== -->
 
   <audio
     id="bgMusic"
     src="/Rank Up Season.mp3"
+    preload="auto"
     loop
   ></audio>
 
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
 
   <script src="/app.js"></script>
 
