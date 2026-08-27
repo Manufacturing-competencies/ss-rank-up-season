@@ -4179,3 +4179,280 @@ body::after {
     opacity: .60;
   }
 }
+
+/* ==========================================================
+   FIX GLOW — CAHAYA MENEMPEL KE LOGO
+========================================================== */
+
+
+/* BADGE CONTAINER */
+
+.rank-badge {
+  position: relative;
+  isolation: isolate;
+}
+
+
+/* AURA BULAT TEPAT DI BELAKANG SHIELD */
+
+.rank-badge::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 48%;
+
+  width: 210px;
+  height: 210px;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.22) 0%,
+      var(--rank-glow) 18%,
+      color-mix(
+        in srgb,
+        var(--rank-color) 45%,
+        transparent
+      ) 38%,
+      transparent 72%
+    );
+
+  filter:
+    blur(28px);
+
+  opacity: .75;
+
+  z-index: -2;
+
+  animation:
+    emblemAuraPulse
+    2.2s
+    ease-in-out
+    infinite;
+}
+
+
+/* GLOW KECIL DI BAWAH SHIELD */
+
+.rank-badge::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 10px;
+
+  width: 135px;
+  height: 18px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius: 50%;
+
+  background:
+    var(--rank-color);
+
+  filter:
+    blur(18px);
+
+  opacity: .42;
+
+  z-index: -1;
+
+  animation:
+    emblemFloorPulse
+    2s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   SHIELD CAHAYA DI EDGE
+========================================================== */
+
+.rank-shield {
+  position: relative;
+
+  filter:
+    brightness(1.12)
+    drop-shadow(
+      0 0 8px rgba(255,255,255,.38)
+    )
+    drop-shadow(
+      0 0 16px var(--rank-glow)
+    )
+    drop-shadow(
+      0 0 30px var(--rank-glow)
+    );
+
+  animation:
+    shieldPulseSoft
+    2.3s
+    ease-in-out
+    infinite;
+}
+
+
+/* INNER HIGHLIGHT */
+
+.rank-shield-inner {
+  box-shadow:
+    inset 0 0 18px rgba(255,255,255,.13),
+    inset 0 0 28px var(--rank-glow),
+    0 0 16px var(--rank-glow);
+}
+
+
+/* ==========================================================
+   CRYSTAL / CENTER
+========================================================== */
+
+.rank-crystal {
+  box-shadow:
+    0 0 10px rgba(255,255,255,.65),
+    0 0 20px var(--rank-glow),
+    0 0 34px var(--rank-glow);
+
+  filter:
+    brightness(1.20);
+}
+
+
+/* ==========================================================
+   SYMBOL
+========================================================== */
+
+.rank-symbol {
+  text-shadow:
+    0 0 5px #ffffff,
+    0 0 12px rgba(255,255,255,.75),
+    0 0 20px var(--rank-glow);
+}
+
+
+/* ==========================================================
+   WARRIOR — SILVER BLUE GLOW
+========================================================== */
+
+.rank-warrior {
+  --rank-color:
+    #c8d4e6;
+
+  --rank-color-2:
+    #7d8ca4;
+
+  --rank-glow:
+    rgba(123, 176, 255, .62);
+}
+
+
+/* WARRIOR JANGAN TERLALU TERANG */
+
+.rank-warrior .rank-badge::before {
+  opacity: .56;
+}
+
+.rank-warrior .rank-shield {
+  filter:
+    brightness(1.08)
+    drop-shadow(
+      0 0 7px rgba(220,235,255,.35)
+    )
+    drop-shadow(
+      0 0 16px rgba(92,157,255,.48)
+    )
+    drop-shadow(
+      0 0 28px rgba(92,157,255,.28)
+    );
+}
+
+
+/* ==========================================================
+   ANIMATION
+========================================================== */
+
+@keyframes emblemAuraPulse {
+
+  0%,
+  100% {
+    transform:
+      translate(-50%, -50%)
+      scale(.88);
+
+    opacity: .45;
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.07);
+
+    opacity: .76;
+  }
+
+}
+
+
+@keyframes emblemFloorPulse {
+
+  0%,
+  100% {
+    transform:
+      translateX(-50%)
+      scaleX(.78);
+
+    opacity: .25;
+  }
+
+  50% {
+    transform:
+      translateX(-50%)
+      scaleX(1.06);
+
+    opacity: .48;
+  }
+
+}
+
+
+@keyframes shieldPulseSoft {
+
+  0%,
+  100% {
+    transform:
+      scale(1);
+
+    filter:
+      brightness(1.06)
+      drop-shadow(
+        0 0 8px rgba(255,255,255,.30)
+      )
+      drop-shadow(
+        0 0 16px var(--rank-glow)
+      );
+  }
+
+  50% {
+    transform:
+      scale(1.025);
+
+    filter:
+      brightness(1.18)
+      drop-shadow(
+        0 0 11px rgba(255,255,255,.42)
+      )
+      drop-shadow(
+        0 0 24px var(--rank-glow)
+      );
+  }
+
+}
