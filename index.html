@@ -1,1077 +1,206 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
-  <meta charset="UTF-8">
-
+  <meta charset="UTF-8" />
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  >
+  />
 
-  <meta
-    name="theme-color"
-    content="#060914"
-  >
-
-  <title>
-    SS Rank Up Season
-  </title>
-
+  <title>SS Rank Up Season</title>
 
   <link
     rel="preconnect"
     href="https://fonts.googleapis.com"
-  >
+  />
 
   <link
     rel="preconnect"
     href="https://fonts.gstatic.com"
     crossorigin
-  >
+  />
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap"
     rel="stylesheet"
-  >
-
+  />
 
   <link
     rel="stylesheet"
-    href="style.css"
-  >
-
+    href="/style.css"
+  />
 </head>
-
 
 <body>
 
+  <header class="topbar">
 
-<!-- ====================================================
-BOOT SCREEN
-===================================================== -->
+    <div class="brand">
 
-<div
-  class="boot-screen"
-  id="bootScreen"
->
+      <div class="brand-mark"></div>
 
-  <div class="boot-mark"></div>
+      <div>
+        <div class="brand-title">
+          SS RANK UP
+        </div>
 
-  <div class="boot-title">
-    SS RANK UP SEASON
-  </div>
-
-  <div class="boot-loader">
-    <span></span>
-  </div>
-
-  <div class="boot-text">
-    Preparing your season...
-  </div>
-
-</div>
-
-
-
-<!-- ====================================================
-UNAUTHORIZED
-===================================================== -->
-
-<section
-  class="unauthorized"
-  id="unauthorizedPage"
->
-
-  <div class="unauthorized-card">
-
-    <div class="shield-icon">
-      ◆
-    </div>
-
-    <span class="mini-label">
-      SESSION REQUIRED
-    </span>
-
-    <h1>
-      Enter The Season
-    </h1>
-
-    <p id="unauthorizedMessage">
-      Login terlebih dahulu untuk
-      membuka dashboard SS Rank Up Season.
-    </p>
-
-    <button
-      class="primary-button"
-      onclick="goToLogin()"
-    >
-      LOGIN TO CONTINUE
-    </button>
-
-  </div>
-
-</section>
-
-
-
-<!-- ====================================================
-APP
-===================================================== -->
-
-<div
-  id="app"
-  class="app-shell"
->
-
-
-<!-- ====================================================
-TOPBAR
-===================================================== -->
-
-<header class="topbar">
-
-
-  <div class="brand">
-
-
-    <div class="brand-mark">
-
-      <div class="brand-core"></div>
-
-    </div>
-
-
-    <div>
-
-      <div class="brand-name">
-        SS RANK UP
-      </div>
-
-      <div class="brand-sub">
-        SEASON
+        <div class="brand-subtitle">
+          SEASON
+        </div>
       </div>
 
     </div>
 
 
-  </div>
+    <div class="user-panel">
 
+      <button
+        class="music-button"
+        id="musicButton"
+        type="button"
+      >
+        II
+      </button>
 
-
-  <div class="top-actions">
-
-
-    <button
-      class="icon-button"
-      id="musicButton"
-      onclick="toggleMusic()"
-      title="Music"
-    >
-      ♪
-    </button>
-
-
-    <div class="profile-mini">
-
-      <div class="avatar" id="avatar">
-        P
+      <div
+        class="avatar"
+        id="avatar"
+      >
+        --
       </div>
 
-      <div class="profile-copy">
+      <div class="user-copy">
 
-        <strong id="topUserName">
-          Player
-        </strong>
-
-        <span id="topUserRole">
-          User
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <button
-      class="logout-button"
-      onclick="logoutUser()"
-    >
-      LOGOUT
-    </button>
-
-
-  </div>
-
-
-</header>
-
-
-
-<!-- ====================================================
-MAIN
-===================================================== -->
-
-<main class="main">
-
-
-<!-- ====================================================
-HERO
-===================================================== -->
-
-<section class="hero">
-
-
-  <div class="hero-glow glow-one"></div>
-  <div class="hero-glow glow-two"></div>
-
-
-  <div class="hero-content">
-
-
-    <div class="hero-copy">
-
-
-      <div class="eyebrow">
-
-        <span class="live-dot"></span>
-
-        <span id="seasonStatus">
-          SEASON ACTIVE
-        </span>
-
-      </div>
-
-
-      <p class="welcome">
-        Welcome back,
-      </p>
-
-
-      <h1 id="heroUserName">
-        Player
-      </h1>
-
-
-      <p class="hero-description">
-
-        Turn every idea into impact.
-        Complete your improvement,
-        earn points, and climb the rank.
-
-      </p>
-
-
-      <div class="hero-actions">
-
-        <button
-          class="primary-button"
-          onclick="scrollToJourney()"
+        <div
+          class="user-name"
+          id="userName"
         >
-          VIEW MY JOURNEY
-        </button>
+          LOADING...
+        </div>
 
-        <button
-          class="ghost-button"
-          onclick="scrollToLeaderboard()"
+        <div
+          class="user-role"
+          id="userRole"
         >
-          LEADERBOARD
-        </button>
-
-      </div>
-
-
-    </div>
-
-
-
-    <div class="rank-stage">
-
-
-      <div class="rank-orbit orbit-one"></div>
-      <div class="rank-orbit orbit-two"></div>
-
-
-      <div class="rank-emblem">
-
-        <div class="emblem-inner">
-          ◆
+          USER
         </div>
 
       </div>
 
-
-      <div class="rank-name">
-        CURRENT RANK
-      </div>
-
-
-      <div
-        class="rank-value"
-        id="heroRank"
+      <button
+        class="logout-button"
+        id="logoutButton"
+        type="button"
       >
-        WARRIOR
-      </div>
-
-
-      <div class="rank-point">
-
-        <strong id="heroPoint">
-          0
-        </strong>
-
-        <span>
-          PTS
-        </span>
-
-      </div>
-
+        LOGOUT
+      </button>
 
     </div>
 
+  </header>
 
-  </div>
 
+  <main class="page">
 
-</section>
+    <section class="hero">
 
+      <div class="hero-content">
 
+        <div class="hero-copy">
 
-<!-- ====================================================
-STAT CARDS
-===================================================== -->
+          <div class="season-chip">
 
-<section class="stats-grid">
+            <span class="season-dot"></span>
 
+            SEASON ACTIVE
 
-  <article class="stat-card">
+          </div>
 
-    <div class="stat-icon">
-      ◆
-    </div>
+          <div class="welcome">
+            Welcome back,
+          </div>
 
-    <div>
+          <h1
+            class="hero-name"
+            id="heroName"
+          >
+            LOADING...
+          </h1>
 
-      <span class="stat-label">
-        TOTAL POINT
-      </span>
+          <p class="hero-description">
+            Turn every idea into impact.
+            Complete your improvement and climb the rank.
+          </p>
 
-      <strong
-        class="stat-number"
-        id="totalPoint"
-      >
-        0
-      </strong>
+        </div>
 
-    </div>
-
-  </article>
-
-
-
-  <article class="stat-card">
-
-    <div class="stat-icon">
-      ↑
-    </div>
-
-    <div>
-
-      <span class="stat-label">
-        CURRENT RANK
-      </span>
-
-      <strong
-        class="stat-number text"
-        id="currentRank"
-      >
-        WARRIOR
-      </strong>
-
-    </div>
-
-  </article>
-
-
-
-  <article class="stat-card">
-
-    <div class="stat-icon">
-      ✓
-    </div>
-
-    <div>
-
-      <span class="stat-label">
-        IMPROVEMENT
-      </span>
-
-      <strong class="stat-number">
-
-        <span id="completedImprovement">
-          0
-        </span>
-
-        <small>
-          /
-          <span id="targetImprovement">
-            3
-          </span>
-        </small>
-
-      </strong>
-
-    </div>
-
-  </article>
-
-
-
-  <article class="stat-card">
-
-    <div class="stat-icon">
-      #
-    </div>
-
-    <div>
-
-      <span class="stat-label">
-        LEADERBOARD
-      </span>
-
-      <strong
-        class="stat-number"
-        id="leaderboardPosition"
-      >
-        -
-      </strong>
-
-    </div>
-
-  </article>
-
-
-</section>
-
-
-
-<!-- ====================================================
-MISSION + RANK
-===================================================== -->
-
-<section class="two-column">
-
-
-  <article class="panel mission-panel">
-
-
-    <div class="panel-heading">
-
-      <div>
-
-        <span class="mini-label">
-          CURRENT MISSION
-        </span>
-
-        <h2 id="missionTitle">
-          Start Your Journey
-        </h2>
-
-      </div>
-
-
-      <span
-        class="status-pill"
-        id="missionStatus"
-      >
-        IN PROGRESS
-      </span>
-
-    </div>
-
-
-    <p
-      class="mission-description"
-      id="missionDescription"
-    >
-      Complete your first improvement
-      until Approved Implementation.
-    </p>
-
-
-    <div class="progress-wrap">
-
-      <div class="progress-info">
-
-        <span>
-          Season Progress
-        </span>
-
-        <strong id="seasonProgressText">
-          0%
-        </strong>
-
-      </div>
-
-
-      <div class="progress-track">
 
         <div
-          class="progress-fill"
-          id="seasonProgress"
-        ></div>
-
-      </div>
-
-    </div>
-
-
-  </article>
-
-
-
-  <article class="panel">
-
-
-    <div class="panel-heading">
-
-      <div>
-
-        <span class="mini-label">
-          NEXT RANK
-        </span>
-
-        <h2 id="nextRankName">
-          Elite
-        </h2>
-
-      </div>
-
-
-      <div
-        class="point-needed"
-        id="pointNeeded"
-      >
-        -
-      </div>
-
-    </div>
-
-
-    <div class="progress-wrap">
-
-      <div class="progress-info">
-
-        <span>
-          Rank Progress
-        </span>
-
-        <strong id="rankProgressText">
-          0%
-        </strong>
-
-      </div>
-
-
-      <div class="progress-track">
-
-        <div
-          class="progress-fill purple"
-          id="rankProgress"
-        ></div>
-
-      </div>
-
-    </div>
-
-
-  </article>
-
-
-</section>
-
-
-
-<!-- ====================================================
-SEASON JOURNEY
-===================================================== -->
-
-<section
-  class="section"
-  id="journeySection"
->
-
-
-  <div class="section-heading">
-
-    <div>
-
-      <span class="mini-label">
-        YOUR SEASON JOURNEY
-      </span>
-
-      <h2>
-        3 Matches.
-        3 Improvements.
-      </h2>
-
-    </div>
-
-
-    <span
-      class="season-chip"
-      id="seasonName"
-    >
-      SS Rank Up Season
-    </span>
-
-  </div>
-
-
-
-  <div class="journey-grid">
-
-
-    <article
-      class="match-card"
-      id="matchCard1"
-    >
-
-      <div class="match-top">
-
-        <span>
-          MATCH 01
-        </span>
-
-        <span
-          class="match-state"
-          id="matchState1"
+          class="rank-zone"
+          id="rankZone"
         >
-          ACTIVE
-        </span>
+
+          <div class="rank-aura aura-one"></div>
+          <div class="rank-aura aura-two"></div>
+
+          <div
+            class="rank-emblem"
+            id="rankEmblem"
+          >
+
+            <img
+              id="rankImage"
+              src="/assets/ranks/warrior.png"
+              alt="Rank emblem"
+            />
+
+          </div>
+
+          <div class="rank-label">
+            SEASON RANK
+          </div>
+
+          <div
+            class="rank-name"
+            id="rankName"
+          >
+            WARRIOR
+          </div>
+
+          <div
+            class="rank-count"
+            id="rankCount"
+          >
+            0 SS
+          </div>
+
+          <div
+            class="season-result"
+            id="seasonResult"
+          ></div>
+
+          <div
+            class="missed-months"
+            id="missedMonths"
+          ></div>
+
+        </div>
 
       </div>
 
-      <div class="match-number">
-        01
-      </div>
+    </section>
 
-      <h3>
-        First Impact
-      </h3>
+  </main>
 
-      <p>
-        Complete your first SS until
-        Approved Implementation.
-      </p>
 
-    </article>
+  <audio
+    id="bgMusic"
+    src="/Rank Up Season.mp3"
+    loop
+  ></audio>
 
 
-
-    <article
-      class="match-card"
-      id="matchCard2"
-    >
-
-      <div class="match-top">
-
-        <span>
-          MATCH 02
-        </span>
-
-        <span
-          class="match-state"
-          id="matchState2"
-        >
-          LOCKED
-        </span>
-
-      </div>
-
-      <div class="match-number">
-        02
-      </div>
-
-      <h3>
-        Keep The Streak
-      </h3>
-
-      <p>
-        Continue the improvement momentum.
-      </p>
-
-    </article>
-
-
-
-    <article
-      class="match-card"
-      id="matchCard3"
-    >
-
-      <div class="match-top">
-
-        <span>
-          MATCH 03
-        </span>
-
-        <span
-          class="match-state"
-          id="matchState3"
-        >
-          LOCKED
-        </span>
-
-      </div>
-
-      <div class="match-number">
-        03
-      </div>
-
-      <h3>
-        Final Push
-      </h3>
-
-      <p>
-        Complete the season with
-        three improvements.
-      </p>
-
-    </article>
-
-
-  </div>
-
-
-</section>
-
-
-
-<!-- ====================================================
-SS ACTIVITY
-===================================================== -->
-
-<section class="section">
-
-
-  <div class="section-heading">
-
-    <div>
-
-      <span class="mini-label">
-        MY IMPROVEMENT
-      </span>
-
-      <h2>
-        Recent SS
-      </h2>
-
-    </div>
-
-
-    <span
-      class="season-chip"
-      id="totalSSLabel"
-    >
-      0 SS
-    </span>
-
-  </div>
-
-
-  <div class="panel table-panel">
-
-
-    <div
-      class="empty-state"
-      id="ssEmpty"
-    >
-
-      <span>
-        ◇
-      </span>
-
-      <strong>
-        Belum ada SS pada season ini
-      </strong>
-
-      <p>
-        Data akan muncul setelah
-        sinkronisasi SS berjalan.
-      </p>
-
-    </div>
-
-
-    <div
-      class="table-scroll"
-      id="ssTableWrap"
-    >
-
-      <table>
-
-        <thead>
-
-          <tr>
-
-            <th>
-              SS
-            </th>
-
-            <th>
-              TITLE
-            </th>
-
-            <th>
-              STATUS
-            </th>
-
-            <th>
-              SUBMITTED
-            </th>
-
-          </tr>
-
-        </thead>
-
-
-        <tbody id="ssTableBody">
-        </tbody>
-
-      </table>
-
-    </div>
-
-
-  </div>
-
-
-</section>
-
-
-
-<!-- ====================================================
-LEADERBOARD
-===================================================== -->
-
-<section
-  class="section"
-  id="leaderboardSection"
->
-
-
-  <div class="section-heading">
-
-    <div>
-
-      <span class="mini-label">
-        SEASON RANKING
-      </span>
-
-      <h2>
-        Leaderboard
-      </h2>
-
-    </div>
-
-
-    <span class="season-chip">
-      TOP 10
-    </span>
-
-  </div>
-
-
-  <div class="leaderboard-layout">
-
-
-    <div
-      class="podium"
-      id="podium"
-    >
-    </div>
-
-
-    <div class="panel leaderboard-list">
-
-      <div
-        id="leaderboardList"
-      >
-      </div>
-
-    </div>
-
-
-  </div>
-
-
-</section>
-
-
-
-<!-- ====================================================
-SUPERIOR
-===================================================== -->
-
-<section
-  class="section role-superior"
-  id="superiorSection"
->
-
-
-  <div class="section-heading">
-
-    <div>
-
-      <span class="mini-label">
-        SUPERIOR MODE
-      </span>
-
-      <h2>
-        Superior Support Score
-      </h2>
-
-    </div>
-
-  </div>
-
-
-  <div class="support-card">
-
-    <div>
-
-      <span class="mini-label">
-        TEAM PERFORMANCE
-      </span>
-
-      <h3>
-        Drive Ideas Into Impact
-      </h3>
-
-      <p>
-        Monitor approval, implementation,
-        pending SS, and your team's
-        improvement consistency.
-      </p>
-
-    </div>
-
-
-    <div class="support-score">
-
-      <span>
-        SUPPORT
-      </span>
-
-      <strong>
-        MODE
-      </strong>
-
-    </div>
-
-  </div>
-
-
-</section>
-
-
-
-<!-- ====================================================
-ANNOUNCEMENTS
-===================================================== -->
-
-<section
-  class="section"
-  id="announcementSection"
->
-
-
-  <div class="section-heading">
-
-    <div>
-
-      <span class="mini-label">
-        SEASON UPDATE
-      </span>
-
-      <h2>
-        What's Happening
-      </h2>
-
-    </div>
-
-  </div>
-
-
-  <div
-    class="announcement-grid"
-    id="announcementGrid"
-  >
-
-    <article class="announcement-card">
-
-      <span>
-        SEASON
-      </span>
-
-      <h3>
-        Welcome to SS Rank Up Season
-      </h3>
-
-      <p>
-        Complete your improvement and
-        climb through the ranks.
-      </p>
-
-    </article>
-
-  </div>
-
-
-</section>
-
-
-
-<footer>
-
-  <strong>
-    SS RANK UP SEASON
-  </strong>
-
-  <span>
-    Idea to Impact • Season 2026
-  </span>
-
-</footer>
-
-
-</main>
-
-
-
-<audio
-  id="backgroundMusic"
-  loop
-  preload="none"
->
-
-  <source
-    src="Rank Up Season.mp3"
-    type="audio/mpeg"
-  >
-
-</audio>
-
-
-</div>
-
-
-<script src="app.js"></script>
-
+  <script src="/app.js"></script>
 
 </body>
-
 </html>
