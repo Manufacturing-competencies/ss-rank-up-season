@@ -1,6 +1,18 @@
 /* ==========================================================
    SS RANK UP SEASON
    FINAL FRONTEND
+
+   FITUR:
+   - Session login
+   - Dashboard Supabase
+   - Rank otomatis
+   - 7 rank visual
+   - Bulan season dinamis
+   - WINNER / FAILED
+   - Missed month otomatis
+   - Music autoplay attempt
+   - Play / pause music
+   - Logout
 ========================================================== */
 
 
@@ -44,7 +56,8 @@ if (
 
 
   /*
-   Hilangkan token dari address bar.
+   Hilangkan session token dari URL
+   setelah berhasil diterima.
   */
 
   window.history.replaceState(
@@ -164,6 +177,11 @@ async function loadDashboard() {
 
   try {
 
+    /*
+     Kalau session belum ada,
+     arahkan ke login Apps Script.
+    */
+
     if (!sessionToken) {
 
       await redirectToLogin();
@@ -172,6 +190,10 @@ async function loadDashboard() {
 
     }
 
+
+    /*
+     Ambil data dashboard.
+    */
 
     const response =
       await fetch(
@@ -183,8 +205,10 @@ async function loadDashboard() {
         ),
 
         {
+
           cache:
             'no-store'
+
         }
 
       );
@@ -193,6 +217,10 @@ async function loadDashboard() {
     const result =
       await response.json();
 
+
+    /*
+     Simpan URL login.
+    */
 
     if (
       result.loginUrl
@@ -203,6 +231,10 @@ async function loadDashboard() {
 
     }
 
+
+    /*
+     Kalau API gagal.
+    */
 
     if (
       !response.ok ||
@@ -217,10 +249,13 @@ async function loadDashboard() {
     }
 
 
+    /*
+     Render seluruh dashboard.
+    */
+
     renderDashboard(
       result
     );
-
 
   }
 
@@ -232,10 +267,22 @@ async function loadDashboard() {
     );
 
 
+    /*
+     Hapus session browser.
+    */
+
     localStorage.removeItem(
       'ss_rank_session'
     );
 
+
+    sessionToken =
+      null;
+
+
+    /*
+     Kembali ke login.
+    */
 
     if (loginUrl) {
 
@@ -274,16 +321,25 @@ function renderDashboard(
     data.progress || {};
 
 
+  /*
+   Simpan login URL.
+  */
+
   loginUrl =
     data.loginUrl ||
     loginUrl;
 
 
+  /*
+   USER DATA
+  */
+
   const name =
     String(
       user.name ||
       'USER'
-    ).trim();
+    )
+      .trim();
 
 
   const role =
@@ -296,7 +352,7 @@ function renderDashboard(
 
 
   /*
-   USER HEADER
+   HEADER
   */
 
   if (headerUserName) {
@@ -316,7 +372,7 @@ function renderDashboard(
 
 
   /*
-   HERO
+   HERO NAME
   */
 
   if (heroUserName) {
@@ -326,6 +382,10 @@ function renderDashboard(
 
   }
 
+
+  /*
+   AVATAR
+  */
 
   if (avatar) {
 
@@ -338,7 +398,7 @@ function renderDashboard(
 
 
   /*
-   USER INFO
+   DEPARTMENT
   */
 
   if (departmentText) {
@@ -349,6 +409,10 @@ function renderDashboard(
 
   }
 
+
+  /*
+   LOCATION
+  */
 
   if (locationText) {
 
@@ -365,10 +429,21 @@ function renderDashboard(
 
   if (seasonState) {
 
-    seasonState.textContent =
+    if (
       season.active === false
-        ? 'SEASON CLOSED'
-        : 'SEASON ACTIVE';
+    ) {
+
+      seasonState.textContent =
+        'SEASON CLOSED';
+
+    }
+
+    else {
+
+      seasonState.textContent =
+        'SEASON ACTIVE';
+
+    }
 
   }
 
@@ -399,6 +474,10 @@ function renderRank(
   }
 
 
+  /*
+   Rank dari API.
+  */
+
   const rank =
     String(
       progress.rank ||
@@ -408,12 +487,20 @@ function renderRank(
       .toUpperCase();
 
 
+  /*
+   Total Approved Implementasi.
+  */
+
   const totalApproved =
     Number(
       progress.totalApproved ||
       0
     );
 
+
+  /*
+   Status season.
+  */
 
   const status =
     String(
@@ -424,6 +511,10 @@ function renderRank(
       .toUpperCase();
 
 
+  /*
+   Bulan yang belum achieve.
+  */
+
   const missed =
     Array.isArray(
       progress.missedMonths
@@ -433,7 +524,7 @@ function renderRank(
 
 
   /*
-   VISUAL RANK
+   Visual sesuai rank.
   */
 
   const visual =
@@ -443,7 +534,7 @@ function renderRank(
 
 
   /*
-   Hapus seluruh rank class lama.
+   Hapus rank class lama.
   */
 
   rankPanel.classList.remove(
@@ -466,7 +557,7 @@ function renderRank(
 
 
   /*
-   Pasang rank class terbaru.
+   Pasang class rank baru.
   */
 
   rankPanel.classList.add(
@@ -475,7 +566,7 @@ function renderRank(
 
 
   /*
-   Symbol di emblem.
+   Symbol emblem.
   */
 
   if (rankSymbol) {
@@ -499,7 +590,7 @@ function renderRank(
 
 
   /*
-   Total approved implementasi.
+   Total SS Approved Implementasi.
   */
 
   if (rankTotal) {
@@ -515,66 +606,119 @@ function renderRank(
    STATUS
   */
 
-  if (seasonStatus) {
+  renderSeasonStatus(
+    status
+  );
 
-    seasonStatus.classList.remove(
-      'winner',
+
+  /*
+   MISSED MONTHS
+  */
+
+  renderMissedMonths(
+    status,
+    missed
+  );
+
+}
+
+
+/* ==========================================================
+   STATUS SEASON
+========================================================== */
+
+function renderSeasonStatus(
+  status
+) {
+
+  if (!seasonStatus) {
+
+    return;
+
+  }
+
+
+  seasonStatus.classList.remove(
+    'winner',
+    'failed'
+  );
+
+
+  if (
+    status === 'WINNER'
+  ) {
+
+    seasonStatus.textContent =
+      'WINNER';
+
+
+    seasonStatus.classList.add(
+      'winner'
+    );
+
+  }
+
+  else {
+
+    seasonStatus.textContent =
+      'FAILED';
+
+
+    seasonStatus.classList.add(
       'failed'
     );
 
+  }
 
-    if (
-      status === 'WINNER'
-    ) {
-
-      seasonStatus.textContent =
-        'WINNER';
+}
 
 
-      seasonStatus.classList.add(
-        'winner'
-      );
+/* ==========================================================
+   MISSED MONTH
 
-    }
+   Tidak ada hardcode MEI/JUNI/JULI.
 
-    else {
+   Contoh:
+   AGUSTUS = 0
+   SEPTEMBER = 1
+   OKTOBER = 0
 
-      seasonStatus.textContent =
-        'FAILED';
+   Maka:
+   Missed: AGUSTUS, OKTOBER
+========================================================== */
 
+function renderMissedMonths(
+  status,
+  months
+) {
 
-      seasonStatus.classList.add(
-        'failed'
-      );
+  if (!missedMonths) {
 
-    }
+    return;
 
   }
 
 
   /*
-   MISSED MONTH
+   Hanya muncul kalau FAILED.
   */
 
-  if (missedMonths) {
+  if (
+    status === 'FAILED' &&
+    Array.isArray(months) &&
+    months.length
+  ) {
 
-    if (
-      status === 'FAILED' &&
-      missed.length
-    ) {
+    missedMonths.textContent =
+      'Missed: ' +
+      months.join(', ');
 
-      missedMonths.textContent =
-        'Missed: ' +
-        missed.join(', ');
+  }
 
-    }
+  else {
 
-    else {
-
-      missedMonths.textContent =
-        '';
-
-    }
+    missedMonths.textContent =
+      '';
 
   }
 
@@ -593,7 +737,7 @@ function getRankVisual(
 
 
     /* ==========================
-       WARRIOR
+       0 SS
     ========================== */
 
     WARRIOR: {
@@ -608,7 +752,7 @@ function getRankVisual(
 
 
     /* ==========================
-       ELITE
+       1 SS
     ========================== */
 
     ELITE: {
@@ -623,7 +767,7 @@ function getRankVisual(
 
 
     /* ==========================
-       EPIC
+       2 SS
     ========================== */
 
     EPIC: {
@@ -638,7 +782,7 @@ function getRankVisual(
 
 
     /* ==========================
-       LEGEND
+       3 SS
     ========================== */
 
     LEGEND: {
@@ -653,7 +797,7 @@ function getRankVisual(
 
 
     /* ==========================
-       MYTHIC
+       4-6 SS
     ========================== */
 
     MYTHIC: {
@@ -668,7 +812,7 @@ function getRankVisual(
 
 
     /* ==========================
-       MYTHIC HONOR
+       7-9 SS
     ========================== */
 
     'MYTHIC HONOR': {
@@ -683,7 +827,7 @@ function getRankVisual(
 
 
     /* ==========================
-       MYTHIC GLORY
+       >= 10 SS
     ========================== */
 
     'MYTHIC GLORY': {
@@ -708,7 +852,7 @@ function getRankVisual(
 
 
 /* ==========================================================
-   INITIALS
+   USER INITIAL
 ========================================================== */
 
 function getInitials(
@@ -716,7 +860,8 @@ function getInitials(
 ) {
 
   return String(
-    name || ''
+    name ||
+    ''
   )
 
     .trim()
@@ -730,8 +875,7 @@ function getInitials(
     .map(
       function(word) {
 
-        return word
-          .charAt(0);
+        return word.charAt(0);
 
       }
     )
@@ -744,12 +888,17 @@ function getInitials(
 
 
 /* ==========================================================
-   REDIRECT TO LOGIN
+   LOGIN REDIRECT
 ========================================================== */
 
 async function redirectToLogin() {
 
   try {
+
+    /*
+     API tanpa session akan mengembalikan
+     Apps Script login URL.
+    */
 
     const response =
       await fetch(
@@ -757,8 +906,10 @@ async function redirectToLogin() {
         '/api/dashboard',
 
         {
+
           cache:
             'no-store'
+
         }
 
       );
@@ -885,176 +1036,43 @@ function showSessionError() {
 
 
 /* ==========================================================
-   LOGOUT
-========================================================== */
-
-if (logoutButton) {
-
-  logoutButton
-    .addEventListener(
-      'click',
-      async function() {
-
-        /*
-         Hapus session browser.
-        */
-
-        localStorage.removeItem(
-          'ss_rank_session'
-        );
-
-
-        /*
-         Optional delete session
-         dari Supabase lewat API logout.
-        */
-
-        try {
-
-          if (sessionToken) {
-
-            await fetch(
-
-              '/api/logout',
-
-              {
-
-                method:
-                  'POST',
-
-                headers: {
-
-                  'Content-Type':
-                    'application/json'
-
-                },
-
-                body:
-                  JSON.stringify({
-
-                    session:
-                      sessionToken
-
-                  })
-
-              }
-
-            );
-
-          }
-
-        }
-
-        catch (error) {
-
-          console.error(
-            'LOGOUT API ERROR:',
-            error
-          );
-
-        }
-
-
-        sessionToken =
-          null;
-
-
-        /*
-         Kembali ke Apps Script login.
-        */
-
-        if (loginUrl) {
-
-          window.location.href =
-            loginUrl;
-
-          return;
-
-        }
-
-
-        /*
-         Fallback.
-        */
-
-        window.location.href =
-          '/';
-
-      }
-    );
-
-}
-
-
-/* ==========================================================
    MUSIC
 ========================================================== */
 
-if (
-  musicButton &&
-  bgMusic
+function setMusicButtonState(
+  playing
 ) {
 
-  musicButton
-    .addEventListener(
-      'click',
-      async function() {
+  if (!musicButton) {
 
-        /*
-         PLAY
-        */
+    return;
 
-        if (
-          bgMusic.paused
-        ) {
-
-          try {
-
-            await bgMusic.play();
+  }
 
 
-            musicButton.textContent =
-              'II';
-
-          }
-
-          catch (error) {
-
-            console.error(
-              'MUSIC PLAY ERROR:',
-              error
-            );
-
-          }
-
-        }
+  musicButton.textContent =
+    playing
+      ? 'II'
+      : '▶';
 
 
-        /*
-         PAUSE
-        */
-
-        else {
-
-          bgMusic.pause();
-
-
-          musicButton.textContent =
-            '▶';
-
-        }
-
-      }
-    );
+  musicButton.title =
+    playing
+      ? 'Pause Music'
+      : 'Play Music';
 
 }
 
 
 /* ==========================================================
-   START APP
-========================================================== */
-/* ==========================================================
-   AUTO PLAY MUSIC
+   TRY AUTOPLAY MUSIC
+
+   Browser seperti Chrome / Edge bisa
+   memblokir autoplay dengan suara.
+
+   Kalau diblokir:
+   musik otomatis mulai saat interaksi
+   pertama user.
 ========================================================== */
 
 async function tryAutoPlayMusic() {
@@ -1069,6 +1087,10 @@ async function tryAutoPlayMusic() {
   }
 
 
+  /*
+   Volume awal.
+  */
+
   bgMusic.volume =
     0.35;
 
@@ -1078,62 +1100,71 @@ async function tryAutoPlayMusic() {
     await bgMusic.play();
 
 
-    musicButton.textContent =
-      'II';
+    setMusicButtonState(
+      true
+    );
 
   }
 
   catch (error) {
 
     /*
-     Browser biasanya memblokir autoplay
-     dengan suara sebelum ada interaksi user.
+     Autoplay diblokir browser.
     */
 
-    musicButton.textContent =
-      '▶';
+    setMusicButtonState(
+      false
+    );
 
 
-    const startMusicOnFirstInteraction =
+    /*
+     Mulai musik pada interaksi pertama.
+    */
+
+    const startMusic =
       async function() {
 
         try {
 
-          await bgMusic.play();
+          /*
+           Jangan play kalau user justru
+           mengklik tombol music sendiri.
+          */
+
+          if (
+            bgMusic.paused
+          ) {
+
+            await bgMusic.play();
+
+          }
 
 
-          musicButton.textContent =
-            'II';
+          setMusicButtonState(
+            !bgMusic.paused
+          );
 
         }
 
         catch (playError) {
 
           console.error(
-            'MUSIC AUTOPLAY ERROR:',
+            'AUTO MUSIC ERROR:',
             playError
           );
 
         }
 
-
-        document.removeEventListener(
-          'click',
-          startMusicOnFirstInteraction
-        );
-
-
-        document.removeEventListener(
-          'touchstart',
-          startMusicOnFirstInteraction
-        );
-
       };
 
 
+    /*
+     Mouse / touch / keyboard.
+    */
+
     document.addEventListener(
       'click',
-      startMusicOnFirstInteraction,
+      startMusic,
       {
         once:
           true
@@ -1143,7 +1174,17 @@ async function tryAutoPlayMusic() {
 
     document.addEventListener(
       'touchstart',
-      startMusicOnFirstInteraction,
+      startMusic,
+      {
+        once:
+          true
+      }
+    );
+
+
+    document.addEventListener(
+      'keydown',
+      startMusic,
       {
         once:
           true
@@ -1153,6 +1194,207 @@ async function tryAutoPlayMusic() {
   }
 
 }
+
+
+/* ==========================================================
+   MUSIC BUTTON
+========================================================== */
+
+if (
+  musicButton &&
+  bgMusic
+) {
+
+  musicButton.addEventListener(
+    'click',
+    async function(event) {
+
+      /*
+       Jangan diteruskan ke listener
+       autoplay document.
+      */
+
+      event.stopPropagation();
+
+
+      /*
+       PLAY
+      */
+
+      if (
+        bgMusic.paused
+      ) {
+
+        try {
+
+          await bgMusic.play();
+
+
+          setMusicButtonState(
+            true
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            'MUSIC PLAY ERROR:',
+            error
+          );
+
+        }
+
+      }
+
+
+      /*
+       PAUSE
+      */
+
+      else {
+
+        bgMusic.pause();
+
+
+        setMusicButtonState(
+          false
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   LOGOUT
+========================================================== */
+
+if (logoutButton) {
+
+  logoutButton.addEventListener(
+    'click',
+    async function() {
+
+      /*
+       Simpan login URL sebelum reset.
+      */
+
+      const targetLoginUrl =
+        loginUrl;
+
+
+      /*
+       Delete session server.
+      */
+
+      try {
+
+        if (
+          sessionToken
+        ) {
+
+          await fetch(
+
+            '/api/logout',
+
+            {
+
+              method:
+                'POST',
+
+              headers: {
+
+                'Content-Type':
+                  'application/json'
+
+              },
+
+              body:
+                JSON.stringify({
+
+                  session:
+                    sessionToken
+
+                })
+
+            }
+
+          );
+
+        }
+
+      }
+
+      catch (error) {
+
+        console.error(
+          'LOGOUT ERROR:',
+          error
+        );
+
+      }
+
+
+      /*
+       Clear browser session.
+      */
+
+      localStorage.removeItem(
+        'ss_rank_session'
+      );
+
+
+      sessionToken =
+        null;
+
+
+      /*
+       Stop music.
+      */
+
+      if (bgMusic) {
+
+        bgMusic.pause();
+
+        bgMusic.currentTime =
+          0;
+
+      }
+
+
+      /*
+       Redirect login.
+      */
+
+      if (
+        targetLoginUrl
+      ) {
+
+        window.location.href =
+          targetLoginUrl;
+
+        return;
+
+      }
+
+
+      window.location.href =
+        '/';
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   START
+========================================================== */
+
 tryAutoPlayMusic();
 
 loadDashboard();
