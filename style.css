@@ -4456,3 +4456,176 @@ body::after {
   }
 
 }
+
+/* ==========================================================
+   FIX POSITION GLOW — GESER KE KANAN, PAS DI BELAKANG LOGO
+========================================================== */
+
+.rank-badge::before {
+  content: "";
+
+  position: absolute;
+
+  /* GESER SUMBER CAHAYA KE KANAN */
+  left: 58%;
+
+  /* sedikit turun supaya center-nya kena shield */
+  top: 52%;
+
+  width: 220px;
+  height: 220px;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.20) 0%,
+      rgba(155,190,255,.28) 18%,
+      var(--rank-glow) 38%,
+      transparent 72%
+    );
+
+  filter:
+    blur(30px);
+
+  opacity:
+    .72;
+
+  z-index:
+    -2;
+
+  animation:
+    emblemAuraPulse
+    2.3s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   TAMBAHAN CAHAYA KECIL TEPAT DI BELAKANG SHIELD
+========================================================== */
+
+.rank-shield::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 52%;
+
+  width: 155px;
+  height: 155px;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.16) 0%,
+      rgba(120,170,255,.20) 32%,
+      transparent 72%
+    );
+
+  filter:
+    blur(20px);
+
+  opacity:
+    .75;
+
+  z-index:
+    -1;
+}
+
+
+/* ==========================================================
+   PANTULAN CAHAYA DI BAWAH LOGO
+========================================================== */
+
+.rank-badge::after {
+  content: "";
+
+  position: absolute;
+
+  left: 58%;
+  bottom: 6px;
+
+  width: 150px;
+  height: 20px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius: 50%;
+
+  background:
+    rgba(120,170,255,.58);
+
+  filter:
+    blur(18px);
+
+  opacity:
+    .42;
+
+  z-index:
+    -1;
+}
+
+
+/* ==========================================================
+   SHIELD EDGE GLOW
+========================================================== */
+
+.rank-shield {
+  filter:
+    brightness(1.10)
+    drop-shadow(0 0 8px rgba(220,235,255,.40))
+    drop-shadow(0 0 16px rgba(110,160,255,.52))
+    drop-shadow(0 0 28px rgba(110,160,255,.32));
+}
+
+
+/* ==========================================================
+   WARRIOR KHUSUS
+========================================================== */
+
+.rank-warrior {
+  --rank-color: #c8d4e6;
+  --rank-color-2: #7b8ba3;
+  --rank-glow: rgba(100, 150, 255, .60);
+}
+
+
+/* ==========================================================
+   AURA PULSE
+========================================================== */
+
+@keyframes emblemAuraPulse {
+
+  0%,
+  100% {
+    transform:
+      translate(-50%, -50%)
+      scale(.92);
+
+    opacity:
+      .55;
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.08);
+
+    opacity:
+      .82;
+  }
+
+}
