@@ -4,6 +4,10 @@
 ========================================================== */
 
 
+/* ==========================================================
+   QUERY + SESSION
+========================================================== */
+
 const query =
   new URLSearchParams(
     window.location.search
@@ -98,9 +102,9 @@ const rankPanel =
   );
 
 
-const rankBadgeText =
+const rankSymbol =
   document.getElementById(
-    'rankBadgeText'
+    'rankSymbol'
   );
 
 
@@ -218,10 +222,12 @@ async function loadDashboard() {
     );
 
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(
-      'LOAD DASHBOARD ERROR',
+      'LOAD DASHBOARD ERROR:',
       error
     );
 
@@ -252,7 +258,9 @@ async function loadDashboard() {
    RENDER DASHBOARD
 ========================================================== */
 
-function renderDashboard(data) {
+function renderDashboard(
+  data
+) {
 
   const user =
     data.user || {};
@@ -272,53 +280,102 @@ function renderDashboard(data) {
 
 
   const name =
-    user.name ||
-    'USER';
+    String(
+      user.name ||
+      'USER'
+    ).trim();
 
 
   const role =
-    user.role ||
-    'USER';
-
-
-  headerUserName.textContent =
-    name;
-
-
-  headerUserRole.textContent =
-    String(role)
+    String(
+      user.role ||
+      'USER'
+    )
+      .trim()
       .toUpperCase();
 
 
-  heroUserName.textContent =
-    name;
+  /*
+   USER HEADER
+  */
+
+  if (headerUserName) {
+
+    headerUserName.textContent =
+      name;
+
+  }
 
 
-  avatar.textContent =
-    getInitials(
-      name
-    );
+  if (headerUserRole) {
 
+    headerUserRole.textContent =
+      role;
 
-  departmentText.textContent =
-    progress.department ||
-    '';
-
-
-  locationText.textContent =
-    progress.location ||
-    '';
+  }
 
 
   /*
-   Season state.
+   HERO
   */
 
-  seasonState.textContent =
-    season.active === false
-      ? 'SEASON CLOSED'
-      : 'SEASON ACTIVE';
+  if (heroUserName) {
 
+    heroUserName.textContent =
+      name;
+
+  }
+
+
+  if (avatar) {
+
+    avatar.textContent =
+      getInitials(
+        name
+      );
+
+  }
+
+
+  /*
+   USER INFO
+  */
+
+  if (departmentText) {
+
+    departmentText.textContent =
+      progress.department ||
+      '-';
+
+  }
+
+
+  if (locationText) {
+
+    locationText.textContent =
+      progress.location ||
+      '-';
+
+  }
+
+
+  /*
+   SEASON STATE
+  */
+
+  if (seasonState) {
+
+    seasonState.textContent =
+      season.active === false
+        ? 'SEASON CLOSED'
+        : 'SEASON ACTIVE';
+
+  }
+
+
+  /*
+   RANK
+  */
 
   renderRank(
     progress
@@ -334,6 +391,13 @@ function renderDashboard(data) {
 function renderRank(
   progress
 ) {
+
+  if (!rankPanel) {
+
+    return;
+
+  }
+
 
   const rank =
     String(
@@ -369,7 +433,17 @@ function renderRank(
 
 
   /*
-   Remove rank class lama.
+   VISUAL RANK
+  */
+
+  const visual =
+    getRankVisual(
+      rank
+    );
+
+
+  /*
+   Hapus seluruh rank class lama.
   */
 
   rankPanel.classList.remove(
@@ -391,63 +465,89 @@ function renderRank(
   );
 
 
-  const visual =
-    getRankVisual(
-      rank
-    );
-
+  /*
+   Pasang rank class terbaru.
+  */
 
   rankPanel.classList.add(
     visual.className
   );
 
 
-  rankBadgeText.textContent =
-    visual.badge;
+  /*
+   Symbol di emblem.
+  */
+
+  if (rankSymbol) {
+
+    rankSymbol.textContent =
+      visual.badge;
+
+  }
 
 
-  rankName.textContent =
-    rank;
+  /*
+   Nama rank.
+  */
+
+  if (rankName) {
+
+    rankName.textContent =
+      rank;
+
+  }
 
 
-  rankTotal.textContent =
-    totalApproved +
-    ' SS';
+  /*
+   Total approved implementasi.
+  */
+
+  if (rankTotal) {
+
+    rankTotal.textContent =
+      totalApproved +
+      ' SS';
+
+  }
 
 
   /*
    STATUS
   */
 
-  seasonStatus.classList.remove(
-    'winner',
-    'failed'
-  );
+  if (seasonStatus) {
 
-
-  if (
-    status === 'WINNER'
-  ) {
-
-    seasonStatus.textContent =
-      'WINNER';
-
-
-    seasonStatus.classList.add(
-      'winner'
-    );
-
-  }
-
-  else {
-
-    seasonStatus.textContent =
-      'FAILED';
-
-
-    seasonStatus.classList.add(
+    seasonStatus.classList.remove(
+      'winner',
       'failed'
     );
+
+
+    if (
+      status === 'WINNER'
+    ) {
+
+      seasonStatus.textContent =
+        'WINNER';
+
+
+      seasonStatus.classList.add(
+        'winner'
+      );
+
+    }
+
+    else {
+
+      seasonStatus.textContent =
+        'FAILED';
+
+
+      seasonStatus.classList.add(
+        'failed'
+      );
+
+    }
 
   }
 
@@ -456,21 +556,25 @@ function renderRank(
    MISSED MONTH
   */
 
-  if (
-    status === 'FAILED' &&
-    missed.length
-  ) {
+  if (missedMonths) {
 
-    missedMonths.textContent =
-      'Missed: ' +
-      missed.join(', ');
+    if (
+      status === 'FAILED' &&
+      missed.length
+    ) {
 
-  }
+      missedMonths.textContent =
+        'Missed: ' +
+        missed.join(', ');
 
-  else {
+    }
 
-    missedMonths.textContent =
-      '';
+    else {
+
+      missedMonths.textContent =
+        '';
+
+    }
 
   }
 
@@ -478,12 +582,19 @@ function renderRank(
 
 
 /* ==========================================================
-   RANK VISUAL
+   RANK VISUAL CONFIG
 ========================================================== */
 
-function getRankVisual(rank) {
+function getRankVisual(
+  rank
+) {
 
   const ranks = {
+
+
+    /* ==========================
+       WARRIOR
+    ========================== */
 
     WARRIOR: {
 
@@ -496,6 +607,10 @@ function getRankVisual(rank) {
     },
 
 
+    /* ==========================
+       ELITE
+    ========================== */
+
     ELITE: {
 
       className:
@@ -507,16 +622,24 @@ function getRankVisual(rank) {
     },
 
 
+    /* ==========================
+       EPIC
+    ========================== */
+
     EPIC: {
 
       className:
         'rank-epic',
 
       badge:
-        'E'
+        'EP'
 
     },
 
+
+    /* ==========================
+       LEGEND
+    ========================== */
 
     LEGEND: {
 
@@ -529,6 +652,10 @@ function getRankVisual(rank) {
     },
 
 
+    /* ==========================
+       MYTHIC
+    ========================== */
+
     MYTHIC: {
 
       className:
@@ -540,6 +667,10 @@ function getRankVisual(rank) {
     },
 
 
+    /* ==========================
+       MYTHIC HONOR
+    ========================== */
+
     'MYTHIC HONOR': {
 
       className:
@@ -550,6 +681,10 @@ function getRankVisual(rank) {
 
     },
 
+
+    /* ==========================
+       MYTHIC GLORY
+    ========================== */
 
     'MYTHIC GLORY': {
 
@@ -588,6 +723,8 @@ function getInitials(
 
     .split(/\s+/)
 
+    .filter(Boolean)
+
     .slice(0,2)
 
     .map(
@@ -607,7 +744,7 @@ function getInitials(
 
 
 /* ==========================================================
-   LOGIN REDIRECT
+   REDIRECT TO LOGIN
 ========================================================== */
 
 async function redirectToLogin() {
@@ -616,11 +753,14 @@ async function redirectToLogin() {
 
     const response =
       await fetch(
+
         '/api/dashboard',
+
         {
           cache:
             'no-store'
         }
+
       );
 
 
@@ -639,10 +779,12 @@ async function redirectToLogin() {
 
     }
 
+  }
 
-  } catch (error) {
+  catch (error) {
 
     console.error(
+      'LOGIN REDIRECT ERROR:',
       error
     );
 
@@ -660,28 +802,84 @@ async function redirectToLogin() {
 
 function showSessionError() {
 
-  headerUserName.textContent =
-    'SESSION ENDED';
+  if (headerUserName) {
+
+    headerUserName.textContent =
+      'SESSION ENDED';
+
+  }
 
 
-  headerUserRole.textContent =
-    'LOGIN REQUIRED';
+  if (headerUserRole) {
+
+    headerUserRole.textContent =
+      'LOGIN REQUIRED';
+
+  }
 
 
-  heroUserName.textContent =
-    'PLEASE LOGIN AGAIN';
+  if (heroUserName) {
+
+    heroUserName.textContent =
+      'PLEASE LOGIN AGAIN';
+
+  }
 
 
-  rankName.textContent =
-    '';
+  if (avatar) {
+
+    avatar.textContent =
+      '!';
+
+  }
 
 
-  rankTotal.textContent =
-    '';
+  if (departmentText) {
+
+    departmentText.textContent =
+      '';
+
+  }
 
 
-  seasonStatus.textContent =
-    '';
+  if (locationText) {
+
+    locationText.textContent =
+      '';
+
+  }
+
+
+  if (rankName) {
+
+    rankName.textContent =
+      '';
+
+  }
+
+
+  if (rankTotal) {
+
+    rankTotal.textContent =
+      '';
+
+  }
+
+
+  if (seasonStatus) {
+
+    seasonStatus.textContent =
+      '';
+
+  }
+
+
+  if (missedMonths) {
+
+    missedMonths.textContent =
+      '';
+
+  }
 
 }
 
@@ -690,84 +888,170 @@ function showSessionError() {
    LOGOUT
 ========================================================== */
 
-logoutButton
-  .addEventListener(
-    'click',
-    function() {
+if (logoutButton) {
 
-      localStorage.removeItem(
-        'ss_rank_session'
-      );
+  logoutButton
+    .addEventListener(
+      'click',
+      async function() {
+
+        /*
+         Hapus session browser.
+        */
+
+        localStorage.removeItem(
+          'ss_rank_session'
+        );
 
 
-      sessionToken =
-        null;
+        /*
+         Optional delete session
+         dari Supabase lewat API logout.
+        */
+
+        try {
+
+          if (sessionToken) {
+
+            await fetch(
+
+              '/api/logout',
+
+              {
+
+                method:
+                  'POST',
+
+                headers: {
+
+                  'Content-Type':
+                    'application/json'
+
+                },
+
+                body:
+                  JSON.stringify({
+
+                    session:
+                      sessionToken
+
+                  })
+
+              }
+
+            );
+
+          }
+
+        }
+
+        catch (error) {
+
+          console.error(
+            'LOGOUT API ERROR:',
+            error
+          );
+
+        }
 
 
-      if (loginUrl) {
+        sessionToken =
+          null;
+
+
+        /*
+         Kembali ke Apps Script login.
+        */
+
+        if (loginUrl) {
+
+          window.location.href =
+            loginUrl;
+
+          return;
+
+        }
+
+
+        /*
+         Fallback.
+        */
 
         window.location.href =
-          loginUrl;
-
-        return;
+          '/';
 
       }
+    );
 
-
-      window.location.href =
-        '/';
-
-    }
-  );
+}
 
 
 /* ==========================================================
    MUSIC
 ========================================================== */
 
-musicButton
-  .addEventListener(
-    'click',
-    async function() {
+if (
+  musicButton &&
+  bgMusic
+) {
 
-      if (
-        bgMusic.paused
-      ) {
+  musicButton
+    .addEventListener(
+      'click',
+      async function() {
 
-        try {
+        /*
+         PLAY
+        */
 
-          await bgMusic.play();
+        if (
+          bgMusic.paused
+        ) {
+
+          try {
+
+            await bgMusic.play();
+
+
+            musicButton.textContent =
+              'II';
+
+          }
+
+          catch (error) {
+
+            console.error(
+              'MUSIC PLAY ERROR:',
+              error
+            );
+
+          }
+
+        }
+
+
+        /*
+         PAUSE
+        */
+
+        else {
+
+          bgMusic.pause();
 
 
           musicButton.textContent =
-            'II';
-
-        } catch (error) {
-
-          console.error(
-            error
-          );
+            '▶';
 
         }
 
       }
+    );
 
-      else {
-
-        bgMusic.pause();
-
-
-        musicButton.textContent =
-          '▶';
-
-      }
-
-    }
-  );
+}
 
 
 /* ==========================================================
-   START
+   START APP
 ========================================================== */
 
 loadDashboard();
