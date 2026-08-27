@@ -1053,5 +1053,104 @@ if (
 /* ==========================================================
    START APP
 ========================================================== */
+/* ==========================================================
+   AUTO PLAY MUSIC
+========================================================== */
 
+async function tryAutoPlayMusic() {
+
+  if (
+    !bgMusic ||
+    !musicButton
+  ) {
+
+    return;
+
+  }
+
+
+  bgMusic.volume =
+    0.35;
+
+
+  try {
+
+    await bgMusic.play();
+
+
+    musicButton.textContent =
+      'II';
+
+  }
+
+  catch (error) {
+
+    /*
+     Browser biasanya memblokir autoplay
+     dengan suara sebelum ada interaksi user.
+    */
+
+    musicButton.textContent =
+      '▶';
+
+
+    const startMusicOnFirstInteraction =
+      async function() {
+
+        try {
+
+          await bgMusic.play();
+
+
+          musicButton.textContent =
+            'II';
+
+        }
+
+        catch (playError) {
+
+          console.error(
+            'MUSIC AUTOPLAY ERROR:',
+            playError
+          );
+
+        }
+
+
+        document.removeEventListener(
+          'click',
+          startMusicOnFirstInteraction
+        );
+
+
+        document.removeEventListener(
+          'touchstart',
+          startMusicOnFirstInteraction
+        );
+
+      };
+
+
+    document.addEventListener(
+      'click',
+      startMusicOnFirstInteraction,
+      {
+        once:
+          true
+      }
+    );
+
+
+    document.addEventListener(
+      'touchstart',
+      startMusicOnFirstInteraction,
+      {
+        once:
+          true
+      }
+    );
+
+  }
+
+}
 loadDashboard();
