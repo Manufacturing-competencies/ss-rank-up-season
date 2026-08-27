@@ -1,34 +1,28 @@
 /* ==========================================================
    SS RANK UP SEASON
-   FINAL HERO DASHBOARD
+   FINAL CLEAN STYLE.CSS
+========================================================== */
+
+
+/* ==========================================================
+   ROOT
 ========================================================== */
 
 :root {
+  --bg: #020611;
+  --nav: rgba(2, 6, 18, .94);
 
-  --background:
-    #040817;
+  --text: #f7f9ff;
+  --muted: #91a2c8;
 
-  --navbar:
-    #020611;
+  --cyan: #38d7ff;
+  --blue: #397dff;
+  --violet: #8055ff;
+  --purple: #c13cff;
 
-  --panel:
-    #0c1632;
-
-  --text:
-    #f6f8ff;
-
-  --muted:
-    #8fa1c8;
-
-  --rank-color:
-    #8b5cf6;
-
-  --rank-color-soft:
-    rgba(139, 92, 246, .20);
-
-  --rank-glow:
-    rgba(139, 92, 246, .55);
-
+  --rank-color: #c8d4e6;
+  --rank-color-2: #71819b;
+  --rank-glow: rgba(110, 166, 255, .62);
 }
 
 
@@ -37,61 +31,150 @@
 ========================================================== */
 
 * {
-
-  box-sizing:
-    border-box;
-
-  margin:
-    0;
-
-  padding:
-    0;
-
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 
 html,
 body {
+  width: 100%;
+  min-height: 100%;
 
-  width:
-    100%;
-
-  min-height:
-    100%;
-
-  background:
-    var(--background);
-
-  scrollbar-width:
-    none;
-
-  -ms-overflow-style:
-    none;
-
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-
-  display:
-    none;
-
+  display: none;
 }
 
 
 body {
+  position: relative;
 
-  font-family:
-    "Inter",
-    sans-serif;
+  overflow-x: hidden;
 
-  color:
-    var(--text);
+  font-family: "Inter", sans-serif;
 
-  overflow-x:
-    hidden;
+  color: var(--text);
 
+  background:
+    linear-gradient(
+      180deg,
+      #01040e,
+      #04091a 45%,
+      #020611
+    );
+}
+
+
+/* ==========================================================
+   MOVING GLOBAL BACKGROUND
+========================================================== */
+
+/*
+   Lapisan warna besar bergerak.
+*/
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: -20%;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 12% 28%,
+      rgba(28, 126, 255, .28),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 80% 22%,
+      rgba(170, 47, 255, .24),
+      transparent 27%
+    ),
+
+    radial-gradient(
+      circle at 64% 82%,
+      rgba(32, 215, 255, .17),
+      transparent 28%
+    ),
+
+    radial-gradient(
+      circle at 25% 82%,
+      rgba(100, 59, 255, .18),
+      transparent 30%
+    );
+
+  filter: blur(28px);
+
+  animation:
+    globalAurora
+    14s
+    ease-in-out
+    infinite alternate;
+}
+
+
+/*
+   Bintang / partikel.
+*/
+
+body::after {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  opacity: .28;
+
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, .80) 1px,
+      transparent 1.5px
+    ),
+
+    radial-gradient(
+      circle,
+      rgba(74, 196, 255, .70) 1px,
+      transparent 1.5px
+    ),
+
+    radial-gradient(
+      circle,
+      rgba(188, 82, 255, .60) 1px,
+      transparent 1.5px
+    );
+
+  background-size:
+    70px 70px,
+    110px 110px,
+    150px 150px;
+
+  background-position:
+    0 0,
+    30px 45px,
+    80px 25px;
+
+  animation:
+    starMove
+    28s
+    linear
+    infinite;
 }
 
 
@@ -100,93 +183,62 @@ body {
 ========================================================== */
 
 .topbar {
+  position: fixed;
 
-  position:
-    fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 
-  top:
-    0;
+  z-index: 100;
 
-  left:
-    0;
+  height: 108px;
 
-  right:
-    0;
+  padding: 0 30px;
 
-  z-index:
-    9999;
-
-  height:
-    108px;
-
-  padding:
-    0 34px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   background:
-    rgba(2, 6, 17, .97);
+    linear-gradient(
+      180deg,
+      rgba(1, 5, 16, .98),
+      rgba(3, 8, 24, .95)
+    );
 
   border-bottom:
-    1px solid rgba(255,255,255,.07);
+    1px solid rgba(72, 121, 255, .15);
 
-  backdrop-filter:
-    blur(20px);
+  backdrop-filter: blur(18px);
 
+  box-shadow:
+    0 12px 45px rgba(0, 0, 0, .32);
 }
 
 
-/* BRAND */
+/* ==========================================================
+   BRAND
+========================================================== */
 
 .brand {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    20px;
-
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
 
 .brand-icon {
+  position: relative;
 
-  position:
-    relative;
+  width: 50px;
+  height: 60px;
 
-  width:
-    50px;
-
-  height:
-    60px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  background:
-    linear-gradient(
-      145deg,
-      #56c5ff,
-      #6e65ff 50%,
-      #9a45ff
-    );
+  display: grid;
+  place-items: center;
 
   clip-path:
     polygon(
-      50% 0%,
+      50% 0,
       100% 20%,
       78% 100%,
       50% 75%,
@@ -194,256 +246,194 @@ body {
       0 20%
     );
 
-  filter:
-    drop-shadow(
-      0 0 16px rgba(108,90,255,.45)
+  background:
+    linear-gradient(
+      145deg,
+      #54ceff,
+      #6571ff 48%,
+      #a43cff
     );
 
+  filter:
+    drop-shadow(
+      0 0 18px rgba(92, 110, 255, .58)
+    );
+
+  animation:
+    brandPulse
+    3s
+    ease-in-out
+    infinite;
 }
 
 
 .brand-icon span {
+  width: 12px;
+  height: 12px;
 
-  width:
-    12px;
+  transform: rotate(45deg);
 
-  height:
-    12px;
-
-  transform:
-    rotate(45deg);
-
-  background:
-    white;
+  background: white;
 
   box-shadow:
-    0 0 16px white;
-
+    0 0 12px white,
+    0 0 22px #8e79ff;
 }
 
 
 .brand-title {
+  font-family: "Orbitron", sans-serif;
 
-  font-family:
-    "Orbitron",
-    sans-serif;
+  font-size: 25px;
+  font-weight: 900;
 
-  font-size:
-    26px;
-
-  font-weight:
-    900;
-
-  letter-spacing:
-    1.5px;
-
+  letter-spacing: 1px;
 }
 
 
 .brand-subtitle {
+  margin-top: 4px;
 
-  margin-top:
-    5px;
+  font-family: "Orbitron", sans-serif;
 
-  color:
-    #7180a8;
+  color: #7081aa;
 
-  font-family:
-    "Orbitron",
-    sans-serif;
+  font-size: 11px;
+  font-weight: 700;
 
-  font-size:
-    12px;
-
-  font-weight:
-    700;
-
-  letter-spacing:
-    9px;
-
+  letter-spacing: 8px;
 }
 
 
-/* USER PANEL */
+/* ==========================================================
+   HEADER USER
+========================================================== */
 
 .user-panel {
+  display: flex;
+  align-items: center;
 
-  display:
-    flex;
+  gap: 16px;
+}
 
-  align-items:
-    center;
 
-  gap:
-    18px;
+.music-button,
+.logout-button {
+  position: relative;
 
+  overflow: hidden;
+
+  border:
+    1px solid rgba(255, 255, 255, .12);
+
+  background:
+    rgba(7, 14, 34, .78);
+
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
 }
 
 
 .music-button {
+  width: 60px;
+  height: 60px;
 
-  width:
-    62px;
+  border-radius: 19px;
 
-  height:
-    62px;
+  color: #52caff;
 
-  border:
-    1px solid rgba(86,190,255,.30);
-
-  border-radius:
-    20px;
-
-  background:
-    #071128;
-
-  color:
-    #4ebcff;
-
-  font-size:
-    20px;
-
-  font-weight:
-    900;
-
-  cursor:
-    pointer;
-
-  transition:
-    .25s ease;
-
-}
-
-
-.music-button:hover {
-
-  transform:
-    translateY(-2px);
-
-  box-shadow:
-    0 0 25px rgba(68,175,255,.25);
-
-}
-
-
-.avatar {
-
-  width:
-    60px;
-
-  height:
-    60px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border-radius:
-    18px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #3c85f5,
-      #7047ef
-    );
-
-  color:
-    white;
-
-  font-size:
-    20px;
-
-  font-weight:
-    800;
-
-  box-shadow:
-    0 0 25px rgba(103,82,255,.20);
-
-}
-
-
-.user-info {
-
-  min-width:
-    210px;
-
-}
-
-
-.header-user-name {
-
-  font-size:
-    18px;
-
-  font-weight:
-    800;
-
-}
-
-
-.header-user-role {
-
-  margin-top:
-    5px;
-
-  color:
-    #b944ff;
-
-  font-size:
-    13px;
-
-  font-weight:
-    900;
-
-  letter-spacing:
-    1px;
-
+  font-size: 19px;
+  font-weight: 900;
 }
 
 
 .logout-button {
+  padding: 19px 27px;
 
-  padding:
-    20px 28px;
+  border-radius: 19px;
 
-  border:
-    1px solid rgba(255,255,255,.12);
+  font-weight: 800;
+}
 
-  border-radius:
-    20px;
 
-  background:
-    #080d20;
+.music-button:hover {
+  transform: translateY(-2px);
 
-  color:
-    #f0f3ff;
+  border-color:
+    rgba(64, 202, 255, .55);
 
-  font-weight:
-    800;
-
-  font-size:
-    15px;
-
-  cursor:
-    pointer;
-
-  transition:
-    .25s ease;
-
+  box-shadow:
+    0 0 25px rgba(64, 202, 255, .18);
 }
 
 
 .logout-button:hover {
+  transform: translateY(-2px);
 
   border-color:
-    #754df8;
+    rgba(159, 69, 255, .55);
 
   box-shadow:
-    0 0 22px rgba(112,69,239,.22);
+    0 0 25px rgba(159, 69, 255, .16);
+}
 
+
+.avatar {
+  width: 58px;
+  height: 58px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #3e86f5,
+      #7147ef
+    );
+
+  font-size: 19px;
+  font-weight: 900;
+
+  box-shadow:
+    0 0 20px rgba(101, 79, 255, .22);
+
+  animation:
+    avatarGlow
+    4s
+    ease-in-out
+    infinite;
+}
+
+
+.user-info {
+  min-width: 190px;
+}
+
+
+.header-user-name {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+
+.header-user-role {
+  margin-top: 4px;
+
+  color: #bd49ff;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
 }
 
 
@@ -452,29 +442,77 @@ body {
 ========================================================== */
 
 .page {
+  position: relative;
 
-  min-height:
-    100vh;
+  z-index: 1;
+
+  min-height: 100vh;
 
   padding:
-    156px 28px 45px;
+    148px
+    24px
+    42px;
+
+  background: transparent;
+}
+
+
+/*
+   Grid game bergerak di belakang.
+*/
+
+.page::before {
+  content: "";
+
+  position: fixed;
+
+  left: 0;
+  right: 0;
+  bottom: -180px;
+
+  height: 480px;
+
+  z-index: -1;
+
+  pointer-events: none;
+
+  opacity: .18;
 
   background:
-
-    radial-gradient(
-      circle at 15% 10%,
-      rgba(19,91,208,.15),
-      transparent 32%
+    linear-gradient(
+      rgba(58, 128, 255, .25) 1px,
+      transparent 1px
     ),
 
-    radial-gradient(
-      circle at 90% 25%,
-      rgba(122,43,220,.12),
-      transparent 30%
-    ),
+    linear-gradient(
+      90deg,
+      rgba(134, 72, 255, .22) 1px,
+      transparent 1px
+    );
 
-    #040817;
+  background-size:
+    70px 70px;
 
+  transform:
+    perspective(650px)
+    rotateX(65deg)
+    scale(1.4);
+
+  transform-origin:
+    center bottom;
+
+  mask-image:
+    linear-gradient(
+      to top,
+      black,
+      transparent 85%
+    );
+
+  animation:
+    gridMove
+    8s
+    linear
+    infinite;
 }
 
 
@@ -483,245 +521,303 @@ body {
 ========================================================== */
 
 .hero {
+  position: relative;
 
-  position:
-    relative;
+  isolation: isolate;
 
-  width:
-    100%;
+  width: 100%;
+  min-height: 630px;
 
-  min-height:
-    630px;
+  overflow: hidden;
 
-  overflow:
-    hidden;
-
-  display:
-    grid;
+  display: grid;
 
   grid-template-columns:
-    minmax(0,1.15fr)
-    minmax(430px,.85fr);
+    minmax(0, 1.12fr)
+    minmax(420px, .88fr);
 
-  align-items:
-    center;
+  align-items: center;
 
-  gap:
-    20px;
+  gap: 20px;
 
   padding:
-    60px 6%;
+    58px
+    6%;
 
   border:
-    1px solid rgba(255,255,255,.07);
+    1px solid rgba(96, 106, 255, .22);
 
-  border-radius:
-    48px;
+  border-radius: 46px;
 
-  background:
+  /*
+     Background image utama.
+  */
 
+  background-image:
     linear-gradient(
-      110deg,
-      rgba(13,31,67,.98),
-      rgba(12,20,49,.98) 58%,
-      rgba(29,14,54,.98)
-    );
+      90deg,
+      rgba(3, 9, 28, .68) 0%,
+      rgba(5, 10, 30, .45) 42%,
+      rgba(23, 5, 48, .18) 100%
+    ),
+    url("/assets/hero-bg.png");
+
+  background-size: cover;
+
+  background-position:
+    center right;
+
+  background-repeat:
+    no-repeat;
 
   box-shadow:
-    inset 0 0 80px rgba(13,70,170,.08);
-
+    0 32px 100px rgba(0, 0, 0, .38),
+    inset 0 0 120px rgba(51, 76, 255, .06);
 }
 
 
+/*
+   Moving neon colors DI ATAS background image.
+*/
+
+.hero::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -30%;
+
+  z-index: -1;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 18% 32%,
+      rgba(17, 134, 255, .34),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 80% 27%,
+      rgba(182, 48, 255, .32),
+      transparent 28%
+    ),
+
+    radial-gradient(
+      circle at 63% 78%,
+      rgba(32, 224, 255, .18),
+      transparent 25%
+    ),
+
+    conic-gradient(
+      from 90deg,
+      transparent,
+      rgba(55, 155, 255, .13),
+      transparent 35%,
+      rgba(202, 54, 255, .14),
+      transparent 70%
+    );
+
+  filter:
+    blur(24px);
+
+  mix-blend-mode:
+    screen;
+
+  animation:
+    heroColorFlow
+    12s
+    ease-in-out
+    infinite alternate;
+}
+
+
+/*
+   Light sweep bergerak.
+*/
+
 .hero::after {
+  content: "";
 
-  content:
-    "";
+  position: absolute;
 
-  position:
-    absolute;
+  z-index: 5;
 
-  left:
-    0;
+  top: -45%;
+  left: -40%;
 
-  right:
-    0;
+  width: 26%;
+  height: 190%;
 
-  bottom:
-    0;
+  pointer-events: none;
 
-  height:
-    3px;
+  transform:
+    rotate(18deg);
 
   background:
     linear-gradient(
       90deg,
-      #309bff,
-      #634cff,
-      #a934ff
+      transparent,
+      rgba(79, 173, 255, .04),
+      rgba(190, 118, 255, .14),
+      rgba(255, 255, 255, .08),
+      transparent
     );
 
-}
-
-
-.hero-light {
-
-  position:
-    absolute;
-
-  border-radius:
-    50%;
-
   filter:
-    blur(90px);
+    blur(5px);
 
-  pointer-events:
-    none;
-
-}
-
-
-.hero-light-blue {
-
-  width:
-    420px;
-
-  height:
-    420px;
-
-  left:
-    -150px;
-
-  top:
-    -120px;
-
-  background:
-    rgba(24,103,231,.16);
-
-}
-
-
-.hero-light-purple {
-
-  width:
-    480px;
-
-  height:
-    480px;
-
-  right:
-    -160px;
-
-  bottom:
-    -180px;
-
-  background:
-    rgba(130,46,224,.16);
-
+  animation:
+    heroSweep
+    7s
+    ease-in-out
+    infinite;
 }
 
 
 /* ==========================================================
-   HERO LEFT
+   HERO LIGHTS
+========================================================== */
+
+.hero-light {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+.hero-light-blue {
+  width: 520px;
+  height: 520px;
+
+  left: -180px;
+  top: -160px;
+
+  background:
+    rgba(22, 126, 255, .25);
+
+  filter:
+    blur(110px);
+
+  animation:
+    blueLightMove
+    8s
+    ease-in-out
+    infinite alternate;
+}
+
+
+.hero-light-purple {
+  width: 560px;
+  height: 560px;
+
+  right: -180px;
+  bottom: -180px;
+
+  background:
+    rgba(171, 47, 255, .25);
+
+  filter:
+    blur(110px);
+
+  animation:
+    purpleLightMove
+    9s
+    ease-in-out
+    infinite alternate;
+}
+
+
+/* ==========================================================
+   HERO LEFT CONTENT
 ========================================================== */
 
 .hero-left {
+  position: relative;
 
-  position:
-    relative;
+  z-index: 10;
 
-  z-index:
-    3;
-
+  animation:
+    heroLeftIn
+    .8s
+    cubic-bezier(.2, .8, .2, 1)
+    both;
 }
 
 
 .season-chip {
-
-  width:
-    max-content;
+  width: max-content;
 
   padding:
-    13px 22px;
+    12px
+    20px;
 
-  display:
-    flex;
+  display: flex;
+  align-items: center;
 
-  align-items:
-    center;
-
-  gap:
-    13px;
+  gap: 12px;
 
   border:
-    1px solid rgba(55,228,193,.30);
+    1px solid rgba(54, 232, 193, .34);
 
-  border-radius:
-    999px;
+  border-radius: 999px;
 
   background:
-    rgba(21,122,124,.14);
+    rgba(18, 116, 121, .18);
 
-  color:
-    #72f3ca;
+  color: #73f4cd;
 
   font-family:
     "Orbitron",
     sans-serif;
 
-  font-size:
-    13px;
+  font-size: 12px;
+  font-weight: 900;
 
-  font-weight:
-    900;
+  letter-spacing: 2px;
 
-  letter-spacing:
-    2px;
-
+  box-shadow:
+    0 0 22px rgba(62, 228, 188, .09);
 }
 
 
 .season-dot {
+  width: 11px;
+  height: 11px;
 
-  width:
-    12px;
+  border-radius: 50%;
 
-  height:
-    12px;
-
-  border-radius:
-    50%;
-
-  background:
-    #40d7b0;
+  background: #42ddb4;
 
   box-shadow:
-    0 0 18px #40d7b0;
+    0 0 15px #42ddb4;
 
+  animation:
+    seasonPulse
+    1.5s
+    ease-in-out
+    infinite;
 }
 
 
 .welcome-label {
+  margin-top: 45px;
 
-  margin-top:
-    48px;
+  color: #9aabd1;
 
-  color:
-    #8da1cb;
-
-  font-size:
-    23px;
-
+  font-size: 22px;
 }
 
 
 .hero-user-name {
+  margin-top: 10px;
 
-  margin-top:
-    12px;
-
-  max-width:
-    920px;
+  max-width: 900px;
 
   font-family:
     "Orbitron",
@@ -729,77 +825,104 @@ body {
 
   font-size:
     clamp(
-      54px,
+      50px,
       5vw,
-      84px
+      82px
     );
 
-  font-weight:
-    800;
+  font-weight: 800;
 
-  line-height:
-    1.02;
+  line-height: 1.02;
 
-  letter-spacing:
-    -4px;
+  letter-spacing: -4px;
 
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff,
+      #dceaff,
+      #ffffff
+    );
+
+  background-size:
+    200% auto;
+
+  background-clip:
+    text;
+
+  -webkit-background-clip:
+    text;
+
+  color:
+    transparent;
+
+  animation:
+    nameShimmer
+    5s
+    linear
+    infinite;
 }
 
 
 .hero-description {
+  max-width: 820px;
 
-  max-width:
-    820px;
+  margin-top: 32px;
 
-  margin-top:
-    36px;
+  color: #a6b4d2;
 
-  color:
-    #9eadd0;
+  font-size: 19px;
 
-  font-size:
-    21px;
-
-  line-height:
-    1.75;
-
+  line-height: 1.7;
 }
 
 
 .identity-info {
+  position: relative;
 
-  margin-top:
-    24px;
+  width: max-content;
 
-  display:
-    flex;
+  margin-top: 22px;
+  padding-bottom: 11px;
 
-  align-items:
-    center;
+  display: flex;
+  align-items: center;
 
-  gap:
-    12px;
+  gap: 12px;
 
-  color:
-    #63749e;
+  color: #7182aa;
 
-  font-size:
-    13px;
+  font-size: 12px;
+  font-weight: 700;
+}
 
-  font-weight:
-    700;
 
-  letter-spacing:
-    .4px;
+.identity-info::after {
+  content: "";
 
+  position: absolute;
+
+  left: 0;
+  bottom: 0;
+
+  width: 80%;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #39baff,
+      #925cff,
+      transparent
+    );
+
+  box-shadow:
+    0 0 8px rgba(57, 186, 255, .30);
 }
 
 
 .identity-divider {
-
-  color:
-    #53668f;
-
+  color: #51638d;
 }
 
 
@@ -808,297 +931,677 @@ body {
 ========================================================== */
 
 .rank-panel {
+  position: relative;
 
-  position:
-    relative;
+  z-index: 10;
 
-  min-height:
-    500px;
+  min-height: 510px;
 
-  display:
-    flex;
+  display: flex;
+  flex-direction: column;
 
-  flex-direction:
-    column;
+  align-items: center;
+  justify-content: center;
 
-  align-items:
-    center;
+  isolation: isolate;
 
-  justify-content:
-    center;
-
-  isolation:
-    isolate;
-
+  animation:
+    heroRightIn
+    .9s
+    cubic-bezier(.2, .8, .2, 1)
+    both;
 }
 
 
-.outer-ring {
+/* ==========================================================
+   ORBITS
+========================================================== */
 
-  position:
-    absolute;
+.rank-orbit {
+  position: absolute;
 
-  width:
-    440px;
+  left: 50%;
+  top: 39%;
 
-  height:
-    440px;
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+.orbit-one {
+  width: 360px;
+  height: 360px;
 
   border:
-    1px solid var(--rank-color-soft);
+    1px solid
+    color-mix(
+      in srgb,
+      var(--rank-color) 28%,
+      transparent
+    );
 
-  border-radius:
-    50%;
+  box-shadow:
+    0 0 18px
+    color-mix(
+      in srgb,
+      var(--rank-color) 14%,
+      transparent
+    );
 
   animation:
-    ringPulse
+    orbitPulse
     4s
     ease-in-out
     infinite;
-
 }
 
 
-.inner-ring {
-
-  position:
-    absolute;
-
-  width:
-    330px;
-
-  height:
-    330px;
+.orbit-two {
+  width: 290px;
+  height: 290px;
 
   border:
-    1px dashed var(--rank-color-soft);
-
-  border-radius:
-    50%;
+    1px dashed
+    color-mix(
+      in srgb,
+      var(--rank-color) 26%,
+      transparent
+    );
 
   animation:
-    ringRotate
-    28s
+    orbitSpin
+    22s
     linear
     infinite;
-
 }
 
 
-.rank-glow {
+.orbit-three {
+  width: 220px;
+  height: 220px;
 
-  position:
-    absolute;
-
-  width:
-    250px;
-
-  height:
-    250px;
-
-  border-radius:
-    50%;
-
-  background:
-    var(--rank-glow);
-
-  filter:
-    blur(80px);
-
-  opacity:
-    .24;
+  border:
+    1px dotted
+    color-mix(
+      in srgb,
+      var(--rank-color) 22%,
+      transparent
+    );
 
   animation:
-    glowPulse
-    2.8s
-    ease-in-out
+    orbitSpinReverse
+    15s
+    linear
     infinite;
-
-  z-index:
-    -1;
-
 }
 
 
-/* BADGE */
+/* ==========================================================
+   RANK AURA
+========================================================== */
+
+/*
+   Ini pusat glow utama.
+   Karena .rank-glow adalah element tersendiri,
+   tidak perlu pakai pseudo-element yang
+   saling bertabrakan lagi.
+*/
+
+.rank-glow {
+  position: absolute;
+
+  left: 50%;
+  top: 39%;
+
+  width: 230px;
+  height: 230px;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  z-index: -1;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, .18) 0%,
+      var(--rank-glow) 25%,
+      transparent 72%
+    );
+
+  filter:
+    blur(34px);
+
+  opacity: .65;
+
+  animation:
+    rankGlowPulse
+    2.3s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   RANK BADGE
+========================================================== */
 
 .rank-badge {
+  position: relative;
 
-  position:
-    relative;
+  width: 240px;
+  height: 220px;
 
-  width:
-    155px;
+  display: grid;
+  place-items: center;
 
-  height:
-    175px;
+  isolation: isolate;
 
-  display:
-    grid;
+  margin-bottom: 8px;
 
-  place-items:
-    center;
+  animation:
+    badgeFloat
+    3.1s
+    ease-in-out
+    infinite;
+}
+
+
+/*
+   Cahaya tepat di belakang shield.
+*/
+
+.rank-badge::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 175px;
+  height: 175px;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  z-index: -2;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, .20),
+      var(--rank-glow) 35%,
+      transparent 72%
+    );
+
+  filter:
+    blur(25px);
+
+  opacity: .62;
+
+  animation:
+    badgeAuraPulse
+    2.1s
+    ease-in-out
+    infinite;
+}
+
+
+/*
+   Pantulan bawah emblem.
+*/
+
+.rank-badge::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 15px;
+
+  width: 125px;
+  height: 18px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius: 50%;
+
+  z-index: -1;
+
+  background:
+    var(--rank-color);
+
+  filter:
+    blur(17px);
+
+  opacity: .34;
+
+  animation:
+    floorPulse
+    2s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   SHIELD BASE
+========================================================== */
+
+.rank-shield {
+  position: relative;
+
+  z-index: 5;
+
+  width: 132px;
+  height: 154px;
+
+  display: grid;
+  place-items: center;
 
   clip-path:
     polygon(
-      50% 0%,
-      91% 18%,
-      80% 75%,
+      50% 0,
+      90% 17%,
+      82% 70%,
       50% 100%,
-      20% 75%,
-      9% 18%
+      18% 70%,
+      10% 17%
     );
 
   background:
     linear-gradient(
       145deg,
-      color-mix(in srgb,var(--rank-color) 70%,white),
-      var(--rank-color) 48%,
-      color-mix(in srgb,var(--rank-color) 55%,black)
+      color-mix(
+        in srgb,
+        var(--rank-color) 65%,
+        white
+      ),
+      var(--rank-color) 44%,
+      var(--rank-color-2)
     );
-
-  box-shadow:
-    0 0 45px var(--rank-glow);
 
   filter:
+    brightness(1.08)
     drop-shadow(
-      0 0 22px var(--rank-glow)
+      0 0 8px
+      rgba(255, 255, 255, .24)
+    )
+    drop-shadow(
+      0 0 20px
+      var(--rank-glow)
     );
 
-  animation:
-    badgeFloat
-    3.4s
-    ease-in-out
-    infinite;
-
+  transition:
+    .35s ease;
 }
 
 
-.rank-badge::before {
+/*
+   Highlight di bagian atas shield.
+*/
 
-  content:
-    "";
+.rank-shield::before {
+  content: "";
 
-  position:
-    absolute;
+  position: absolute;
 
-  inset:
-    12px;
+  inset: 8px;
 
-  clip-path:
-    inherit;
+  clip-path: inherit;
 
   background:
     linear-gradient(
-      160deg,
-      rgba(255,255,255,.30),
-      rgba(255,255,255,.03)
+      150deg,
+      rgba(255, 255, 255, .30),
+      rgba(255, 255, 255, .02) 55%
     );
-
 }
 
 
-.rank-badge-core {
+/* ==========================================================
+   SHIELD INNER
+========================================================== */
 
-  position:
-    relative;
+.rank-shield-inner {
+  position: relative;
 
-  z-index:
-    2;
+  z-index: 3;
 
-  width:
-    74px;
+  width: 88px;
+  height: 104px;
 
-  height:
-    74px;
+  display: grid;
+  place-items: center;
 
-  display:
-    grid;
+  clip-path:
+    polygon(
+      50% 0,
+      88% 18%,
+      78% 70%,
+      50% 96%,
+      22% 70%,
+      12% 18%
+    );
 
-  place-items:
-    center;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(7, 12, 31, .52),
+      rgba(15, 23, 48, .88)
+    );
+
+  box-shadow:
+    inset 0 0 22px
+    rgba(255, 255, 255, .09);
+}
+
+
+/* ==========================================================
+   CRYSTAL
+========================================================== */
+
+.rank-crystal {
+  position: absolute;
+
+  width: 46px;
+  height: 46px;
+
+  transform:
+    rotate(45deg);
 
   border:
-    2px solid rgba(255,255,255,.55);
+    1px solid
+    rgba(255, 255, 255, .48);
 
-  border-radius:
-    22px;
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--rank-color) 60%,
+        white
+      ),
+      var(--rank-color)
+    );
+
+  opacity: .32;
+
+  box-shadow:
+    0 0 18px
+    var(--rank-glow);
+}
+
+
+/* ==========================================================
+   SYMBOL
+========================================================== */
+
+.rank-symbol {
+  position: relative;
+
+  z-index: 6;
+
+  color: white;
+
+  font-family:
+    "Orbitron",
+    sans-serif;
+
+  font-size: 28px;
+  font-weight: 900;
+
+  text-shadow:
+    0 0 6px white,
+    0 0 15px var(--rank-glow);
+}
+
+
+/* ==========================================================
+   WINGS
+========================================================== */
+
+.rank-wing {
+  position: absolute;
+
+  top: 72px;
+
+  width: 66px;
+  height: 94px;
+
+  opacity: 0;
+
+  background:
+    linear-gradient(
+      155deg,
+      color-mix(
+        in srgb,
+        var(--rank-color) 72%,
+        white
+      ),
+      var(--rank-color)
+    );
+
+  filter:
+    drop-shadow(
+      0 0 12px
+      var(--rank-glow)
+    );
+
+  transition:
+    .35s ease;
+}
+
+
+.rank-wing-left {
+  left: 4px;
+
+  clip-path:
+    polygon(
+      100% 0,
+      70% 16%,
+      80% 29%,
+      43% 41%,
+      67% 54%,
+      23% 64%,
+      55% 77%,
+      0 100%,
+      85% 87%
+    );
+}
+
+
+.rank-wing-right {
+  right: 4px;
+
+  transform:
+    scaleX(-1);
+
+  clip-path:
+    polygon(
+      100% 0,
+      70% 16%,
+      80% 29%,
+      43% 41%,
+      67% 54%,
+      23% 64%,
+      55% 77%,
+      0 100%,
+      85% 87%
+    );
+}
+
+
+/* ==========================================================
+   CROWN
+========================================================== */
+
+.rank-crown {
+  position: absolute;
+
+  top: 0;
+
+  z-index: 8;
+
+  width: 92px;
+  height: 50px;
+
+  display: none;
+
+  align-items: flex-end;
+  justify-content: center;
+
+  gap: 3px;
+}
+
+
+.rank-crown::after {
+  content: "";
+
+  position: absolute;
+
+  left: 13px;
+  right: 13px;
+  bottom: 0;
+
+  height: 12px;
+
+  border-radius: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--rank-color-2),
+      var(--rank-color),
+      var(--rank-color-2)
+    );
+
+  box-shadow:
+    0 0 14px
+    var(--rank-glow);
+}
+
+
+.rank-crown span {
+  position: relative;
+
+  z-index: 3;
+
+  width: 25px;
+
+  background:
+    linear-gradient(
+      to top,
+      var(--rank-color),
+      color-mix(
+        in srgb,
+        var(--rank-color) 55%,
+        white
+      )
+    );
+
+  clip-path:
+    polygon(
+      50% 0,
+      100% 100%,
+      0 100%
+    );
+}
+
+
+.rank-crown span:nth-child(1),
+.rank-crown span:nth-child(3) {
+  height: 26px;
+}
+
+
+.rank-crown span:nth-child(2) {
+  height: 41px;
+}
+
+
+/* ==========================================================
+   PARTICLES AROUND BADGE
+========================================================== */
+
+.rank-star {
+  position: absolute;
+
+  width: 7px;
+  height: 7px;
 
   transform:
     rotate(45deg);
 
   background:
-    rgba(5,9,25,.24);
-
-  box-shadow:
-    inset 0 0 25px rgba(255,255,255,.13);
-
-}
-
-
-.rank-badge-text {
-
-  transform:
-    rotate(-45deg);
-
-  color:
     white;
 
-  font-family:
-    "Orbitron",
-    sans-serif;
+  opacity: 0;
 
-  font-size:
-    31px;
-
-  font-weight:
-    900;
-
-  text-shadow:
-    0 0 18px white;
-
+  box-shadow:
+    0 0 10px white,
+    0 0 18px var(--rank-color);
 }
 
 
-/* RANK TEXT */
+.rank-star-one {
+  left: 22px;
+  top: 38px;
+}
+
+
+.rank-star-two {
+  right: 18px;
+  top: 31px;
+}
+
+
+.rank-star-three {
+  right: 27px;
+  bottom: 24px;
+}
+
+
+/* ==========================================================
+   RANK TEXT
+========================================================== */
 
 .rank-label {
+  margin-top: 4px;
 
-  margin-top:
-    21px;
-
-  color:
-    #7784aa;
+  color: #8190b7;
 
   font-family:
     "Orbitron",
     sans-serif;
 
-  font-size:
-    13px;
+  font-size: 12px;
+  font-weight: 900;
 
-  font-weight:
-    900;
-
-  letter-spacing:
-    4px;
-
+  letter-spacing: 4px;
 }
 
 
 .rank-name {
+  margin-top: 13px;
 
-  margin-top:
-    14px;
+  max-width: 520px;
 
-  max-width:
-    520px;
-
-  text-align:
-    center;
-
-  color:
-    #f6f8ff;
+  text-align: center;
 
   font-family:
     "Orbitron",
@@ -1108,2895 +1611,40 @@ body {
     clamp(
       31px,
       3vw,
-      46px
+      44px
     );
 
-  font-weight:
-    900;
+  font-weight: 900;
 
-  line-height:
-    1.1;
+  line-height: 1.1;
+
+  color: white;
 
   text-shadow:
-    0 0 20px var(--rank-glow);
-
-}
-
-
-.rank-total {
-
-  margin-top:
-    15px;
-
-  color:
-    #ffd34c;
-
-  font-size:
-    27px;
-
-  font-weight:
-    900;
-
-}
-
-
-.season-status {
-
-  margin-top:
-    15px;
-
-  padding:
-    8px 18px;
-
-  border-radius:
-    999px;
-
-  font-family:
-    "Orbitron",
-    sans-serif;
-
-  font-size:
-    14px;
-
-  font-weight:
-    900;
-
-  letter-spacing:
-    2px;
-
-}
-
-
-.season-status.winner {
-
-  border:
-    1px solid rgba(76,237,178,.40);
-
-  background:
-    rgba(35,208,151,.10);
-
-  color:
-    #50edb2;
-
-  box-shadow:
-    0 0 20px rgba(55,224,168,.12);
-
-}
-
-
-.season-status.failed {
-
-  border:
-    1px solid rgba(255,84,118,.35);
-
-  background:
-    rgba(255,67,101,.08);
-
-  color:
-    #ff627e;
-
-}
-
-
-.missed-months {
-
-  min-height:
-    20px;
-
-  margin-top:
-    11px;
-
-  color:
-    #ff8497;
-
-  font-size:
-    13px;
-
-  font-weight:
-    700;
-
-}
-
-
-/* ==========================================================
-   RANK COLORS
-========================================================== */
-
-.rank-warrior {
-
-  --rank-color:
-    #8997af;
-
-  --rank-color-soft:
-    rgba(137,151,175,.22);
-
-  --rank-glow:
-    rgba(137,151,175,.55);
-
-}
-
-
-.rank-elite {
-
-  --rank-color:
-    #32b8ff;
-
-  --rank-color-soft:
-    rgba(50,184,255,.22);
-
-  --rank-glow:
-    rgba(50,184,255,.65);
-
-}
-
-
-.rank-epic {
-
-  --rank-color:
-    #8c51ff;
-
-  --rank-color-soft:
-    rgba(140,81,255,.24);
-
-  --rank-glow:
-    rgba(140,81,255,.72);
-
-}
-
-
-.rank-legend {
-
-  --rank-color:
-    #ffbd32;
-
-  --rank-color-soft:
-    rgba(255,189,50,.24);
-
-  --rank-glow:
-    rgba(255,189,50,.72);
-
-}
-
-
-.rank-mythic {
-
-  --rank-color:
-    #db42ff;
-
-  --rank-color-soft:
-    rgba(219,66,255,.24);
-
-  --rank-glow:
-    rgba(219,66,255,.72);
-
-}
-
-
-.rank-mythic-honor {
-
-  --rank-color:
-    #35c7ff;
-
-  --rank-color-soft:
-    rgba(53,199,255,.26);
-
-  --rank-glow:
-    rgba(53,199,255,.78);
-
-}
-
-
-.rank-mythic-glory {
-
-  --rank-color:
-    #ffd552;
-
-  --rank-color-soft:
-    rgba(255,213,82,.28);
-
-  --rank-glow:
-    rgba(255,213,82,.90);
-
-}
-
-
-/* ==========================================================
-   ANIMATION
-========================================================== */
-
-@keyframes badgeFloat {
-
-  0%,
-  100% {
-
-    transform:
-      translateY(0)
-      scale(1);
-
-  }
-
-  50% {
-
-    transform:
-      translateY(-12px)
-      scale(1.035);
-
-  }
-
-}
-
-
-@keyframes glowPulse {
-
-  0%,
-  100% {
-
-    transform:
-      scale(.90);
-
-    opacity:
-      .18;
-
-  }
-
-  50% {
-
-    transform:
-      scale(1.20);
-
-    opacity:
-      .35;
-
-  }
-
-}
-
-
-@keyframes ringRotate {
-
-  from {
-
-    transform:
-      rotate(0deg);
-
-  }
-
-  to {
-
-    transform:
-      rotate(360deg);
-
-  }
-
-}
-
-
-@keyframes ringPulse {
-
-  0%,
-  100% {
-
-    transform:
-      scale(1);
-
-    opacity:
-      .65;
-
-  }
-
-  50% {
-
-    transform:
-      scale(1.04);
-
-    opacity:
-      1;
-
-  }
-
-}
-
-
-/* ==========================================================
-   RESPONSIVE
-========================================================== */
-
-@media
-(max-width: 1000px) {
-
-  .topbar {
-
-    height:
-      92px;
-
-    padding:
-      0 18px;
-
-  }
-
-
-  .page {
-
-    padding:
-      120px 16px 30px;
-
-  }
-
-
-  .hero {
-
-    grid-template-columns:
-      1fr;
-
-    padding:
-      48px 7%;
-
-    text-align:
-      center;
-
-  }
-
-
-  .season-chip {
-
-    margin:
-      auto;
-
-  }
-
-
-  .identity-info {
-
-    justify-content:
-      center;
-
-  }
-
-
-  .hero-description {
-
-    margin-left:
-      auto;
-
-    margin-right:
-      auto;
-
-  }
-
-
-  .rank-panel {
-
-    min-height:
-      470px;
-
-  }
-
-
-  .user-info {
-
-    display:
-      none;
-
-  }
-
-
-  .brand-title {
-
-    font-size:
-      18px;
-
-  }
-
-
-  .brand-subtitle {
-
-    font-size:
-      9px;
-
-  }
-
-}
-
-
-@media
-(max-width: 650px) {
-
-  .brand-copy {
-
-    display:
-      none;
-
-  }
-
-
-  .music-button {
-
-    width:
-      50px;
-
-    height:
-      50px;
-
-  }
-
-
-  .avatar {
-
-    width:
-      50px;
-
-    height:
-      50px;
-
-  }
-
-
-  .logout-button {
-
-    padding:
-      15px 18px;
-
-  }
-
-
-  .hero {
-
-    border-radius:
-      30px;
-
-  }
-
-
-  .hero-user-name {
-
-    font-size:
-      42px;
-
-    letter-spacing:
-      -2px;
-
-  }
-
-
-  .outer-ring {
-
-    width:
-      340px;
-
-    height:
-      340px;
-
-  }
-
-
-  .inner-ring {
-
-    width:
-      270px;
-
-    height:
-      270px;
-
-  }
-
-}
-
-function getRankVisual(rank) {
-
-  const ranks = {
-
-    WARRIOR: {
-
-      className:
-        'rank-warrior',
-
-      badge:
-        'W'
-
-    },
-
-
-    ELITE: {
-
-      className:
-        'rank-elite',
-
-      badge:
-        'E'
-
-    },
-
-
-    EPIC: {
-
-      className:
-        'rank-epic',
-
-      badge:
-        'EP'
-
-    },
-
-
-    LEGEND: {
-
-      className:
-        'rank-legend',
-
-      badge:
-        'L'
-
-    },
-
-
-    MYTHIC: {
-
-      className:
-        'rank-mythic',
-
-      badge:
-        'M'
-
-    },
-
-
-    'MYTHIC HONOR': {
-
-      className:
-        'rank-mythic-honor',
-
-      badge:
-        'MH'
-
-    },
-
-
-    'MYTHIC GLORY': {
-
-      className:
-        'rank-mythic-glory',
-
-      badge:
-        'MG'
-
-    }
-
-  };
-
-
-  return (
-    ranks[rank] ||
-    ranks.WARRIOR
-  );
-
-}
-
-/* ==========================================================
-   ALIVE / GAME FEEL UPGRADE
-========================================================== */
-
-/* BACKGROUND ANIMATION */
-
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -2;
-}
-
-body::before {
-  background:
-    radial-gradient(circle at 20% 20%, rgba(61,113,255,.18), transparent 26%),
-    radial-gradient(circle at 80% 30%, rgba(175,69,255,.16), transparent 28%),
-    radial-gradient(circle at 50% 90%, rgba(47,216,255,.10), transparent 30%);
-  animation: bgMove 12s ease-in-out infinite alternate;
-}
-
-body::after {
-  opacity: .28;
-  background-image:
-    radial-gradient(circle, rgba(255,255,255,.5) 1px, transparent 1.2px);
-  background-size: 55px 55px;
-  animation: starsMove 18s linear infinite;
-}
-
-
-/* HERO ALIVE */
-
-.hero {
-  isolation: isolate;
-  overflow: hidden;
-
-  box-shadow:
-    0 35px 100px rgba(0,0,0,.35),
-    inset 0 0 100px rgba(55,88,255,.06);
-}
-
-.hero::before {
-  content: "";
-  position: absolute;
-
-  width: 650px;
-  height: 650px;
-
-  left: -260px;
-  top: -280px;
-
-  border-radius: 50%;
-
-  background:
-    conic-gradient(
-      from 180deg,
-      rgba(54,157,255,.14),
-      rgba(142,78,255,.12),
-      transparent 50%,
-      rgba(51,207,255,.08)
-    );
-
-  filter: blur(30px);
-
-  animation: heroRotate 18s linear infinite;
-
-  z-index: -1;
-}
-
-
-/* LIGHT SWEEP */
-
-.hero::after {
-  content: "";
-
-  position: absolute;
-
-  left: -25%;
-  top: -40%;
-
-  width: 35%;
-  height: 180%;
-
-  transform: rotate(20deg);
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255,255,255,.07),
-      transparent
-    );
-
-  animation: lightSweep 7s ease-in-out infinite;
-
-  pointer-events: none;
-}
-
-
-/* NAVBAR */
-
-.topbar {
-  box-shadow:
-    0 8px 35px rgba(0,0,0,.25),
-    inset 0 -1px rgba(255,255,255,.04);
-}
-
-
-/* BRAND BREATHING */
-
-.brand-icon {
-  animation: brandPulse 3s ease-in-out infinite;
-}
-
-
-/* SEASON ACTIVE */
-
-.season-chip {
-  position: relative;
-
-  box-shadow:
-    0 0 22px rgba(62,228,188,.08);
-}
-
-.season-dot {
-  animation: seasonPulse 1.5s ease-in-out infinite;
-}
-
-
-/* HERO ENTRY */
-
-.hero-left {
-  animation:
-    slideHeroLeft .8s cubic-bezier(.22,.8,.2,1) both;
-}
-
-.rank-panel {
-  animation:
-    slideHeroRight .9s cubic-bezier(.22,.8,.2,1) both;
-}
-
-
-/* HERO NAME */
-
-.hero-user-name {
-  background:
-    linear-gradient(
-      90deg,
-      #ffffff,
-      #d7e7ff,
-      #ffffff
-    );
-
-  background-size: 200% auto;
-
-  -webkit-background-clip: text;
-  background-clip: text;
-
-  color: transparent;
+    0 0 10px
+    var(--rank-glow),
+    0 0 25px
+    var(--rank-glow);
 
   animation:
-    nameShimmer 5s linear infinite;
-}
-
-
-/* RANK EMBLEM STRONGER */
-
-.rank-badge {
-  animation:
-    rankFloat 3s ease-in-out infinite,
-    badgeBreath 2.5s ease-in-out infinite;
-}
-
-.rank-shield {
-  box-shadow:
-    0 0 18px var(--rank-glow),
-    0 0 45px rgba(0,0,0,.18);
-}
-
-.rank-shield::after {
-  content: "";
-
-  position: absolute;
-
-  width: 160%;
-  height: 12px;
-
-  bottom: -30px;
-  left: -30%;
-
-  border-radius: 50%;
-
-  background:
-    var(--rank-color);
-
-  filter: blur(26px);
-
-  opacity: .20;
-
-  animation: shadowPulse 2.4s ease-in-out infinite;
-}
-
-
-/* RANK NAME MORE ALIVE */
-
-.rank-name {
-  position: relative;
-
-  text-shadow:
-    0 0 10px var(--rank-glow),
-    0 0 26px var(--rank-glow),
-    0 0 46px var(--rank-glow);
-
-  animation:
-    rankTextGlow 2.2s ease-in-out infinite;
-}
-
-
-/* TOTAL SS */
-
-.rank-total {
-  text-shadow:
-    0 0 14px rgba(255,211,75,.4);
-}
-
-
-/* WINNER / FAILED */
-
-.season-status.winner {
-  animation:
-    winnerPulse 1.7s ease-in-out infinite;
-}
-
-.season-status.failed {
-  animation:
-    failedPulse 2.3s ease-in-out infinite;
-}
-
-
-/* BUTTONS */
-
-.music-button,
-.logout-button {
-  position: relative;
-  overflow: hidden;
-}
-
-.music-button::before,
-.logout-button::before {
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  transform: translateX(-110%);
-
-  background:
-    linear-gradient(
-      110deg,
-      transparent,
-      rgba(255,255,255,.10),
-      transparent
-    );
-
-  transition: .5s ease;
-}
-
-.music-button:hover::before,
-.logout-button:hover::before {
-  transform: translateX(110%);
-}
-
-.logout-button:hover {
-  transform: translateY(-2px);
-}
-
-
-/* AVATAR */
-
-.avatar {
-  animation: avatarGlow 4s ease-in-out infinite;
-}
-
-
-/* ==========================================================
-   MYTHIC EXTRA EFFECT
-========================================================== */
-
-.rank-mythic .rank-panel,
-.rank-mythic-honor .rank-panel,
-.rank-mythic-glory .rank-panel {
-  filter: saturate(1.12);
-}
-
-
-/* MYTHIC GLORY SUPER EFFECT */
-
-.rank-mythic-glory .rank-crown {
-  animation:
-    crownFloat 1.8s ease-in-out infinite;
-}
-
-.rank-mythic-glory .rank-name {
-  animation:
-    gloryName 1.8s ease-in-out infinite;
-}
-
-.rank-mythic-glory .rank-orbit {
-  box-shadow:
-    0 0 20px var(--rank-glow);
-}
-
-
-/* ==========================================================
-   ANIMATIONS
-========================================================== */
-
-@keyframes bgMove {
-  0% {
-    transform: scale(1) translate3d(0,0,0);
-  }
-
-  100% {
-    transform: scale(1.12) translate3d(-2%,2%,0);
-  }
-}
-
-@keyframes starsMove {
-  from {
-    transform: translateY(0);
-  }
-
-  to {
-    transform: translateY(55px);
-  }
-}
-
-@keyframes heroRotate {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes lightSweep {
-  0%,
-  20% {
-    left: -35%;
-    opacity: 0;
-  }
-
-  40% {
-    opacity: 1;
-  }
-
-  65% {
-    left: 120%;
-    opacity: 0;
-  }
-
-  100% {
-    left: 120%;
-    opacity: 0;
-  }
-}
-
-@keyframes brandPulse {
-  0%,
-  100% {
-    filter:
-      drop-shadow(0 0 12px rgba(90,92,255,.35));
-  }
-
-  50% {
-    filter:
-      drop-shadow(0 0 28px rgba(98,133,255,.72));
-  }
-}
-
-@keyframes seasonPulse {
-  0%,
-  100% {
-    transform: scale(.8);
-    box-shadow: 0 0 8px #40d7b0;
-  }
-
-  50% {
-    transform: scale(1.3);
-    box-shadow:
-      0 0 18px #40d7b0,
-      0 0 28px rgba(64,215,176,.5);
-  }
-}
-
-@keyframes slideHeroLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideHeroRight {
-  from {
-    opacity: 0;
-    transform: translateX(35px) scale(.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-
-@keyframes nameShimmer {
-  0% {
-    background-position: 0% center;
-  }
-
-  100% {
-    background-position: 200% center;
-  }
-}
-
-@keyframes badgeBreath {
-  0%,
-  100% {
-    filter:
-      drop-shadow(0 0 14px var(--rank-glow));
-  }
-
-  50% {
-    filter:
-      drop-shadow(0 0 32px var(--rank-glow));
-  }
-}
-
-@keyframes shadowPulse {
-  0%,
-  100% {
-    transform: scaleX(.8);
-    opacity: .10;
-  }
-
-  50% {
-    transform: scaleX(1.1);
-    opacity: .30;
-  }
-}
-
-@keyframes rankTextGlow {
-  0%,
-  100% {
-    opacity: .92;
-  }
-
-  50% {
-    opacity: 1;
-  }
-}
-
-@keyframes winnerPulse {
-  0%,
-  100% {
-    box-shadow:
-      0 0 8px rgba(79,240,181,.15);
-  }
-
-  50% {
-    box-shadow:
-      0 0 25px rgba(79,240,181,.40);
-  }
-}
-
-@keyframes failedPulse {
-  0%,
-  100% {
-    box-shadow:
-      0 0 6px rgba(255,94,123,.10);
-  }
-
-  50% {
-    box-shadow:
-      0 0 20px rgba(255,94,123,.30);
-  }
-}
-
-@keyframes avatarGlow {
-  0%,
-  100% {
-    box-shadow:
-      0 0 10px rgba(103,82,255,.10);
-  }
-
-  50% {
-    box-shadow:
-      0 0 26px rgba(103,82,255,.35);
-  }
-}
-
-@keyframes crownFloat {
-  0%,
-  100% {
-    transform: translateY(0) scale(1.15);
-  }
-
-  50% {
-    transform: translateY(-6px) scale(1.18);
-  }
-}
-
-@keyframes gloryName {
-  0%,
-  100% {
-    filter: brightness(1);
-  }
-
-  50% {
-    filter: brightness(1.45);
-  }
-}
-
-
-/* ==========================================================
-   REDUCE MOTION
-========================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-
-}
-
-/* ==========================================================
-   RANK 2.0 — UNIQUE EMBLEM SHAPES
-========================================================== */
-
-
-/* =========================
-   BASE
-========================= */
-
-.rank-badge {
-  position: relative;
-  width: 240px;
-  height: 220px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 8px;
-}
-
-.rank-shield,
-.rank-wing,
-.rank-crown,
-.rank-crystal {
-  transition: .35s ease;
-}
-
-
-/* =========================
-   WARRIOR
-   Simple steel shield
-========================= */
-
-.rank-warrior .rank-wing,
-.rank-warrior .rank-crown {
-  display: none;
-}
-
-.rank-warrior .rank-shield {
-  width: 132px;
-  height: 154px;
-
-  clip-path: polygon(
-    50% 0,
-    88% 16%,
-    82% 70%,
-    50% 100%,
-    18% 70%,
-    12% 16%
-  );
-
-  background:
-    linear-gradient(
-      145deg,
-      #d7dde7,
-      #8995a8 45%,
-      #49576b
-    );
-}
-
-.rank-warrior .rank-crystal {
-  opacity: .08;
-}
-
-.rank-warrior .rank-symbol::before {
-  content: "⚔";
-  display: block;
-  font-size: 30px;
-  line-height: 1;
-}
-
-.rank-warrior .rank-symbol {
-  font-size: 0;
-}
-
-
-/* =========================
-   ELITE
-   Blue sharp shield
-========================= */
-
-.rank-elite .rank-wing,
-.rank-elite .rank-crown {
-  display: none;
-}
-
-.rank-elite .rank-shield {
-  width: 138px;
-  height: 158px;
-
-  clip-path: polygon(
-    50% 0,
-    96% 22%,
-    82% 76%,
-    50% 100%,
-    18% 76%,
-    4% 22%
-  );
-
-  background:
-    linear-gradient(
-      150deg,
-      #d7f5ff,
-      #35bcff 40%,
-      #145fbd 75%,
-      #0b2f6c
-    );
-}
-
-.rank-elite .rank-shield::after {
-  content: "";
-  position: absolute;
-  left: 22px;
-  right: 22px;
-  top: 18px;
-  height: 7px;
-  background: rgba(255,255,255,.55);
-  clip-path: polygon(0 100%,50% 0,100% 100%);
-}
-
-.rank-elite .rank-symbol::before {
-  content: "◆";
-  display: block;
-  font-size: 34px;
-}
-
-.rank-elite .rank-symbol {
-  font-size: 0;
-}
-
-
-/* =========================
-   EPIC
-   Purple crystal + wings
-========================= */
-
-.rank-epic .rank-wing {
-  display: block;
-  opacity: .72;
-}
-
-.rank-epic .rank-crown {
-  display: none;
-}
-
-.rank-epic .rank-shield {
-  width: 136px;
-  height: 158px;
-
-  clip-path: polygon(
-    50% 0,
-    90% 19%,
-    80% 72%,
-    50% 100%,
-    20% 72%,
-    10% 19%
-  );
-
-  background:
-    linear-gradient(
-      145deg,
-      #dfcaff,
-      #8e55ff 42%,
-      #5228bc
-    );
-}
-
-.rank-epic .rank-crystal {
-  width: 54px;
-  height: 54px;
-  opacity: .9;
-
-  background:
-    linear-gradient(
-      145deg,
-      #ffffff,
-      #b28cff 35%,
-      #7536ff
-    );
-
-  box-shadow:
-    0 0 18px rgba(178,140,255,.8),
-    0 0 38px rgba(117,54,255,.6);
-}
-
-.rank-epic .rank-symbol::before {
-  content: "✦";
-  display: block;
-  font-size: 31px;
-}
-
-.rank-epic .rank-symbol {
-  font-size: 0;
-}
-
-
-/* =========================
-   LEGEND
-   Gold crown + wings
-========================= */
-
-.rank-legend .rank-wing {
-  display: block;
-  opacity: .9;
-}
-
-.rank-legend .rank-crown {
-  display: flex;
-}
-
-.rank-legend .rank-shield {
-  width: 142px;
-  height: 164px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #fff2b0,
-      #ffc341 38%,
-      #cf7b09 72%,
-      #6d3700
-    );
-
-  clip-path: polygon(
-    50% 0,
-    94% 22%,
-    83% 75%,
-    50% 100%,
-    17% 75%,
-    6% 22%
-  );
-}
-
-.rank-legend .rank-crown {
-  top: -2px;
-  filter:
-    drop-shadow(0 0 12px rgba(255,194,65,.7));
-}
-
-.rank-legend .rank-symbol::before {
-  content: "★";
-  display: block;
-  font-size: 34px;
-  color: #fff7ce;
-}
-
-.rank-legend .rank-symbol {
-  font-size: 0;
-}
-
-
-/* =========================
-   MYTHIC
-   Magenta energy core
-========================= */
-
-.rank-mythic .rank-wing {
-  display: block;
-  opacity: 1;
-}
-
-.rank-mythic .rank-crown {
-  display: none;
-}
-
-.rank-mythic .rank-shield {
-  width: 145px;
-  height: 168px;
-
-  clip-path: polygon(
-    50% 0,
-    95% 17%,
-    84% 72%,
-    50% 100%,
-    16% 72%,
-    5% 17%
-  );
-
-  background:
-    linear-gradient(
-      145deg,
-      #f5c6ff,
-      #e347ff 35%,
-      #8a2de2 70%,
-      #42157a
-    );
-}
-
-.rank-mythic .rank-crystal {
-  width: 61px;
-  height: 61px;
-  opacity: 1;
-
-  animation:
-    mythicCore 1.5s ease-in-out infinite;
-}
-
-.rank-mythic .rank-symbol::before {
-  content: "✧";
-  display: block;
-  font-size: 38px;
-}
-
-.rank-mythic .rank-symbol {
-  font-size: 0;
-}
-
-
-/* =========================
-   MYTHIC HONOR
-   Cyan-violet premium crest
-========================= */
-
-.rank-mythic-honor .rank-wing {
-  display: block;
-  opacity: 1;
-
-  width: 88px;
-  height: 118px;
-}
-
-.rank-mythic-honor .rank-crown {
-  display: flex;
-}
-
-.rank-mythic-honor .rank-shield {
-  width: 150px;
-  height: 174px;
-
-  clip-path: polygon(
-    50% 0,
-    96% 18%,
-    86% 71%,
-    50% 100%,
-    14% 71%,
-    4% 18%
-  );
-
-  background:
-    linear-gradient(
-      135deg,
-      #dffaff,
-      #45d7ff 32%,
-      #6c5cff 65%,
-      #39209f
-    );
-}
-
-.rank-mythic-honor .rank-crystal {
-  width: 64px;
-  height: 64px;
-  opacity: 1;
-
-  background:
-    linear-gradient(
-      145deg,
-      #ffffff,
-      #69e5ff 35%,
-      #8667ff
-    );
-
-  animation:
-    honorCore 1.25s ease-in-out infinite;
-}
-
-.rank-mythic-honor .rank-symbol::before {
-  content: "✦";
-  display: block;
-  font-size: 38px;
-}
-
-.rank-mythic-honor .rank-symbol {
-  font-size: 0;
-}
-
-
-/* =========================
-   MYTHIC GLORY
-   Ultimate gold crest
-========================= */
-
-.rank-mythic-glory .rank-wing {
-  display: block;
-  opacity: 1;
-
-  width: 100px;
-  height: 128px;
-}
-
-.rank-mythic-glory .rank-crown {
-  display: flex;
-  transform: scale(1.18);
-}
-
-.rank-mythic-glory .rank-shield {
-  width: 156px;
-  height: 182px;
-
-  clip-path: polygon(
-    50% 0,
-    97% 18%,
-    87% 70%,
-    50% 100%,
-    13% 70%,
-    3% 18%
-  );
-
-  background:
-    linear-gradient(
-      145deg,
-      #fffbd4,
-      #ffe36c 30%,
-      #ffb52e 58%,
-      #b36700 85%
-    );
-
-  animation:
-    gloryShieldPulse 1.7s ease-in-out infinite;
-}
-
-.rank-mythic-glory .rank-crystal {
-  width: 70px;
-  height: 70px;
-  opacity: 1;
-
-  background:
-    linear-gradient(
-      145deg,
-      #ffffff,
-      #fff4a6 34%,
-      #ffd65c
-    );
-
-  animation:
-    gloryCore 1.1s ease-in-out infinite;
-}
-
-.rank-mythic-glory .rank-symbol::before {
-  content: "✹";
-  display: block;
-  font-size: 42px;
-  color: #fffef2;
-}
-
-.rank-mythic-glory .rank-symbol {
-  font-size: 0;
-}
-
-
-/* =========================
-   MORE PARTICLES
-========================= */
-
-.rank-epic .rank-star,
-.rank-legend .rank-star,
-.rank-mythic .rank-star,
-.rank-mythic-honor .rank-star,
-.rank-mythic-glory .rank-star {
-  opacity: 1;
-  animation:
-    sparkle 1.7s ease-in-out infinite;
-}
-
-.rank-mythic-glory .rank-star {
-  animation-duration: 1s;
-}
-
-
-/* =========================
-   UNIQUE LABEL COLORS
-========================= */
-
-.rank-warrior .rank-name {
-  color: #d8dee9;
-}
-
-.rank-elite .rank-name {
-  color: #5fd0ff;
-}
-
-.rank-epic .rank-name {
-  color: #b58aff;
-}
-
-.rank-legend .rank-name {
-  color: #ffd15b;
-}
-
-.rank-mythic .rank-name {
-  color: #eb70ff;
-}
-
-.rank-mythic-honor .rank-name {
-  color: #69ddff;
-}
-
-.rank-mythic-glory .rank-name {
-  color: #ffe67f;
-
-  text-shadow:
-    0 0 12px #fff7c2,
-    0 0 28px rgba(255,220,94,.9),
-    0 0 48px rgba(255,180,39,.6);
-}
-
-
-/* =========================
-   EXTRA ANIMATIONS
-========================= */
-
-@keyframes mythicCore {
-  0%,
-  100% {
-    transform:
-      rotate(45deg)
-      scale(.92);
-
-    filter:
-      brightness(1);
-  }
-
-  50% {
-    transform:
-      rotate(45deg)
-      scale(1.15);
-
-    filter:
-      brightness(1.45);
-  }
-}
-
-@keyframes honorCore {
-  0%,
-  100% {
-    transform:
-      rotate(45deg)
-      scale(.95);
-
-    box-shadow:
-      0 0 18px rgba(69,215,255,.55);
-  }
-
-  50% {
-    transform:
-      rotate(45deg)
-      scale(1.14);
-
-    box-shadow:
-      0 0 34px rgba(108,92,255,.9);
-  }
-}
-
-@keyframes gloryCore {
-  0%,
-  100% {
-    transform:
-      rotate(45deg)
-      scale(.95);
-
-    filter:
-      brightness(1);
-  }
-
-  50% {
-    transform:
-      rotate(45deg)
-      scale(1.18);
-
-    filter:
-      brightness(1.8);
-  }
-}
-
-@keyframes gloryShieldPulse {
-  0%,
-  100% {
-    filter:
-      drop-shadow(
-        0 0 18px rgba(255,225,104,.55)
-      );
-  }
-
-  50% {
-    filter:
-      drop-shadow(
-        0 0 42px rgba(255,195,65,.95)
-      );
-  }
-}
-
-/* ==========================================================
-   GAME NEON BACKGROUND 3.0
-   Lebih hidup, lebih ramai, tidak kaku
-========================================================== */
-
-
-/* =========================
-   BASE BACKGROUND
-========================= */
-
-body {
-
-  position: relative;
-
-  overflow-x: hidden;
-
-  background:
-    linear-gradient(
-      180deg,
-      #020611 0%,
-      #061024 45%,
-      #040816 100%
-    );
-
-}
-
-
-/* =========================
-   NEON COSMIC LAYERS
-========================= */
-
-body::before {
-
-  content: "";
-
-  position: fixed;
-
-  inset: -15%;
-
-  pointer-events: none;
-
-  z-index: -5;
-
-  background:
-
-    radial-gradient(
-      circle at 12% 22%,
-      rgba(28,132,255,.30),
-      transparent 24%
-    ),
-
-    radial-gradient(
-      circle at 82% 18%,
-      rgba(175,56,255,.24),
-      transparent 27%
-    ),
-
-    radial-gradient(
-      circle at 68% 78%,
-      rgba(51,214,255,.16),
-      transparent 30%
-    ),
-
-    radial-gradient(
-      circle at 28% 82%,
-      rgba(119,54,255,.20),
-      transparent 28%
-    ),
-
-    conic-gradient(
-      from 180deg at 50% 50%,
-      rgba(36,115,255,.08),
-      rgba(156,56,255,.08),
-      rgba(36,220,255,.07),
-      rgba(36,115,255,.08)
-    );
-
-  filter:
-    blur(20px);
-
-  animation:
-    neonGalaxyMove
-    16s
-    ease-in-out
-    infinite alternate;
-
-}
-
-
-/* =========================
-   STAR FIELD
-========================= */
-
-body::after {
-
-  content: "";
-
-  position: fixed;
-
-  inset: 0;
-
-  pointer-events: none;
-
-  z-index: -4;
-
-  opacity: .36;
-
-  background-image:
-
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.80) 1px,
-      transparent 1.4px
-    ),
-
-    radial-gradient(
-      circle,
-      rgba(99,192,255,.70) 1px,
-      transparent 1.5px
-    ),
-
-    radial-gradient(
-      circle,
-      rgba(190,93,255,.65) 1px,
-      transparent 1.5px
-    );
-
-  background-size:
-    62px 62px,
-    95px 95px,
-    130px 130px;
-
-  background-position:
-    0 0,
-    20px 38px,
-    62px 75px;
-
-  animation:
-    starFieldMove
-    25s
-    linear
-    infinite;
-
-}
-
-
-/* =========================
-   PAGE GRID
-========================= */
-
-.page {
-
-  position: relative;
-
-  isolation: isolate;
-
-  background:
-    transparent;
-
-}
-
-
-/* futuristic grid */
-
-.page::before {
-
-  content: "";
-
-  position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: -18vh;
-
-  height: 58vh;
-
-  pointer-events: none;
-
-  z-index: -3;
-
-  opacity: .22;
-
-  background:
-
-    linear-gradient(
-      rgba(63,119,255,.20) 1px,
-      transparent 1px
-    ),
-
-    linear-gradient(
-      90deg,
-      rgba(124,74,255,.18) 1px,
-      transparent 1px
-    );
-
-  background-size:
-    72px 72px;
-
-  transform:
-    perspective(600px)
-    rotateX(66deg)
-    scale(1.5);
-
-  transform-origin:
-    center bottom;
-
-  animation:
-    gridFlow
-    8s
-    linear
-    infinite;
-
-  mask-image:
-    linear-gradient(
-      to top,
-      rgba(0,0,0,.9),
-      transparent 80%
-    );
-
-}
-
-
-/* =========================
-   NEON FLOATING ORBS
-========================= */
-
-.page::after {
-
-  content: "";
-
-  position: fixed;
-
-  width: 420px;
-  height: 420px;
-
-  right: -120px;
-  top: 180px;
-
-  border-radius: 50%;
-
-  pointer-events: none;
-
-  z-index: -2;
-
-  background:
-
-    radial-gradient(
-      circle,
-      rgba(183,76,255,.20),
-      rgba(66,96,255,.09) 40%,
-      transparent 70%
-    );
-
-  filter:
-    blur(12px);
-
-  animation:
-    neonOrbFloat
-    10s
-    ease-in-out
-    infinite;
-
-}
-
-
-/* =========================
-   HERO GAME ARENA
-========================= */
-
-.hero {
-
-  position: relative;
-
-  overflow: hidden;
-
-  background:
-
-    radial-gradient(
-      circle at 17% 24%,
-      rgba(35,122,255,.24),
-      transparent 32%
-    ),
-
-    radial-gradient(
-      circle at 86% 75%,
-      rgba(179,59,255,.24),
-      transparent 34%
-    ),
-
-    radial-gradient(
-      circle at 55% 110%,
-      rgba(50,222,255,.12),
-      transparent 32%
-    ),
-
-    linear-gradient(
-      118deg,
-      rgba(7,20,50,.96),
-      rgba(9,18,43,.96) 55%,
-      rgba(28,11,52,.96)
-    );
-
-  border:
-    1px solid rgba(113,126,255,.15);
-
-  box-shadow:
-
-    0 30px 120px rgba(0,0,0,.42),
-
-    0 0 40px rgba(66,105,255,.08),
-
-    inset 0 0 120px rgba(79,75,255,.07);
-
-}
-
-
-/* moving neon atmosphere */
-
-.hero::before {
-
-  content: "";
-
-  position: absolute;
-
-  inset: -35%;
-
-  pointer-events: none;
-
-  background:
-
-    conic-gradient(
-      from 0deg,
-      transparent 0deg,
-      rgba(50,150,255,.10) 40deg,
-      transparent 95deg,
-      rgba(183,61,255,.10) 155deg,
-      transparent 220deg,
-      rgba(50,220,255,.08) 300deg,
-      transparent 360deg
-    );
-
-  animation:
-    arenaRotate
-    24s
-    linear
-    infinite;
-
-  filter:
-    blur(24px);
-
-}
-
-
-/* moving energy sweep */
-
-.hero::after {
-
-  content: "";
-
-  position: absolute;
-
-  width: 24%;
-  height: 170%;
-
-  top: -35%;
-
-  left: -35%;
-
-  pointer-events: none;
-
-  transform:
-    rotate(18deg);
-
-  background:
-
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(93,157,255,.05),
-      rgba(194,124,255,.11),
-      rgba(255,255,255,.06),
-      transparent
-    );
-
-  filter:
-    blur(5px);
-
-  animation:
-    arenaSweep
-    7s
-    ease-in-out
-    infinite;
-
-}
-
-
-/* =========================
-   HERO CORNER GLOW
-========================= */
-
-.hero-light-blue {
-
-  width: 560px;
-  height: 560px;
-
-  background:
-    rgba(22,126,255,.24);
-
-  filter:
-    blur(110px);
-
-  animation:
-    blueGlowMove
-    8s
-    ease-in-out
-    infinite alternate;
-
-}
-
-
-.hero-light-purple {
-
-  width: 580px;
-  height: 580px;
-
-  background:
-    rgba(163,52,255,.24);
-
-  filter:
-    blur(110px);
-
-  animation:
-    purpleGlowMove
-    9s
-    ease-in-out
-    infinite alternate;
-
-}
-
-
-/* =========================
-   HERO BORDER GLOW
-========================= */
-
-.hero {
-
-  outline:
-    1px solid rgba(107,80,255,.05);
-
-}
-
-
-.hero:hover {
-
-  box-shadow:
-
-    0 35px 125px rgba(0,0,0,.50),
-
-    0 0 42px rgba(63,134,255,.13),
-
-    0 0 60px rgba(163,54,255,.08),
-
-    inset 0 0 120px rgba(79,75,255,.09);
-
-}
-
-
-/* =========================
-   DECORATIVE SCANLINES
-========================= */
-
-.rank-panel::before {
-
-  content: "";
-
-  position: absolute;
-
-  inset: -70px;
-
-  pointer-events: none;
-
-  z-index: -1;
-
-  opacity: .18;
-
-  background:
-
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 7px,
-      rgba(85,149,255,.055) 8px
-    );
-
-  mask-image:
-    radial-gradient(
-      circle,
-      black 15%,
-      transparent 68%
-    );
-
-  animation:
-    scanlineMove
-    8s
-    linear
-    infinite;
-
-}
-
-
-/* =========================
-   NEON ENERGY LINES
-========================= */
-
-.rank-panel::after {
-
-  content: "";
-
-  position: absolute;
-
-  width: 115%;
-  height: 115%;
-
-  pointer-events: none;
-
-  z-index: -1;
-
-  opacity: .18;
-
-  background:
-
-    linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(50,196,255,.18) 18%,
-      transparent 19%,
-      transparent 68%,
-      rgba(193,64,255,.16) 69%,
-      transparent 70%
-    );
-
-  animation:
-    energyLineMove
-    6s
-    ease-in-out
-    infinite;
-
-}
-
-
-/* =========================
-   NAVBAR MORE GAME-LIKE
-========================= */
-
-.topbar {
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(2,6,18,.98),
-      rgba(4,9,26,.96)
-    );
-
-  border-bottom:
-    1px solid rgba(74,122,255,.12);
-
-  box-shadow:
-
-    0 12px 45px rgba(0,0,0,.34),
-
-    0 1px 0 rgba(126,89,255,.08),
-
-    inset 0 -10px 30px rgba(52,92,255,.025);
-
-}
-
-
-/* =========================
-   BUTTON GLOW
-========================= */
-
-.music-button {
-
-  box-shadow:
-    0 0 18px rgba(53,183,255,.08);
-
-}
-
-
-.music-button:hover {
-
-  border-color:
-    rgba(63,207,255,.60);
-
-  box-shadow:
-
-    0 0 18px rgba(53,183,255,.22),
-
-    0 0 40px rgba(53,183,255,.08);
-
-}
-
-
-.logout-button:hover {
-
-  border-color:
-    rgba(155,70,255,.50);
-
-  box-shadow:
-
-    0 0 16px rgba(155,70,255,.20),
-
-    0 0 35px rgba(155,70,255,.08);
-
-}
-
-
-/* =========================
-   HERO NAME EXTRA GLOW
-========================= */
-
-.hero-user-name {
-
-  text-shadow:
-
-    0 0 24px rgba(76,133,255,.08),
-
-    0 0 45px rgba(169,64,255,.05);
-
-}
-
-
-/* =========================
-   IDENTITY TECH LINE
-========================= */
-
-.identity-info {
-
-  position: relative;
-
-  width: max-content;
-
-  padding-bottom: 12px;
-
-}
-
-
-.identity-info::after {
-
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-  bottom: 0;
-
-  width: 78%;
-
-  height: 1px;
-
-  background:
-
-    linear-gradient(
-      90deg,
-      rgba(58,163,255,.65),
-      rgba(158,67,255,.35),
-      transparent
-    );
-
-  box-shadow:
-    0 0 8px rgba(59,162,255,.20);
-
-}
-
-
-/* =========================
-   ANIMATIONS
-========================= */
-
-@keyframes neonGalaxyMove {
-
-  0% {
-
-    transform:
-      scale(1)
-      translate3d(0,0,0)
-      rotate(0deg);
-
-  }
-
-  100% {
-
-    transform:
-      scale(1.10)
-      translate3d(-2%,2%,0)
-      rotate(4deg);
-
-  }
-
-}
-
-
-@keyframes starFieldMove {
-
-  from {
-
-    transform:
-      translate3d(0,0,0);
-
-  }
-
-  to {
-
-    transform:
-      translate3d(
-        -62px,
-        62px,
-        0
-      );
-
-  }
-
-}
-
-
-@keyframes gridFlow {
-
-  from {
-
-    background-position:
-      0 0,
-      0 0;
-
-  }
-
-  to {
-
-    background-position:
-      0 72px,
-      72px 0;
-
-  }
-
-}
-
-
-@keyframes neonOrbFloat {
-
-  0%,
-  100% {
-
-    transform:
-      translate3d(0,0,0)
-      scale(.92);
-
-  }
-
-  50% {
-
-    transform:
-      translate3d(-90px,70px,0)
-      scale(1.12);
-
-  }
-
-}
-
-
-@keyframes arenaRotate {
-
-  from {
-
-    transform:
-      rotate(0deg);
-
-  }
-
-  to {
-
-    transform:
-      rotate(360deg);
-
-  }
-
-}
-
-
-@keyframes arenaSweep {
-
-  0%,
-  16% {
-
-    left:
-      -35%;
-
-    opacity:
-      0;
-
-  }
-
-  30% {
-
-    opacity:
-      .8;
-
-  }
-
-  65% {
-
-    left:
-      120%;
-
-    opacity:
-      0;
-
-  }
-
-  100% {
-
-    left:
-      120%;
-
-    opacity:
-      0;
-
-  }
-
-}
-
-
-@keyframes blueGlowMove {
-
-  from {
-
-    transform:
-      translate3d(-30px,-20px,0)
-      scale(.95);
-
-  }
-
-  to {
-
-    transform:
-      translate3d(80px,60px,0)
-      scale(1.16);
-
-  }
-
-}
-
-
-@keyframes purpleGlowMove {
-
-  from {
-
-    transform:
-      translate3d(30px,30px,0)
-      scale(.94);
-
-  }
-
-  to {
-
-    transform:
-      translate3d(-85px,-55px,0)
-      scale(1.15);
-
-  }
-
-}
-
-
-@keyframes scanlineMove {
-
-  from {
-
-    transform:
-      translateY(0);
-
-  }
-
-  to {
-
-    transform:
-      translateY(80px);
-
-  }
-
-}
-
-
-@keyframes energyLineMove {
-
-  0%,
-  100% {
-
-    transform:
-      rotate(-5deg)
-      scale(.96);
-
-    opacity:
-      .09;
-
-  }
-
-  50% {
-
-    transform:
-      rotate(6deg)
-      scale(1.06);
-
-    opacity:
-      .25;
-
-  }
-
-}
-
-.hero {
-  background-image:
-    linear-gradient(
-      90deg,
-      rgba(3, 10, 29, .88) 0%,
-      rgba(4, 12, 34, .70) 45%,
-      rgba(25, 7, 48, .38) 100%
-    ),
-    url("/assets/hero-bg.png");
-
-  background-size: cover;
-  background-position: center right;
-  background-repeat: no-repeat;
-}
-/* ==========================================================
-   STRONGER HERO RANK GLOW
-========================================================== */
-
-/* AREA RANK LEBIH TERANG */
-.rank-panel {
-  position: relative;
-  overflow: visible;
-}
-
-/* AURA BESAR DI BELAKANG LOGO */
-.rank-panel::before {
-  content: "";
-  position: absolute;
-  width: 420px;
-  height: 420px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.22) 0%,
-      var(--rank-glow) 18%,
-      color-mix(in srgb, var(--rank-color) 55%, transparent) 38%,
-      transparent 70%
-    );
-
-  filter: blur(45px);
-
-  opacity: .75;
-
-  z-index: -2;
-
-  animation:
-    rankAuraStrong
-    2.6s
-    ease-in-out
-    infinite;
-}
-
-
-/* AURA KEDUA */
-.rank-panel::after {
-  content: "";
-  position: absolute;
-
-  width: 280px;
-  height: 280px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.28),
-      var(--rank-glow) 30%,
-      transparent 68%
-    );
-
-  filter: blur(28px);
-
-  opacity: .65;
-
-  z-index: -1;
-
-  animation:
-    rankAuraInner
-    1.9s
-    ease-in-out
-    infinite;
-}
-
-
-/* ==========================================================
-   SHIELD / LOGO
-========================================================== */
-
-.rank-shield {
-  filter:
-    brightness(1.18)
-    saturate(1.2)
-    drop-shadow(
-      0 0 10px rgba(255,255,255,.55)
-    )
-    drop-shadow(
-      0 0 24px var(--rank-glow)
-    )
-    drop-shadow(
-      0 0 50px var(--rank-glow)
-    );
-
-  animation:
-    shieldEnergyPulse
-    2s
-    ease-in-out
-    infinite;
-}
-
-
-/* LIGHT DI PINGGIR SHIELD */
-.rank-shield::before {
-  box-shadow:
-    inset 0 0 20px rgba(255,255,255,.40),
-    inset 0 0 45px var(--rank-glow),
-    0 0 18px rgba(255,255,255,.22);
-}
-
-
-/* SHIMMER MENYAPU LOGO */
-.rank-shield::after {
-  content: "";
-
-  position: absolute;
-
-  width: 45%;
-  height: 160%;
-
-  top: -30%;
-  left: -70%;
-
-  transform: rotate(18deg);
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255,255,255,.06),
-      rgba(255,255,255,.75),
-      rgba(255,255,255,.08),
-      transparent
-    );
-
-  filter: blur(4px);
-
-  opacity: .9;
-
-  animation:
-    shieldShimmer
-    3.2s
-    ease-in-out
-    infinite;
-}
-
-
-/* ==========================================================
-   CORE / SYMBOL
-========================================================== */
-
-.rank-shield-inner {
-  box-shadow:
-    inset 0 0 28px rgba(255,255,255,.16),
-    0 0 22px var(--rank-glow),
-    0 0 42px var(--rank-glow);
-}
-
-
-.rank-crystal {
-  filter:
-    brightness(1.35)
-    saturate(1.3);
-
-  box-shadow:
-    0 0 15px rgba(255,255,255,.75),
-    0 0 28px var(--rank-glow),
-    0 0 48px var(--rank-glow);
-}
-
-
-.rank-symbol {
-  text-shadow:
-    0 0 7px white,
-    0 0 14px white,
-    0 0 24px var(--rank-glow),
-    0 0 42px var(--rank-glow);
-}
-
-
-/* ==========================================================
-   ORBIT
-========================================================== */
-
-.rank-orbit {
-  box-shadow:
-    0 0 12px var(--rank-glow),
-    inset 0 0 12px var(--rank-glow);
-}
-
-
-.orbit-one {
-  opacity: .85;
-}
-
-
-.orbit-two {
-  opacity: .70;
-}
-
-
-.orbit-three {
-  opacity: .55;
-}
-
-
-/* ==========================================================
-   RANK TEXT
-========================================================== */
-
-.rank-label {
-  color: rgba(210,220,255,.75);
-
-  text-shadow:
-    0 0 10px rgba(120,160,255,.45);
-}
-
-
-.rank-name {
-  filter: brightness(1.18);
-
-  text-shadow:
-    0 0 8px rgba(255,255,255,.70),
-    0 0 18px var(--rank-glow),
-    0 0 34px var(--rank-glow),
-    0 0 56px var(--rank-glow);
-
-  animation:
-    rankNameStrongGlow
-    2s
+    rankTextPulse
+    2.4s
     ease-in-out
     infinite;
 }
 
 
 .rank-total {
+  margin-top: 14px;
+
+  color: #ffd44c;
+
+  font-size: 26px;
+  font-weight: 900;
+
   text-shadow:
-    0 0 8px rgba(255,218,73,.80),
-    0 0 18px rgba(255,190,44,.65),
-    0 0 28px rgba(255,162,31,.35);
+    0 0 14px
+    rgba(255, 205, 50, .38);
 }
 
 
@@ -4004,389 +1652,753 @@ body::after {
    STATUS
 ========================================================== */
 
+.season-status {
+  margin-top: 14px;
+
+  padding:
+    8px
+    18px;
+
+  border-radius: 999px;
+
+  font-family:
+    "Orbitron",
+    sans-serif;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  letter-spacing: 2px;
+}
+
+
 .season-status.failed {
-  box-shadow:
-    0 0 10px rgba(255,82,117,.32),
-    0 0 25px rgba(255,82,117,.18);
+  color: #ff6581;
 
-  text-shadow:
-    0 0 10px rgba(255,92,121,.55);
-}
-
-
-.season-status.winner {
-  box-shadow:
-    0 0 12px rgba(67,245,183,.40),
-    0 0 30px rgba(67,245,183,.20);
-
-  text-shadow:
-    0 0 10px rgba(67,245,183,.70);
-}
-
-
-.missed-months {
-  text-shadow:
-    0 0 10px rgba(255,110,135,.35);
-}
-
-
-/* ==========================================================
-   EXTRA FLOOR LIGHT
-========================================================== */
-
-.rank-badge::after {
-  content: "";
-
-  position: absolute;
-
-  left: 50%;
-  bottom: -15px;
-
-  width: 170px;
-  height: 22px;
-
-  transform:
-    translateX(-50%);
-
-  border-radius: 50%;
+  border:
+    1px solid
+    rgba(255, 85, 120, .42);
 
   background:
-    var(--rank-color);
+    rgba(255, 65, 104, .08);
 
-  filter:
-    blur(24px);
-
-  opacity: .48;
-
-  animation:
-    floorGlowPulse
-    2s
-    ease-in-out
-    infinite;
-}
-
-
-/* ==========================================================
-   ANIMATION
-========================================================== */
-
-@keyframes rankAuraStrong {
-
-  0%,
-  100% {
-    transform: scale(.88);
-    opacity: .48;
-  }
-
-  50% {
-    transform: scale(1.10);
-    opacity: .90;
-  }
-}
-
-
-@keyframes rankAuraInner {
-
-  0%,
-  100% {
-    transform: scale(.90);
-    opacity: .45;
-  }
-
-  50% {
-    transform: scale(1.14);
-    opacity: .82;
-  }
-}
-
-
-@keyframes shieldEnergyPulse {
-
-  0%,
-  100% {
-    filter:
-      brightness(1.08)
-      saturate(1.1)
-      drop-shadow(0 0 12px rgba(255,255,255,.35))
-      drop-shadow(0 0 20px var(--rank-glow))
-      drop-shadow(0 0 38px var(--rank-glow));
-  }
-
-  50% {
-    filter:
-      brightness(1.34)
-      saturate(1.35)
-      drop-shadow(0 0 18px rgba(255,255,255,.65))
-      drop-shadow(0 0 32px var(--rank-glow))
-      drop-shadow(0 0 65px var(--rank-glow));
-  }
-}
-
-
-@keyframes shieldShimmer {
-
-  0%,
-  20% {
-    left: -75%;
-    opacity: 0;
-  }
-
-  35% {
-    opacity: .95;
-  }
-
-  65% {
-    left: 130%;
-    opacity: 0;
-  }
-
-  100% {
-    left: 130%;
-    opacity: 0;
-  }
-}
-
-
-@keyframes rankNameStrongGlow {
-
-  0%,
-  100% {
-    filter: brightness(1.05);
-  }
-
-  50% {
-    filter: brightness(1.40);
-  }
-}
-
-
-@keyframes floorGlowPulse {
-
-  0%,
-  100% {
-    transform:
-      translateX(-50%)
-      scaleX(.75);
-
-    opacity: .26;
-  }
-
-  50% {
-    transform:
-      translateX(-50%)
-      scaleX(1.12);
-
-    opacity: .60;
-  }
-}
-
-/* ==========================================================
-   FIX GLOW — CAHAYA MENEMPEL KE LOGO
-========================================================== */
-
-
-/* BADGE CONTAINER */
-
-.rank-badge {
-  position: relative;
-  isolation: isolate;
-}
-
-
-/* AURA BULAT TEPAT DI BELAKANG SHIELD */
-
-.rank-badge::before {
-  content: "";
-
-  position: absolute;
-
-  left: 50%;
-  top: 48%;
-
-  width: 210px;
-  height: 210px;
-
-  transform:
-    translate(-50%, -50%);
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.22) 0%,
-      var(--rank-glow) 18%,
-      color-mix(
-        in srgb,
-        var(--rank-color) 45%,
-        transparent
-      ) 38%,
-      transparent 72%
-    );
-
-  filter:
-    blur(28px);
-
-  opacity: .75;
-
-  z-index: -2;
+  box-shadow:
+    0 0 18px
+    rgba(255, 65, 104, .12);
 
   animation:
-    emblemAuraPulse
+    failedPulse
     2.2s
     ease-in-out
     infinite;
 }
 
 
-/* GLOW KECIL DI BAWAH SHIELD */
+.season-status.winner {
+  color: #54f0b7;
 
-.rank-badge::after {
-  content: "";
-
-  position: absolute;
-
-  left: 50%;
-  bottom: 10px;
-
-  width: 135px;
-  height: 18px;
-
-  transform:
-    translateX(-50%);
-
-  border-radius: 50%;
+  border:
+    1px solid
+    rgba(84, 240, 183, .42);
 
   background:
-    var(--rank-color);
+    rgba(40, 207, 145, .08);
 
-  filter:
-    blur(18px);
-
-  opacity: .42;
-
-  z-index: -1;
+  box-shadow:
+    0 0 18px
+    rgba(40, 207, 145, .14);
 
   animation:
-    emblemFloorPulse
-    2s
+    winnerPulse
+    1.8s
     ease-in-out
     infinite;
 }
 
 
-/* ==========================================================
-   SHIELD CAHAYA DI EDGE
-========================================================== */
+.missed-months {
+  min-height: 20px;
 
-.rank-shield {
-  position: relative;
+  margin-top: 10px;
 
-  filter:
-    brightness(1.12)
-    drop-shadow(
-      0 0 8px rgba(255,255,255,.38)
-    )
-    drop-shadow(
-      0 0 16px var(--rank-glow)
-    )
-    drop-shadow(
-      0 0 30px var(--rank-glow)
-    );
+  color: #ff8296;
 
-  animation:
-    shieldPulseSoft
-    2.3s
-    ease-in-out
-    infinite;
-}
-
-
-/* INNER HIGHLIGHT */
-
-.rank-shield-inner {
-  box-shadow:
-    inset 0 0 18px rgba(255,255,255,.13),
-    inset 0 0 28px var(--rank-glow),
-    0 0 16px var(--rank-glow);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 
 /* ==========================================================
-   CRYSTAL / CENTER
-========================================================== */
-
-.rank-crystal {
-  box-shadow:
-    0 0 10px rgba(255,255,255,.65),
-    0 0 20px var(--rank-glow),
-    0 0 34px var(--rank-glow);
-
-  filter:
-    brightness(1.20);
-}
-
-
-/* ==========================================================
-   SYMBOL
-========================================================== */
-
-.rank-symbol {
-  text-shadow:
-    0 0 5px #ffffff,
-    0 0 12px rgba(255,255,255,.75),
-    0 0 20px var(--rank-glow);
-}
-
-
-/* ==========================================================
-   WARRIOR — SILVER BLUE GLOW
+   WARRIOR
 ========================================================== */
 
 .rank-warrior {
-  --rank-color:
-    #c8d4e6;
-
-  --rank-color-2:
-    #7d8ca4;
-
-  --rank-glow:
-    rgba(123, 176, 255, .62);
+  --rank-color: #aebcd0;
+  --rank-color-2: #5d6d85;
+  --rank-glow: rgba(98, 156, 255, .62);
 }
 
 
-/* WARRIOR JANGAN TERLALU TERANG */
-
-.rank-warrior .rank-badge::before {
-  opacity: .56;
+.rank-warrior .rank-crystal {
+  opacity: .10;
 }
 
-.rank-warrior .rank-shield {
-  filter:
-    brightness(1.08)
-    drop-shadow(
-      0 0 7px rgba(220,235,255,.35)
-    )
-    drop-shadow(
-      0 0 16px rgba(92,157,255,.48)
-    )
-    drop-shadow(
-      0 0 28px rgba(92,157,255,.28)
-    );
+
+.rank-warrior .rank-symbol {
+  font-size: 0;
+}
+
+
+.rank-warrior .rank-symbol::before {
+  content: "⚔";
+
+  font-size: 30px;
 }
 
 
 /* ==========================================================
-   ANIMATION
+   ELITE
 ========================================================== */
 
-@keyframes emblemAuraPulse {
+.rank-elite {
+  --rank-color: #43c5ff;
+  --rank-color-2: #155cae;
+  --rank-glow: rgba(54, 194, 255, .70);
+}
 
+
+.rank-elite .rank-shield {
+  width: 138px;
+  height: 158px;
+}
+
+
+.rank-elite .rank-crystal {
+  opacity: .60;
+}
+
+
+.rank-elite .rank-symbol {
+  font-size: 0;
+}
+
+
+.rank-elite .rank-symbol::before {
+  content: "◆";
+
+  font-size: 34px;
+}
+
+
+/* ==========================================================
+   EPIC
+========================================================== */
+
+.rank-epic {
+  --rank-color: #945bff;
+  --rank-color-2: #4e21b7;
+  --rank-glow: rgba(148, 91, 255, .78);
+}
+
+
+.rank-epic .rank-wing {
+  opacity: .72;
+}
+
+
+.rank-epic .rank-crystal {
+  opacity: .90;
+}
+
+
+.rank-epic .rank-symbol {
+  font-size: 0;
+}
+
+
+.rank-epic .rank-symbol::before {
+  content: "✦";
+
+  font-size: 33px;
+}
+
+
+.rank-epic .rank-star {
+  opacity: 1;
+
+  animation:
+    sparkle
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   LEGEND
+========================================================== */
+
+.rank-legend {
+  --rank-color: #ffc549;
+  --rank-color-2: #a95c00;
+  --rank-glow: rgba(255, 191, 62, .82);
+}
+
+
+.rank-legend .rank-wing {
+  opacity: .88;
+}
+
+
+.rank-legend .rank-crown {
+  display: flex;
+}
+
+
+.rank-legend .rank-crystal {
+  opacity: .92;
+}
+
+
+.rank-legend .rank-symbol {
+  font-size: 0;
+}
+
+
+.rank-legend .rank-symbol::before {
+  content: "★";
+
+  color: #fff4bd;
+
+  font-size: 34px;
+}
+
+
+.rank-legend .rank-star {
+  opacity: 1;
+
+  animation:
+    sparkle
+    1.6s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   MYTHIC
+========================================================== */
+
+.rank-mythic {
+  --rank-color: #e04dff;
+  --rank-color-2: #7b24c6;
+  --rank-glow: rgba(225, 68, 255, .86);
+}
+
+
+.rank-mythic .rank-wing {
+  width: 76px;
+
+  opacity: 1;
+}
+
+
+.rank-mythic .rank-crystal {
+  width: 58px;
+  height: 58px;
+
+  opacity: 1;
+
+  animation:
+    crystalPulse
+    1.5s
+    ease-in-out
+    infinite;
+}
+
+
+.rank-mythic .rank-symbol {
+  font-size: 0;
+}
+
+
+.rank-mythic .rank-symbol::before {
+  content: "✧";
+
+  font-size: 38px;
+}
+
+
+.rank-mythic .rank-star {
+  opacity: 1;
+
+  animation:
+    sparkle
+    1.4s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   MYTHIC HONOR
+========================================================== */
+
+.rank-mythic-honor {
+  --rank-color: #42dcff;
+  --rank-color-2: #6656ff;
+  --rank-glow: rgba(66, 220, 255, .90);
+}
+
+
+.rank-mythic-honor .rank-wing {
+  width: 86px;
+  height: 112px;
+
+  opacity: 1;
+}
+
+
+.rank-mythic-honor .rank-crown {
+  display: flex;
+}
+
+
+.rank-mythic-honor .rank-crystal {
+  width: 62px;
+  height: 62px;
+
+  opacity: 1;
+
+  animation:
+    crystalPulse
+    1.3s
+    ease-in-out
+    infinite;
+}
+
+
+.rank-mythic-honor .rank-symbol {
+  font-size: 0;
+}
+
+
+.rank-mythic-honor .rank-symbol::before {
+  content: "✦";
+
+  font-size: 39px;
+}
+
+
+.rank-mythic-honor .rank-star {
+  opacity: 1;
+
+  animation:
+    sparkle
+    1.25s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   MYTHIC GLORY
+========================================================== */
+
+.rank-mythic-glory {
+  --rank-color: #ffe36d;
+  --rank-color-2: #ff9d20;
+  --rank-glow: rgba(255, 222, 86, .98);
+}
+
+
+.rank-mythic-glory .rank-wing {
+  width: 95px;
+  height: 122px;
+
+  opacity: 1;
+}
+
+
+.rank-mythic-glory .rank-crown {
+  display: flex;
+
+  transform:
+    scale(1.15);
+}
+
+
+.rank-mythic-glory .rank-shield {
+  width: 150px;
+  height: 176px;
+
+  animation:
+    gloryShield
+    1.7s
+    ease-in-out
+    infinite;
+}
+
+
+.rank-mythic-glory .rank-crystal {
+  width: 68px;
+  height: 68px;
+
+  opacity: 1;
+
+  animation:
+    gloryCrystal
+    1.1s
+    ease-in-out
+    infinite;
+}
+
+
+.rank-mythic-glory .rank-symbol {
+  font-size: 0;
+}
+
+
+.rank-mythic-glory .rank-symbol::before {
+  content: "✹";
+
+  font-size: 42px;
+
+  color: white;
+}
+
+
+.rank-mythic-glory .rank-star {
+  opacity: 1;
+
+  animation:
+    sparkle
+    1s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   ANIMATIONS
+========================================================== */
+
+@keyframes globalAurora {
+  0% {
+    transform:
+      translate3d(
+        -2%,
+        -1%,
+        0
+      )
+      scale(1);
+  }
+
+  100% {
+    transform:
+      translate3d(
+        4%,
+        3%,
+        0
+      )
+      scale(1.12);
+  }
+}
+
+
+@keyframes starMove {
+  from {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+
+  to {
+    transform:
+      translate3d(
+        -70px,
+        70px,
+        0
+      );
+  }
+}
+
+
+@keyframes gridMove {
+  from {
+    background-position:
+      0 0,
+      0 0;
+  }
+
+  to {
+    background-position:
+      0 70px,
+      70px 0;
+  }
+}
+
+
+@keyframes heroColorFlow {
+  0% {
+    transform:
+      translate3d(
+        -3%,
+        -2%,
+        0
+      )
+      rotate(-2deg)
+      scale(1);
+  }
+
+  100% {
+    transform:
+      translate3d(
+        5%,
+        4%,
+        0
+      )
+      rotate(5deg)
+      scale(1.10);
+  }
+}
+
+
+@keyframes heroSweep {
+  0%,
+  18% {
+    left: -40%;
+    opacity: 0;
+  }
+
+  35% {
+    opacity: .80;
+  }
+
+  66% {
+    left: 120%;
+    opacity: 0;
+  }
+
+  100% {
+    left: 120%;
+    opacity: 0;
+  }
+}
+
+
+@keyframes blueLightMove {
+  from {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(.92);
+  }
+
+  to {
+    transform:
+      translate3d(
+        90px,
+        70px,
+        0
+      )
+      scale(1.15);
+  }
+}
+
+
+@keyframes purpleLightMove {
+  from {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(.92);
+  }
+
+  to {
+    transform:
+      translate3d(
+        -95px,
+        -60px,
+        0
+      )
+      scale(1.16);
+  }
+}
+
+
+@keyframes brandPulse {
+  0%,
+  100% {
+    filter:
+      drop-shadow(
+        0 0 15px
+        rgba(92, 110, 255, .42)
+      );
+  }
+
+  50% {
+    filter:
+      drop-shadow(
+        0 0 28px
+        rgba(92, 110, 255, .72)
+      );
+  }
+}
+
+
+@keyframes avatarGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 12px
+      rgba(101, 79, 255, .15);
+  }
+
+  50% {
+    box-shadow:
+      0 0 26px
+      rgba(101, 79, 255, .38);
+  }
+}
+
+
+@keyframes heroLeftIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0);
+  }
+}
+
+
+@keyframes heroRightIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(30px)
+      scale(.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0)
+      scale(1);
+  }
+}
+
+
+@keyframes seasonPulse {
+  0%,
+  100% {
+    transform:
+      scale(.82);
+
+    box-shadow:
+      0 0 8px
+      #42ddb4;
+  }
+
+  50% {
+    transform:
+      scale(1.26);
+
+    box-shadow:
+      0 0 18px
+      #42ddb4;
+  }
+}
+
+
+@keyframes nameShimmer {
+  from {
+    background-position:
+      0% center;
+  }
+
+  to {
+    background-position:
+      200% center;
+  }
+}
+
+
+@keyframes orbitSpin {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+}
+
+
+@keyframes orbitSpinReverse {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg);
+  }
+}
+
+
+@keyframes orbitPulse {
   0%,
   100% {
     transform:
       translate(-50%, -50%)
-      scale(.88);
+      scale(.96);
+
+    opacity: .55;
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.04);
+
+    opacity: .95;
+  }
+}
+
+
+@keyframes rankGlowPulse {
+  0%,
+  100% {
+    transform:
+      translate(-50%, -50%)
+      scale(.90);
 
     opacity: .45;
   }
@@ -4394,279 +2406,370 @@ body::after {
   50% {
     transform:
       translate(-50%, -50%)
-      scale(1.07);
+      scale(1.12);
 
-    opacity: .76;
+    opacity: .75;
   }
-
 }
 
 
-@keyframes emblemFloorPulse {
+@keyframes badgeFloat {
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
 
+  50% {
+    transform:
+      translateY(-9px);
+  }
+}
+
+
+@keyframes badgeAuraPulse {
+  0%,
+  100% {
+    transform:
+      translate(-50%, -50%)
+      scale(.88);
+
+    opacity: .40;
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.10);
+
+    opacity: .72;
+  }
+}
+
+
+@keyframes floorPulse {
   0%,
   100% {
     transform:
       translateX(-50%)
       scaleX(.78);
 
-    opacity: .25;
+    opacity: .22;
   }
 
   50% {
     transform:
       translateX(-50%)
-      scaleX(1.06);
+      scaleX(1.08);
 
-    opacity: .48;
+    opacity: .46;
   }
-
 }
 
 
-@keyframes shieldPulseSoft {
+@keyframes rankTextPulse {
+  0%,
+  100% {
+    filter:
+      brightness(1);
+  }
 
+  50% {
+    filter:
+      brightness(1.18);
+  }
+}
+
+
+@keyframes sparkle {
   0%,
   100% {
     transform:
-      scale(1);
+      rotate(45deg)
+      scale(.4);
 
-    filter:
-      brightness(1.06)
-      drop-shadow(
-        0 0 8px rgba(255,255,255,.30)
-      )
-      drop-shadow(
-        0 0 16px var(--rank-glow)
-      );
+    opacity: .18;
   }
 
   50% {
     transform:
-      scale(1.025);
+      rotate(45deg)
+      scale(1.35);
 
-    filter:
-      brightness(1.18)
-      drop-shadow(
-        0 0 11px rgba(255,255,255,.42)
-      )
-      drop-shadow(
-        0 0 24px var(--rank-glow)
-      );
+    opacity: 1;
   }
-
-}
-
-/* ==========================================================
-   FIX POSITION GLOW — GESER KE KANAN, PAS DI BELAKANG LOGO
-========================================================== */
-
-.rank-badge::before {
-  content: "";
-
-  position: absolute;
-
-  /* GESER SUMBER CAHAYA KE KANAN */
-  left: 58%;
-
-  /* sedikit turun supaya center-nya kena shield */
-  top: 52%;
-
-  width: 220px;
-  height: 220px;
-
-  transform:
-    translate(-50%, -50%);
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.20) 0%,
-      rgba(155,190,255,.28) 18%,
-      var(--rank-glow) 38%,
-      transparent 72%
-    );
-
-  filter:
-    blur(30px);
-
-  opacity:
-    .72;
-
-  z-index:
-    -2;
-
-  animation:
-    emblemAuraPulse
-    2.3s
-    ease-in-out
-    infinite;
 }
 
 
-/* ==========================================================
-   TAMBAHAN CAHAYA KECIL TEPAT DI BELAKANG SHIELD
-========================================================== */
-
-.rank-shield::after {
-  content: "";
-
-  position: absolute;
-
-  left: 50%;
-  top: 52%;
-
-  width: 155px;
-  height: 155px;
-
-  transform:
-    translate(-50%, -50%);
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.16) 0%,
-      rgba(120,170,255,.20) 32%,
-      transparent 72%
-    );
-
-  filter:
-    blur(20px);
-
-  opacity:
-    .75;
-
-  z-index:
-    -1;
-}
-
-
-/* ==========================================================
-   PANTULAN CAHAYA DI BAWAH LOGO
-========================================================== */
-
-.rank-badge::after {
-  content: "";
-
-  position: absolute;
-
-  left: 10%;
-  bottom: 6px;
-
-  width: 150px;
-  height: 20px;
-
-  transform:
-    translateX(-50%);
-
-  border-radius: 50%;
-
-  background:
-    rgba(120,170,255,.58);
-
-  filter:
-    blur(18px);
-
-  opacity:
-    .42;
-
-  z-index:
-    -1;
-}
-
-
-/* ==========================================================
-   SHIELD EDGE GLOW
-========================================================== */
-
-.rank-shield {
-  filter:
-    brightness(1.10)
-    drop-shadow(0 0 8px rgba(220,235,255,.40))
-    drop-shadow(0 0 16px rgba(110,160,255,.52))
-    drop-shadow(0 0 28px rgba(110,160,255,.32));
-}
-
-
-/* ==========================================================
-   WARRIOR KHUSUS
-========================================================== */
-
-.rank-warrior {
-  --rank-color: #c8d4e6;
-  --rank-color-2: #7b8ba3;
-  --rank-glow: rgba(100, 150, 255, .60);
-}
-
-
-/* ==========================================================
-   AURA PULSE
-========================================================== */
-
-@keyframes emblemAuraPulse {
-
+@keyframes crystalPulse {
   0%,
   100% {
     transform:
-      translate(-50%, -50%)
-      scale(.92);
-
-    opacity:
-      .55;
+      rotate(45deg)
+      scale(.94);
   }
 
   50% {
     transform:
-      translate(-50%, -50%)
-      scale(1.08);
+      rotate(45deg)
+      scale(1.13);
+  }
+}
 
-    opacity:
-      .82;
+
+@keyframes gloryCrystal {
+  0%,
+  100% {
+    transform:
+      rotate(45deg)
+      scale(.94);
+
+    filter:
+      brightness(1);
+  }
+
+  50% {
+    transform:
+      rotate(45deg)
+      scale(1.16);
+
+    filter:
+      brightness(1.75);
+  }
+}
+
+
+@keyframes gloryShield {
+  0%,
+  100% {
+    filter:
+      brightness(1.05)
+      drop-shadow(
+        0 0 20px
+        var(--rank-glow)
+      );
+  }
+
+  50% {
+    filter:
+      brightness(1.30)
+      drop-shadow(
+        0 0 40px
+        var(--rank-glow)
+      );
+  }
+}
+
+
+@keyframes failedPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 8px
+      rgba(255, 65, 104, .10);
+  }
+
+  50% {
+    box-shadow:
+      0 0 22px
+      rgba(255, 65, 104, .28);
+  }
+}
+
+
+@keyframes winnerPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 8px
+      rgba(40, 207, 145, .12);
+  }
+
+  50% {
+    box-shadow:
+      0 0 24px
+      rgba(40, 207, 145, .32);
+  }
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 1000px) {
+
+  .topbar {
+    height: 92px;
+
+    padding:
+      0
+      18px;
+  }
+
+
+  .page {
+    padding:
+      116px
+      16px
+      30px;
+  }
+
+
+  .hero {
+    grid-template-columns:
+      1fr;
+
+    padding:
+      48px
+      7%;
+
+    text-align:
+      center;
+  }
+
+
+  .season-chip {
+    margin:
+      0 auto;
+  }
+
+
+  .hero-description {
+    margin-left:
+      auto;
+
+    margin-right:
+      auto;
+  }
+
+
+  .identity-info {
+    margin-left:
+      auto;
+
+    margin-right:
+      auto;
+  }
+
+
+  .rank-panel {
+    min-height:
+      470px;
+  }
+
+
+  .user-info {
+    display:
+      none;
+  }
+
+
+  .brand-title {
+    font-size:
+      18px;
+  }
+
+
+  .brand-subtitle {
+    font-size:
+      9px;
   }
 
 }
 
-/* FIX FINAL POSITION GLOW */
 
-.rank-badge::before {
-  left: 66% !important;
-  top: 50% !important;
+@media (max-width: 650px) {
 
-  width: 190px;
-  height: 190px;
+  .brand-copy {
+    display:
+      none;
+  }
 
-  transform:
-    translate(-50%, -50%);
 
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.22) 0%,
-      rgba(150,190,255,.30) 18%,
-      var(--rank-glow) 38%,
-      transparent 70%
-    );
+  .music-button {
+    width:
+      48px;
 
-  filter: blur(26px);
+    height:
+      48px;
+  }
 
-  opacity: .74;
+
+  .avatar {
+    width:
+      48px;
+
+    height:
+      48px;
+  }
+
+
+  .logout-button {
+    padding:
+      14px
+      17px;
+  }
+
+
+  .hero {
+    min-height:
+      0;
+
+    border-radius:
+      28px;
+  }
+
+
+  .hero-user-name {
+    font-size:
+      39px;
+
+    letter-spacing:
+      -2px;
+  }
+
+
+  .rank-panel {
+    min-height:
+      430px;
+  }
+
+
+  .orbit-one {
+    width:
+      310px;
+
+    height:
+      310px;
+  }
+
+
+  .orbit-two {
+    width:
+      250px;
+
+    height:
+      250px;
+  }
+
 }
 
 
-.rank-badge::after {
-  left: 66% !important;
+/* ==========================================================
+   ACCESSIBILITY
+========================================================== */
 
-  width: 135px;
-  height: 18px;
+@media (prefers-reduced-motion: reduce) {
 
-  background:
-    rgba(120,170,255,.55);
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      .01ms !important;
 
-  filter: blur(16px);
+    animation-iteration-count:
+      1 !important;
+  }
 
-  opacity: .42;
 }
