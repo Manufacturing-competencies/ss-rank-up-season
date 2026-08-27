@@ -779,7 +779,107 @@ export default async function handler(req, res) {
 
     }
 
+/* =====================================================
+   SUPERIOR SUPPORT SCORE
+===================================================== */
 
+let superiorScore = null;
+
+try {
+
+  const superiorRows =
+    await sb(
+
+      '/rest/v1/superior_scores' +
+
+      '?superior_email=eq.' +
+      encodeURIComponent(email) +
+
+      (
+        seasonId
+          ? '&season_id=eq.' +
+            encodeURIComponent(seasonId)
+          : ''
+      ) +
+
+      '&select=*' +
+
+      '&limit=1'
+
+    );
+
+
+  if (
+    Array.isArray(superiorRows) &&
+    superiorRows.length
+  ) {
+
+    const s =
+      superiorRows[0];
+
+
+    superiorScore = {
+
+      superiorName:
+        s.superior_name,
+
+      teamSize:
+        Number(
+          s.team_size || 0
+        ),
+
+      submittedCount:
+        Number(
+          s.submitted_count || 0
+        ),
+
+      approvedCount:
+        Number(
+          s.approved_count || 0
+        ),
+
+      implementationCount:
+        Number(
+          s.implementation_count || 0
+        ),
+
+      implementationApprovedCount:
+        Number(
+          s.implementation_approved_count || 0
+        ),
+
+      notApprovedCount:
+        Number(
+          s.not_approved_count || 0
+        ),
+
+      pendingCount:
+        Number(
+          s.pending_count || 0
+        ),
+
+      avgApprovalHours:
+        s.avg_approval_hours !== null
+          ? Number(s.avg_approval_hours)
+          : null,
+
+      score:
+        Number(
+          s.score || 0
+        )
+
+    };
+
+  }
+
+} catch (error) {
+
+  console.error(
+    'SUPERIOR SCORE ERROR:',
+    error.message
+  );
+
+}
     /* =====================================================
        12. RANK PROGRESS
     ===================================================== */
@@ -950,19 +1050,36 @@ export default async function handler(req, res) {
 
 
     return res
-      .status(500)
-      .json({
+  .status(200)
+  .json({
 
-        success: false,
+    success: true,
 
-        message:
-          'Gagal mengambil data dashboard.',
+    user: {
+      ...
+    },
 
-        error:
-          error.message
+    season: {
+      ...
+    },
 
-      });
+    stats: {
+      ...
+    },
 
-  }
+    journey:
+      journey,
 
-}
+    submissions:
+      recentSS,
+
+    leaderboard:
+      leaderboard,
+
+    announcements:
+      announcements,
+
+    superiorScore:
+      superiorScore
+
+  });
