@@ -688,3 +688,39 @@ body{
   }
 
 }
+
+/* ===============================
+   HIDE SCROLLBAR
+=============================== */
+
+html,
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* ===============================
+   FIXED NAVBAR
+=============================== */
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  width: 100%;
+  z-index: 9999;
+}
+
+
+/* supaya hero tidak tertutup navbar */
+.page {
+  padding-top: 156px;
+}
