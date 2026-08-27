@@ -1600,3 +1600,93 @@ body {
   }
 
 }
+
+function getRankVisual(rank) {
+
+  const ranks = {
+
+    WARRIOR: {
+
+      className:
+        'rank-warrior',
+
+      badge:
+        'W'
+
+    },
+
+
+    ELITE: {
+
+      className:
+        'rank-elite',
+
+      badge:
+        'E'
+
+    },
+
+
+    EPIC: {
+
+      className:
+        'rank-epic',
+
+      badge:
+        'EP'
+
+    },
+
+
+    LEGEND: {
+
+      className:
+        'rank-legend',
+
+      badge:
+        'L'
+
+    },
+
+
+    MYTHIC: {
+
+      className:
+        'rank-mythic',
+
+      badge:
+        'M'
+
+    },
+
+
+    'MYTHIC HONOR': {
+
+      className:
+        'rank-mythic-honor',
+
+      badge:
+        'MH'
+
+    },
+
+
+    'MYTHIC GLORY': {
+
+      className:
+        'rank-mythic-glory',
+
+      badge:
+        'MG'
+
+    }
+
+  };
+
+
+  return (
+    ranks[rank] ||
+    ranks.WARRIOR
+  );
+
+}
