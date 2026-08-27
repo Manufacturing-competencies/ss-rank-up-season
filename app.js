@@ -1,25 +1,47 @@
-const params =
+/* ==========================================================
+   SS RANK UP SEASON
+   FINAL FRONTEND
+========================================================== */
+
+
+const query =
   new URLSearchParams(
     window.location.search
   );
 
 
 let sessionToken =
-  params.get('session') ||
+  query.get('session') ||
   localStorage.getItem(
     'ss_rank_session'
   );
 
 
+let loginUrl =
+  null;
+
+
+/* ==========================================================
+   SAVE SESSION
+========================================================== */
+
 if (
-  params.get('session')
+  query.get('session')
 ) {
+
+  sessionToken =
+    query.get('session');
+
 
   localStorage.setItem(
     'ss_rank_session',
-    params.get('session')
+    sessionToken
   );
 
+
+  /*
+   Hilangkan token dari address bar.
+  */
 
   window.history.replaceState(
     {},
@@ -30,52 +52,122 @@ if (
 }
 
 
-/* ===============================
-   RANK ASSETS
-=============================== */
+/* ==========================================================
+   ELEMENTS
+========================================================== */
 
-const rankAssets = {
-
-  WARRIOR:
-    '/assets/ranks/warrior.png',
-
-  ELITE:
-    '/assets/ranks/elite.png',
-
-  EPIC:
-    '/assets/ranks/epic.png',
-
-  LEGEND:
-    '/assets/ranks/legend.png',
-
-  MYTHIC:
-    '/assets/ranks/mythic.png',
-
-  'MYTHIC HONOR':
-    '/assets/ranks/mythic-honor.png',
-
-  'MYTHIC GLORY':
-    '/assets/ranks/mythic-glory.png'
-
-};
+const headerUserName =
+  document.getElementById(
+    'headerUserName'
+  );
 
 
-/* ===============================
+const headerUserRole =
+  document.getElementById(
+    'headerUserRole'
+  );
+
+
+const heroUserName =
+  document.getElementById(
+    'heroUserName'
+  );
+
+
+const avatar =
+  document.getElementById(
+    'avatar'
+  );
+
+
+const departmentText =
+  document.getElementById(
+    'departmentText'
+  );
+
+
+const locationText =
+  document.getElementById(
+    'locationText'
+  );
+
+
+const rankPanel =
+  document.getElementById(
+    'rankPanel'
+  );
+
+
+const rankBadgeText =
+  document.getElementById(
+    'rankBadgeText'
+  );
+
+
+const rankName =
+  document.getElementById(
+    'rankName'
+  );
+
+
+const rankTotal =
+  document.getElementById(
+    'rankTotal'
+  );
+
+
+const seasonStatus =
+  document.getElementById(
+    'seasonStatus'
+  );
+
+
+const missedMonths =
+  document.getElementById(
+    'missedMonths'
+  );
+
+
+const seasonState =
+  document.getElementById(
+    'seasonState'
+  );
+
+
+const logoutButton =
+  document.getElementById(
+    'logoutButton'
+  );
+
+
+const musicButton =
+  document.getElementById(
+    'musicButton'
+  );
+
+
+const bgMusic =
+  document.getElementById(
+    'bgMusic'
+  );
+
+
+/* ==========================================================
    LOAD DASHBOARD
-=============================== */
+========================================================== */
 
 async function loadDashboard() {
 
-  if (!sessionToken) {
-
-    showInvalidSession();
-
-    return;
-
-  }
-
-
   try {
+
+    if (!sessionToken) {
+
+      await redirectToLogin();
+
+      return;
+
+    }
+
 
     const response =
       await fetch(
@@ -84,50 +176,81 @@ async function loadDashboard() {
 
         encodeURIComponent(
           sessionToken
-        )
+        ),
+
+        {
+          cache:
+            'no-store'
+        }
 
       );
 
 
-    const data =
+    const result =
       await response.json();
 
 
     if (
+      result.loginUrl
+    ) {
+
+      loginUrl =
+        result.loginUrl;
+
+    }
+
+
+    if (
       !response.ok ||
-      !data.success
+      !result.success
     ) {
 
       throw new Error(
-        data.message ||
-        'Dashboard gagal dimuat.'
+        result.message ||
+        'Session invalid.'
       );
 
     }
 
 
     renderDashboard(
-      data
+      result
     );
 
 
   } catch (error) {
 
     console.error(
+      'LOAD DASHBOARD ERROR',
       error
     );
 
 
-    showInvalidSession();
+    localStorage.removeItem(
+      'ss_rank_session'
+    );
+
+
+    if (loginUrl) {
+
+      window.location.href =
+        loginUrl;
+
+      return;
+
+    }
+
+
+    showSessionError();
 
   }
 
 }
 
 
-/* ===============================
+/* ==========================================================
    RENDER DASHBOARD
-=============================== */
+========================================================== */
 
 function renderDashboard(data) {
 
@@ -137,6 +260,15 @@ function renderDashboard(data) {
 
   const season =
     data.season || {};
+
+
+  const progress =
+    data.progress || {};
+
+
+  loginUrl =
+    data.loginUrl ||
+    loginUrl;
 
 
   const name =
@@ -149,85 +281,114 @@ function renderDashboard(data) {
     'USER';
 
 
-  document
-    .getElementById(
-      'userName'
-    )
-    .textContent =
+  headerUserName.textContent =
     name;
 
 
-  document
-    .getElementById(
-      'userRole'
-    )
-    .textContent =
+  headerUserRole.textContent =
     String(role)
       .toUpperCase();
 
 
-  document
-    .getElementById(
-      'heroName'
-    )
-    .textContent =
+  heroUserName.textContent =
     name;
 
 
-  document
-    .getElementById(
-      'avatar'
-    )
-    .textContent =
+  avatar.textContent =
     getInitials(
       name
     );
 
 
+  departmentText.textContent =
+    progress.department ||
+    '';
+
+
+  locationText.textContent =
+    progress.location ||
+    '';
+
+
+  /*
+   Season state.
+  */
+
+  seasonState.textContent =
+    season.active === false
+      ? 'SEASON CLOSED'
+      : 'SEASON ACTIVE';
+
+
   renderRank(
-    season
+    progress
   );
 
 }
 
 
-/* ===============================
+/* ==========================================================
    RENDER RANK
-=============================== */
+========================================================== */
 
-function renderRank(season) {
+function renderRank(
+  progress
+) {
 
   const rank =
     String(
-      season.rank ||
+      progress.rank ||
       'WARRIOR'
     )
       .trim()
       .toUpperCase();
 
 
-  const total =
+  const totalApproved =
     Number(
-      season.totalApproved ||
+      progress.totalApproved ||
       0
     );
 
 
   const status =
     String(
-      season.status ||
-      ''
+      progress.status ||
+      'FAILED'
     )
       .trim()
       .toUpperCase();
 
 
-  const missedMonths =
+  const missed =
     Array.isArray(
-      season.missedMonths
+      progress.missedMonths
     )
-      ? season.missedMonths
+      ? progress.missedMonths
       : [];
+
+
+  /*
+   Remove rank class lama.
+  */
+
+  rankPanel.classList.remove(
+
+    'rank-warrior',
+
+    'rank-elite',
+
+    'rank-epic',
+
+    'rank-legend',
+
+    'rank-mythic',
+
+    'rank-mythic-honor',
+
+    'rank-mythic-glory'
+
+  );
 
 
   const visual =
@@ -236,131 +397,79 @@ function renderRank(season) {
     );
 
 
-  document
-    .documentElement
-    .style
-    .setProperty(
-      '--rank-accent',
-      visual.accent
-    );
+  rankPanel.classList.add(
+    visual.className
+  );
 
 
-  document
-    .documentElement
-    .style
-    .setProperty(
-      '--rank-glow',
-      visual.glow
-    );
+  rankBadgeText.textContent =
+    visual.badge;
 
 
-  document
-    .getElementById(
-      'rankName'
-    )
-    .textContent =
+  rankName.textContent =
     rank;
 
 
-  document
-    .getElementById(
-      'rankCount'
-    )
-    .textContent =
-    total +
+  rankTotal.textContent =
+    totalApproved +
     ' SS';
 
 
-  document
-    .getElementById(
-      'rankImage'
-    )
-    .src =
-    rankAssets[rank] ||
-    rankAssets.WARRIOR;
+  /*
+   STATUS
+  */
 
-
-  const resultElement =
-    document
-      .getElementById(
-        'seasonResult'
-      );
-
-
-  resultElement
-    .classList
-    .remove(
-      'winner',
-      'failed'
-    );
+  seasonStatus.classList.remove(
+    'winner',
+    'failed'
+  );
 
 
   if (
     status === 'WINNER'
   ) {
 
-    resultElement
-      .textContent =
+    seasonStatus.textContent =
       'WINNER';
 
 
-    resultElement
-      .classList
-      .add(
-        'winner'
-      );
+    seasonStatus.classList.add(
+      'winner'
+    );
 
   }
 
-  else if (
-    status === 'FAILED'
-  ) {
+  else {
 
-    resultElement
-      .textContent =
+    seasonStatus.textContent =
       'FAILED';
 
 
-    resultElement
-      .classList
-      .add(
-        'failed'
-      );
-
-  }
-
-  else {
-
-    resultElement
-      .textContent =
-      '';
+    seasonStatus.classList.add(
+      'failed'
+    );
 
   }
 
 
-  const missedElement =
-    document
-      .getElementById(
-        'missedMonths'
-      );
-
+  /*
+   MISSED MONTH
+  */
 
   if (
     status === 'FAILED' &&
-    missedMonths.length
+    missed.length
   ) {
 
-    missedElement
-      .textContent =
+    missedMonths.textContent =
       'Missed: ' +
-      missedMonths.join(', ');
+      missed.join(', ');
 
   }
 
   else {
 
-    missedElement
-      .textContent =
+    missedMonths.textContent =
       '';
 
   }
@@ -368,72 +477,119 @@ function renderRank(season) {
 }
 
 
-/* ===============================
-   VISUAL PER RANK
-=============================== */
+/* ==========================================================
+   RANK VISUAL
+========================================================== */
 
 function getRankVisual(rank) {
 
-  const visuals = {
+  const ranks = {
 
     WARRIOR: {
-      accent:'#94a3b8',
-      glow:'rgba(148,163,184,.65)'
+
+      className:
+        'rank-warrior',
+
+      badge:
+        'W'
+
     },
+
 
     ELITE: {
-      accent:'#38bdf8',
-      glow:'rgba(56,189,248,.65)'
+
+      className:
+        'rank-elite',
+
+      badge:
+        'E'
+
     },
+
 
     EPIC: {
-      accent:'#8b5cf6',
-      glow:'rgba(139,92,246,.72)'
+
+      className:
+        'rank-epic',
+
+      badge:
+        'E'
+
     },
+
 
     LEGEND: {
-      accent:'#facc15',
-      glow:'rgba(250,204,21,.72)'
+
+      className:
+        'rank-legend',
+
+      badge:
+        'L'
+
     },
+
 
     MYTHIC: {
-      accent:'#34d399',
-      glow:'rgba(52,211,153,.72)'
+
+      className:
+        'rank-mythic',
+
+      badge:
+        'M'
+
     },
+
 
     'MYTHIC HONOR': {
-      accent:'#a855f7',
-      glow:'rgba(168,85,247,.78)'
+
+      className:
+        'rank-mythic-honor',
+
+      badge:
+        'MH'
+
     },
 
+
     'MYTHIC GLORY': {
-      accent:'#fbbf24',
-      glow:'rgba(251,191,36,.88)'
+
+      className:
+        'rank-mythic-glory',
+
+      badge:
+        'MG'
+
     }
 
   };
 
 
   return (
-    visuals[rank] ||
-    visuals.WARRIOR
+    ranks[rank] ||
+    ranks.WARRIOR
   );
 
 }
 
 
-/* ===============================
-   INITIAL
-=============================== */
+/* ==========================================================
+   INITIALS
+========================================================== */
 
-function getInitials(name) {
+function getInitials(
+  name
+) {
 
   return String(
     name || ''
   )
+
     .trim()
+
     .split(/\s+/)
+
     .slice(0,2)
+
     .map(
       function(word) {
 
@@ -442,111 +598,120 @@ function getInitials(name) {
 
       }
     )
+
     .join('')
+
     .toUpperCase();
 
 }
 
 
-/* ===============================
-   INVALID SESSION
-=============================== */
+/* ==========================================================
+   LOGIN REDIRECT
+========================================================== */
 
-function showInvalidSession() {
+async function redirectToLogin() {
 
-  localStorage
-    .removeItem(
-      'ss_rank_session'
+  try {
+
+    const response =
+      await fetch(
+        '/api/dashboard',
+        {
+          cache:
+            'no-store'
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      data.loginUrl
+    ) {
+
+      window.location.href =
+        data.loginUrl;
+
+      return;
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      error
     );
 
+  }
 
-  document
-    .getElementById(
-      'userName'
-    )
-    .textContent =
+
+  showSessionError();
+
+}
+
+
+/* ==========================================================
+   SESSION ERROR
+========================================================== */
+
+function showSessionError() {
+
+  headerUserName.textContent =
     'SESSION ENDED';
 
 
-  document
-    .getElementById(
-      'heroName'
-    )
-    .textContent =
+  headerUserRole.textContent =
+    'LOGIN REQUIRED';
+
+
+  heroUserName.textContent =
     'PLEASE LOGIN AGAIN';
 
 
-  document
-    .getElementById(
-      'rankName'
-    )
-    .textContent =
+  rankName.textContent =
     '';
 
 
-  document
-    .getElementById(
-      'rankCount'
-    )
-    .textContent =
+  rankTotal.textContent =
+    '';
+
+
+  seasonStatus.textContent =
     '';
 
 }
 
 
-/* ===============================
+/* ==========================================================
    LOGOUT
-=============================== */
+========================================================== */
 
-document
-  .getElementById(
-    'logoutButton'
-  )
+logoutButton
   .addEventListener(
     'click',
-    async function() {
+    function() {
 
-      try {
+      localStorage.removeItem(
+        'ss_rank_session'
+      );
 
-        if (
-          sessionToken
-        ) {
 
-          await fetch(
-            '/api/logout',
-            {
+      sessionToken =
+        null;
 
-              method:'POST',
 
-              headers:{
-                'Content-Type':
-                  'application/json'
-              },
+      if (loginUrl) {
 
-              body:
-                JSON.stringify({
-                  session:
-                    sessionToken
-                })
+        window.location.href =
+          loginUrl;
 
-            }
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          error
-        );
+        return;
 
       }
-
-
-      localStorage
-        .removeItem(
-          'ss_rank_session'
-        );
 
 
       window.location.href =
@@ -556,23 +721,9 @@ document
   );
 
 
-/* ===============================
+/* ==========================================================
    MUSIC
-=============================== */
-
-const music =
-  document
-    .getElementById(
-      'bgMusic'
-    );
-
-
-const musicButton =
-  document
-    .getElementById(
-      'musicButton'
-    );
-
+========================================================== */
 
 musicButton
   .addEventListener(
@@ -580,15 +731,15 @@ musicButton
     async function() {
 
       if (
-        music.paused
+        bgMusic.paused
       ) {
 
         try {
 
-          await music.play();
+          await bgMusic.play();
 
-          musicButton
-            .textContent =
+
+          musicButton.textContent =
             'II';
 
         } catch (error) {
@@ -603,10 +754,10 @@ musicButton
 
       else {
 
-        music.pause();
+        bgMusic.pause();
 
-        musicButton
-          .textContent =
+
+        musicButton.textContent =
           '▶';
 
       }
@@ -614,5 +765,9 @@ musicButton
     }
   );
 
+
+/* ==========================================================
+   START
+========================================================== */
 
 loadDashboard();
