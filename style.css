@@ -4629,3 +4629,44 @@ body::after {
   }
 
 }
+
+/* FIX FINAL POSITION GLOW */
+
+.rank-badge::before {
+  left: 66% !important;
+  top: 50% !important;
+
+  width: 190px;
+  height: 190px;
+
+  transform:
+    translate(-50%, -50%);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.22) 0%,
+      rgba(150,190,255,.30) 18%,
+      var(--rank-glow) 38%,
+      transparent 70%
+    );
+
+  filter: blur(26px);
+
+  opacity: .74;
+}
+
+
+.rank-badge::after {
+  left: 66% !important;
+
+  width: 135px;
+  height: 18px;
+
+  background:
+    rgba(120,170,255,.55);
+
+  filter: blur(16px);
+
+  opacity: .42;
+}
