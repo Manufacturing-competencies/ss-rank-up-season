@@ -2773,3 +2773,42 @@ body::after {
   }
 
 }
+
+/* ==========================================================
+   BESARKAN LOGO RANK
+========================================================== */
+
+.rank-badge {
+  width: 300px;
+  height: 270px;
+}
+
+.rank-shield {
+  width: 175px;
+  height: 205px;
+}
+
+.rank-shield-inner {
+  width: 116px;
+  height: 136px;
+}
+
+.rank-crystal {
+  width: 58px;
+  height: 58px;
+}
+
+.rank-symbol::before {
+  font-size: 42px !important;
+}
+
+/* glow ikut dibesarkan supaya proporsional */
+.rank-badge::before {
+  width: 225px;
+  height: 225px;
+}
+
+.rank-glow {
+  width: 290px;
+  height: 290px;
+}
