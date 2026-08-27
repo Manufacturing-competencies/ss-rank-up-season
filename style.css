@@ -1690,3 +1690,551 @@ function getRankVisual(rank) {
   );
 
 }
+
+/* ==========================================================
+   ALIVE / GAME FEEL UPGRADE
+========================================================== */
+
+/* BACKGROUND ANIMATION */
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+}
+
+body::before {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(61,113,255,.18), transparent 26%),
+    radial-gradient(circle at 80% 30%, rgba(175,69,255,.16), transparent 28%),
+    radial-gradient(circle at 50% 90%, rgba(47,216,255,.10), transparent 30%);
+  animation: bgMove 12s ease-in-out infinite alternate;
+}
+
+body::after {
+  opacity: .28;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.5) 1px, transparent 1.2px);
+  background-size: 55px 55px;
+  animation: starsMove 18s linear infinite;
+}
+
+
+/* HERO ALIVE */
+
+.hero {
+  isolation: isolate;
+  overflow: hidden;
+
+  box-shadow:
+    0 35px 100px rgba(0,0,0,.35),
+    inset 0 0 100px rgba(55,88,255,.06);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+
+  width: 650px;
+  height: 650px;
+
+  left: -260px;
+  top: -280px;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      from 180deg,
+      rgba(54,157,255,.14),
+      rgba(142,78,255,.12),
+      transparent 50%,
+      rgba(51,207,255,.08)
+    );
+
+  filter: blur(30px);
+
+  animation: heroRotate 18s linear infinite;
+
+  z-index: -1;
+}
+
+
+/* LIGHT SWEEP */
+
+.hero::after {
+  content: "";
+
+  position: absolute;
+
+  left: -25%;
+  top: -40%;
+
+  width: 35%;
+  height: 180%;
+
+  transform: rotate(20deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.07),
+      transparent
+    );
+
+  animation: lightSweep 7s ease-in-out infinite;
+
+  pointer-events: none;
+}
+
+
+/* NAVBAR */
+
+.topbar {
+  box-shadow:
+    0 8px 35px rgba(0,0,0,.25),
+    inset 0 -1px rgba(255,255,255,.04);
+}
+
+
+/* BRAND BREATHING */
+
+.brand-icon {
+  animation: brandPulse 3s ease-in-out infinite;
+}
+
+
+/* SEASON ACTIVE */
+
+.season-chip {
+  position: relative;
+
+  box-shadow:
+    0 0 22px rgba(62,228,188,.08);
+}
+
+.season-dot {
+  animation: seasonPulse 1.5s ease-in-out infinite;
+}
+
+
+/* HERO ENTRY */
+
+.hero-left {
+  animation:
+    slideHeroLeft .8s cubic-bezier(.22,.8,.2,1) both;
+}
+
+.rank-panel {
+  animation:
+    slideHeroRight .9s cubic-bezier(.22,.8,.2,1) both;
+}
+
+
+/* HERO NAME */
+
+.hero-user-name {
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff,
+      #d7e7ff,
+      #ffffff
+    );
+
+  background-size: 200% auto;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+
+  animation:
+    nameShimmer 5s linear infinite;
+}
+
+
+/* RANK EMBLEM STRONGER */
+
+.rank-badge {
+  animation:
+    rankFloat 3s ease-in-out infinite,
+    badgeBreath 2.5s ease-in-out infinite;
+}
+
+.rank-shield {
+  box-shadow:
+    0 0 18px var(--rank-glow),
+    0 0 45px rgba(0,0,0,.18);
+}
+
+.rank-shield::after {
+  content: "";
+
+  position: absolute;
+
+  width: 160%;
+  height: 12px;
+
+  bottom: -30px;
+  left: -30%;
+
+  border-radius: 50%;
+
+  background:
+    var(--rank-color);
+
+  filter: blur(26px);
+
+  opacity: .20;
+
+  animation: shadowPulse 2.4s ease-in-out infinite;
+}
+
+
+/* RANK NAME MORE ALIVE */
+
+.rank-name {
+  position: relative;
+
+  text-shadow:
+    0 0 10px var(--rank-glow),
+    0 0 26px var(--rank-glow),
+    0 0 46px var(--rank-glow);
+
+  animation:
+    rankTextGlow 2.2s ease-in-out infinite;
+}
+
+
+/* TOTAL SS */
+
+.rank-total {
+  text-shadow:
+    0 0 14px rgba(255,211,75,.4);
+}
+
+
+/* WINNER / FAILED */
+
+.season-status.winner {
+  animation:
+    winnerPulse 1.7s ease-in-out infinite;
+}
+
+.season-status.failed {
+  animation:
+    failedPulse 2.3s ease-in-out infinite;
+}
+
+
+/* BUTTONS */
+
+.music-button,
+.logout-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.music-button::before,
+.logout-button::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  transform: translateX(-110%);
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent,
+      rgba(255,255,255,.10),
+      transparent
+    );
+
+  transition: .5s ease;
+}
+
+.music-button:hover::before,
+.logout-button:hover::before {
+  transform: translateX(110%);
+}
+
+.logout-button:hover {
+  transform: translateY(-2px);
+}
+
+
+/* AVATAR */
+
+.avatar {
+  animation: avatarGlow 4s ease-in-out infinite;
+}
+
+
+/* ==========================================================
+   MYTHIC EXTRA EFFECT
+========================================================== */
+
+.rank-mythic .rank-panel,
+.rank-mythic-honor .rank-panel,
+.rank-mythic-glory .rank-panel {
+  filter: saturate(1.12);
+}
+
+
+/* MYTHIC GLORY SUPER EFFECT */
+
+.rank-mythic-glory .rank-crown {
+  animation:
+    crownFloat 1.8s ease-in-out infinite;
+}
+
+.rank-mythic-glory .rank-name {
+  animation:
+    gloryName 1.8s ease-in-out infinite;
+}
+
+.rank-mythic-glory .rank-orbit {
+  box-shadow:
+    0 0 20px var(--rank-glow);
+}
+
+
+/* ==========================================================
+   ANIMATIONS
+========================================================== */
+
+@keyframes bgMove {
+  0% {
+    transform: scale(1) translate3d(0,0,0);
+  }
+
+  100% {
+    transform: scale(1.12) translate3d(-2%,2%,0);
+  }
+}
+
+@keyframes starsMove {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(55px);
+  }
+}
+
+@keyframes heroRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes lightSweep {
+  0%,
+  20% {
+    left: -35%;
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  65% {
+    left: 120%;
+    opacity: 0;
+  }
+
+  100% {
+    left: 120%;
+    opacity: 0;
+  }
+}
+
+@keyframes brandPulse {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 0 12px rgba(90,92,255,.35));
+  }
+
+  50% {
+    filter:
+      drop-shadow(0 0 28px rgba(98,133,255,.72));
+  }
+}
+
+@keyframes seasonPulse {
+  0%,
+  100% {
+    transform: scale(.8);
+    box-shadow: 0 0 8px #40d7b0;
+  }
+
+  50% {
+    transform: scale(1.3);
+    box-shadow:
+      0 0 18px #40d7b0,
+      0 0 28px rgba(64,215,176,.5);
+  }
+}
+
+@keyframes slideHeroLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideHeroRight {
+  from {
+    opacity: 0;
+    transform: translateX(35px) scale(.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes nameShimmer {
+  0% {
+    background-position: 0% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes badgeBreath {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 0 14px var(--rank-glow));
+  }
+
+  50% {
+    filter:
+      drop-shadow(0 0 32px var(--rank-glow));
+  }
+}
+
+@keyframes shadowPulse {
+  0%,
+  100% {
+    transform: scaleX(.8);
+    opacity: .10;
+  }
+
+  50% {
+    transform: scaleX(1.1);
+    opacity: .30;
+  }
+}
+
+@keyframes rankTextGlow {
+  0%,
+  100% {
+    opacity: .92;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes winnerPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 8px rgba(79,240,181,.15);
+  }
+
+  50% {
+    box-shadow:
+      0 0 25px rgba(79,240,181,.40);
+  }
+}
+
+@keyframes failedPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 6px rgba(255,94,123,.10);
+  }
+
+  50% {
+    box-shadow:
+      0 0 20px rgba(255,94,123,.30);
+  }
+}
+
+@keyframes avatarGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px rgba(103,82,255,.10);
+  }
+
+  50% {
+    box-shadow:
+      0 0 26px rgba(103,82,255,.35);
+  }
+}
+
+@keyframes crownFloat {
+  0%,
+  100% {
+    transform: translateY(0) scale(1.15);
+  }
+
+  50% {
+    transform: translateY(-6px) scale(1.18);
+  }
+}
+
+@keyframes gloryName {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+
+  50% {
+    filter: brightness(1.45);
+  }
+}
+
+
+/* ==========================================================
+   REDUCE MOTION
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+}
