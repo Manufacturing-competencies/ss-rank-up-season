@@ -2069,214 +2069,574 @@ async function loadDatabase() {
 /* ==========================================================
    RENDER DATABASE
 ========================================================== */
+/* ==========================================================
+   RENDER DATABASE
+========================================================== */
 
-function renderDatabaseRows(
-  rows
-) {
+function renderDatabaseRows(rows) {
 
-  if (
-    databaseTableBody
-  ) {
+  /* ========================================================
+     RESET
+  ======================================================== */
 
-    databaseTableBody.innerHTML =
-      '';
-
+  if (databaseTableBody) {
+    databaseTableBody.innerHTML = '';
   }
 
 
-  if (
-    databaseMobile
-  ) {
-
-    databaseMobile.innerHTML =
-      '';
-
+  if (databaseMobile) {
+    databaseMobile.innerHTML = '';
   }
 
 
-  if (
-    !rows.length
-  ) {
+  /* ========================================================
+     EMPTY
+  ======================================================== */
 
-    if (
-      databaseStatus
-    ) {
+  if (!rows || !rows.length) {
+
+    if (databaseStatus) {
 
       databaseStatus.textContent =
         'Data tidak ditemukan.';
 
     }
 
-
     return;
 
   }
 
 
-  rows.forEach(
+  /* ========================================================
+     LOOP DATA
+  ======================================================== */
 
-    function(row) {
-
-      /* DESKTOP */
-
-      if (
-        databaseTableBody
-      ) {
-
-        const tr =
-          document.createElement(
-            'tr'
-          );
+  rows.forEach(function(row) {
 
 
-        tr.innerHTML =
+    /* ======================================================
+       DESKTOP TABLE
+    ====================================================== */
 
-          '<td>' +
-          safeText(row.ss_id) +
-          '</td>' +
+    if (databaseTableBody) {
 
-          '<td>' +
-          safeText(row.employee_name) +
-          '</td>' +
-
-          '<td>' +
-          safeText(row.department) +
-          '</td>' +
-
-          '<td>' +
-          safeText(row.ss_type) +
-          '</td>' +
-
-          '<td>' +
-          safeText(row.superior_name) +
-          '</td>' +
-
-          '<td>' +
-          safeText(row.status_superior) +
-          '</td>' +
-
-          '<td>' +
-          safeText(row.status_implementasi) +
-          '</td>' +
-
-          '<td>' +
-          safeText(row.work_location) +
-          '</td>' +
-
-          '<td>' +
-          safeText(
-            row.validation_month ||
-            row.month_no
-          ) +
-          '</td>' +
-
-          '<td>' +
-          safeText(row.qualification) +
-          '</td>' +
-
-          '<td>' +
-          safeText(row.point) +
-          '</td>' +
-
-          '<td>' +
-          safeText(row.point_approval) +
-          '</td>';
+      const tr =
+        document.createElement('tr');
 
 
-        databaseTableBody
-          .appendChild(
-            tr
-          );
+      tr.innerHTML =
 
-      }
+        /* 01 SS ID */
+        tableCell(
+          row.ss_id
+        ) +
+
+        /* 02 NAMA */
+        tableCell(
+          row.employee_name
+        ) +
+
+        /* 03 DEPARTEMEN */
+        tableCell(
+          row.department
+        ) +
+
+        /* 04 JENIS SS */
+        tableCell(
+          row.ss_type
+        ) +
+
+        /* 05 SUPERIOR */
+        tableCell(
+          row.superior_name
+        ) +
+
+        /* 06 STATUS ADMIN */
+        tableCell(
+          row.status_admin,
+          getStatusClass(row.status_admin)
+        ) +
+
+        /* 07 STATUS SUPERIOR */
+        tableCell(
+          row.status_superior,
+          getStatusClass(row.status_superior)
+        ) +
+
+        /* 08 STATUS IMPLEMENTASI */
+        tableCell(
+          row.status_implementasi,
+          getStatusClass(row.status_implementasi)
+        ) +
+
+        /* 09 CREATE TIME */
+        tableCell(
+          formatDateTimeDatabase(
+            row.created_time
+          )
+        ) +
+
+        /* 10 LOKASI */
+        tableCell(
+          row.work_location
+        ) +
+
+        /* 11 MONTH */
+        tableCell(
+          row.month_no
+        ) +
+
+        /* 12 VALIDASI */
+        tableCell(
+          row.validation_month
+        ) +
+
+        /* 13 TANGGAL IMPLEMENTASI */
+        tableCell(
+          formatImplementationDate(
+            row.implementation_date
+          )
+        ) +
+
+        /* 14 KUALIFIKASI */
+        tableCell(
+          row.qualification,
+          getStatusClass(row.qualification)
+        ) +
+
+        /* 15 POINT */
+        tableCell(
+          formatPointDatabase(
+            row.point
+          )
+        ) +
+
+        /* 16 POINT APPROVAL */
+        tableCell(
+          formatPointDatabase(
+            row.point_approval
+          )
+        );
 
 
-      /* MOBILE */
+      databaseTableBody.appendChild(tr);
 
-      if (
-        databaseMobile
-      ) {
-
-        const card =
-          document.createElement(
-            'article'
-          );
+    }
 
 
-        card.className =
-          'database-mobile-card';
+    /* ======================================================
+       MOBILE CARD
+    ====================================================== */
+
+    if (databaseMobile) {
+
+      const card =
+        document.createElement(
+          'article'
+        );
 
 
-        card.innerHTML =
+      card.className =
+        'database-mobile-card';
 
-          '<div class="database-mobile-card-head">' +
 
-            '<div>' +
+      card.innerHTML =
 
-              '<div class="database-mobile-id">' +
-                'SS #' +
-                safeText(row.ss_id) +
-              '</div>' +
+        '<div class="database-mobile-card-head">' +
 
-              '<div class="database-mobile-name">' +
-                safeText(row.employee_name) +
-              '</div>' +
+          '<div>' +
 
-              '<div class="database-mobile-dept">' +
-                safeText(row.department) +
-              '</div>' +
+            '<div class="database-mobile-id">' +
+
+              'SS #' +
+              safeText(row.ss_id) +
+
+            '</div>' +
+
+
+            '<div class="database-mobile-name">' +
+
+              safeText(
+                row.employee_name
+              ) +
+
+            '</div>' +
+
+
+            '<div class="database-mobile-dept">' +
+
+              safeText(
+                row.department
+              ) +
 
             '</div>' +
 
           '</div>' +
 
+        '</div>' +
 
-          '<div class="database-mobile-info">' +
 
-            mobileInfo(
-              'Superior',
-              row.superior_name
-            ) +
+        '<div class="database-mobile-info">' +
 
-            mobileInfo(
-              'Status',
-              row.status_superior
-            ) +
+          mobileInfo(
+            'Jenis SS',
+            row.ss_type
+          ) +
 
-            mobileInfo(
-              'Implementasi',
-              row.status_implementasi
-            ) +
+          mobileInfo(
+            'Superior',
+            row.superior_name
+          ) +
 
-            mobileInfo(
-              'Month',
-              row.validation_month ||
-              row.month_no
-            ) +
+          mobileInfo(
+            'Status Admin',
+            row.status_admin
+          ) +
 
-            mobileInfo(
-              'Point',
+          mobileInfo(
+            'Status Superior',
+            row.status_superior
+          ) +
+
+          mobileInfo(
+            'Implementasi',
+            row.status_implementasi
+          ) +
+
+          mobileInfo(
+            'Create Time',
+            formatDateTimeDatabase(
+              row.created_time
+            )
+          ) +
+
+          mobileInfo(
+            'Lokasi',
+            row.work_location
+          ) +
+
+          mobileInfo(
+            'Month',
+            row.month_no
+          ) +
+
+          mobileInfo(
+            'Validasi',
+            row.validation_month
+          ) +
+
+          mobileInfo(
+            'Tanggal Implementasi',
+            formatImplementationDate(
+              row.implementation_date
+            )
+          ) +
+
+          mobileInfo(
+            'Kualifikasi',
+            row.qualification
+          ) +
+
+          mobileInfo(
+            'Point',
+            formatPointDatabase(
               row.point
-            ) +
+            )
+          ) +
 
-            mobileInfo(
-              'Approval',
+          mobileInfo(
+            'Point Approval',
+            formatPointDatabase(
               row.point_approval
-            ) +
+            )
+          ) +
 
-          '</div>';
+        '</div>';
 
 
-        databaseMobile
-          .appendChild(
-            card
-          );
-
-      }
+      databaseMobile
+        .appendChild(card);
 
     }
 
+
+  });
+
+}
+
+
+/* ==========================================================
+   TABLE CELL
+========================================================== */
+
+function tableCell(
+  value,
+  className = ''
+) {
+
+  const cssClass =
+    className
+      ? ` class="${className}"`
+      : '';
+
+
+  return (
+    `<td${cssClass}>` +
+      safeText(value) +
+    '</td>'
   );
+
+}
+
+
+/* ==========================================================
+   FORMAT POINT
+========================================================== */
+
+function formatPointDatabase(value) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ''
+  ) {
+
+    return '-';
+
+  }
+
+
+  const number =
+    Number(value);
+
+
+  if (Number.isNaN(number)) {
+    return value;
+  }
+
+
+  return number.toLocaleString(
+    'id-ID'
+  );
+
+}
+
+
+/* ==========================================================
+   FORMAT IMPLEMENTATION DATE
+
+   Database:
+   2026-08-26
+
+   Website:
+   26 Aug 2026
+========================================================== */
+
+function formatImplementationDate(value) {
+
+  if (
+    !value ||
+    value === 'null'
+  ) {
+
+    return '-';
+
+  }
+
+
+  /*
+    Jangan pakai new Date("YYYY-MM-DD")
+    karena bisa bergeser timezone.
+
+    Kita pecah string manual.
+  */
+
+  const match =
+    String(value).match(
+      /^(\d{4})-(\d{2})-(\d{2})/
+    );
+
+
+  if (!match) {
+
+    return String(value);
+
+  }
+
+
+  const year =
+    Number(match[1]);
+
+
+  const month =
+    Number(match[2]);
+
+
+  const day =
+    Number(match[3]);
+
+
+  const monthNames = [
+    '',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Agu',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des'
+  ];
+
+
+  return (
+    String(day).padStart(2, '0') +
+    ' ' +
+    monthNames[month] +
+    ' ' +
+    year
+  );
+
+}
+
+
+/* ==========================================================
+   FORMAT CREATE TIME
+
+   Supabase ISO:
+   2026-07-30T03:13:00...
+
+   Website:
+   30 Jul 2026 • 10:13
+========================================================== */
+
+function formatDateTimeDatabase(value) {
+
+  if (
+    !value ||
+    value === 'null'
+  ) {
+
+    return '-';
+
+  }
+
+
+  const date =
+    new Date(value);
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return String(value);
+
+  }
+
+
+  try {
+
+    return new Intl.DateTimeFormat(
+
+      'id-ID',
+
+      {
+
+        timeZone:
+          'Asia/Jakarta',
+
+        day:
+          '2-digit',
+
+        month:
+          'short',
+
+        year:
+          'numeric',
+
+        hour:
+          '2-digit',
+
+        minute:
+          '2-digit',
+
+        hour12:
+          false
+
+      }
+
+    )
+      .format(date)
+      .replace(
+        ',',
+        ' •'
+      );
+
+  }
+
+  catch {
+
+    return String(value);
+
+  }
+
+}
+
+
+/* ==========================================================
+   STATUS CLASS
+========================================================== */
+
+function getStatusClass(value) {
+
+  const status =
+    String(value || '')
+      .trim()
+      .toUpperCase();
+
+
+  if (
+    status === 'APPROVED' ||
+    status === 'DONE' ||
+    status === 'QUALIFIED'
+  ) {
+
+    return 'db-status-success';
+
+  }
+
+
+  if (
+    status === 'NOT APPROVED' ||
+    status === 'NOT OK' ||
+    status === 'FAILED' ||
+    status === 'NOT QUALIFIED'
+  ) {
+
+    return 'db-status-danger';
+
+  }
+
+
+  if (
+    status === 'SUBMITTED' ||
+    status === 'IMPLEMENTASI' ||
+    status === 'NEED REVISION'
+  ) {
+
+    return 'db-status-process';
+
+  }
+
+
+  return '';
 
 }
 
