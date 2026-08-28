@@ -5646,3 +5646,70 @@ body::after {
   }
 
 }
+
+/* ==========================================================
+   FINAL JOURNEY LINE
+   LETAKKAN PALING BAWAH STYLE.CSS
+========================================================== */
+
+.journey-line {
+
+  position: absolute;
+
+  top: 151px;
+
+  left: 6%;
+  right: 6%;
+
+  height: 2px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(63,223,205,.45),
+      rgba(81,205,255,.75),
+      rgba(146,99,255,.75),
+      rgba(255,204,79,.55)
+    );
+
+  box-shadow:
+    0 0 14px rgba(100,130,255,.25);
+
+  opacity: .65;
+
+  z-index: 0;
+}
+
+
+.journey-line::after {
+
+  content: "";
+
+  position: absolute;
+
+  top: -4px;
+  left: -18%;
+
+  width: 16%;
+  height: 10px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.88),
+      transparent
+    );
+
+  filter: blur(3px);
+
+  animation:
+    journeyLineRun
+    4s
+    linear
+    infinite;
+}
