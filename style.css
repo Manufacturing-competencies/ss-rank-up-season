@@ -5713,3 +5713,954 @@ body::after {
     linear
     infinite;
 }
+
+/* ==========================================================
+   APP NAVIGATION
+========================================================== */
+
+.app-navigation {
+
+  position: fixed;
+
+  left: 50%;
+
+  top: 112px;
+
+  z-index: 90;
+
+  transform: translateX(-50%);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 8px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(4,10,30,.90);
+
+  border:
+    1px solid
+    rgba(116,135,255,.18);
+
+  box-shadow:
+    0 15px 40px
+    rgba(0,0,0,.24);
+
+  backdrop-filter:
+    blur(15px);
+
+}
+
+
+.nav-item {
+
+  min-width: 105px;
+
+  height: 48px;
+
+  padding:
+    0 16px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  border: 0;
+
+  border-radius: 14px;
+
+  background:
+    transparent;
+
+  color:
+    #8292B8;
+
+  cursor: pointer;
+
+  transition:
+    .25s ease;
+
+}
+
+
+.nav-icon {
+
+  font-size: 18px;
+
+}
+
+
+.nav-label {
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: .04em;
+
+}
+
+
+.nav-item:hover {
+
+  color: white;
+
+  background:
+    rgba(91,99,255,.10);
+
+}
+
+
+.nav-item.active {
+
+  color:
+    white;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(55,134,255,.30),
+      rgba(134,70,255,.30)
+    );
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(119,143,255,.25),
+    0 0 22px
+    rgba(99,91,255,.12);
+
+}
+
+
+/* ==========================================================
+   PAGE SYSTEM
+========================================================== */
+
+.app-page {
+
+  display:
+    none;
+
+  animation:
+    pageEnter
+    .35s
+    ease both;
+
+}
+
+
+.app-page.active {
+
+  display:
+    block;
+
+}
+
+
+@keyframes pageEnter {
+
+  from {
+
+    opacity:
+      0;
+
+    transform:
+      translateY(10px);
+
+  }
+
+  to {
+
+    opacity:
+      1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+
+/* karena ada menu tambahan */
+.page {
+
+  padding-top:
+    190px;
+
+}
+
+
+/* ==========================================================
+   DATABASE PAGE
+========================================================== */
+
+#page-database {
+
+  min-height:
+    70vh;
+
+  padding:
+    34px;
+
+  border-radius:
+    34px;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(8,22,61,.94),
+      rgba(4,10,35,.97) 55%,
+      rgba(31,9,66,.94)
+    );
+
+  border:
+    1px solid
+    rgba(112,132,255,.18);
+
+}
+
+
+.page-kicker {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  min-height:
+    34px;
+
+  padding:
+    0 14px;
+
+  border-radius:
+    999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #42CBF4,
+      #64E7B2
+    );
+
+  color:
+    #07172C;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .15em;
+
+}
+
+
+.page-header h2 {
+
+  margin-top:
+    15px;
+
+  font-size:
+    clamp(
+      28px,
+      4vw,
+      44px
+    );
+
+}
+
+
+.page-header p {
+
+  margin-top:
+    8px;
+
+  color:
+    #91A1C8;
+
+}
+
+
+/* TOOLBAR */
+
+.database-toolbar {
+
+  margin-top:
+    28px;
+
+  display:
+    flex;
+
+  gap:
+    12px;
+
+  align-items:
+    center;
+
+}
+
+
+.database-search {
+
+  flex:
+    1;
+
+  min-height:
+    52px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  padding:
+    0 16px;
+
+  border-radius:
+    15px;
+
+  background:
+    rgba(4,11,33,.75);
+
+  border:
+    1px solid
+    rgba(125,145,210,.20);
+
+}
+
+
+.database-search span {
+
+  color:
+    #64D6FF;
+
+  font-size:
+    20px;
+
+}
+
+
+.database-search input {
+
+  width:
+    100%;
+
+  border:
+    0;
+
+  outline:
+    0;
+
+  background:
+    transparent;
+
+  color:
+    white;
+
+  font-size:
+    15px;
+
+}
+
+
+.database-toolbar select {
+
+  min-height:
+    52px;
+
+  padding:
+    0 15px;
+
+  border-radius:
+    15px;
+
+  border:
+    1px solid
+    rgba(125,145,210,.20);
+
+  background:
+    #071027;
+
+  color:
+    white;
+
+}
+
+
+.database-status {
+
+  margin-top:
+    15px;
+
+  color:
+    #8798BF;
+
+  font-size:
+    12px;
+
+}
+
+
+/* TABLE */
+
+.database-table-wrapper {
+
+  margin-top:
+    18px;
+
+  overflow-x:
+    auto;
+
+  border-radius:
+    20px;
+
+  border:
+    1px solid
+    rgba(114,134,255,.15);
+
+}
+
+
+.database-table {
+
+  width:
+    100%;
+
+  min-width:
+    1450px;
+
+  border-collapse:
+    collapse;
+
+  background:
+    rgba(5,12,34,.68);
+
+}
+
+
+.database-table th {
+
+  padding:
+    15px 13px;
+
+  text-align:
+    left;
+
+  color:
+    #78DFFF;
+
+  font-size:
+    10px;
+
+  letter-spacing:
+    .07em;
+
+  text-transform:
+    uppercase;
+
+  background:
+    rgba(15,30,73,.92);
+
+}
+
+
+.database-table td {
+
+  padding:
+    13px;
+
+  color:
+    #DCE5FF;
+
+  font-size:
+    11px;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.045);
+
+}
+
+
+.database-table tbody tr {
+
+  transition:
+    background .18s ease;
+
+}
+
+
+.database-table tbody tr:hover {
+
+  background:
+    rgba(72,106,255,.08);
+
+}
+
+
+/* PAGINATION */
+
+.database-pagination {
+
+  margin-top:
+    20px;
+
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+  align-items:
+    center;
+
+  gap:
+    15px;
+
+}
+
+
+.database-pagination button {
+
+  min-height:
+    42px;
+
+  padding:
+    0 16px;
+
+  border-radius:
+    12px;
+
+  border:
+    1px solid
+    rgba(116,138,255,.20);
+
+  background:
+    rgba(8,18,49,.86);
+
+  color:
+    white;
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+
+}
+
+
+.database-pagination button:disabled {
+
+  opacity:
+    .35;
+
+  cursor:
+    not-allowed;
+
+}
+
+
+#databasePageInfo {
+
+  color:
+    #AAB5D3;
+
+  font-size:
+    12px;
+
+}
+
+
+/* MOBILE CARDS */
+
+.database-mobile-list {
+
+  display:
+    none;
+
+}
+
+
+/* COMING SOON */
+
+.coming-page {
+
+  min-height:
+    500px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  text-align:
+    center;
+
+  border-radius:
+    34px;
+
+  background:
+    rgba(7,15,43,.68);
+
+  border:
+    1px solid
+    rgba(111,130,255,.14);
+
+}
+
+
+.coming-icon {
+
+  font-size:
+    70px;
+
+  color:
+    #8D6BFF;
+
+  text-shadow:
+    0 0 25px
+    rgba(127,86,255,.4);
+
+}
+
+
+.coming-page h2 {
+
+  margin-top:
+    18px;
+
+  font-family:
+    "Orbitron",
+    sans-serif;
+
+  font-size:
+    34px;
+
+}
+
+
+.coming-page p {
+
+  margin-top:
+    10px;
+
+  color:
+    #8D9BC0;
+
+}
+
+
+/* ==========================================================
+   MOBILE NAVIGATION
+========================================================== */
+
+@media(max-width:700px) {
+
+  .page {
+
+    padding:
+      80px
+      7px
+      88px;
+
+  }
+
+
+  .app-navigation {
+
+    top:
+      auto;
+
+    left:
+      8px;
+
+    right:
+      8px;
+
+    bottom:
+      8px;
+
+    transform:
+      none;
+
+    height:
+      66px;
+
+    justify-content:
+      space-around;
+
+    padding:
+      6px;
+
+    border-radius:
+      20px;
+
+    backdrop-filter:
+      none;
+
+  }
+
+
+  .nav-item {
+
+    min-width:
+      0;
+
+    width:
+      20%;
+
+    height:
+      54px;
+
+    padding:
+      4px;
+
+    flex-direction:
+      column;
+
+    gap:
+      2px;
+
+    border-radius:
+      14px;
+
+  }
+
+
+  .nav-icon {
+
+    font-size:
+      19px;
+
+  }
+
+
+  .nav-label {
+
+    font-size:
+      7px;
+
+  }
+
+
+  #page-database {
+
+    padding:
+      20px 12px;
+
+    border-radius:
+      23px;
+
+  }
+
+
+  .database-toolbar {
+
+    flex-direction:
+      column;
+
+    align-items:
+      stretch;
+
+  }
+
+
+  .database-search input {
+
+    font-size:
+      16px;
+
+  }
+
+
+  .database-table-wrapper {
+
+    display:
+      none;
+
+  }
+
+
+  .database-mobile-list {
+
+    display:
+      grid;
+
+    gap:
+      11px;
+
+    margin-top:
+      18px;
+
+  }
+
+
+  .database-mobile-card {
+
+    padding:
+      14px;
+
+    border-radius:
+      17px;
+
+    background:
+      rgba(7,16,45,.82);
+
+    border:
+      1px solid
+      rgba(115,135,255,.15);
+
+  }
+
+
+  .database-mobile-card-head {
+
+    display:
+      flex;
+
+    justify-content:
+      space-between;
+
+    gap:
+      10px;
+
+  }
+
+
+  .database-mobile-id {
+
+    color:
+      #62D9FF;
+
+    font-size:
+      10px;
+
+    font-weight:
+      900;
+
+  }
+
+
+  .database-mobile-name {
+
+    margin-top:
+      5px;
+
+    font-size:
+      14px;
+
+    font-weight:
+      800;
+
+  }
+
+
+  .database-mobile-dept {
+
+    margin-top:
+      3px;
+
+    color:
+      #8494B8;
+
+    font-size:
+      9px;
+
+  }
+
+
+  .database-mobile-info {
+
+    margin-top:
+      12px;
+
+    display:
+      grid;
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap:
+      8px;
+
+  }
+
+
+  .database-mobile-info div {
+
+    padding:
+      8px;
+
+    border-radius:
+      10px;
+
+    background:
+      rgba(255,255,255,.035);
+
+  }
+
+
+  .database-mobile-info small {
+
+    display:
+      block;
+
+    color:
+      #7181A5;
+
+    font-size:
+      7px;
+
+    text-transform:
+      uppercase;
+
+  }
+
+
+  .database-mobile-info strong {
+
+    display:
+      block;
+
+    margin-top:
+      3px;
+
+    color:
+      #E6ECFF;
+
+    font-size:
+      10px;
+
+  }
+
+}
