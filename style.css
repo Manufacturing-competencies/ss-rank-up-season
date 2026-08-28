@@ -5573,3 +5573,1140 @@ and
   }
 
 }
+
+/* ==========================================================
+   SS RANK UP SEASON
+   STORY SECTION — INTERACTIVE ALIVE EFFECT
+   Tempel PALING BAWAH style.css
+========================================================== */
+
+
+/* ==========================================================
+   SECTION ATMOSPHERE
+========================================================== */
+
+.season-story {
+  isolation: isolate;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 30px 90px rgba(0,0,0,.30);
+
+  transition:
+    box-shadow .35s ease;
+}
+
+
+.season-story:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 35px 100px rgba(0,0,0,.36),
+    0 0 60px rgba(94,76,255,.07);
+}
+
+
+/* ==========================================================
+   MOVING COLOR FIELD
+========================================================== */
+
+.season-story::before {
+  content: "";
+
+  position: absolute;
+  inset: -30%;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  background:
+
+    radial-gradient(
+      circle at 15% 30%,
+      rgba(38,145,255,.20),
+      transparent 24%
+    ),
+
+    radial-gradient(
+      circle at 74% 26%,
+      rgba(132,74,255,.18),
+      transparent 27%
+    ),
+
+    radial-gradient(
+      circle at 90% 76%,
+      rgba(208,57,255,.17),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 46% 100%,
+      rgba(40,211,255,.09),
+      transparent 27%
+    );
+
+  filter:
+    blur(34px);
+
+  opacity: .78;
+
+  animation:
+    storyAmbientMove
+    11s
+    ease-in-out
+    infinite alternate;
+}
+
+
+/* ==========================================================
+   LIGHT SWEEP
+========================================================== */
+
+.story-overlay::after {
+  content: "";
+
+  position: absolute;
+
+  top: -40%;
+  left: -25%;
+
+  width: 18%;
+  height: 190%;
+
+  transform:
+    rotate(18deg);
+
+  pointer-events: none;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.025),
+      rgba(86,190,255,.11),
+      rgba(183,104,255,.09),
+      transparent
+    );
+
+  filter:
+    blur(4px);
+
+  animation:
+    storyLightSweep
+    8s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================================
+   STORY CONTENT
+========================================================== */
+
+.story-content {
+  transition:
+    transform .22s ease-out;
+}
+
+
+/* ==========================================================
+   TAGS
+========================================================== */
+
+.story-tag {
+  position: relative;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 0 18px rgba(66,221,255,.12);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+
+.story-tag::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -80%;
+
+  width: 45%;
+  height: 100%;
+
+  transform:
+    skewX(-24deg);
+
+  background:
+    rgba(255,255,255,.30);
+
+  filter:
+    blur(2px);
+
+  animation:
+    tagShine
+    4.5s
+    ease-in-out
+    infinite;
+}
+
+
+.story-tag:hover {
+  transform:
+    translateY(-2px)
+    scale(1.04);
+
+  box-shadow:
+    0 0 28px rgba(66,221,255,.26);
+}
+
+
+/* ==========================================================
+   TITLES
+========================================================== */
+
+.story-left h2,
+.story-right h2 {
+  transition:
+    transform .3s ease,
+    text-shadow .3s ease;
+}
+
+
+.story-left:hover h2,
+.story-right:hover h2 {
+  transform:
+    translateX(5px);
+
+  text-shadow:
+    0 0 20px rgba(90,137,255,.18);
+}
+
+
+/* ==========================================================
+   MISSION BAR
+========================================================== */
+
+.mission-line {
+  position: relative;
+
+  overflow: hidden;
+
+  cursor: default;
+
+  transition:
+    transform .28s ease,
+    box-shadow .28s ease,
+    filter .28s ease;
+}
+
+
+.mission-line::after {
+  content: "";
+
+  position: absolute;
+
+  top: -50%;
+  left: -40%;
+
+  width: 22%;
+  height: 200%;
+
+  transform:
+    rotate(18deg);
+
+  background:
+
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.36),
+      transparent
+    );
+
+  opacity: .65;
+
+  animation:
+    missionShine
+    5.5s
+    ease-in-out
+    infinite;
+}
+
+
+.mission-line:hover {
+  transform:
+    translateX(7px)
+    scale(1.015);
+
+  filter:
+    brightness(1.07);
+
+  box-shadow:
+    0 12px 34px rgba(50,222,180,.18);
+}
+
+
+.mission-line:nth-child(2)::after {
+  animation-delay:
+    1.4s;
+}
+
+
+/* ==========================================================
+   MISSION NUMBER
+========================================================== */
+
+.mission-badge {
+  transition:
+    transform .28s ease;
+}
+
+
+.mission-line:hover .mission-badge {
+  transform:
+    scale(1.10)
+    rotate(-4deg);
+}
+
+
+/* ==========================================================
+   RULE TRACK
+========================================================== */
+
+.rule-track {
+  position: relative;
+}
+
+
+/*
+   subtle neon line behind rule items
+*/
+
+.rule-track::before {
+  content: "";
+
+  position: absolute;
+
+  left: 4%;
+  right: 4%;
+  top: 50%;
+
+  height: 2px;
+
+  transform:
+    translateY(-50%);
+
+  z-index: -1;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(52,205,255,.15),
+      rgba(52,205,255,.72),
+      rgba(151,80,255,.70),
+      rgba(223,177,79,.70)
+    );
+
+  background-size:
+    220% 100%;
+
+  box-shadow:
+    0 0 13px rgba(85,138,255,.26);
+
+  animation:
+    trackEnergy
+    4s
+    linear
+    infinite;
+}
+
+
+/* ==========================================================
+   RULE BOX
+========================================================== */
+
+.rule-node {
+  position: relative;
+
+  overflow: hidden;
+
+  cursor: default;
+
+  transform:
+    translateZ(0);
+
+  transition:
+    transform .28s cubic-bezier(.2,.8,.2,1),
+    box-shadow .28s ease,
+    filter .28s ease;
+}
+
+
+.rule-node::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.18),
+      transparent 38%,
+      transparent 65%,
+      rgba(255,255,255,.06)
+    );
+}
+
+
+.rule-node::after {
+  content: "";
+
+  position: absolute;
+
+  width: 48px;
+  height: 180%;
+
+  top: -40%;
+  left: -70%;
+
+  transform:
+    rotate(20deg);
+
+  background:
+
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.52),
+      transparent
+    );
+
+  opacity: .5;
+
+  animation:
+    ruleShine
+    4.8s
+    ease-in-out
+    infinite;
+}
+
+
+.rule-node:nth-of-type(3)::after {
+  animation-delay:
+    .7s;
+}
+
+
+.rule-node:nth-of-type(5)::after {
+  animation-delay:
+    1.4s;
+}
+
+
+.rule-node:nth-of-type(7)::after {
+  animation-delay:
+    2.1s;
+}
+
+
+.rule-node:hover {
+  transform:
+    translateY(-10px)
+    scale(1.045);
+
+  filter:
+    brightness(1.08);
+}
+
+
+.rule-node.cyan:hover {
+  box-shadow:
+    0 18px 40px rgba(45,204,236,.23),
+    0 0 28px rgba(45,204,236,.17);
+}
+
+
+.rule-node.gold:hover {
+  box-shadow:
+    0 18px 40px rgba(221,178,87,.20),
+    0 0 28px rgba(221,178,87,.14);
+}
+
+
+/* ==========================================================
+   RULE NUMBER
+========================================================== */
+
+.rule-node strong {
+  position: relative;
+
+  z-index: 2;
+
+  text-shadow:
+    0 3px 5px rgba(0,0,0,.22);
+
+  transition:
+    transform .28s ease,
+    text-shadow .28s ease;
+}
+
+
+.rule-node:hover strong {
+  transform:
+    scale(1.14);
+
+  text-shadow:
+    0 0 10px rgba(255,255,255,.60),
+    0 0 22px rgba(255,255,255,.20);
+}
+
+
+/* ==========================================================
+   ARROWS
+========================================================== */
+
+.rule-link {
+  animation:
+    arrowMove
+    1.4s
+    ease-in-out
+    infinite;
+
+  text-shadow:
+    0 0 10px rgba(95,158,255,.35);
+}
+
+
+/* ==========================================================
+   TARGET PANEL
+========================================================== */
+
+.season-target {
+  position: relative;
+
+  overflow: hidden;
+
+  transition:
+    transform .28s ease,
+    border-color .28s ease,
+    box-shadow .28s ease;
+}
+
+
+.season-target::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+
+    linear-gradient(
+      100deg,
+      transparent 30%,
+      rgba(58,220,177,.055),
+      transparent 70%
+    );
+
+  transform:
+    translateX(-100%);
+
+  animation:
+    targetSweep
+    5s
+    ease-in-out
+    infinite;
+}
+
+
+.season-target:hover {
+  transform:
+    translateY(-4px);
+
+  border-color:
+    rgba(65,229,184,.34);
+
+  box-shadow:
+    0 14px 35px rgba(0,0,0,.22),
+    0 0 30px rgba(45,212,164,.08);
+}
+
+
+/* ==========================================================
+   CHECK ICON
+========================================================== */
+
+.target-check {
+  position: relative;
+
+  animation:
+    checkPulse
+    2.2s
+    ease-in-out
+    infinite;
+}
+
+
+.target-check::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -8px;
+
+  border:
+    1px solid rgba(42,226,91,.38);
+
+  border-radius: 50%;
+
+  animation:
+    checkRing
+    2.2s
+    ease-out
+    infinite;
+}
+
+
+/* ==========================================================
+   PROCESS FLOW
+========================================================== */
+
+.process-flow span {
+  position: relative;
+
+  overflow: hidden;
+
+  cursor: default;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+
+.process-flow span::after {
+  content: "";
+
+  position: absolute;
+
+  left: -100%;
+  top: 0;
+
+  width: 70%;
+  height: 100%;
+
+  transform:
+    skewX(-25deg);
+
+  background:
+
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.13),
+      transparent
+    );
+
+  animation:
+    flowShine
+    5s
+    ease-in-out
+    infinite;
+}
+
+
+.process-flow span:nth-of-type(2)::after {
+  animation-delay:
+    .5s;
+}
+
+
+.process-flow span:nth-of-type(3)::after {
+  animation-delay:
+    1s;
+}
+
+
+.process-flow span:nth-of-type(4)::after {
+  animation-delay:
+    1.5s;
+}
+
+
+.process-flow span:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(108,154,255,.45);
+
+  box-shadow:
+    0 8px 20px rgba(55,89,255,.13);
+}
+
+
+.process-flow i {
+  animation:
+    flowArrowPulse
+    1.4s
+    ease-in-out
+    infinite;
+}
+
+
+.final-flow {
+  box-shadow:
+    0 0 18px rgba(151,70,255,.10);
+}
+
+
+/* ==========================================================
+   LEFT AND RIGHT SIDE ENTRY
+========================================================== */
+
+.story-left {
+  animation:
+    storyEnterLeft
+    .7s
+    ease-out
+    both;
+}
+
+
+.story-right {
+  animation:
+    storyEnterRight
+    .8s
+    ease-out
+    both;
+}
+
+
+/* ==========================================================
+   DESKTOP MOUSE PARALLAX
+========================================================== */
+
+@media (hover:hover) and (pointer:fine) {
+
+  .season-story {
+    perspective:
+      1200px;
+  }
+
+}
+
+
+/* ==========================================================
+   ANIMATIONS
+========================================================== */
+
+@keyframes storyAmbientMove {
+
+  0% {
+    transform:
+      translate3d(-2%, -2%, 0)
+      scale(1);
+  }
+
+  100% {
+    transform:
+      translate3d(4%, 3%, 0)
+      scale(1.08);
+  }
+
+}
+
+
+@keyframes storyLightSweep {
+
+  0%,
+  18% {
+    left:
+      -30%;
+
+    opacity:
+      0;
+  }
+
+  35% {
+    opacity:
+      .75;
+  }
+
+  65% {
+    left:
+      120%;
+
+    opacity:
+      0;
+  }
+
+  100% {
+    left:
+      120%;
+
+    opacity:
+      0;
+  }
+
+}
+
+
+@keyframes tagShine {
+
+  0%,
+  55% {
+    left:
+      -80%;
+  }
+
+  75% {
+    left:
+      135%;
+  }
+
+  100% {
+    left:
+      135%;
+  }
+
+}
+
+
+@keyframes missionShine {
+
+  0%,
+  60% {
+    left:
+      -40%;
+  }
+
+  78% {
+    left:
+      130%;
+  }
+
+  100% {
+    left:
+      130%;
+  }
+
+}
+
+
+@keyframes trackEnergy {
+
+  from {
+    background-position:
+      0% center;
+  }
+
+  to {
+    background-position:
+      220% center;
+  }
+
+}
+
+
+@keyframes ruleShine {
+
+  0%,
+  58% {
+    left:
+      -70%;
+  }
+
+  77% {
+    left:
+      140%;
+  }
+
+  100% {
+    left:
+      140%;
+  }
+
+}
+
+
+@keyframes arrowMove {
+
+  0%,
+  100% {
+    transform:
+      translateX(-2px);
+
+    opacity:
+      .45;
+  }
+
+  50% {
+    transform:
+      translateX(3px);
+
+    opacity:
+      1;
+  }
+
+}
+
+
+@keyframes targetSweep {
+
+  0%,
+  55% {
+    transform:
+      translateX(-100%);
+  }
+
+  78% {
+    transform:
+      translateX(100%);
+  }
+
+  100% {
+    transform:
+      translateX(100%);
+  }
+
+}
+
+
+@keyframes checkPulse {
+
+  0%,
+  100% {
+    transform:
+      scale(.96);
+
+    box-shadow:
+      0 0 16px rgba(28,220,76,.18);
+  }
+
+  50% {
+    transform:
+      scale(1.07);
+
+    box-shadow:
+      0 0 30px rgba(28,220,76,.35);
+  }
+
+}
+
+
+@keyframes checkRing {
+
+  0% {
+    transform:
+      scale(.75);
+
+    opacity:
+      .8;
+  }
+
+  75% {
+    transform:
+      scale(1.35);
+
+    opacity:
+      0;
+  }
+
+  100% {
+    opacity:
+      0;
+  }
+
+}
+
+
+@keyframes flowShine {
+
+  0%,
+  60% {
+    left:
+      -100%;
+  }
+
+  80% {
+    left:
+      140%;
+  }
+
+  100% {
+    left:
+      140%;
+  }
+
+}
+
+
+@keyframes flowArrowPulse {
+
+  0%,
+  100% {
+    transform:
+      translateX(0);
+
+    opacity:
+      .45;
+  }
+
+  50% {
+    transform:
+      translateX(3px);
+
+    opacity:
+      1;
+  }
+
+}
+
+
+@keyframes storyEnterLeft {
+
+  from {
+    opacity:
+      0;
+
+    transform:
+      translateX(-25px);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateX(0);
+  }
+
+}
+
+
+@keyframes storyEnterRight {
+
+  from {
+    opacity:
+      0;
+
+    transform:
+      translateX(25px);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateX(0);
+  }
+
+}
+
+
+/* ==========================================================
+   MOBILE PERFORMANCE
+========================================================== */
+
+@media (max-width:700px) {
+
+  /*
+     HP tetap hidup,
+     tetapi jangan menjalankan banyak efek berat.
+  */
+
+  .season-story::before,
+  .story-overlay::after {
+    display:
+      none;
+  }
+
+
+  .story-left,
+  .story-right {
+    animation:
+      none;
+  }
+
+
+  .rule-track::before {
+    display:
+      none;
+  }
+
+
+  .rule-link {
+    animation:
+      none;
+  }
+
+
+  .mission-line::after,
+  .rule-node::after,
+  .season-target::after,
+  .process-flow span::after {
+    animation:
+      none;
+  }
+
+
+  .mission-line:hover,
+  .rule-node:hover,
+  .season-target:hover,
+  .process-flow span:hover {
+    transform:
+      none;
+  }
+
+
+  .target-check {
+    animation-duration:
+      3s;
+  }
+
+
+  .target-check::after {
+    animation-duration:
+      3s;
+  }
+
+}
+
+
+/* ==========================================================
+   REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion:reduce) {
+
+  .season-story *,
+  .season-story *::before,
+  .season-story *::after {
+
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+
+  }
+
+}
