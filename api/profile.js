@@ -1,59 +1,80 @@
 /* ==========================================================
    SS RANK UP SEASON
-   PROFILE API
+   PROFILE API — STABLE FINAL
 ========================================================== */
 
-const MAX_GAME_SCORE =
-  240;
+
+/* ==========================================================
+   CONFIG
+========================================================== */
+
+const MAX_GAME_SCORE = 240;
 
 
-export default async function handler(
-  req,
-  res
-) {
+/* ==========================================================
+   HANDLER
+========================================================== */
+
+export default async function handler(req, res) {
 
   try {
 
-    const url =
+    const supabaseUrl =
       String(
         process.env.SUPABASE_URL || ''
       )
         .trim()
-        .replace(
-          /\/+$/,
-          ''
-        );
+        .replace(/\/+$/, '');
 
 
-    const key =
+    const serviceKey =
       String(
         process.env.SUPABASE_SERVICE_KEY || ''
       ).trim();
 
 
-    const token =
+    const sessionToken =
       String(
-        req.query.session || ''
+        req.query?.session || ''
       ).trim();
 
 
+    /* ======================================================
+       ENV CHECK
+    ====================================================== */
+
     if (
-      !url ||
-      !key
+      !supabaseUrl ||
+      !serviceKey
     ) {
 
-      return res.status(500).json({
-        success: false
-      });
+      return res
+        .status(500)
+        .json({
+
+          success: false,
+
+          message:
+            'Supabase environment belum tersedia.'
+
+        });
 
     }
 
 
+    /* ======================================================
+       SESSION
+    ====================================================== */
+
     const session =
       await getSession(
-        url,
-        key,
-        token
+
+        supabaseUrl,
+
+        serviceKey,
+
+        sessionToken
+
       );
 
 
@@ -61,274 +82,272 @@ export default async function handler(
       !session
     ) {
 
-      return res.status(401).json({
+      return res
+        .status(401)
+        .json({
 
-        success:
-          false,
+          success: false,
 
-        message:
-          'Login required.'
+          message:
+            'Login required.'
 
-      });
+        });
 
     }
 
 
-    const name =
-      String(
-        session.user_name || ''
-      ).trim();
+    const employeeName =
+      cleanText(
+        session.user_name
+      );
 
 
     const email =
-      String(
-        session.email || ''
-      ).trim();
-
-
-    const appUser =
-      await getSingle(
-
-        url,
-
-        key,
-
-        'app_users',
-
-        'name,email,role,photo_url',
-
-        'email',
-
-        email
-
+      cleanText(
+        session.email
       );
 
+
+    const role =
+      cleanText(
+        session.role
+      ) || 'USER';
+
+
+    if (
+      !employeeName
+    ) {
+
+      return res
+        .status(404)
+        .json({
+
+          success: false,
+
+          message:
+            'Nama user tidak ditemukan pada session.'
+
+        });
+
+    }
+
+
+    /* ======================================================
+       PROGRESS USER
+    ====================================================== */
 
     const progress =
-      await getSingle(
+      await getUserProgress(
 
-        url,
+        supabaseUrl,
 
-        key,
+        serviceKey,
 
-        'season_user_progress',
-
-        [
-          'employee_name',
-          'department',
-          'superior_name',
-          'work_location',
-          'ss_done',
-          'point',
-          'point_approved',
-          'ss_submit',
-          'month_1_name',
-          'month_1_value',
-          'month_2_name',
-          'month_2_value',
-          'month_3_name',
-          'month_3_value',
-          'season_status',
-          'total_approved',
-          'rank'
-        ].join(','),
-
-        'employee_name',
-
-        name,
-
-        true
+        employeeName
 
       );
 
+
+    /* ======================================================
+       PROFILE PHOTO
+    ====================================================== */
+
+    const appUser =
+      await getAppUser(
+
+        supabaseUrl,
+
+        serviceKey,
+
+        email,
+
+        employeeName
+
+      );
+
+
+    /* ======================================================
+       REWARD USER
+    ====================================================== */
 
     const rewards =
-      await getMany(
+      await getUserRewards(
 
-        url,
+        supabaseUrl,
 
-        key,
+        serviceKey,
 
-        'season_rewards',
-
-        [
-          'category',
-          'description',
-          'participant_type'
-        ].join(','),
-
-        'employee_name',
-
-        name,
-
-        true
+        employeeName
 
       );
 
 
-    const allPlayers =
-      await getAllProgress(
-        url,
-        key
+    /* ======================================================
+       LEADERBOARD POSITION
+    ====================================================== */
+
+    const players =
+      await getLeaderboardPlayers(
+
+        supabaseUrl,
+
+        serviceKey
+
       );
 
 
-    allPlayers.sort(
-      function(a, b) {
-
-        const scoreA =
-          Math.min(
-            MAX_GAME_SCORE,
-            Number(
-              a.point_approved || 0
-            )
-          );
+    const leaderboard =
+      buildLeaderboard(
+        players
+      );
 
 
-        const scoreB =
-          Math.min(
-            MAX_GAME_SCORE,
-            Number(
-              b.point_approved || 0
-            )
-          );
+    const playerPosition =
+      leaderboard.findIndex(
 
-
-        if (
-          scoreB !==
-          scoreA
-        ) {
-
-          return (
-            scoreB -
-            scoreA
-          );
-
-        }
-
-
-        return String(
-          a.employee_name || ''
-        )
-          .localeCompare(
-            String(
-              b.employee_name || ''
-            ),
-            'id',
-            {
-              sensitivity:
-                'base'
-            }
-          );
-
-      }
-    );
-
-
-    const playerIndex =
-      allPlayers.findIndex(
         row =>
-          String(
-            row.employee_name || ''
+
+          cleanText(
+            row.employee_name
           )
-            .trim()
             .toUpperCase() ===
-          name.toUpperCase()
+          employeeName.toUpperCase()
+
+      );
+
+
+    /* ======================================================
+       GAME SCORE
+    ====================================================== */
+
+    const rawPointApproved =
+      safeNumber(
+        progress?.point_approved
       );
 
 
     const gameScore =
       Math.min(
+
         MAX_GAME_SCORE,
-        Number(
-          progress?.point_approved || 0
+
+        Math.max(
+          0,
+          rawPointApproved
         )
+
       );
 
 
-    return res.status(200).json({
+    const approvedSs =
+      Math.min(
 
-      success:
-        true,
+        6,
 
-      profile: {
+        Math.floor(
+          gameScore / 40
+        )
 
-        name:
+      );
 
-          appUser?.name ||
-          name,
 
-        email,
+    const remaining =
+      Math.max(
 
-        role:
+        0,
 
-          appUser?.role ||
-          session.role ||
-          'USER',
+        MAX_GAME_SCORE -
+        gameScore
 
-        photo_url:
+      );
 
-          appUser?.photo_url ||
-          '',
 
-        department:
+    /* ======================================================
+       RESPONSE
+    ====================================================== */
 
-          progress?.department ||
-          '',
+    return res
+      .status(200)
+      .json({
 
-        superior:
+        success: true,
 
-          progress?.superior_name ||
-          '',
 
-        location:
+        profile: {
 
-          progress?.work_location ||
-          ''
+          name:
+            employeeName,
 
-      },
+          email,
 
-      progress:
-        progress || {},
+          role,
 
-      game: {
+          photo_url:
+            cleanText(
+              appUser?.photo_url
+            ),
 
-        position:
+          department:
+            cleanText(
+              progress?.department
+            ),
 
-          playerIndex >= 0
+          superior:
+            cleanText(
+              progress?.superior_name
+            ),
 
-            ? playerIndex + 1
-
-            : null,
-
-        score:
-          gameScore,
-
-        maxScore:
-          MAX_GAME_SCORE,
-
-        approvedSs:
-          Math.min(
-            6,
-            Math.floor(
-              gameScore / 40
+          location:
+            cleanText(
+              progress?.work_location
             )
-          ),
 
-        remaining:
+        },
 
-          Math.max(
-            0,
-            MAX_GAME_SCORE -
-            gameScore
-          )
 
-      },
+        progress:
+          progress || {},
 
-      rewards
 
-    });
+        game: {
 
+          position:
+
+            playerPosition >= 0
+
+              ? playerPosition + 1
+
+              : null,
+
+          score:
+            gameScore,
+
+          maxScore:
+            MAX_GAME_SCORE,
+
+          approvedSs,
+
+          remaining,
+
+          progress:
+
+            Math.round(
+
+              (
+                gameScore /
+                MAX_GAME_SCORE
+              ) *
+              100
+
+            )
+
+        },
+
+
+        rewards:
+          rewards || []
+
+      });
 
   }
 
@@ -340,15 +359,28 @@ export default async function handler(
     );
 
 
-    return res.status(500).json({
+    return res
+      .status(500)
+      .json({
 
-      success:
-        false,
+        success: false,
 
-      message:
-        'Profile gagal dimuat.'
+        message:
+          'Profile gagal dimuat.',
 
-    });
+        error:
+
+          process.env.NODE_ENV ===
+          'development'
+
+            ? String(
+                error?.message ||
+                error
+              )
+
+            : undefined
+
+      });
 
   }
 
@@ -360,8 +392,8 @@ export default async function handler(
 ========================================================== */
 
 async function getSession(
-  url,
-  key,
+  supabaseUrl,
+  serviceKey,
   token
 ) {
 
@@ -380,7 +412,13 @@ async function getSession(
 
   params.set(
     'select',
-    'email,user_name,role,expires_at'
+    [
+      'token',
+      'email',
+      'user_name',
+      'role',
+      'expires_at'
+    ].join(',')
   );
 
 
@@ -399,16 +437,23 @@ async function getSession(
   const response =
     await fetch(
 
-      url +
+      supabaseUrl +
       '/rest/v1/login_sessions?' +
       params.toString(),
 
       {
+
+        method:
+          'GET',
+
         headers:
-          headers(key),
+          supabaseHeaders(
+            serviceKey
+          ),
 
         cache:
           'no-store'
+
       }
 
     );
@@ -417,6 +462,17 @@ async function getSession(
   if (
     !response.ok
   ) {
+
+    console.error(
+
+      'SESSION QUERY ERROR:',
+
+      response.status,
+
+      await response.text()
+
+    );
+
 
     return null;
 
@@ -428,7 +484,9 @@ async function getSession(
 
 
   const session =
-    rows[0];
+    Array.isArray(rows)
+      ? rows[0]
+      : null;
 
 
   if (
@@ -441,14 +499,25 @@ async function getSession(
 
 
   if (
-    session.expires_at &&
-    new Date(
-      session.expires_at
-    ).getTime() <
-    Date.now()
+    session.expires_at
   ) {
 
-    return null;
+    const expiry =
+      new Date(
+        session.expires_at
+      )
+        .getTime();
+
+
+    if (
+      Number.isFinite(expiry) &&
+      expiry <
+      Date.now()
+    ) {
+
+      return null;
+
+    }
 
   }
 
@@ -459,27 +528,14 @@ async function getSession(
 
 
 /* ==========================================================
-   SINGLE
+   USER PROGRESS
 ========================================================== */
 
-async function getSingle(
-  url,
-  key,
-  table,
-  select,
-  column,
-  value,
-  caseInsensitive = false
+async function getUserProgress(
+  supabaseUrl,
+  serviceKey,
+  employeeName
 ) {
-
-  if (
-    !value
-  ) {
-
-    return null;
-
-  }
-
 
   const params =
     new URLSearchParams();
@@ -487,22 +543,50 @@ async function getSingle(
 
   params.set(
     'select',
-    select
+    [
+
+      'employee_name',
+
+      'department',
+
+      'superior_name',
+
+      'work_location',
+
+      'ss_done',
+
+      'point',
+
+      'point_approved',
+
+      'ss_submit',
+
+      'month_1_name',
+
+      'month_1_value',
+
+      'month_2_name',
+
+      'month_2_value',
+
+      'month_3_name',
+
+      'month_3_value',
+
+      'season_status',
+
+      'total_approved',
+
+      'rank'
+
+    ].join(',')
   );
 
 
   params.set(
-
-    column,
-
-    (
-      caseInsensitive
-        ? 'ilike.'
-        : 'eq.'
-    ) +
-
-    value
-
+    'employee_name',
+    'ilike.' +
+    employeeName
   );
 
 
@@ -515,16 +599,16 @@ async function getSingle(
   const response =
     await fetch(
 
-      url +
-      '/rest/v1/' +
-      table +
-      '?' +
+      supabaseUrl +
+      '/rest/v1/season_user_progress?' +
       params.toString(),
 
       {
 
         headers:
-          headers(key),
+          supabaseHeaders(
+            serviceKey
+          ),
 
         cache:
           'no-store'
@@ -537,6 +621,17 @@ async function getSingle(
   if (
     !response.ok
   ) {
+
+    console.error(
+
+      'PROGRESS QUERY ERROR:',
+
+      response.status,
+
+      await response.text()
+
+    );
+
 
     return null;
 
@@ -547,23 +642,106 @@ async function getSingle(
     await response.json();
 
 
-  return rows[0] || null;
+  return Array.isArray(rows)
+    ? rows[0] || null
+    : null;
 
 }
 
 
 /* ==========================================================
-   MANY
+   APP USER / PHOTO
 ========================================================== */
 
-async function getMany(
-  url,
-  key,
-  table,
-  select,
+async function getAppUser(
+  supabaseUrl,
+  serviceKey,
+  email,
+  employeeName
+) {
+
+  /*
+    Kita hanya butuh photo_url.
+
+    Pertama coba menggunakan email.
+    Kalau email kosong / tidak ditemukan,
+    baru fallback nama.
+  */
+
+
+  if (
+    email
+  ) {
+
+    const byEmail =
+      await queryAppUser(
+
+        supabaseUrl,
+
+        serviceKey,
+
+        'email',
+
+        'eq.' + email
+
+      );
+
+
+    if (
+      byEmail
+    ) {
+
+      return byEmail;
+
+    }
+
+  }
+
+
+  if (
+    employeeName
+  ) {
+
+    const byName =
+      await queryAppUser(
+
+        supabaseUrl,
+
+        serviceKey,
+
+        'name',
+
+        'ilike.' +
+        employeeName
+
+      );
+
+
+    if (
+      byName
+    ) {
+
+      return byName;
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+/* ==========================================================
+   QUERY APP USER
+========================================================== */
+
+async function queryAppUser(
+  supabaseUrl,
+  serviceKey,
   column,
-  value,
-  caseInsensitive = false
+  filter
 ) {
 
   const params =
@@ -572,40 +750,39 @@ async function getMany(
 
   params.set(
     'select',
-    select
+    'photo_url'
   );
 
 
   params.set(
-
     column,
+    filter
+  );
 
-    (
-      caseInsensitive
-        ? 'ilike.'
-        : 'eq.'
-    ) +
 
-    value
-
+  params.set(
+    'limit',
+    '1'
   );
 
 
   const response =
     await fetch(
 
-      url +
-      '/rest/v1/' +
-      table +
-      '?' +
+      supabaseUrl +
+      '/rest/v1/app_users?' +
       params.toString(),
 
       {
+
         headers:
-          headers(key),
+          supabaseHeaders(
+            serviceKey
+          ),
 
         cache:
           'no-store'
+
       }
 
     );
@@ -615,56 +792,190 @@ async function getMany(
     !response.ok
   ) {
 
-    return [];
+    /*
+      Photo tidak boleh membuat
+      seluruh Profile gagal.
+    */
+
+    console.warn(
+
+      'APP USER QUERY WARNING:',
+
+      response.status
+
+    );
+
+
+    return null;
 
   }
 
 
-  return await response.json();
+  const rows =
+    await response.json();
+
+
+  return Array.isArray(rows)
+    ? rows[0] || null
+    : null;
 
 }
 
 
 /* ==========================================================
-   ALL LEADERBOARD
+   USER REWARDS
 ========================================================== */
 
-async function getAllProgress(
-  url,
-  key
+async function getUserRewards(
+  supabaseUrl,
+  serviceKey,
+  employeeName
+) {
+
+  const params =
+    new URLSearchParams();
+
+
+  params.set(
+    'select',
+    [
+      'category',
+      'description',
+      'participant_type'
+    ].join(',')
+  );
+
+
+  params.set(
+    'employee_name',
+    'ilike.' +
+    employeeName
+  );
+
+
+  params.set(
+    'order',
+    'source_row.asc'
+  );
+
+
+  const response =
+    await fetch(
+
+      supabaseUrl +
+      '/rest/v1/season_rewards?' +
+      params.toString(),
+
+      {
+
+        headers:
+          supabaseHeaders(
+            serviceKey
+          ),
+
+        cache:
+          'no-store'
+
+      }
+
+    );
+
+
+  if (
+    !response.ok
+  ) {
+
+    /*
+      Reward belum dibuat / belum sync
+      tidak membuat Profile gagal.
+    */
+
+    console.warn(
+
+      'REWARD QUERY WARNING:',
+
+      response.status
+
+    );
+
+
+    return [];
+
+  }
+
+
+  const rows =
+    await response.json();
+
+
+  return Array.isArray(rows)
+    ? rows
+    : [];
+
+}
+
+
+/* ==========================================================
+   LEADERBOARD DATA
+========================================================== */
+
+async function getLeaderboardPlayers(
+  supabaseUrl,
+  serviceKey
 ) {
 
   const rows =
     [];
 
 
+  const batchSize =
+    1000;
+
+
   let from =
     0;
-
-
-  const size =
-    1000;
 
 
   while (
     true
   ) {
 
+    const to =
+      from +
+      batchSize -
+      1;
+
+
+    const params =
+      new URLSearchParams();
+
+
+    params.set(
+      'select',
+      'employee_name,point_approved'
+    );
+
+
     const response =
       await fetch(
 
-        url +
-        '/rest/v1/season_user_progress' +
-        '?select=employee_name,point_approved',
+        supabaseUrl +
+        '/rest/v1/season_user_progress?' +
+        params.toString(),
 
         {
 
+          method:
+            'GET',
+
           headers: {
 
-            ...headers(key),
+            ...supabaseHeaders(
+              serviceKey
+            ),
 
             Range:
-              `${from}-${from + size - 1}`
+              `${from}-${to}`
 
           },
 
@@ -680,6 +991,17 @@ async function getAllProgress(
       !response.ok
     ) {
 
+      console.error(
+
+        'LEADERBOARD PROFILE ERROR:',
+
+        response.status,
+
+        await response.text()
+
+      );
+
+
       break;
 
     }
@@ -689,6 +1011,15 @@ async function getAllProgress(
       await response.json();
 
 
+    if (
+      !Array.isArray(batch)
+    ) {
+
+      break;
+
+    }
+
+
     rows.push(
       ...batch
     );
@@ -696,7 +1027,7 @@ async function getAllProgress(
 
     if (
       batch.length <
-      size
+      batchSize
     ) {
 
       break;
@@ -705,7 +1036,7 @@ async function getAllProgress(
 
 
     from +=
-      size;
+      batchSize;
 
   }
 
@@ -715,22 +1046,153 @@ async function getAllProgress(
 }
 
 
-function headers(
-  key
+/* ==========================================================
+   LEADERBOARD SORT
+========================================================== */
+
+function buildLeaderboard(
+  rows
+) {
+
+  return [
+    ...rows
+  ]
+    .map(
+      function(row) {
+
+        const raw =
+          safeNumber(
+            row.point_approved
+          );
+
+
+        return {
+
+          ...row,
+
+          game_score:
+
+            Math.min(
+
+              MAX_GAME_SCORE,
+
+              Math.max(
+                0,
+                raw
+              )
+
+            )
+
+        };
+
+      }
+    )
+    .sort(
+      function(a, b) {
+
+        if (
+          b.game_score !==
+          a.game_score
+        ) {
+
+          return (
+            b.game_score -
+            a.game_score
+          );
+
+        }
+
+
+        return cleanText(
+          a.employee_name
+        )
+          .localeCompare(
+
+            cleanText(
+              b.employee_name
+            ),
+
+            'id',
+
+            {
+              sensitivity:
+                'base'
+            }
+
+          );
+
+      }
+    );
+
+}
+
+
+/* ==========================================================
+   SUPABASE HEADERS
+========================================================== */
+
+function supabaseHeaders(
+  serviceKey
 ) {
 
   return {
 
     apikey:
-      key,
+      serviceKey,
 
     Authorization:
       'Bearer ' +
-      key,
+      serviceKey,
 
     Accept:
+      'application/json',
+
+    'Content-Type':
       'application/json'
 
   };
+
+}
+
+
+/* ==========================================================
+   CLEAN TEXT
+========================================================== */
+
+function cleanText(
+  value
+) {
+
+  return String(
+    value ?? ''
+  )
+    .trim()
+    .replace(
+      /\s+/g,
+      ' '
+    );
+
+}
+
+
+/* ==========================================================
+   SAFE NUMBER
+========================================================== */
+
+function safeNumber(
+  value
+) {
+
+  const number =
+    Number(
+      value
+    );
+
+
+  return Number.isFinite(
+    number
+  )
+    ? number
+    : 0;
 
 }
