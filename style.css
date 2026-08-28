@@ -6787,3 +6787,91 @@ body::-webkit-scrollbar {
     800;
 
 }
+
+/* ==========================================================
+   DATABASE EXPORT BUTTON
+========================================================== */
+
+.database-export-button {
+
+  min-height: 52px;
+
+  padding:
+    0 18px;
+
+  border:
+    1px solid
+    rgba(74,231,181,.30);
+
+  border-radius:
+    15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(29,190,151,.20),
+      rgba(34,136,255,.16)
+    );
+
+  color:
+    #7EF0CA;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .06em;
+
+  white-space:
+    nowrap;
+
+  cursor:
+    pointer;
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
+
+}
+
+
+.database-export-button:hover {
+
+  transform:
+    translateY(-2px);
+
+  border-color:
+    rgba(83,246,196,.55);
+
+  box-shadow:
+    0 10px 25px
+    rgba(40,211,165,.12);
+
+}
+
+
+.database-export-button:active {
+
+  transform:
+    translateY(0);
+
+}
+
+
+@media(max-width:700px) {
+
+  .database-export-button {
+
+    width:
+      100%;
+
+    min-height:
+      48px;
+
+  }
+
+}
