@@ -1,23 +1,11 @@
 /* ==========================================================
    SS RANK UP SEASON
-   FINAL FRONTEND
-
-   FITUR:
-   - Session login
-   - Dashboard Supabase
-   - Rank otomatis
-   - 7 rank visual
-   - Bulan season dinamis
-   - WINNER / FAILED
-   - Missed month otomatis
-   - Music autoplay attempt
-   - Play / pause music
-   - Logout
+   FINAL APP.JS
 ========================================================== */
 
 
 /* ==========================================================
-   QUERY + SESSION
+   SESSION
 ========================================================== */
 
 const query =
@@ -37,28 +25,19 @@ let loginUrl =
   null;
 
 
-/* ==========================================================
-   SAVE SESSION
-========================================================== */
-
 if (
   query.get('session')
 ) {
 
-  sessionToken =
-    query.get('session');
-
-
   localStorage.setItem(
     'ss_rank_session',
-    sessionToken
+    query.get('session')
   );
 
 
-  /*
-   Hilangkan session token dari URL
-   setelah berhasil diterima.
-  */
+  sessionToken =
+    query.get('session');
+
 
   window.history.replaceState(
     {},
@@ -115,12 +94,6 @@ const rankPanel =
   );
 
 
-const rankSymbol =
-  document.getElementById(
-    'rankSymbol'
-  );
-
-
 const rankName =
   document.getElementById(
     'rankName'
@@ -151,6 +124,12 @@ const seasonState =
   );
 
 
+const rankSymbol =
+  document.getElementById(
+    'rankSymbol'
+  );
+
+
 const logoutButton =
   document.getElementById(
     'logoutButton'
@@ -169,6 +148,32 @@ const bgMusic =
   );
 
 
+/* JOURNEY */
+
+const journeySummary =
+  document.getElementById(
+    'journeySummary'
+  );
+
+
+const journeyTrack =
+  document.getElementById(
+    'journeyTrack'
+  );
+
+
+const journeyNote =
+  document.getElementById(
+    'journeyNote'
+  );
+
+
+const journeySection =
+  document.getElementById(
+    'rankJourneySection'
+  );
+
+
 /* ==========================================================
    LOAD DASHBOARD
 ========================================================== */
@@ -177,12 +182,9 @@ async function loadDashboard() {
 
   try {
 
-    /*
-     Kalau session belum ada,
-     arahkan ke login Apps Script.
-    */
-
-    if (!sessionToken) {
+    if (
+      !sessionToken
+    ) {
 
       await redirectToLogin();
 
@@ -190,10 +192,6 @@ async function loadDashboard() {
 
     }
 
-
-    /*
-     Ambil data dashboard.
-    */
 
     const response =
       await fetch(
@@ -205,10 +203,8 @@ async function loadDashboard() {
         ),
 
         {
-
           cache:
             'no-store'
-
         }
 
       );
@@ -217,10 +213,6 @@ async function loadDashboard() {
     const result =
       await response.json();
 
-
-    /*
-     Simpan URL login.
-    */
 
     if (
       result.loginUrl
@@ -232,44 +224,38 @@ async function loadDashboard() {
     }
 
 
-    /*
-     Kalau API gagal.
-    */
-
     if (
       !response.ok ||
       !result.success
     ) {
 
       throw new Error(
+
         result.message ||
         'Session invalid.'
+
       );
 
     }
 
 
-    /*
-     Render seluruh dashboard.
-    */
-
     renderDashboard(
       result
     );
 
+
+    tryStartMusic();
+
+
   }
 
-  catch (error) {
+  catch(error) {
 
     console.error(
-      'LOAD DASHBOARD ERROR:',
+      'LOAD DASHBOARD ERROR',
       error
     );
 
-
-    /*
-     Hapus session browser.
-    */
 
     localStorage.removeItem(
       'ss_rank_session'
@@ -280,11 +266,9 @@ async function loadDashboard() {
       null;
 
 
-    /*
-     Kembali ke login.
-    */
-
-    if (loginUrl) {
+    if (
+      loginUrl
+    ) {
 
       window.location.href =
         loginUrl;
@@ -302,7 +286,7 @@ async function loadDashboard() {
 
 
 /* ==========================================================
-   RENDER DASHBOARD
+   DASHBOARD
 ========================================================== */
 
 function renderDashboard(
@@ -321,41 +305,24 @@ function renderDashboard(
     data.progress || {};
 
 
-  /*
-   Simpan login URL.
-  */
-
   loginUrl =
     data.loginUrl ||
     loginUrl;
 
 
-  /*
-   USER DATA
-  */
-
   const name =
-    String(
-      user.name ||
-      'USER'
-    )
-      .trim();
+    user.name ||
+    'USER';
 
 
   const role =
-    String(
-      user.role ||
-      'USER'
-    )
-      .trim()
-      .toUpperCase();
+    user.role ||
+    'USER';
 
 
-  /*
-   HEADER
-  */
-
-  if (headerUserName) {
+  if (
+    headerUserName
+  ) {
 
     headerUserName.textContent =
       name;
@@ -363,19 +330,20 @@ function renderDashboard(
   }
 
 
-  if (headerUserRole) {
+  if (
+    headerUserRole
+  ) {
 
     headerUserRole.textContent =
-      role;
+      String(role)
+        .toUpperCase();
 
   }
 
 
-  /*
-   HERO NAME
-  */
-
-  if (heroUserName) {
+  if (
+    heroUserName
+  ) {
 
     heroUserName.textContent =
       name;
@@ -383,11 +351,9 @@ function renderDashboard(
   }
 
 
-  /*
-   AVATAR
-  */
-
-  if (avatar) {
+  if (
+    avatar
+  ) {
 
     avatar.textContent =
       getInitials(
@@ -397,62 +363,51 @@ function renderDashboard(
   }
 
 
-  /*
-   DEPARTMENT
-  */
-
-  if (departmentText) {
+  if (
+    departmentText
+  ) {
 
     departmentText.textContent =
       progress.department ||
+      user.department ||
       '-';
 
   }
 
 
-  /*
-   LOCATION
-  */
-
-  if (locationText) {
+  if (
+    locationText
+  ) {
 
     locationText.textContent =
       progress.location ||
+      user.location ||
       '-';
 
   }
 
 
-  /*
-   SEASON STATE
-  */
+  if (
+    seasonState
+  ) {
 
-  if (seasonState) {
+    seasonState.textContent =
 
-    if (
       season.active === false
-    ) {
 
-      seasonState.textContent =
-        'SEASON CLOSED';
+        ? 'SEASON CLOSED'
 
-    }
-
-    else {
-
-      seasonState.textContent =
-        'SEASON ACTIVE';
-
-    }
+        : 'SEASON ACTIVE';
 
   }
 
 
-  /*
-   RANK
-  */
-
   renderRank(
+    progress
+  );
+
+
+  renderJourney(
     progress
   );
 
@@ -460,36 +415,12 @@ function renderDashboard(
 
 
 /* ==========================================================
-   RENDER RANK
+   RENDER HERO RANK
 ========================================================== */
 
 function renderRank(
   progress
 ) {
-
-  if (!rankPanel) {
-
-    return;
-
-  }
-
-
-  /*
-   Rank dari API.
-  */
-
-  const rank =
-    String(
-      progress.rank ||
-      'WARRIOR'
-    )
-      .trim()
-      .toUpperCase();
-
-
-  /*
-   Total Approved Implementasi.
-  */
 
   const totalApproved =
     Number(
@@ -498,9 +429,14 @@ function renderRank(
     );
 
 
-  /*
-   Status season.
-  */
+  const rank =
+    normalizeRank(
+      progress.rank ||
+      calculateRankFromTotal(
+        totalApproved
+      )
+    );
+
 
   const status =
     String(
@@ -511,77 +447,45 @@ function renderRank(
       .toUpperCase();
 
 
-  /*
-   Bulan yang belum achieve.
-  */
-
   const missed =
     Array.isArray(
       progress.missedMonths
     )
+
       ? progress.missedMonths
+
       : [];
 
 
-  /*
-   Visual sesuai rank.
-  */
+  if (
+    rankPanel
+  ) {
 
-  const visual =
-    getRankVisual(
-      rank
+    rankPanel.classList.remove(
+
+      'rank-warrior',
+      'rank-elite',
+      'rank-epic',
+      'rank-legend',
+      'rank-mythic',
+      'rank-mythic-honor',
+      'rank-mythic-glory'
+
     );
 
 
-  /*
-   Hapus rank class lama.
-  */
-
-  rankPanel.classList.remove(
-
-    'rank-warrior',
-
-    'rank-elite',
-
-    'rank-epic',
-
-    'rank-legend',
-
-    'rank-mythic',
-
-    'rank-mythic-honor',
-
-    'rank-mythic-glory'
-
-  );
-
-
-  /*
-   Pasang class rank baru.
-  */
-
-  rankPanel.classList.add(
-    visual.className
-  );
-
-
-  /*
-   Symbol emblem.
-  */
-
-  if (rankSymbol) {
-
-    rankSymbol.textContent =
-      visual.badge;
+    rankPanel.classList.add(
+      getRankClass(
+        rank
+      )
+    );
 
   }
 
 
-  /*
-   Nama rank.
-  */
-
-  if (rankName) {
+  if (
+    rankName
+  ) {
 
     rankName.textContent =
       rank;
@@ -589,11 +493,9 @@ function renderRank(
   }
 
 
-  /*
-   Total SS Approved Implementasi.
-  */
-
-  if (rankTotal) {
+  if (
+    rankTotal
+  ) {
 
     rankTotal.textContent =
       totalApproved +
@@ -603,122 +505,431 @@ function renderRank(
 
 
   /*
-   STATUS
+   Symbol isi biasa tetap ada
+   sebagai fallback.
+
+   CSS akan membuat bentuk
+   simbol sebenarnya.
   */
 
-  renderSeasonStatus(
-    status
-  );
+  if (
+    rankSymbol
+  ) {
+
+    const symbols = {
+
+      WARRIOR:
+        'W',
+
+      ELITE:
+        'E',
+
+      EPIC:
+        'E',
+
+      LEGEND:
+        'L',
+
+      MYTHIC:
+        'M',
+
+      'MYTHIC HONOR':
+        'MH',
+
+      'MYTHIC GLORY':
+        'MG'
+
+    };
 
 
-  /*
-   MISSED MONTHS
-  */
-
-  renderMissedMonths(
-    status,
-    missed
-  );
-
-}
-
-
-/* ==========================================================
-   STATUS SEASON
-========================================================== */
-
-function renderSeasonStatus(
-  status
-) {
-
-  if (!seasonStatus) {
-
-    return;
+    rankSymbol.textContent =
+      symbols[rank] ||
+      'W';
 
   }
-
-
-  seasonStatus.classList.remove(
-    'winner',
-    'failed'
-  );
 
 
   if (
-    status === 'WINNER'
+    seasonStatus
   ) {
 
-    seasonStatus.textContent =
-      'WINNER';
-
-
-    seasonStatus.classList.add(
-      'winner'
-    );
-
-  }
-
-  else {
-
-    seasonStatus.textContent =
-      'FAILED';
-
-
-    seasonStatus.classList.add(
+    seasonStatus.classList.remove(
+      'winner',
       'failed'
     );
 
+
+    if (
+      status === 'WINNER'
+    ) {
+
+      seasonStatus.textContent =
+        'WINNER';
+
+
+      seasonStatus.classList.add(
+        'winner'
+      );
+
+    }
+
+    else {
+
+      seasonStatus.textContent =
+        'FAILED';
+
+
+      seasonStatus.classList.add(
+        'failed'
+      );
+
+    }
+
+  }
+
+
+  if (
+    missedMonths
+  ) {
+
+    if (
+      status === 'FAILED' &&
+      missed.length
+    ) {
+
+      missedMonths.textContent =
+
+        'Missed: ' +
+        missed.join(', ');
+
+    }
+
+    else {
+
+      missedMonths.textContent =
+        '';
+
+    }
+
   }
 
 }
 
 
 /* ==========================================================
-   MISSED MONTH
-
-   Tidak ada hardcode MEI/JUNI/JULI.
-
-   Contoh:
-   AGUSTUS = 0
-   SEPTEMBER = 1
-   OKTOBER = 0
-
-   Maka:
-   Missed: AGUSTUS, OKTOBER
+   RENDER JOURNEY
 ========================================================== */
 
-function renderMissedMonths(
-  status,
-  months
+function renderJourney(
+  progress
 ) {
 
-  if (!missedMonths) {
+  if (
+    !journeyTrack
+  ) {
 
     return;
 
   }
 
 
-  /*
-   Hanya muncul kalau FAILED.
-  */
+  const totalApproved =
+    Number(
+      progress.totalApproved ||
+      0
+    );
+
+
+  const currentRank =
+    normalizeRank(
+
+      progress.rank ||
+
+      calculateRankFromTotal(
+        totalApproved
+      )
+
+    );
+
+
+  const status =
+    String(
+      progress.status ||
+      'FAILED'
+    )
+      .trim()
+      .toUpperCase();
+
+
+  const missed =
+    Array.isArray(
+      progress.missedMonths
+    )
+
+      ? progress.missedMonths
+
+      : [];
+
+
+  const rankOrder = [
+
+    'WARRIOR',
+    'ELITE',
+    'EPIC',
+    'LEGEND',
+    'MYTHIC',
+    'MYTHIC HONOR',
+    'MYTHIC GLORY'
+
+  ];
+
+
+  let currentIndex =
+    rankOrder.indexOf(
+      currentRank
+    );
+
 
   if (
-    status === 'FAILED' &&
-    Array.isArray(months) &&
-    months.length
+    currentIndex < 0
   ) {
 
-    missedMonths.textContent =
-      'Missed: ' +
-      months.join(', ');
+    currentIndex =
+      0;
 
   }
 
-  else {
 
-    missedMonths.textContent =
-      '';
+  const cards =
+    journeyTrack
+      .querySelectorAll(
+        '.journey-card'
+      );
+
+
+  let currentCard =
+    null;
+
+
+  cards.forEach(
+
+    function(card) {
+
+      const cardIndex =
+        Number(
+          card.dataset.index ||
+          0
+        );
+
+
+      const state =
+        card.querySelector(
+          '.journey-card-state'
+        );
+
+
+      card.classList.remove(
+        'achieved',
+        'current',
+        'locked'
+      );
+
+
+      if (
+        cardIndex <
+        currentIndex
+      ) {
+
+        card.classList.add(
+          'achieved'
+        );
+
+
+        if (
+          state
+        ) {
+
+          state.textContent =
+            'UNLOCKED';
+
+        }
+
+      }
+
+      else if (
+        cardIndex ===
+        currentIndex
+      ) {
+
+        card.classList.add(
+          'current'
+        );
+
+
+        currentCard =
+          card;
+
+
+        if (
+          state
+        ) {
+
+          state.textContent =
+            'CURRENT';
+
+        }
+
+      }
+
+      else {
+
+        card.classList.add(
+          'locked'
+        );
+
+
+        if (
+          state
+        ) {
+
+          state.textContent =
+            'LOCKED';
+
+        }
+
+      }
+
+    }
+
+  );
+
+
+  if (
+    journeySummary
+  ) {
+
+    journeySummary.innerHTML =
+
+      '<b>Current Rank:</b>&nbsp;' +
+
+      escapeHtml(
+        currentRank
+      ) +
+
+      '&nbsp;&nbsp; • &nbsp;&nbsp;' +
+
+      '<b>Total Approved:</b>&nbsp;' +
+
+      totalApproved +
+
+      ' SS' +
+
+      '&nbsp;&nbsp; • &nbsp;&nbsp;' +
+
+      '<b>Season:</b>&nbsp;' +
+
+      escapeHtml(
+        status
+      );
+
+  }
+
+
+  if (
+    journeyNote
+  ) {
+
+    if (
+      status ===
+      'WINNER'
+    ) {
+
+      journeyNote.innerHTML =
+
+        'Season Status: ' +
+
+        '<span class="winner">' +
+        'WINNER' +
+        '</span>. ' +
+
+        'Kamu berhasil menjaga minimal ' +
+
+        '<b>1 SS Approved Implementasi ' +
+        'di setiap bulan</b>.';
+
+    }
+
+    else {
+
+      const missedText =
+
+        missed.length
+
+          ? missed.join(', ')
+
+          : '-';
+
+
+      journeyNote.innerHTML =
+
+        'Season Status: ' +
+
+        '<span class="failed">' +
+        'FAILED' +
+        '</span>. ' +
+
+        'Rank tetap mengikuti total ' +
+        'Approved Implementasi, tetapi ' +
+        'season dianggap tidak complete ' +
+        'karena bulan yang terlewat: ' +
+
+        '<b>' +
+        escapeHtml(
+          missedText
+        ) +
+        '</b>.';
+
+    }
+
+  }
+
+
+  /*
+   Di mobile auto fokus
+   ke rank saat ini.
+
+   Delay kecil supaya browser
+   selesai render dulu.
+  */
+
+  if (
+    currentCard &&
+    window.innerWidth <=
+    1000
+  ) {
+
+    setTimeout(
+
+      function() {
+
+        currentCard.scrollIntoView({
+
+          behavior:
+            'smooth',
+
+          block:
+            'nearest',
+
+          inline:
+            'center'
+
+        });
+
+      },
+
+      250
+
+    );
 
   }
 
@@ -726,133 +937,176 @@ function renderMissedMonths(
 
 
 /* ==========================================================
-   RANK VISUAL CONFIG
+   RANK HELPERS
 ========================================================== */
 
-function getRankVisual(
+function normalizeRank(
+  value
+) {
+
+  const rank =
+    String(
+      value ||
+      'WARRIOR'
+    )
+      .trim()
+      .toUpperCase()
+      .replace(
+        /\s+/g,
+        ' '
+      );
+
+
+  const valid = [
+
+    'WARRIOR',
+    'ELITE',
+    'EPIC',
+    'LEGEND',
+    'MYTHIC',
+    'MYTHIC HONOR',
+    'MYTHIC GLORY'
+
+  ];
+
+
+  return valid.includes(
+    rank
+  )
+
+    ? rank
+
+    : 'WARRIOR';
+
+}
+
+
+/* ==========================================================
+   TOTAL → RANK
+
+   0     WARRIOR
+   1     ELITE
+   2     EPIC
+   3     LEGEND
+   4-6   MYTHIC
+   7-9   MYTHIC HONOR
+   >=10  MYTHIC GLORY
+========================================================== */
+
+function calculateRankFromTotal(
+  totalApproved
+) {
+
+  const total =
+    Number(
+      totalApproved ||
+      0
+    );
+
+
+  if (
+    total >= 10
+  ) {
+
+    return 'MYTHIC GLORY';
+
+  }
+
+
+  if (
+    total >= 7
+  ) {
+
+    return 'MYTHIC HONOR';
+
+  }
+
+
+  if (
+    total >= 4
+  ) {
+
+    return 'MYTHIC';
+
+  }
+
+
+  if (
+    total === 3
+  ) {
+
+    return 'LEGEND';
+
+  }
+
+
+  if (
+    total === 2
+  ) {
+
+    return 'EPIC';
+
+  }
+
+
+  if (
+    total === 1
+  ) {
+
+    return 'ELITE';
+
+  }
+
+
+  return 'WARRIOR';
+
+}
+
+
+/* ==========================================================
+   RANK CLASS
+========================================================== */
+
+function getRankClass(
   rank
 ) {
 
-  const ranks = {
+  const classMap = {
 
+    WARRIOR:
+      'rank-warrior',
 
-    /* ==========================
-       0 SS
-    ========================== */
+    ELITE:
+      'rank-elite',
 
-    WARRIOR: {
+    EPIC:
+      'rank-epic',
 
-      className:
-        'rank-warrior',
+    LEGEND:
+      'rank-legend',
 
-      badge:
-        'W'
+    MYTHIC:
+      'rank-mythic',
 
-    },
+    'MYTHIC HONOR':
+      'rank-mythic-honor',
 
-
-    /* ==========================
-       1 SS
-    ========================== */
-
-    ELITE: {
-
-      className:
-        'rank-elite',
-
-      badge:
-        'E'
-
-    },
-
-
-    /* ==========================
-       2 SS
-    ========================== */
-
-    EPIC: {
-
-      className:
-        'rank-epic',
-
-      badge:
-        'EP'
-
-    },
-
-
-    /* ==========================
-       3 SS
-    ========================== */
-
-    LEGEND: {
-
-      className:
-        'rank-legend',
-
-      badge:
-        'L'
-
-    },
-
-
-    /* ==========================
-       4-6 SS
-    ========================== */
-
-    MYTHIC: {
-
-      className:
-        'rank-mythic',
-
-      badge:
-        'M'
-
-    },
-
-
-    /* ==========================
-       7-9 SS
-    ========================== */
-
-    'MYTHIC HONOR': {
-
-      className:
-        'rank-mythic-honor',
-
-      badge:
-        'MH'
-
-    },
-
-
-    /* ==========================
-       >= 10 SS
-    ========================== */
-
-    'MYTHIC GLORY': {
-
-      className:
-        'rank-mythic-glory',
-
-      badge:
-        'MG'
-
-    }
+    'MYTHIC GLORY':
+      'rank-mythic-glory'
 
   };
 
 
   return (
-    ranks[rank] ||
-    ranks.WARRIOR
+    classMap[rank] ||
+    'rank-warrior'
   );
 
 }
 
 
 /* ==========================================================
-   USER INITIAL
+   INITIALS
 ========================================================== */
 
 function getInitials(
@@ -868,21 +1122,63 @@ function getInitials(
 
     .split(/\s+/)
 
-    .filter(Boolean)
-
     .slice(0,2)
 
     .map(
+
       function(word) {
 
-        return word.charAt(0);
+        return word
+          .charAt(0);
 
       }
+
     )
 
     .join('')
 
     .toUpperCase();
+
+}
+
+
+/* ==========================================================
+   ESCAPE HTML
+========================================================== */
+
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value ||
+    ''
+  )
+
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+
+    .replace(
+      /</g,
+      '&lt;'
+    )
+
+    .replace(
+      />/g,
+      '&gt;'
+    )
+
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+
+    .replace(
+      /'/g,
+      '&#039;'
+    );
 
 }
 
@@ -895,21 +1191,14 @@ async function redirectToLogin() {
 
   try {
 
-    /*
-     API tanpa session akan mengembalikan
-     Apps Script login URL.
-    */
-
     const response =
       await fetch(
 
         '/api/dashboard',
 
         {
-
           cache:
             'no-store'
-
         }
 
       );
@@ -932,10 +1221,9 @@ async function redirectToLogin() {
 
   }
 
-  catch (error) {
+  catch(error) {
 
     console.error(
-      'LOGIN REDIRECT ERROR:',
       error
     );
 
@@ -953,7 +1241,9 @@ async function redirectToLogin() {
 
 function showSessionError() {
 
-  if (headerUserName) {
+  if (
+    headerUserName
+  ) {
 
     headerUserName.textContent =
       'SESSION ENDED';
@@ -961,7 +1251,9 @@ function showSessionError() {
   }
 
 
-  if (headerUserRole) {
+  if (
+    headerUserRole
+  ) {
 
     headerUserRole.textContent =
       'LOGIN REQUIRED';
@@ -969,7 +1261,9 @@ function showSessionError() {
   }
 
 
-  if (heroUserName) {
+  if (
+    heroUserName
+  ) {
 
     heroUserName.textContent =
       'PLEASE LOGIN AGAIN';
@@ -977,39 +1271,19 @@ function showSessionError() {
   }
 
 
-  if (avatar) {
-
-    avatar.textContent =
-      '!';
-
-  }
-
-
-  if (departmentText) {
-
-    departmentText.textContent =
-      '';
-
-  }
-
-
-  if (locationText) {
-
-    locationText.textContent =
-      '';
-
-  }
-
-
-  if (rankName) {
+  if (
+    rankName
+  ) {
 
     rankName.textContent =
-      '';
+      '-';
 
   }
 
 
-  if (rankTotal) {
+  if (
+    rankTotal
+  ) {
 
     rankTotal.textContent =
       '';
@@ -1017,254 +1291,14 @@ function showSessionError() {
   }
 
 
-  if (seasonStatus) {
+  if (
+    seasonStatus
+  ) {
 
     seasonStatus.textContent =
       '';
 
   }
-
-
-  if (missedMonths) {
-
-    missedMonths.textContent =
-      '';
-
-  }
-
-}
-
-
-/* ==========================================================
-   MUSIC
-========================================================== */
-
-function setMusicButtonState(
-  playing
-) {
-
-  if (!musicButton) {
-
-    return;
-
-  }
-
-
-  musicButton.textContent =
-    playing
-      ? 'II'
-      : '▶';
-
-
-  musicButton.title =
-    playing
-      ? 'Pause Music'
-      : 'Play Music';
-
-}
-
-
-/* ==========================================================
-   TRY AUTOPLAY MUSIC
-
-   Browser seperti Chrome / Edge bisa
-   memblokir autoplay dengan suara.
-
-   Kalau diblokir:
-   musik otomatis mulai saat interaksi
-   pertama user.
-========================================================== */
-
-async function tryAutoPlayMusic() {
-
-  if (
-    !bgMusic ||
-    !musicButton
-  ) {
-
-    return;
-
-  }
-
-
-  /*
-   Volume awal.
-  */
-
-  bgMusic.volume =
-    0.35;
-
-
-  try {
-
-    await bgMusic.play();
-
-
-    setMusicButtonState(
-      true
-    );
-
-  }
-
-  catch (error) {
-
-    /*
-     Autoplay diblokir browser.
-    */
-
-    setMusicButtonState(
-      false
-    );
-
-
-    /*
-     Mulai musik pada interaksi pertama.
-    */
-
-    const startMusic =
-      async function() {
-
-        try {
-
-          /*
-           Jangan play kalau user justru
-           mengklik tombol music sendiri.
-          */
-
-          if (
-            bgMusic.paused
-          ) {
-
-            await bgMusic.play();
-
-          }
-
-
-          setMusicButtonState(
-            !bgMusic.paused
-          );
-
-        }
-
-        catch (playError) {
-
-          console.error(
-            'AUTO MUSIC ERROR:',
-            playError
-          );
-
-        }
-
-      };
-
-
-    /*
-     Mouse / touch / keyboard.
-    */
-
-    document.addEventListener(
-      'click',
-      startMusic,
-      {
-        once:
-          true
-      }
-    );
-
-
-    document.addEventListener(
-      'touchstart',
-      startMusic,
-      {
-        once:
-          true
-      }
-    );
-
-
-    document.addEventListener(
-      'keydown',
-      startMusic,
-      {
-        once:
-          true
-      }
-    );
-
-  }
-
-}
-
-
-/* ==========================================================
-   MUSIC BUTTON
-========================================================== */
-
-if (
-  musicButton &&
-  bgMusic
-) {
-
-  musicButton.addEventListener(
-    'click',
-    async function(event) {
-
-      /*
-       Jangan diteruskan ke listener
-       autoplay document.
-      */
-
-      event.stopPropagation();
-
-
-      /*
-       PLAY
-      */
-
-      if (
-        bgMusic.paused
-      ) {
-
-        try {
-
-          await bgMusic.play();
-
-
-          setMusicButtonState(
-            true
-          );
-
-        }
-
-        catch (error) {
-
-          console.error(
-            'MUSIC PLAY ERROR:',
-            error
-          );
-
-        }
-
-      }
-
-
-      /*
-       PAUSE
-      */
-
-      else {
-
-        bgMusic.pause();
-
-
-        setMusicButtonState(
-          false
-        );
-
-      }
-
-    }
-  );
 
 }
 
@@ -1273,134 +1307,224 @@ if (
    LOGOUT
 ========================================================== */
 
-if (logoutButton) {
+if (
+  logoutButton
+) {
 
-  logoutButton.addEventListener(
-    'click',
-    async function() {
+  logoutButton
+    .addEventListener(
 
-      /*
-       Simpan login URL sebelum reset.
-      */
+      'click',
 
-      const targetLoginUrl =
-        loginUrl;
+      function() {
+
+        localStorage.removeItem(
+          'ss_rank_session'
+        );
 
 
-      /*
-       Delete session server.
-      */
+        sessionToken =
+          null;
 
-      try {
 
         if (
-          sessionToken
+          loginUrl
         ) {
 
-          await fetch(
+          window.location.href =
+            loginUrl;
 
-            '/api/logout',
-
-            {
-
-              method:
-                'POST',
-
-              headers: {
-
-                'Content-Type':
-                  'application/json'
-
-              },
-
-              body:
-                JSON.stringify({
-
-                  session:
-                    sessionToken
-
-                })
-
-            }
-
-          );
+          return;
 
         }
 
-      }
-
-      catch (error) {
-
-        console.error(
-          'LOGOUT ERROR:',
-          error
-        );
-
-      }
-
-
-      /*
-       Clear browser session.
-      */
-
-      localStorage.removeItem(
-        'ss_rank_session'
-      );
-
-
-      sessionToken =
-        null;
-
-
-      /*
-       Stop music.
-      */
-
-      if (bgMusic) {
-
-        bgMusic.pause();
-
-        bgMusic.currentTime =
-          0;
-
-      }
-
-
-      /*
-       Redirect login.
-      */
-
-      if (
-        targetLoginUrl
-      ) {
 
         window.location.href =
-          targetLoginUrl;
-
-        return;
+          '/';
 
       }
 
-
-      window.location.href =
-        '/';
-
-    }
-  );
+    );
 
 }
 
 
 /* ==========================================================
-   START
+   MUSIC
 ========================================================== */
 
-tryAutoPlayMusic();
+async function playMusic() {
 
-loadDashboard();
+  if (
+    !bgMusic
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    bgMusic.volume =
+      .30;
+
+
+    await bgMusic.play();
+
+
+    if (
+      musicButton
+    ) {
+
+      musicButton.textContent =
+        'II';
+
+    }
+
+  }
+
+  catch(error) {
+
+    /*
+     Autoplay may be blocked.
+    */
+
+  }
+
+}
+
+
+function pauseMusic() {
+
+  if (
+    !bgMusic
+  ) {
+
+    return;
+
+  }
+
+
+  bgMusic.pause();
+
+
+  if (
+    musicButton
+  ) {
+
+    musicButton.textContent =
+      '▶';
+
+  }
+
+}
+
+
+async function tryStartMusic() {
+
+  if (
+    !bgMusic
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    bgMusic.volume =
+      .30;
+
+
+    await bgMusic.play();
+
+
+    if (
+      musicButton
+    ) {
+
+      musicButton.textContent =
+        'II';
+
+    }
+
+  }
+
+  catch(error) {
+
+    /*
+     Browser blocked autoplay.
+
+     Play on first interaction.
+    */
+
+    const activateMusic =
+      async function() {
+
+        await playMusic();
+
+      };
+
+
+    document.addEventListener(
+      'pointerdown',
+      activateMusic,
+      {
+        once:
+          true
+      }
+    );
+
+  }
+
+}
+
+
+if (
+  musicButton
+) {
+
+  musicButton
+    .addEventListener(
+
+      'click',
+
+      async function() {
+
+        if (
+          !bgMusic
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          bgMusic.paused
+        ) {
+
+          await playMusic();
+
+        }
+
+        else {
+
+          pauseMusic();
+
+        }
+
+      }
+
+    );
+
+}
+
 
 /* ==========================================================
-   SEASON STORY INTERACTION
+   STORY PARALLAX DESKTOP
 ========================================================== */
 
 const seasonStory =
@@ -1424,7 +1548,9 @@ if (
 ) {
 
   seasonStory.addEventListener(
+
     'mousemove',
+
     function(event) {
 
       const rect =
@@ -1432,7 +1558,8 @@ if (
           .getBoundingClientRect();
 
 
-      const mouseX =
+      const x =
+
         (
           event.clientX -
           rect.left
@@ -1440,7 +1567,8 @@ if (
         rect.width;
 
 
-      const mouseY =
+      const y =
+
         (
           event.clientY -
           rect.top
@@ -1449,36 +1577,109 @@ if (
 
 
       const moveX =
+
         (
-          mouseX - .5
-        ) * 8;
+          x - .5
+        ) *
+        7;
 
 
       const moveY =
+
         (
-          mouseY - .5
-        ) * 5;
+          y - .5
+        ) *
+        4;
 
 
       storyContent.style.transform =
+
         'translate3d(' +
+
         moveX +
         'px,' +
+
         moveY +
         'px,0)';
 
     }
+
   );
 
 
   seasonStory.addEventListener(
+
     'mouseleave',
+
     function() {
 
       storyContent.style.transform =
         'translate3d(0,0,0)';
 
     }
+
   );
 
 }
+
+
+/* ==========================================================
+   JOURNEY REVEAL
+========================================================== */
+
+if (
+  journeySection &&
+  'IntersectionObserver'
+  in window
+) {
+
+  const observer =
+    new IntersectionObserver(
+
+      function(entries) {
+
+        entries.forEach(
+
+          function(entry) {
+
+            if (
+              entry.isIntersecting
+            ) {
+
+              journeySection.classList.add(
+                'journey-visible'
+              );
+
+
+              observer.unobserve(
+                entry.target
+              );
+
+            }
+
+          }
+
+        );
+
+      },
+
+      {
+        threshold:
+          .12
+      }
+
+    );
+
+
+  observer.observe(
+    journeySection
+  );
+
+}
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+loadDashboard();
