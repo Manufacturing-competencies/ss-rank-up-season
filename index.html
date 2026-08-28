@@ -7,10 +7,22 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
 
-  <title>SS Rank Up Season</title>
+  <meta
+    name="theme-color"
+    content="#020611"
+  >
+
+  <title>
+    SS Rank Up Season
+  </title>
+
+
+  <!-- =====================================================
+       GOOGLE FONT
+  ====================================================== -->
 
   <link
     rel="preconnect"
@@ -28,6 +40,11 @@
     rel="stylesheet"
   >
 
+
+  <!-- =====================================================
+       CSS
+  ====================================================== -->
+
   <link
     rel="stylesheet"
     href="/style.css"
@@ -38,17 +55,25 @@
 
 <body>
 
+
   <!-- =====================================================
-       NAVBAR
+       TOPBAR
   ====================================================== -->
 
   <header class="topbar">
 
+
+    <!-- BRAND -->
+
     <div class="brand">
 
-      <div class="brand-icon">
+      <div
+        class="brand-icon"
+        aria-hidden="true"
+      >
         <span></span>
       </div>
+
 
       <div class="brand-copy">
 
@@ -65,7 +90,12 @@
     </div>
 
 
+    <!-- USER -->
+
     <div class="user-panel">
+
+
+      <!-- MUSIC -->
 
       <button
         id="musicButton"
@@ -78,6 +108,8 @@
       </button>
 
 
+      <!-- AVATAR -->
+
       <div
         id="avatar"
         class="avatar"
@@ -85,6 +117,8 @@
         --
       </div>
 
+
+      <!-- USER INFO -->
 
       <div class="user-info">
 
@@ -105,6 +139,8 @@
       </div>
 
 
+      <!-- LOGOUT -->
+
       <button
         id="logoutButton"
         class="logout-button"
@@ -119,555 +155,1509 @@
 
 
   <!-- =====================================================
-       DASHBOARD
+       APP NAVIGATION
+  ====================================================== -->
+
+  <nav
+    class="app-navigation"
+    aria-label="Main Navigation"
+  >
+
+
+    <!-- HOME -->
+
+    <button
+      class="nav-item active"
+      data-page="home"
+      type="button"
+      aria-label="Home"
+    >
+
+      <span class="nav-icon">
+        ⌂
+      </span>
+
+      <span class="nav-label">
+        Home
+      </span>
+
+    </button>
+
+
+    <!-- DATABASE -->
+
+    <button
+      class="nav-item"
+      data-page="database"
+      type="button"
+      aria-label="Database"
+    >
+
+      <span class="nav-icon">
+        ▦
+      </span>
+
+      <span class="nav-label">
+        Database
+      </span>
+
+    </button>
+
+
+    <!-- LEADERBOARD -->
+
+    <button
+      class="nav-item"
+      data-page="leaderboard"
+      type="button"
+      aria-label="Leaderboard"
+    >
+
+      <span class="nav-icon">
+        ♛
+      </span>
+
+      <span class="nav-label">
+        Leaderboard
+      </span>
+
+    </button>
+
+
+    <!-- REWARD -->
+
+    <button
+      class="nav-item"
+      data-page="reward"
+      type="button"
+      aria-label="Reward"
+    >
+
+      <span class="nav-icon">
+        ◆
+      </span>
+
+      <span class="nav-label">
+        Reward
+      </span>
+
+    </button>
+
+
+    <!-- PROFILE -->
+
+    <button
+      class="nav-item"
+      data-page="profile"
+      type="button"
+      aria-label="Profile"
+    >
+
+      <span class="nav-icon">
+        ◎
+      </span>
+
+      <span class="nav-label">
+        Profile
+      </span>
+
+    </button>
+
+
+  </nav>
+
+
+  <!-- =====================================================
+       MAIN
   ====================================================== -->
 
   <main class="page">
 
-    <section class="hero">
 
-      <div
-        class="hero-light hero-light-blue"
-      ></div>
+    <!-- =====================================================
+         PAGE — HOME
+    ====================================================== -->
 
-      <div
-        class="hero-light hero-light-purple"
-      ></div>
-
-
-      <!-- =================================================
-           LEFT HERO
-      ================================================== -->
-
-      <div class="hero-left">
-
-        <div class="season-chip">
-
-          <span
-            class="season-dot"
-          ></span>
-
-          <span id="seasonState">
-            SEASON ACTIVE
-          </span>
-
-        </div>
+    <section
+      id="page-home"
+      class="app-page active"
+    >
 
 
-        <div class="welcome-label">
-          Welcome back,
-        </div>
+      <!-- ===================================================
+           HERO
+      ==================================================== -->
+
+      <section class="hero">
 
 
-        <h1
-          id="heroUserName"
-          class="hero-user-name"
-        >
-          LOADING...
-        </h1>
-
-
-        <p class="hero-description">
-
-          Turn every idea into impact.
-          Complete your improvement and climb the rank.
-
-        </p>
-
-
-        <div class="identity-info">
-
-          <span id="departmentText">
-            -
-          </span>
-
-          <span class="identity-divider">
-            •
-          </span>
-
-          <span id="locationText">
-            -
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
-           RIGHT / RANK
-      ================================================== -->
-
-      <div
-        id="rankPanel"
-        class="rank-panel rank-warrior"
-      >
-
-        <!-- ORBIT -->
+        <!-- BACKGROUND LIGHT -->
 
         <div
-          class="rank-orbit orbit-one"
+          class="hero-light hero-light-blue"
+          aria-hidden="true"
         ></div>
 
         <div
-          class="rank-orbit orbit-two"
-        ></div>
-
-        <div
-          class="rank-orbit orbit-three"
+          class="hero-light hero-light-purple"
+          aria-hidden="true"
         ></div>
 
 
-        <!-- GLOW -->
+        <!-- =================================================
+             HERO LEFT
+        ================================================== -->
 
-        <div
-          class="rank-glow"
-        ></div>
-
-
-        <!-- EMBLEM -->
-
-        <div
-          id="rankBadge"
-          class="rank-badge"
-        >
-
-          <!-- WINGS -->
-
-          <div
-            class="rank-wing rank-wing-left"
-          ></div>
-
-          <div
-            class="rank-wing rank-wing-right"
-          ></div>
+        <div class="hero-left">
 
 
-          <!-- CROWN -->
+          <!-- SEASON STATE -->
 
-          <div class="rank-crown">
+          <div class="season-chip">
 
-            <span></span>
-            <span></span>
-            <span></span>
+            <span
+              class="season-dot"
+              aria-hidden="true"
+            ></span>
+
+            <span id="seasonState">
+              SEASON ACTIVE
+            </span>
 
           </div>
 
 
-          <!-- SHIELD -->
+          <!-- WELCOME -->
 
-          <div class="rank-shield">
-
-            <div class="rank-shield-inner">
-
-              <div
-                class="rank-crystal"
-              ></div>
+          <div class="welcome-label">
+            Welcome back,
+          </div>
 
 
-              <div
-                id="rankSymbol"
-                class="rank-symbol"
-              >
-                W
+          <!-- USER NAME -->
+
+          <h1
+            id="heroUserName"
+            class="hero-user-name"
+          >
+            LOADING...
+          </h1>
+
+
+          <!-- DESCRIPTION -->
+
+          <p class="hero-description">
+
+            Turn every idea into impact.
+            Complete your improvement and climb the rank.
+
+          </p>
+
+
+          <!-- IDENTITY -->
+
+          <div class="identity-info">
+
+            <span id="departmentText">
+              -
+            </span>
+
+            <span
+              class="identity-divider"
+              aria-hidden="true"
+            >
+              •
+            </span>
+
+            <span id="locationText">
+              -
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             HERO RIGHT / RANK
+        ================================================== -->
+
+        <div
+          id="rankPanel"
+          class="rank-panel rank-warrior"
+        >
+
+
+          <!-- ORBIT -->
+
+          <div
+            class="rank-orbit orbit-one"
+            aria-hidden="true"
+          ></div>
+
+          <div
+            class="rank-orbit orbit-two"
+            aria-hidden="true"
+          ></div>
+
+          <div
+            class="rank-orbit orbit-three"
+            aria-hidden="true"
+          ></div>
+
+
+          <!-- GLOW -->
+
+          <div
+            class="rank-glow"
+            aria-hidden="true"
+          ></div>
+
+
+          <!-- =================================================
+               RANK BADGE
+          ================================================== -->
+
+          <div
+            id="rankBadge"
+            class="rank-badge"
+          >
+
+
+            <!-- WINGS -->
+
+            <div
+              class="rank-wing rank-wing-left"
+              aria-hidden="true"
+            ></div>
+
+            <div
+              class="rank-wing rank-wing-right"
+              aria-hidden="true"
+            ></div>
+
+
+            <!-- CROWN -->
+
+            <div
+              class="rank-crown"
+              aria-hidden="true"
+            >
+
+              <span></span>
+              <span></span>
+              <span></span>
+
+            </div>
+
+
+            <!-- SHIELD -->
+
+            <div class="rank-shield">
+
+              <div class="rank-shield-inner">
+
+
+                <div
+                  class="rank-crystal"
+                  aria-hidden="true"
+                ></div>
+
+
+                <div
+                  id="rankSymbol"
+                  class="rank-symbol"
+                >
+                  W
+                </div>
+
+
               </div>
+
+            </div>
+
+
+            <!-- PARTICLES -->
+
+            <div
+              class="rank-star rank-star-one"
+              aria-hidden="true"
+            ></div>
+
+            <div
+              class="rank-star rank-star-two"
+              aria-hidden="true"
+            ></div>
+
+            <div
+              class="rank-star rank-star-three"
+              aria-hidden="true"
+            ></div>
+
+
+          </div>
+
+
+          <!-- RANK LABEL -->
+
+          <div class="rank-label">
+            SEASON RANK
+          </div>
+
+
+          <!-- RANK NAME -->
+
+          <div
+            id="rankName"
+            class="rank-name"
+          >
+            WARRIOR
+          </div>
+
+
+          <!-- TOTAL -->
+
+          <div
+            id="rankTotal"
+            class="rank-total"
+          >
+            0 SS
+          </div>
+
+
+          <!-- STATUS -->
+
+          <div
+            id="seasonStatus"
+            class="season-status failed"
+          >
+            FAILED
+          </div>
+
+
+          <!-- MISSED MONTHS -->
+
+          <div
+            id="missedMonths"
+            class="missed-months"
+          ></div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           BACKGROUND / GAME RULE
+      ==================================================== -->
+
+      <section class="season-story">
+
+
+        <div
+          class="story-overlay"
+          aria-hidden="true"
+        ></div>
+
+        <div
+          class="story-neon neon-a"
+          aria-hidden="true"
+        ></div>
+
+        <div
+          class="story-neon neon-b"
+          aria-hidden="true"
+        ></div>
+
+
+        <div class="story-content">
+
+
+          <!-- ===============================================
+               LEFT
+          ================================================ -->
+
+          <div class="story-left">
+
+
+            <div class="story-tag">
+              BACKGROUND
+            </div>
+
+
+            <h2>
+              Start Your Climb.
+            </h2>
+
+
+            <p class="story-lead">
+
+              <strong>
+                SS Rank Up Season
+              </strong>
+
+              merupakan program gamifikasi
+              Sumbang Saran yang dilaksanakan
+              selama periode
+
+              <span>
+                3 bulan.
+              </span>
+
+            </p>
+
+
+            <p class="story-sub">
+
+              Setiap peserta memiliki misi
+              untuk menyelesaikan improvement
+              secara konsisten di setiap bulan.
+
+            </p>
+
+
+            <!-- MISSION -->
+
+            <div class="story-mission">
+
+
+              <div class="mission-line">
+
+                <div class="mission-badge">
+                  01
+                </div>
+
+                <div>
+
+                  <strong>
+                    1 Bulan
+                  </strong>
+
+                  <span>
+                    1 Sumbang Saran sampai
+                    Approved Implementasi
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <div class="mission-line">
+
+                <div class="mission-badge">
+                  03
+                </div>
+
+                <div>
+
+                  <strong>
+                    3 Bulan
+                  </strong>
+
+                  <span>
+                    Minimal 3 SS
+                    Approved Implementasi
+                  </span>
+
+                </div>
+
+              </div>
+
 
             </div>
 
           </div>
 
 
-          <!-- PARTICLES -->
+          <!-- DIVIDER -->
 
           <div
-            class="rank-star rank-star-one"
+            class="story-divider"
+            aria-hidden="true"
           ></div>
 
-          <div
-            class="rank-star rank-star-two"
-          ></div>
 
-          <div
-            class="rank-star rank-star-three"
-          ></div>
+          <!-- ===============================================
+               RIGHT
+          ================================================ -->
+
+          <div class="story-right">
+
+
+            <div class="story-tag">
+              BIG IDEA
+            </div>
+
+
+            <h2>
+              Game Rule
+            </h2>
+
+
+            <!-- RULE -->
+
+            <div class="rule-track">
+
+
+              <div class="rule-node cyan">
+
+                <strong>
+                  1
+                </strong>
+
+                <span>
+                  BULAN
+                </span>
+
+                <small>
+                  1 MATCH
+                </small>
+
+              </div>
+
+
+              <div
+                class="rule-link"
+                aria-hidden="true"
+              >
+                →
+              </div>
+
+
+              <div class="rule-node gold">
+
+                <strong>
+                  1
+                </strong>
+
+                <span>
+                  SS COMPLETE
+                </span>
+
+                <small>
+                  PER BULAN
+                </small>
+
+              </div>
+
+
+              <div
+                class="rule-link"
+                aria-hidden="true"
+              >
+                →
+              </div>
+
+
+              <div class="rule-node cyan">
+
+                <strong>
+                  3
+                </strong>
+
+                <span>
+                  BULAN
+                </span>
+
+                <small>
+                  1 SEASON
+                </small>
+
+              </div>
+
+
+              <div
+                class="rule-link"
+                aria-hidden="true"
+              >
+                →
+              </div>
+
+
+              <div class="rule-node gold">
+
+                <strong>
+                  3
+                </strong>
+
+                <span>
+                  SS COMPLETE
+                </span>
+
+                <small>
+                  TARGET
+                </small>
+
+              </div>
+
+
+            </div>
+
+
+            <!-- TARGET -->
+
+            <div class="season-target">
+
+              <div
+                class="target-check"
+                aria-hidden="true"
+              >
+                ✓
+              </div>
+
+
+              <div>
+
+                <strong>
+                  Target Final Season
+                </strong>
+
+                <p>
+
+                  Minimal
+
+                  <b>
+                    3 SS Approved Implementasi
+                  </b>
+
+                  per orang.
+
+                  Setiap bulan wajib minimal
+
+                  <b>
+                    1 SS Approved Implementasi.
+                  </b>
+
+                  Jika satu bulan tidak terpenuhi,
+                  peserta dianggap gugur pada season
+                  meskipun total SS yang dimiliki tinggi.
+
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <!-- PROCESS -->
+
+            <div class="process-flow">
+
+              <span>
+                Submit
+              </span>
+
+              <i aria-hidden="true">
+                →
+              </i>
+
+              <span>
+                Approved Superior
+              </span>
+
+              <i aria-hidden="true">
+                →
+              </i>
+
+              <span>
+                Implementasi
+              </span>
+
+              <i aria-hidden="true">
+                →
+              </i>
+
+              <span class="final-flow">
+                Approved Implementasi
+              </span>
+
+            </div>
+
+
+          </div>
 
         </div>
 
-
-        <!-- RANK LABEL -->
-
-        <div class="rank-label">
-          SEASON RANK
-        </div>
+      </section>
 
 
-        <!-- RANK NAME -->
+      <!-- ===================================================
+           RANK JOURNEY
+      ==================================================== -->
+
+      <section
+        id="rankJourneySection"
+        class="rank-journey-section"
+      >
+
+
+        <!-- BACKGROUND -->
 
         <div
-          id="rankName"
-          class="rank-name"
-        >
-          WARRIOR
-        </div>
-
-
-        <!-- TOTAL APPROVED IMPLEMENTATION -->
-
-        <div
-          id="rankTotal"
-          class="rank-total"
-        >
-          0 SS
-        </div>
-
-
-        <!-- STATUS -->
-
-        <div
-          id="seasonStatus"
-          class="season-status failed"
-        >
-          FAILED
-        </div>
-
-
-        <!-- MISSED MONTHS
-             Tidak ditulis statis.
-             JavaScript akan mengisi berdasarkan
-             month_1_name, month_2_name, month_3_name
-             dari Supabase.
-        -->
-
-        <div
-          id="missedMonths"
-          class="missed-months"
+          class="journey-bg-orb orb-left"
+          aria-hidden="true"
         ></div>
 
-      </div>
- </section>
-<section class="season-story">
+        <div
+          class="journey-bg-orb orb-right"
+          aria-hidden="true"
+        ></div>
 
-  <div class="story-overlay"></div>
-  <div class="story-neon neon-a"></div>
-  <div class="story-neon neon-b"></div>
+        <div
+          class="journey-grid-lines"
+          aria-hidden="true"
+        ></div>
 
-  <div class="story-content">
+
+        <!-- HEADER -->
+
+        <div class="journey-header">
 
 
-    <!-- LEFT -->
-    <div class="story-left">
-
-      <div class="story-tag">
-        BACKGROUND
-      </div>
-
-      <h2>
-        Start Your Climb.
-      </h2>
-
-      <p class="story-lead">
-        <strong>SS Rank Up Season</strong>
-        merupakan program gamifikasi Sumbang Saran
-        yang dilaksanakan selama periode
-        <span>3 bulan.</span>
-      </p>
-
-      <p class="story-sub">
-        Setiap peserta memiliki misi untuk menyelesaikan
-        improvement secara konsisten di setiap bulan.
-      </p>
-
-      <div class="story-mission">
-
-        <div class="mission-line">
-          <div class="mission-badge">01</div>
-
-          <div>
-            <strong>1 Bulan</strong>
-            <span>
-              1 Sumbang Saran sampai Approved Implementasi
-            </span>
+          <div class="journey-kicker">
+            RANK JOURNEY
           </div>
-        </div>
 
-        <div class="mission-line">
-          <div class="mission-badge">03</div>
 
-          <div>
-            <strong>3 Bulan</strong>
-            <span>
-              Minimal 3 SS Approved Implementasi
-            </span>
+          <h2 class="journey-title">
+            Progress Rank Peserta
+          </h2>
+
+
+          <p class="journey-subtitle">
+
+            Jalur pencapaian rank dari level awal
+            sampai level tertinggi dalam 1 season.
+
+          </p>
+
+
+          <div
+            id="journeySummary"
+            class="journey-summary"
+          >
+            Loading progress...
           </div>
+
+
         </div>
 
-      </div>
 
-    </div>
+        <!-- =================================================
+             TRACK
+        ================================================== -->
+
+        <div class="journey-track-wrapper">
 
 
-    <!-- DIVIDER -->
-    <div class="story-divider"></div>
+          <div
+            class="journey-line"
+            aria-hidden="true"
+          ></div>
 
 
-    <!-- RIGHT -->
-    <div class="story-right">
+          <div
+            id="journeyTrack"
+            class="journey-track"
+          >
 
-      <div class="story-tag">
-        BIG IDEA
-      </div>
 
-      <h2>
-        Game Rule
-      </h2>
+            <!-- WARRIOR -->
 
-      <div class="rule-track">
+            <article
+              class="journey-card"
+              data-rank="WARRIOR"
+              data-index="0"
+            >
 
-        <div class="rule-node cyan">
-          <strong>1</strong>
-          <span>BULAN</span>
-          <small>1 MATCH</small>
+              <div class="journey-card-glow"></div>
+
+              <div class="journey-badge journey-badge-warrior">
+
+                <div class="journey-badge-inner">
+
+                  <div class="journey-crystal"></div>
+
+                  <div class="journey-symbol">
+                    W
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="journey-rank-name">
+                Warrior
+              </div>
+
+              <div class="journey-rank-rule">
+                0 SS
+              </div>
+
+              <div class="journey-rank-caption">
+                Starting Rank
+              </div>
+
+              <div class="journey-card-state">
+                LOCKED
+              </div>
+
+            </article>
+
+
+            <!-- ELITE -->
+
+            <article
+              class="journey-card"
+              data-rank="ELITE"
+              data-index="1"
+            >
+
+              <div class="journey-card-glow"></div>
+
+              <div class="journey-badge journey-badge-elite">
+
+                <div class="journey-badge-inner">
+
+                  <div class="journey-crystal"></div>
+
+                  <div class="journey-symbol">
+                    E
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="journey-rank-name">
+                Elite
+              </div>
+
+              <div class="journey-rank-rule">
+                1 SS
+              </div>
+
+              <div class="journey-rank-caption">
+                Month 1 Target
+              </div>
+
+              <div class="journey-card-state">
+                LOCKED
+              </div>
+
+            </article>
+
+
+            <!-- EPIC -->
+
+            <article
+              class="journey-card"
+              data-rank="EPIC"
+              data-index="2"
+            >
+
+              <div class="journey-card-glow"></div>
+
+              <div class="journey-badge journey-badge-epic">
+
+                <div class="journey-badge-inner">
+
+                  <div class="journey-crystal"></div>
+
+                  <div class="journey-symbol">
+                    E
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="journey-rank-name">
+                Epic
+              </div>
+
+              <div class="journey-rank-rule">
+                2 SS
+              </div>
+
+              <div class="journey-rank-caption">
+                Month 2 Target
+              </div>
+
+              <div class="journey-card-state">
+                LOCKED
+              </div>
+
+            </article>
+
+
+            <!-- LEGEND -->
+
+            <article
+              class="journey-card"
+              data-rank="LEGEND"
+              data-index="3"
+            >
+
+              <div class="journey-card-glow"></div>
+
+              <div class="journey-badge journey-badge-legend">
+
+                <div class="journey-badge-inner">
+
+                  <div class="journey-crystal"></div>
+
+                  <div class="journey-symbol">
+                    L
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="journey-rank-name">
+                Legend
+              </div>
+
+              <div class="journey-rank-rule">
+                3 SS
+              </div>
+
+              <div class="journey-rank-caption">
+                Reach Legend
+              </div>
+
+              <div class="journey-card-state">
+                LOCKED
+              </div>
+
+            </article>
+
+
+            <!-- MYTHIC -->
+
+            <article
+              class="journey-card"
+              data-rank="MYTHIC"
+              data-index="4"
+            >
+
+              <div class="journey-card-glow"></div>
+
+              <div class="journey-badge journey-badge-mythic">
+
+                <div class="journey-badge-inner">
+
+                  <div class="journey-crystal"></div>
+
+                  <div class="journey-symbol">
+                    M
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="journey-rank-name">
+                Mythic
+              </div>
+
+              <div class="journey-rank-rule">
+                &gt;3 SS
+              </div>
+
+              <div class="journey-rank-caption">
+                Beyond Legend
+              </div>
+
+              <div class="journey-card-state">
+                LOCKED
+              </div>
+
+            </article>
+
+
+            <!-- MYTHIC HONOR -->
+
+            <article
+              class="journey-card"
+              data-rank="MYTHIC HONOR"
+              data-index="5"
+            >
+
+              <div class="journey-card-glow"></div>
+
+              <div class="journey-badge journey-badge-mythic-honor">
+
+                <div class="journey-badge-inner">
+
+                  <div class="journey-crystal"></div>
+
+                  <div class="journey-symbol">
+                    MH
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="journey-rank-name">
+                Mythic Honor
+              </div>
+
+              <div class="journey-rank-rule">
+                &gt;6 SS
+              </div>
+
+              <div class="journey-rank-caption">
+                Advanced Tier
+              </div>
+
+              <div class="journey-card-state">
+                LOCKED
+              </div>
+
+            </article>
+
+
+            <!-- MYTHIC GLORY -->
+
+            <article
+              class="journey-card"
+              data-rank="MYTHIC GLORY"
+              data-index="6"
+            >
+
+              <div class="journey-card-glow"></div>
+
+              <div class="journey-badge journey-badge-mythic-glory">
+
+                <div class="journey-badge-inner">
+
+                  <div class="journey-crystal"></div>
+
+                  <div class="journey-symbol">
+                    MG
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="journey-rank-name">
+                Mythic Glory
+              </div>
+
+              <div class="journey-rank-rule">
+                &gt;9 SS
+              </div>
+
+              <div class="journey-rank-caption">
+                Highest Tier
+              </div>
+
+              <div class="journey-card-state">
+                LOCKED
+              </div>
+
+            </article>
+
+
+          </div>
+
         </div>
 
-        <div class="rule-link">→</div>
 
-        <div class="rule-node gold">
-          <strong>1</strong>
-          <span>SS COMPLETE</span>
-          <small>PER BULAN</small>
+        <!-- FOOTER -->
+
+        <div class="journey-footer-box">
+
+          <div class="journey-footer-title">
+            Aturan Utama Season
+          </div>
+
+          <p class="journey-footer-text">
+
+            Target utama season adalah
+
+            <b>
+              minimal 3 SS Approved Implementasi
+            </b>
+
+            dan
+
+            <b>
+              setiap bulan wajib minimal
+              1 SS Approved Implementasi.
+            </b>
+
+            Jika salah satu bulan tidak complete,
+            status season menjadi
+
+            <b>
+              FAILED / LOSE.
+            </b>
+
+          </p>
+
+
+          <div
+            id="journeyNote"
+            class="journey-note"
+          >
+            Loading note...
+          </div>
+
         </div>
 
-        <div class="rule-link">→</div>
 
-        <div class="rule-node cyan">
-          <strong>3</strong>
-          <span>BULAN</span>
-          <small>1 SEASON</small>
-        </div>
-
-        <div class="rule-link">→</div>
-
-        <div class="rule-node gold">
-          <strong>3</strong>
-          <span>SS COMPLETE</span>
-          <small>TARGET</small>
-        </div>
-
-      </div>
+      </section>
 
 
-      <div class="season-target">
+    </section>
 
-        <div class="target-check">
-          ✓
-        </div>
+
+    <!-- =====================================================
+         PAGE — DATABASE
+    ====================================================== -->
+
+    <section
+      id="page-database"
+      class="app-page"
+    >
+
+
+      <!-- PAGE HEADER -->
+
+      <div class="page-header">
 
         <div>
-          <strong>
-            Target Final Season
-          </strong>
+
+          <div class="page-kicker">
+            DATABASE
+          </div>
+
+          <h2>
+            Sumbang Saran Rank Up Season
+          </h2>
 
           <p>
-            Minimal <b>3 SS Approved Implementasi</b>
-            per orang dan setiap bulan wajib minimal
-            <b>1 SS Approved Implementasi.</b> Wajib setiap bulan jika tidak akan dianggap gugur tidak terhitung banyak nya sumbang saran.
+
+            Cari dan lihat data Sumbang Saran
+            peserta dengan cepat.
+
           </p>
+
         </div>
 
       </div>
 
 
-      <div class="process-flow">
+      <!-- ===================================================
+           DATABASE TOOLBAR
+      ==================================================== -->
 
-        <span>Submit</span>
-        <i>→</i>
+      <div class="database-toolbar">
 
-        <span>Approved Superior</span>
-        <i>→</i>
 
-        <span>Implementasi</span>
-        <i>→</i>
+        <!-- SEARCH -->
 
-        <span class="final-flow">
-          Approved Implementasi
+        <div class="database-search">
+
+          <span aria-hidden="true">
+            ⌕
+          </span>
+
+          <input
+            id="databaseSearch"
+            type="search"
+            placeholder="Cari nama atau SS ID..."
+            autocomplete="off"
+            spellcheck="false"
+          >
+
+        </div>
+
+
+        <!-- LIMIT -->
+
+        <select
+          id="databaseLimit"
+          aria-label="Jumlah data per halaman"
+        >
+
+          <option value="25">
+            25 Data
+          </option>
+
+          <option
+            value="50"
+            selected
+          >
+            50 Data
+          </option>
+
+          <option value="100">
+            100 Data
+          </option>
+
+        </select>
+
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div
+        id="databaseStatus"
+        class="database-status"
+      >
+        Klik menu Database untuk memuat data.
+      </div>
+
+
+      <!-- ===================================================
+           DESKTOP TABLE
+      ==================================================== -->
+
+      <div
+        id="databaseDesktop"
+        class="database-table-wrapper"
+      >
+
+        <table class="database-table">
+
+
+          <thead>
+
+            <tr>
+
+              <th>
+                SS ID
+              </th>
+
+              <th>
+                Nama
+              </th>
+
+              <th>
+                Departemen
+              </th>
+
+              <th>
+                Jenis SS
+              </th>
+
+              <th>
+                Superior
+              </th>
+
+              <th>
+                Status Admin
+              </th>
+
+              <th>
+                Status Superior
+              </th>
+
+              <th>
+                Implementasi
+              </th>
+
+              <th>
+                Create Time
+              </th>
+
+              <th>
+                Lokasi
+              </th>
+
+              <th>
+                Month
+              </th>
+
+              <th>
+                Validasi
+              </th>
+
+              <th>
+                Tgl Implementasi
+              </th>
+
+              <th>
+                Kualifikasi
+              </th>
+
+              <th>
+                Point
+              </th>
+
+              <th>
+                Point Approval
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="databaseTableBody">
+
+            <!-- DATA BY APP.JS -->
+
+          </tbody>
+
+
+        </table>
+
+      </div>
+
+
+      <!-- ===================================================
+           MOBILE DATABASE CARD
+      ==================================================== -->
+
+      <div
+        id="databaseMobile"
+        class="database-mobile-list"
+      >
+
+        <!-- DATA BY APP.JS -->
+
+      </div>
+
+
+      <!-- ===================================================
+           PAGINATION
+      ==================================================== -->
+
+      <div class="database-pagination">
+
+
+        <button
+          id="databasePrev"
+          type="button"
+          disabled
+        >
+          ← PREVIOUS
+        </button>
+
+
+        <span id="databasePageInfo">
+          Page 1
         </span>
 
+
+        <button
+          id="databaseNext"
+          type="button"
+          disabled
+        >
+          NEXT →
+        </button>
+
+
       </div>
 
-    </div>
 
-  </div>
+    </section>
 
-</section>
-<!-- =====================================================
-     RANK JOURNEY
-====================================================== -->
-<section class="rank-journey-section" id="rankJourneySection">
 
-  <div class="journey-bg-orb orb-left"></div>
-  <div class="journey-bg-orb orb-right"></div>
-  <div class="journey-grid-lines"></div>
+    <!-- =====================================================
+         PAGE — LEADERBOARD
+    ====================================================== -->
 
-  <div class="journey-header">
-    <div class="journey-kicker">RANK JOURNEY</div>
+    <section
+      id="page-leaderboard"
+      class="app-page"
+    >
 
-    <h2 class="journey-title">
-      Progress Rank Peserta
-    </h2>
+      <div class="coming-page">
 
-    <p class="journey-subtitle">
-      Jalur pencapaian rank dari level awal sampai level tertinggi dalam 1 season.
-    </p>
-
-    <div id="journeySummary" class="journey-summary">
-      Loading progress...
-    </div>
-  </div>
-
-  <div class="journey-track-wrapper">
-
-    <div class="journey-line"></div>
-
-    <div class="journey-track" id="journeyTrack">
-
-      <!-- WARRIOR -->
-      <div class="journey-card" data-rank="WARRIOR" data-index="0">
-        <div class="journey-card-glow"></div>
-
-        <div class="journey-badge journey-badge-warrior">
-          <div class="journey-badge-inner">
-            <div class="journey-crystal"></div>
-            <div class="journey-symbol">W</div>
-          </div>
+        <div
+          class="coming-icon"
+          aria-hidden="true"
+        >
+          ♛
         </div>
 
-        <div class="journey-rank-name">Warrior</div>
-        <div class="journey-rank-rule">0 SS</div>
-        <div class="journey-rank-caption">Starting Rank</div>
-        <div class="journey-card-state">LOCKED</div>
+        <h2>
+          Leaderboard
+        </h2>
+
+        <p>
+          Ranking peserta SS Rank Up Season akan ditampilkan di sini.
+        </p>
+
       </div>
 
-      <!-- ELITE -->
-      <div class="journey-card" data-rank="ELITE" data-index="1">
-        <div class="journey-card-glow"></div>
+    </section>
 
-        <div class="journey-badge journey-badge-elite">
-          <div class="journey-badge-inner">
-            <div class="journey-crystal"></div>
-            <div class="journey-symbol">E</div>
-          </div>
+
+    <!-- =====================================================
+         PAGE — REWARD
+    ====================================================== -->
+
+    <section
+      id="page-reward"
+      class="app-page"
+    >
+
+      <div class="coming-page">
+
+        <div
+          class="coming-icon"
+          aria-hidden="true"
+        >
+          ◆
         </div>
 
-        <div class="journey-rank-name">Elite</div>
-        <div class="journey-rank-rule">1 SS</div>
-        <div class="journey-rank-caption">Month 1 Target</div>
-        <div class="journey-card-state">LOCKED</div>
+        <h2>
+          Reward
+        </h2>
+
+        <p>
+          Reward, achievement dan badge peserta akan ditampilkan di sini.
+        </p>
+
       </div>
 
-      <!-- EPIC -->
-      <div class="journey-card" data-rank="EPIC" data-index="2">
-        <div class="journey-card-glow"></div>
+    </section>
 
-        <div class="journey-badge journey-badge-epic">
-          <div class="journey-badge-inner">
-            <div class="journey-crystal"></div>
-            <div class="journey-symbol">E</div>
-          </div>
+
+    <!-- =====================================================
+         PAGE — PROFILE
+    ====================================================== -->
+
+    <section
+      id="page-profile"
+      class="app-page"
+    >
+
+      <div class="coming-page">
+
+        <div
+          class="coming-icon"
+          aria-hidden="true"
+        >
+          ◎
         </div>
 
-        <div class="journey-rank-name">Epic</div>
-        <div class="journey-rank-rule">2 SS</div>
-        <div class="journey-rank-caption">Month 2 Target</div>
-        <div class="journey-card-state">LOCKED</div>
+        <h2>
+          Profile
+        </h2>
+
+        <p>
+          Informasi peserta dan personal progress akan ditampilkan di sini.
+        </p>
+
       </div>
 
-      <!-- LEGEND -->
-      <div class="journey-card" data-rank="LEGEND" data-index="3">
-        <div class="journey-card-glow"></div>
+    </section>
 
-        <div class="journey-badge journey-badge-legend">
-          <div class="journey-badge-inner">
-            <div class="journey-crystal"></div>
-            <div class="journey-symbol">L</div>
-          </div>
-        </div>
-
-        <div class="journey-rank-name">Legend</div>
-        <div class="journey-rank-rule">3 SS</div>
-        <div class="journey-rank-caption">Reach Legend</div>
-        <div class="journey-card-state">LOCKED</div>
-      </div>
-
-      <!-- MYTHIC -->
-      <div class="journey-card" data-rank="MYTHIC" data-index="4">
-        <div class="journey-card-glow"></div>
-
-        <div class="journey-badge journey-badge-mythic">
-          <div class="journey-badge-inner">
-            <div class="journey-crystal"></div>
-            <div class="journey-symbol">M</div>
-          </div>
-        </div>
-
-        <div class="journey-rank-name">Mythic</div>
-        <div class="journey-rank-rule">&gt;3 SS</div>
-        <div class="journey-rank-caption">Beyond Legend</div>
-        <div class="journey-card-state">LOCKED</div>
-      </div>
-
-      <!-- MYTHIC HONOR -->
-      <div class="journey-card" data-rank="MYTHIC HONOR" data-index="5">
-        <div class="journey-card-glow"></div>
-
-        <div class="journey-badge journey-badge-mythic-honor">
-          <div class="journey-badge-inner">
-            <div class="journey-crystal"></div>
-            <div class="journey-symbol">MH</div>
-          </div>
-        </div>
-
-        <div class="journey-rank-name">Mythic Honor</div>
-        <div class="journey-rank-rule">&gt;6 SS</div>
-        <div class="journey-rank-caption">Advanced Tier</div>
-        <div class="journey-card-state">LOCKED</div>
-      </div>
-
-      <!-- MYTHIC GLORY -->
-      <div class="journey-card" data-rank="MYTHIC GLORY" data-index="6">
-        <div class="journey-card-glow"></div>
-
-        <div class="journey-badge journey-badge-mythic-glory">
-          <div class="journey-badge-inner">
-            <div class="journey-crystal"></div>
-            <div class="journey-symbol">MG</div>
-          </div>
-        </div>
-
-        <div class="journey-rank-name">Mythic Glory</div>
-        <div class="journey-rank-rule">&gt;9 SS</div>
-        <div class="journey-rank-caption">Highest Tier</div>
-        <div class="journey-card-state">LOCKED</div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="journey-footer-box">
-    <div class="journey-footer-title">Aturan Utama Season</div>
-
-    <p class="journey-footer-text">
-      Target utama season adalah <b>minimal 3 SS Approved Implementasi</b> dan
-      <b>setiap bulan wajib minimal 1 SS Approved Implementasi</b>.
-      Jika salah satu bulan tidak complete, maka status season menjadi
-      <b>FAILED / LOSE</b>.
-    </p>
-
-    <div id="journeyNote" class="journey-note">
-      Loading note...
-    </div>
-  </div>
-
-</section>
 
   </main>
 
@@ -680,6 +1670,7 @@
     id="bgMusic"
     src="/Rank Up Season.mp3"
     preload="auto"
+    autoplay
     loop
   ></audio>
 
@@ -689,6 +1680,7 @@
   ====================================================== -->
 
   <script src="/app.js"></script>
+
 
 </body>
 
