@@ -1,6 +1,6 @@
 /* ==========================================================
    SS RANK UP SEASON
-   APP.JS — FINAL REBUILD
+   APP.JS — FINAL COMPLETE
 ========================================================== */
 
 
@@ -12,12 +12,24 @@ const DEFAULT_LOGIN_URL =
   'https://script.google.com/macros/s/AKfycbw8wpMyhTvg0_O9Nj2TSyp6gZvDlWllv-hRnJHMknIcfwFrTx9p7R241gZZHRiMutRN/exec';
 
 
+const DASHBOARD_API =
+  '/api/dashboard';
+
+
 const DATABASE_API =
   '/api/ss-database';
 
 
-const DASHBOARD_API =
-  '/api/dashboard';
+const DATABASE_EXPORT_API =
+  '/api/ss-export';
+
+
+const POINT_API =
+  '/api/points';
+
+
+const POINT_EXPORT_API =
+  '/api/point-export';
 
 
 /* ==========================================================
@@ -41,11 +53,9 @@ let loginUrl =
   DEFAULT_LOGIN_URL;
 
 
-/*
-   Jika user datang dari Apps Script:
-
-   /?session=xxxx
-*/
+/* ==========================================================
+   SAVE SESSION
+========================================================== */
 
 if (
   urlParams.has('session')
@@ -55,7 +65,9 @@ if (
     urlParams.get('session');
 
 
-  if (incomingToken) {
+  if (
+    incomingToken
+  ) {
 
     sessionToken =
       incomingToken;
@@ -69,19 +81,10 @@ if (
   }
 
 
-  /*
-     Hapus ?session= dari URL
-     supaya token tidak terlihat.
-  */
-
   window.history.replaceState(
-
     {},
-
     document.title,
-
     window.location.pathname
-
   );
 
 }
@@ -128,7 +131,7 @@ const locationText =
 
 
 /* ==========================================================
-   DOM — HERO RANK
+   DOM — HERO / RANK
 ========================================================== */
 
 const seasonState =
@@ -254,10 +257,12 @@ const databaseLimit =
     'databaseLimit'
   );
 
+
 const databaseExport =
   document.getElementById(
     'databaseExport'
   );
+
 
 const databaseTableBody =
   document.getElementById(
@@ -293,6 +298,7 @@ const databaseNext =
   document.getElementById(
     'databaseNext'
   );
+
 
 /* ==========================================================
    DOM — POINT
@@ -394,23 +400,8 @@ const pointMonth3Header =
   );
 
 
-let pointPage =
-  1;
-
-
-let pointTotalPages =
-  1;
-
-
-let pointLoaded =
-  false;
-
-
-let pointSearchTimer =
-  null;
-
 /* ==========================================================
-   APP STATE
+   STATE — DATABASE
 ========================================================== */
 
 let databaseLoaded =
@@ -430,7 +421,27 @@ let databaseSearchTimer =
 
 
 /* ==========================================================
-   GENERAL HELPER
+   STATE — POINT
+========================================================== */
+
+let pointLoaded =
+  false;
+
+
+let pointPage =
+  1;
+
+
+let pointTotalPages =
+  1;
+
+
+let pointSearchTimer =
+  null;
+
+
+/* ==========================================================
+   HELPER
 ========================================================== */
 
 function firstValue(
@@ -510,7 +521,7 @@ function safeText(
   if (
     value === undefined ||
     value === null ||
-    value === ''
+    String(value).trim() === ''
   ) {
 
     return '-';
@@ -521,6 +532,27 @@ function safeText(
   return escapeHtml(
     value
   );
+
+}
+
+
+/* ==========================================================
+   NUMBER
+========================================================== */
+
+function safeNumber(
+  value
+) {
+
+  const number =
+    Number(
+      value
+    );
+
+
+  return Number.isFinite(number)
+    ? number
+    : 0;
 
 }
 
@@ -556,12 +588,8 @@ function getInitials(
     .slice(0, 2)
 
     .map(
-      function(word) {
-
-        return word
-          .charAt(0);
-
-      }
+      word =>
+        word.charAt(0)
     )
 
     .join('')
@@ -598,15 +626,10 @@ function goToLogin() {
 
 
 /* ==========================================================
-   LOAD DASHBOARD
+   DASHBOARD
 ========================================================== */
 
 async function loadDashboard() {
-
-  /*
-     Tidak punya token?
-     langsung login.
-  */
 
   if (
     !sessionToken
@@ -625,21 +648,14 @@ async function loadDashboard() {
       await fetch(
 
         DASHBOARD_API +
-
         '?session=' +
-
         encodeURIComponent(
           sessionToken
         ),
 
         {
-
-          method:
-            'GET',
-
-          cache:
-            'no-store'
-
+          method: 'GET',
+          cache: 'no-store'
         }
 
       );
@@ -655,7 +671,7 @@ async function loadDashboard() {
 
     }
 
-    catch(error) {
+    catch {
 
       throw new Error(
         'Dashboard response tidak valid.'
@@ -663,10 +679,6 @@ async function loadDashboard() {
 
     }
 
-
-    /*
-       API boleh mengirim login URL.
-    */
 
     if (
       result.loginUrl
@@ -677,10 +689,6 @@ async function loadDashboard() {
 
     }
 
-
-    /*
-       Session expired / invalid
-    */
 
     if (
       response.status === 401 ||
@@ -724,11 +732,6 @@ async function loadDashboard() {
     );
 
 
-    /*
-       Jangan tampilkan
-       PLEASE LOGIN AGAIN lagi.
-    */
-
     goToLogin();
 
   }
@@ -760,10 +763,6 @@ function renderDashboard(
     data.progress || {};
 
 
-  /* ========================================================
-     NAME
-  ======================================================== */
-
   const name =
     String(
 
@@ -794,10 +793,6 @@ function renderDashboard(
       .toUpperCase();
 
 
-  /* ========================================================
-     ROLE
-  ======================================================== */
-
   const role =
     String(
 
@@ -817,10 +812,6 @@ function renderDashboard(
       .trim()
       .toUpperCase();
 
-
-  /* ========================================================
-     DEPARTMENT
-  ======================================================== */
 
   const department =
     String(
@@ -843,10 +834,6 @@ function renderDashboard(
 
     ).trim();
 
-
-  /* ========================================================
-     LOCATION
-  ======================================================== */
 
   const location =
     String(
@@ -872,10 +859,6 @@ function renderDashboard(
     ).trim();
 
 
-  /* ========================================================
-     HEADER
-  ======================================================== */
-
   if (
     headerUserName
   ) {
@@ -897,6 +880,16 @@ function renderDashboard(
 
 
   if (
+    heroUserName
+  ) {
+
+    heroUserName.textContent =
+      name;
+
+  }
+
+
+  if (
     avatar
   ) {
 
@@ -904,20 +897,6 @@ function renderDashboard(
       getInitials(
         name
       );
-
-  }
-
-
-  /* ========================================================
-     HERO
-  ======================================================== */
-
-  if (
-    heroUserName
-  ) {
-
-    heroUserName.textContent =
-      name;
 
   }
 
@@ -942,23 +921,15 @@ function renderDashboard(
   }
 
 
-  /* ========================================================
-     SEASON STATE
-  ======================================================== */
-
   if (
     seasonState
   ) {
 
     const active =
       firstValue(
-
         season.active,
-
         season.is_active,
-
         true
-
       );
 
 
@@ -973,18 +944,10 @@ function renderDashboard(
   }
 
 
-  /* ========================================================
-     RANK
-  ======================================================== */
-
   renderRank(
     progress
   );
 
-
-  /* ========================================================
-     JOURNEY
-  ======================================================== */
 
   renderJourney(
     progress
@@ -1001,7 +964,8 @@ function getTotalApproved(
   progress
 ) {
 
-  const value =
+  return safeNumber(
+
     firstValue(
 
       progress.totalApproved,
@@ -1012,12 +976,9 @@ function getTotalApproved(
 
       0
 
-    );
+    )
 
-
-  return Number(
-    value
-  ) || 0;
+  );
 
 }
 
@@ -1050,7 +1011,7 @@ function getProgressStatus(
 
 
 /* ==========================================================
-   MISSED MONTHS
+   MISSED MONTH
 ========================================================== */
 
 function getMissedMonths(
@@ -1079,70 +1040,40 @@ function getMissedMonths(
   }
 
 
-  const months = [
+  return [
 
     {
-
-      name:
-        progress.month_1_name,
-
-      value:
-        Number(
-          progress.month_1_value || 0
-        )
-
+      name: progress.month_1_name,
+      value: safeNumber(
+        progress.month_1_value
+      )
     },
 
     {
-
-      name:
-        progress.month_2_name,
-
-      value:
-        Number(
-          progress.month_2_value || 0
-        )
-
+      name: progress.month_2_name,
+      value: safeNumber(
+        progress.month_2_value
+      )
     },
 
     {
-
-      name:
-        progress.month_3_name,
-
-      value:
-        Number(
-          progress.month_3_value || 0
-        )
-
+      name: progress.month_3_name,
+      value: safeNumber(
+        progress.month_3_value
+      )
     }
 
-  ];
-
-
-  return months
+  ]
 
     .filter(
-
-      function(month) {
-
-        return (
-          month.name &&
-          month.value < 1
-        );
-
-      }
-
+      month =>
+        month.name &&
+        month.value < 1
     )
 
     .map(
-
-      function(month) {
-
-        return month.name;
-
-      }
-
+      month =>
+        month.name
     );
 
 }
@@ -1160,11 +1091,8 @@ function normalizeRank(
     String(
       value || 'WARRIOR'
     )
-
       .trim()
-
       .toUpperCase()
-
       .replace(
         /\s+/g,
         ' '
@@ -1174,11 +1102,17 @@ function normalizeRank(
   const validRanks = [
 
     'WARRIOR',
+
     'ELITE',
+
     'EPIC',
+
     'LEGEND',
+
     'MYTHIC',
+
     'MYTHIC HONOR',
+
     'MYTHIC GLORY'
 
   ];
@@ -1200,17 +1134,17 @@ function normalizeRank(
 ========================================================== */
 
 function calculateRankFromTotal(
-  totalApproved
+  total
 ) {
 
-  const total =
-    Number(
-      totalApproved || 0
+  const value =
+    safeNumber(
+      total
     );
 
 
   if (
-    total >= 10
+    value >= 10
   ) {
 
     return 'MYTHIC GLORY';
@@ -1219,7 +1153,7 @@ function calculateRankFromTotal(
 
 
   if (
-    total >= 7
+    value >= 7
   ) {
 
     return 'MYTHIC HONOR';
@@ -1228,7 +1162,7 @@ function calculateRankFromTotal(
 
 
   if (
-    total >= 4
+    value >= 4
   ) {
 
     return 'MYTHIC';
@@ -1237,7 +1171,7 @@ function calculateRankFromTotal(
 
 
   if (
-    total === 3
+    value === 3
   ) {
 
     return 'LEGEND';
@@ -1246,7 +1180,7 @@ function calculateRankFromTotal(
 
 
   if (
-    total === 2
+    value === 2
   ) {
 
     return 'EPIC';
@@ -1255,7 +1189,7 @@ function calculateRankFromTotal(
 
 
   if (
-    total === 1
+    value === 1
   ) {
 
     return 'ELITE';
@@ -1269,7 +1203,7 @@ function calculateRankFromTotal(
 
 
 /* ==========================================================
-   RANK CSS CLASS
+   RANK CLASS
 ========================================================== */
 
 function getRankClass(
@@ -1311,7 +1245,7 @@ function getRankClass(
 
 
 /* ==========================================================
-   RENDER HERO RANK
+   RENDER RANK
 ========================================================== */
 
 function renderRank(
@@ -1352,10 +1286,6 @@ function renderRank(
     );
 
 
-  /* ========================================================
-     PANEL CLASS
-  ======================================================== */
-
   if (
     rankPanel
   ) {
@@ -1363,11 +1293,17 @@ function renderRank(
     rankPanel.classList.remove(
 
       'rank-warrior',
+
       'rank-elite',
+
       'rank-epic',
+
       'rank-legend',
+
       'rank-mythic',
+
       'rank-mythic-honor',
+
       'rank-mythic-glory'
 
     );
@@ -1382,10 +1318,6 @@ function renderRank(
   }
 
 
-  /* ========================================================
-     RANK NAME
-  ======================================================== */
-
   if (
     rankName
   ) {
@@ -1395,10 +1327,6 @@ function renderRank(
 
   }
 
-
-  /* ========================================================
-     TOTAL
-  ======================================================== */
 
   if (
     rankTotal
@@ -1411,36 +1339,25 @@ function renderRank(
   }
 
 
-  /* ========================================================
-     SYMBOL
-  ======================================================== */
-
   if (
     rankSymbol
   ) {
 
     const symbols = {
 
-      WARRIOR:
-        'W',
+      WARRIOR: 'W',
 
-      ELITE:
-        'E',
+      ELITE: 'E',
 
-      EPIC:
-        'E',
+      EPIC: 'E',
 
-      LEGEND:
-        'L',
+      LEGEND: 'L',
 
-      MYTHIC:
-        'M',
+      MYTHIC: 'M',
 
-      'MYTHIC HONOR':
-        'MH',
+      'MYTHIC HONOR': 'MH',
 
-      'MYTHIC GLORY':
-        'MG'
+      'MYTHIC GLORY': 'MG'
 
     };
 
@@ -1451,10 +1368,6 @@ function renderRank(
 
   }
 
-
-  /* ========================================================
-     STATUS
-  ======================================================== */
 
   if (
     seasonStatus
@@ -1495,23 +1408,17 @@ function renderRank(
   }
 
 
-  /* ========================================================
-     MISSED
-  ======================================================== */
-
   if (
     missedMonths
   ) {
 
     if (
-      status === 'FAILED' &&
+      status !== 'WINNER' &&
       missed.length
     ) {
 
       missedMonths.textContent =
-
         'Missed: ' +
-
         missed.join(', ');
 
     }
@@ -1529,7 +1436,7 @@ function renderRank(
 
 
 /* ==========================================================
-   RENDER RANK JOURNEY
+   RENDER JOURNEY
 ========================================================== */
 
 function renderJourney(
@@ -1582,11 +1489,17 @@ function renderJourney(
   const rankOrder = [
 
     'WARRIOR',
+
     'ELITE',
+
     'EPIC',
+
     'LEGEND',
+
     'MYTHIC',
+
     'MYTHIC HONOR',
+
     'MYTHIC GLORY'
 
   ];
@@ -1619,12 +1532,11 @@ function renderJourney(
 
 
   cards.forEach(
-
     function(card) {
 
       const cardIndex =
-        Number(
-          card.dataset.index || 0
+        safeNumber(
+          card.dataset.index
         );
 
 
@@ -1662,7 +1574,6 @@ function renderJourney(
 
       }
 
-
       else if (
         cardIndex ===
         currentIndex
@@ -1688,7 +1599,6 @@ function renderJourney(
 
       }
 
-
       else {
 
         card.classList.add(
@@ -1708,13 +1618,8 @@ function renderJourney(
       }
 
     }
-
   );
 
-
-  /* ========================================================
-     JOURNEY SUMMARY
-  ======================================================== */
 
   if (
     journeySummary
@@ -1747,10 +1652,6 @@ function renderJourney(
   }
 
 
-  /* ========================================================
-     JOURNEY NOTE
-  ======================================================== */
-
   if (
     journeyNote
   ) {
@@ -1767,10 +1668,7 @@ function renderJourney(
         'WINNER' +
         '</span>. ' +
 
-        'Kamu berhasil menyelesaikan minimal ' +
-
-        '<b>1 SS Approved Implementasi ' +
-        'di setiap bulan</b>.';
+        'Target konsistensi bulanan terpenuhi.';
 
     }
 
@@ -1809,36 +1707,26 @@ function renderJourney(
   }
 
 
-  /* ========================================================
-     MOBILE CURRENT CARD
-  ======================================================== */
-
   if (
     currentCard &&
     window.innerWidth <= 1000
   ) {
 
     setTimeout(
-
       function() {
 
         currentCard.scrollIntoView({
 
-          behavior:
-            'smooth',
+          behavior: 'smooth',
 
-          block:
-            'nearest',
+          block: 'nearest',
 
-          inline:
-            'center'
+          inline: 'center'
 
         });
 
       },
-
       250
-
     );
 
   }
@@ -1851,64 +1739,41 @@ function renderJourney(
 ========================================================== */
 
 navItems.forEach(
-
   function(item) {
 
     item.addEventListener(
-
       'click',
-
       function() {
 
         const pageName =
           item.dataset.page;
 
 
-        /* RESET NAV */
-
         navItems.forEach(
-
-          function(nav) {
-
+          nav =>
             nav.classList.remove(
               'active'
-            );
-
-          }
-
+            )
         );
 
-
-        /* RESET PAGE */
 
         appPages.forEach(
-
-          function(page) {
-
+          page =>
             page.classList.remove(
               'active'
-            );
-
-          }
-
+            )
         );
 
-
-        /* ACTIVE NAV */
 
         item.classList.add(
           'active'
         );
 
 
-        /* ACTIVE PAGE */
-
         const targetPage =
           document.getElementById(
-
             'page-' +
             pageName
-
           );
 
 
@@ -1923,11 +1788,8 @@ navItems.forEach(
         }
 
 
-        /* DATABASE */
-
         if (
-          pageName ===
-          'database'
+          pageName === 'database'
         ) {
 
           initDatabasePage();
@@ -1935,27 +1797,32 @@ navItems.forEach(
         }
 
 
+        if (
+          pageName === 'point'
+        ) {
+
+          initPointPage();
+
+        }
+
+
         window.scrollTo({
 
-          top:
-            0,
+          top: 0,
 
-          behavior:
-            'smooth'
+          behavior: 'smooth'
 
         });
 
       }
-
     );
 
   }
-
 );
 
 
 /* ==========================================================
-   INIT DATABASE
+   DATABASE INIT
 ========================================================== */
 
 function initDatabasePage() {
@@ -2002,19 +1869,13 @@ async function loadDatabase() {
 
     const search =
       databaseSearch
-
-        ? databaseSearch
-            .value
-            .trim()
-
+        ? databaseSearch.value.trim()
         : '';
 
 
     const limit =
       databaseLimit
-
         ? databaseLimit.value
-
         : '50';
 
 
@@ -2050,19 +1911,12 @@ async function loadDatabase() {
       await fetch(
 
         DATABASE_API +
-
         '?' +
-
         params.toString(),
 
         {
-
-          method:
-            'GET',
-
-          cache:
-            'no-store'
-
+          method: 'GET',
+          cache: 'no-store'
         }
 
       );
@@ -2109,16 +1963,17 @@ async function loadDatabase() {
       result.pagination || {};
 
 
+    databasePage =
+      safeNumber(
+        pagination.page
+      ) || 1;
+
+
     databaseTotalPages =
-      Number(
-        pagination.totalPages ||
-        1
-      );
+      safeNumber(
+        pagination.totalPages
+      ) || 1;
 
-
-    /* ========================================================
-       STATUS
-    ======================================================== */
 
     if (
       databaseStatus
@@ -2128,30 +1983,26 @@ async function loadDatabase() {
 
         'Menampilkan ' +
 
-        Number(
-          pagination.from || 0
+        safeNumber(
+          pagination.from
         ) +
 
         '–' +
 
-        Number(
-          pagination.to || 0
+        safeNumber(
+          pagination.to
         ) +
 
         ' dari ' +
 
-        Number(
-          pagination.total || 0
+        safeNumber(
+          pagination.total
         ) +
 
         ' data';
 
     }
 
-
-    /* ========================================================
-       PAGE INFO
-    ======================================================== */
 
     if (
       databasePageInfo
@@ -2170,10 +2021,6 @@ async function loadDatabase() {
     }
 
 
-    /* ========================================================
-       PREVIOUS
-    ======================================================== */
-
     if (
       databasePrev
     ) {
@@ -2184,16 +2031,11 @@ async function loadDatabase() {
     }
 
 
-    /* ========================================================
-       NEXT
-    ======================================================== */
-
     if (
       databaseNext
     ) {
 
       databaseNext.disabled =
-
         databasePage >=
         databaseTotalPages;
 
@@ -2224,14 +2066,12 @@ async function loadDatabase() {
 
 
 /* ==========================================================
-   RENDER DATABASE ROWS
+   RENDER DATABASE
 ========================================================== */
 
 function renderDatabaseRows(
   rows
 ) {
-
-  /* RESET DESKTOP */
 
   if (
     databaseTableBody
@@ -2243,8 +2083,6 @@ function renderDatabaseRows(
   }
 
 
-  /* RESET MOBILE */
-
   if (
     databaseMobile
   ) {
@@ -2254,8 +2092,6 @@ function renderDatabaseRows(
 
   }
 
-
-  /* EMPTY */
 
   if (
     !Array.isArray(rows) ||
@@ -2278,13 +2114,7 @@ function renderDatabaseRows(
 
 
   rows.forEach(
-
     function(row) {
-
-
-      /* ====================================================
-         DESKTOP TABLE
-      ==================================================== */
 
       if (
         databaseTableBody
@@ -2319,41 +2149,30 @@ function renderDatabaseRows(
           ) +
 
           tableCell(
-
             row.status_admin,
-
             getStatusClass(
               row.status_admin
             )
-
           ) +
 
           tableCell(
-
             row.status_superior,
-
             getStatusClass(
               row.status_superior
             )
-
           ) +
 
           tableCell(
-
             row.status_implementasi,
-
             getStatusClass(
               row.status_implementasi
             )
-
           ) +
 
           tableCell(
-
             formatDateTimeDatabase(
               row.created_time
             )
-
           ) +
 
           tableCell(
@@ -2369,37 +2188,28 @@ function renderDatabaseRows(
           ) +
 
           tableCell(
-
             formatImplementationDate(
               row.implementation_date
             )
-
           ) +
 
           tableCell(
-
             row.qualification,
-
             getStatusClass(
               row.qualification
             )
-
           ) +
 
           tableCell(
-
             formatPointDatabase(
               row.point
             )
-
           ) +
 
           tableCell(
-
             formatPointDatabase(
               row.point_approval
             )
-
           );
 
 
@@ -2410,10 +2220,6 @@ function renderDatabaseRows(
 
       }
 
-
-      /* ====================================================
-         MOBILE CARD
-      ==================================================== */
 
       if (
         databaseMobile
@@ -2429,121 +2235,113 @@ function renderDatabaseRows(
           'database-mobile-card';
 
 
-        card.innerHTML =
+        card.innerHTML = `
 
-          '<div class="database-mobile-card-head">' +
+          <div class="database-mobile-card-head">
 
-            '<div>' +
+            <div>
 
-              '<div class="database-mobile-id">' +
+              <div class="database-mobile-id">
 
-                'SS #' +
+                SS #${safeText(row.ss_id)}
 
-                safeText(
-                  row.ss_id
-                ) +
+              </div>
 
-              '</div>' +
+              <div class="database-mobile-name">
 
+                ${safeText(row.employee_name)}
 
-              '<div class="database-mobile-name">' +
+              </div>
 
-                safeText(
-                  row.employee_name
-                ) +
+              <div class="database-mobile-dept">
 
-              '</div>' +
+                ${safeText(row.department)}
 
+              </div>
 
-              '<div class="database-mobile-dept">' +
+            </div>
 
-                safeText(
-                  row.department
-                ) +
-
-              '</div>' +
-
-            '</div>' +
-
-          '</div>' +
+          </div>
 
 
-          '<div class="database-mobile-info">' +
+          <div class="database-mobile-info">
 
-            mobileInfo(
+            ${mobileInfo(
               'Jenis SS',
               row.ss_type
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Superior',
               row.superior_name
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Status Admin',
               row.status_admin
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Status Superior',
               row.status_superior
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Implementasi',
               row.status_implementasi
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Create Time',
               formatDateTimeDatabase(
                 row.created_time
               )
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Lokasi',
               row.work_location
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Month',
               row.month_no
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Validasi',
               row.validation_month
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Tgl Implementasi',
               formatImplementationDate(
                 row.implementation_date
               )
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Kualifikasi',
               row.qualification
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Point',
               formatPointDatabase(
                 row.point
               )
-            ) +
+            )}
 
-            mobileInfo(
+            ${mobileInfo(
               'Point Approval',
               formatPointDatabase(
                 row.point_approval
               )
-            ) +
+            )}
 
-          '</div>';
+          </div>
+
+        `;
 
 
         databaseMobile
@@ -2554,7 +2352,6 @@ function renderDatabaseRows(
       }
 
     }
-
   );
 
 }
@@ -2571,9 +2368,7 @@ function tableCell(
 
   const classAttribute =
     className
-
       ? ` class="${className}"`
-
       : '';
 
 
@@ -2581,9 +2376,9 @@ function tableCell(
 
     `<td${classAttribute}>` +
 
-      safeText(
-        value
-      ) +
+    safeText(
+      value
+    ) +
 
     '</td>'
 
@@ -2601,35 +2396,27 @@ function mobileInfo(
   value
 ) {
 
-  return (
+  return `
 
-    '<div>' +
+    <div>
 
-      '<small>' +
+      <small>
+        ${escapeHtml(label)}
+      </small>
 
-        escapeHtml(
-          label
-        ) +
+      <strong>
+        ${safeText(value)}
+      </strong>
 
-      '</small>' +
+    </div>
 
-      '<strong>' +
-
-        safeText(
-          value
-        ) +
-
-      '</strong>' +
-
-    '</div>'
-
-  );
+  `;
 
 }
 
 
 /* ==========================================================
-   FORMAT POINT
+   POINT FORMAT
 ========================================================== */
 
 function formatPointDatabase(
@@ -2654,9 +2441,7 @@ function formatPointDatabase(
 
 
   if (
-    Number.isNaN(
-      number
-    )
+    Number.isNaN(number)
   ) {
 
     return value;
@@ -2664,10 +2449,9 @@ function formatPointDatabase(
   }
 
 
-  return number
-    .toLocaleString(
-      'id-ID'
-    );
+  return number.toLocaleString(
+    'id-ID'
+  );
 
 }
 
@@ -2708,38 +2492,32 @@ function formatImplementationDate(
   }
 
 
-  const year =
-    Number(
-      match[1]
-    );
-
-
-  const month =
-    Number(
-      match[2]
-    );
-
-
-  const day =
-    Number(
-      match[3]
-    );
-
-
   const months = [
 
     '',
+
     'Jan',
+
     'Feb',
+
     'Mar',
+
     'Apr',
+
     'Mei',
+
     'Jun',
+
     'Jul',
+
     'Agu',
+
     'Sep',
+
     'Okt',
+
     'Nov',
+
     'Des'
 
   ];
@@ -2747,7 +2525,9 @@ function formatImplementationDate(
 
   return (
 
-    String(day)
+    String(
+      Number(match[3])
+    )
       .padStart(
         2,
         '0'
@@ -2755,14 +2535,13 @@ function formatImplementationDate(
 
     ' ' +
 
-    (
-      months[month] ||
-      ''
-    ) +
+    months[
+      Number(match[2])
+    ] +
 
     ' ' +
 
-    year
+    Number(match[1])
 
   );
 
@@ -2770,7 +2549,7 @@ function formatImplementationDate(
 
 
 /* ==========================================================
-   CREATE TIME
+   DATETIME
 ========================================================== */
 
 function formatDateTimeDatabase(
@@ -2848,7 +2627,7 @@ function formatDateTimeDatabase(
 
   }
 
-  catch(error) {
+  catch {
 
     return String(
       value
@@ -2860,7 +2639,7 @@ function formatDateTimeDatabase(
 
 
 /* ==========================================================
-   DATABASE STATUS
+   STATUS CLASS
 ========================================================== */
 
 function getStatusClass(
@@ -2876,9 +2655,15 @@ function getStatusClass(
 
 
   if (
+
     status === 'DONE' ||
+
     status === 'APPROVED' ||
-    status === 'QUALIFIED'
+
+    status === 'QUALIFIED' ||
+
+    status === 'WINNER'
+
   ) {
 
     return 'db-status-success';
@@ -2887,10 +2672,19 @@ function getStatusClass(
 
 
   if (
+
     status === 'NOT APPROVED' ||
+
     status === 'NOT OK' ||
+
     status === 'FAILED' ||
+
+    status === 'LOSE' ||
+
+    status === 'LOSER' ||
+
     status === 'NOT QUALIFIED'
+
   ) {
 
     return 'db-status-danger';
@@ -2899,9 +2693,13 @@ function getStatusClass(
 
 
   if (
+
     status === 'SUBMITTED' ||
+
     status === 'IMPLEMENTASI' ||
+
     status === 'NEED REVISION'
+
   ) {
 
     return 'db-status-process';
@@ -2923,9 +2721,7 @@ if (
 ) {
 
   databaseSearch.addEventListener(
-
     'input',
-
     function() {
 
       clearTimeout(
@@ -2935,7 +2731,6 @@ if (
 
       databaseSearchTimer =
         setTimeout(
-
           function() {
 
             databasePage =
@@ -2945,13 +2740,10 @@ if (
             loadDatabase();
 
           },
-
           450
-
         );
 
     }
-
   );
 
 }
@@ -2966,9 +2758,7 @@ if (
 ) {
 
   databaseLimit.addEventListener(
-
     'change',
-
     function() {
 
       databasePage =
@@ -2978,14 +2768,13 @@ if (
       loadDatabase();
 
     }
-
   );
 
 }
 
 
 /* ==========================================================
-   PREVIOUS
+   DATABASE PREV
 ========================================================== */
 
 if (
@@ -2993,9 +2782,7 @@ if (
 ) {
 
   databasePrev.addEventListener(
-
     'click',
-
     function() {
 
       if (
@@ -3010,14 +2797,13 @@ if (
       }
 
     }
-
   );
 
 }
 
 
 /* ==========================================================
-   NEXT
+   DATABASE NEXT
 ========================================================== */
 
 if (
@@ -3025,9 +2811,7 @@ if (
 ) {
 
   databaseNext.addEventListener(
-
     'click',
-
     function() {
 
       if (
@@ -3043,14 +2827,1246 @@ if (
       }
 
     }
-
   );
 
 }
 
 
 /* ==========================================================
-   LOGOUT — FINAL
+   DATABASE EXPORT
+========================================================== */
+
+if (
+  databaseExport
+) {
+
+  databaseExport.addEventListener(
+    'click',
+    function() {
+
+      const search =
+        databaseSearch
+          ? databaseSearch.value.trim()
+          : '';
+
+
+      const params =
+        new URLSearchParams();
+
+
+      if (
+        search
+      ) {
+
+        params.set(
+          'search',
+          search
+        );
+
+      }
+
+
+      let exportUrl =
+        DATABASE_EXPORT_API;
+
+
+      if (
+        params.toString()
+      ) {
+
+        exportUrl +=
+          '?' +
+          params.toString();
+
+      }
+
+
+      window.location.href =
+        exportUrl;
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   POINT INIT
+========================================================== */
+
+function initPointPage() {
+
+  if (
+    pointLoaded
+  ) {
+
+    return;
+
+  }
+
+
+  pointLoaded =
+    true;
+
+
+  pointPage =
+    1;
+
+
+  loadPoint();
+
+}
+
+
+/* ==========================================================
+   LOAD POINT
+========================================================== */
+
+async function loadPoint() {
+
+  try {
+
+    if (
+      pointStatus
+    ) {
+
+      pointStatus.textContent =
+        'Loading leaderboard...';
+
+    }
+
+
+    const search =
+      pointSearch
+        ? pointSearch.value.trim()
+        : '';
+
+
+    const limit =
+      pointLimit
+        ? pointLimit.value
+        : '50';
+
+
+    const params =
+      new URLSearchParams();
+
+
+    params.set(
+      'page',
+      pointPage
+    );
+
+
+    params.set(
+      'limit',
+      limit
+    );
+
+
+    if (
+      search
+    ) {
+
+      params.set(
+        'search',
+        search
+      );
+
+    }
+
+
+    const response =
+      await fetch(
+
+        POINT_API +
+        '?' +
+        params.toString(),
+
+        {
+          method: 'GET',
+          cache: 'no-store'
+        }
+
+      );
+
+
+    let result = {};
+
+
+    try {
+
+      result =
+        await response.json();
+
+    }
+
+    catch {
+
+      throw new Error(
+        'Response Point tidak valid.'
+      );
+
+    }
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+
+      throw new Error(
+        result.message ||
+        'Point leaderboard gagal dimuat.'
+      );
+
+    }
+
+
+    renderPointSummary(
+      result.summary || {}
+    );
+
+
+    renderPointPodium(
+      result.podium || []
+    );
+
+
+    renderPointRows(
+      result.data || []
+    );
+
+
+    const pagination =
+      result.pagination || {};
+
+
+    pointPage =
+      safeNumber(
+        pagination.page
+      ) || 1;
+
+
+    pointTotalPages =
+      safeNumber(
+        pagination.totalPages
+      ) || 1;
+
+
+    if (
+      pointStatus
+    ) {
+
+      pointStatus.textContent =
+
+        'Menampilkan ' +
+
+        safeNumber(
+          pagination.from
+        ) +
+
+        '–' +
+
+        safeNumber(
+          pagination.to
+        ) +
+
+        ' dari ' +
+
+        safeNumber(
+          pagination.total
+        ) +
+
+        ' peserta';
+
+    }
+
+
+    if (
+      pointPageInfo
+    ) {
+
+      pointPageInfo.textContent =
+
+        'Page ' +
+
+        pointPage +
+
+        ' / ' +
+
+        pointTotalPages;
+
+    }
+
+
+    if (
+      pointPrev
+    ) {
+
+      pointPrev.disabled =
+        pointPage <= 1;
+
+    }
+
+
+    if (
+      pointNext
+    ) {
+
+      pointNext.disabled =
+        pointPage >=
+        pointTotalPages;
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(
+      'POINT ERROR:',
+      error
+    );
+
+
+    if (
+      pointStatus
+    ) {
+
+      pointStatus.textContent =
+        'Leaderboard gagal dimuat.';
+
+    }
+
+
+    if (
+      pointPodium
+    ) {
+
+      pointPodium.innerHTML =
+        '';
+
+    }
+
+
+    if (
+      pointTableBody
+    ) {
+
+      pointTableBody.innerHTML =
+        '';
+
+    }
+
+
+    if (
+      pointMobile
+    ) {
+
+      pointMobile.innerHTML =
+        '';
+
+    }
+
+  }
+
+}
+
+
+/* ==========================================================
+   POINT SUMMARY
+========================================================== */
+
+function renderPointSummary(
+  summary
+) {
+
+  if (
+    pointTotal
+  ) {
+
+    pointTotal.textContent =
+      safeNumber(
+        summary.total
+      );
+
+  }
+
+
+  if (
+    pointWinner
+  ) {
+
+    pointWinner.textContent =
+      safeNumber(
+        summary.winner
+      );
+
+  }
+
+
+  if (
+    pointLose
+  ) {
+
+    pointLose.textContent =
+      safeNumber(
+        summary.lose
+      );
+
+  }
+
+}
+
+
+/* ==========================================================
+   POINT PODIUM
+========================================================== */
+
+function renderPointPodium(
+  rows
+) {
+
+  if (
+    !pointPodium
+  ) {
+
+    return;
+
+  }
+
+
+  pointPodium.innerHTML =
+    '';
+
+
+  if (
+    !Array.isArray(rows) ||
+    !rows.length
+  ) {
+
+    pointPodium.innerHTML = `
+
+      <div class="point-empty">
+
+        Belum ada peserta Winner.
+
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  /*
+     Visual order:
+     Juara 2 | Juara 1 | Juara 3
+  */
+
+  const visualOrder =
+    [1, 0, 2];
+
+
+  visualOrder.forEach(
+    function(index) {
+
+      const row =
+        rows[index];
+
+
+      if (
+        !row
+      ) {
+
+        return;
+
+      }
+
+
+      const position =
+        index + 1;
+
+
+      const icon =
+
+        position === 1
+
+          ? '♛'
+
+          : position === 2
+
+            ? '◆'
+
+            : '▲';
+
+
+      const card =
+        document.createElement(
+          'article'
+        );
+
+
+      card.className =
+        'podium-card podium-' +
+        position;
+
+
+      card.innerHTML = `
+
+        <div class="podium-crown">
+          ${icon}
+        </div>
+
+
+        <div class="podium-position">
+          #${position}
+        </div>
+
+
+        <div class="podium-avatar">
+          ${escapeHtml(
+            getInitials(
+              row.employee_name
+            )
+          )}
+        </div>
+
+
+        <h3>
+          ${safeText(
+            row.employee_name
+          )}
+        </h3>
+
+
+        <p>
+          ${safeText(
+            row.department
+          )}
+        </p>
+
+
+        <div class="podium-score">
+
+          <strong>
+            ${safeNumber(
+              row.ss_done
+            )}
+          </strong>
+
+          <span>
+            SS DONE
+          </span>
+
+        </div>
+
+
+        <div class="podium-approved">
+
+          ${formatPointDatabase(
+            row.point_approved
+          )}
+
+          POINT APPROVED
+
+        </div>
+
+
+        <div class="podium-rank">
+
+          ${safeText(
+            row.rank || 'WARRIOR'
+          )}
+
+        </div>
+
+      `;
+
+
+      pointPodium.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   POINT RENDER ROWS
+========================================================== */
+
+function renderPointRows(
+  rows
+) {
+
+  if (
+    pointTableBody
+  ) {
+
+    pointTableBody.innerHTML =
+      '';
+
+  }
+
+
+  if (
+    pointMobile
+  ) {
+
+    pointMobile.innerHTML =
+      '';
+
+  }
+
+
+  if (
+    !Array.isArray(rows) ||
+    !rows.length
+  ) {
+
+    if (
+      pointStatus
+    ) {
+
+      pointStatus.textContent =
+        'Data tidak ditemukan.';
+
+    }
+
+
+    return;
+
+  }
+
+
+  /* ========================================================
+     MONTH HEADER DYNAMIC
+  ======================================================== */
+
+  const monthSource =
+    rows.find(
+      row =>
+        row.month_1_name ||
+        row.month_2_name ||
+        row.month_3_name
+    ) ||
+    rows[0];
+
+
+  if (
+    pointMonth1Header
+  ) {
+
+    pointMonth1Header.textContent =
+      monthSource.month_1_name ||
+      'MONTH 1';
+
+  }
+
+
+  if (
+    pointMonth2Header
+  ) {
+
+    pointMonth2Header.textContent =
+      monthSource.month_2_name ||
+      'MONTH 2';
+
+  }
+
+
+  if (
+    pointMonth3Header
+  ) {
+
+    pointMonth3Header.textContent =
+      monthSource.month_3_name ||
+      'MONTH 3';
+
+  }
+
+
+  rows.forEach(
+    function(row) {
+
+      const status =
+        normalizePointStatus(
+          row.status ||
+          row.season_status
+        );
+
+
+      /* ====================================================
+         DESKTOP
+      ==================================================== */
+
+      if (
+        pointTableBody
+      ) {
+
+        const tr =
+          document.createElement(
+            'tr'
+          );
+
+
+        tr.className =
+
+          status === 'WINNER'
+
+            ? 'point-row-winner'
+
+            : 'point-row-lose';
+
+
+        tr.innerHTML = `
+
+          <td>
+
+            <span class="point-position">
+
+              #${safeNumber(
+                row.position
+              )}
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            <strong>
+
+              ${safeText(
+                row.employee_name
+              )}
+
+            </strong>
+
+          </td>
+
+
+          <td>
+            ${safeText(
+              row.department
+            )}
+          </td>
+
+
+          <td>
+            ${safeText(
+              row.superior_name
+            )}
+          </td>
+
+
+          <td>
+            ${safeText(
+              row.work_location
+            )}
+          </td>
+
+
+          <td class="point-main-score">
+
+            ${safeNumber(
+              row.ss_done
+            )}
+
+          </td>
+
+
+          <td>
+
+            ${formatPointDatabase(
+              row.point
+            )}
+
+          </td>
+
+
+          <td class="point-approved-score">
+
+            ${formatPointDatabase(
+              row.point_approved
+            )}
+
+          </td>
+
+
+          <td>
+
+            ${safeNumber(
+              row.ss_submit
+            )}
+
+          </td>
+
+
+          <td>
+
+            ${safeNumber(
+              row.month_1_value
+            )}
+
+          </td>
+
+
+          <td>
+
+            ${safeNumber(
+              row.month_2_value
+            )}
+
+          </td>
+
+
+          <td>
+
+            ${safeNumber(
+              row.month_3_value
+            )}
+
+          </td>
+
+
+          <td>
+
+            <span class="point-status-badge ${
+              status === 'WINNER'
+                ? 'winner'
+                : 'lose'
+            }">
+
+              ${escapeHtml(
+                status
+              )}
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            ${safeNumber(
+              firstValue(
+                row.sum,
+                row.total_approved,
+                0
+              )
+            )}
+
+          </td>
+
+
+          <td>
+
+            <span class="point-rank-badge">
+
+              ${safeText(
+                row.rank ||
+                'WARRIOR'
+              )}
+
+            </span>
+
+          </td>
+
+        `;
+
+
+        pointTableBody.appendChild(
+          tr
+        );
+
+      }
+
+
+      /* ====================================================
+         MOBILE
+      ==================================================== */
+
+      if (
+        pointMobile
+      ) {
+
+        const card =
+          document.createElement(
+            'article'
+          );
+
+
+        card.className =
+          'point-mobile-card';
+
+
+        card.innerHTML = `
+
+          <div class="point-mobile-head">
+
+            <span class="point-position">
+
+              #${safeNumber(
+                row.position
+              )}
+
+            </span>
+
+
+            <span class="point-status-badge ${
+              status === 'WINNER'
+                ? 'winner'
+                : 'lose'
+            }">
+
+              ${escapeHtml(
+                status
+              )}
+
+            </span>
+
+          </div>
+
+
+          <h3>
+
+            ${safeText(
+              row.employee_name
+            )}
+
+          </h3>
+
+
+          <p>
+
+            ${safeText(
+              row.department
+            )}
+
+          </p>
+
+
+          <div class="point-mobile-score">
+
+
+            <div>
+
+              <strong>
+                ${safeNumber(
+                  row.ss_done
+                )}
+              </strong>
+
+              <span>
+                SS DONE
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                ${formatPointDatabase(
+                  row.point_approved
+                )}
+              </strong>
+
+              <span>
+                APPROVED
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                ${formatPointDatabase(
+                  row.point
+                )}
+              </strong>
+
+              <span>
+                POINT
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+          <div class="point-mobile-bottom">
+
+            <span>
+
+              ${safeText(
+                row.work_location
+              )}
+
+            </span>
+
+            <strong>
+
+              ${safeText(
+                row.rank ||
+                'WARRIOR'
+              )}
+
+            </strong>
+
+          </div>
+
+        `;
+
+
+        pointMobile.appendChild(
+          card
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   NORMALIZE POINT STATUS
+========================================================== */
+
+function normalizePointStatus(
+  value
+) {
+
+  const status =
+    String(
+      value || ''
+    )
+      .trim()
+      .toUpperCase();
+
+
+  if (
+    status === 'WINNER'
+  ) {
+
+    return 'WINNER';
+
+  }
+
+
+  if (
+
+    status === 'FAILED' ||
+
+    status === 'LOSER' ||
+
+    status === 'LOSE'
+
+  ) {
+
+    return 'LOSE';
+
+  }
+
+
+  return status ||
+    'LOSE';
+
+}
+
+
+/* ==========================================================
+   POINT SEARCH
+========================================================== */
+
+if (
+  pointSearch
+) {
+
+  pointSearch.addEventListener(
+    'input',
+    function() {
+
+      clearTimeout(
+        pointSearchTimer
+      );
+
+
+      pointSearchTimer =
+        setTimeout(
+          function() {
+
+            pointPage =
+              1;
+
+
+            loadPoint();
+
+          },
+          400
+        );
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   POINT LIMIT
+========================================================== */
+
+if (
+  pointLimit
+) {
+
+  pointLimit.addEventListener(
+    'change',
+    function() {
+
+      pointPage =
+        1;
+
+
+      loadPoint();
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   POINT PREV
+========================================================== */
+
+if (
+  pointPrev
+) {
+
+  pointPrev.addEventListener(
+    'click',
+    function() {
+
+      if (
+        pointPage > 1
+      ) {
+
+        pointPage--;
+
+
+        loadPoint();
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   POINT NEXT
+========================================================== */
+
+if (
+  pointNext
+) {
+
+  pointNext.addEventListener(
+    'click',
+    function() {
+
+      if (
+        pointPage <
+        pointTotalPages
+      ) {
+
+        pointPage++;
+
+
+        loadPoint();
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   POINT EXPORT
+========================================================== */
+
+if (
+  pointExport
+) {
+
+  pointExport.addEventListener(
+    'click',
+    function() {
+
+      const search =
+        pointSearch
+          ? pointSearch.value.trim()
+          : '';
+
+
+      const params =
+        new URLSearchParams();
+
+
+      if (
+        search
+      ) {
+
+        params.set(
+          'search',
+          search
+        );
+
+      }
+
+
+      let exportUrl =
+        POINT_EXPORT_API;
+
+
+      if (
+        params.toString()
+      ) {
+
+        exportUrl +=
+          '?' +
+          params.toString();
+
+      }
+
+
+      window.location.href =
+        exportUrl;
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   LOGOUT
 ========================================================== */
 
 if (
@@ -3058,15 +4074,8 @@ if (
 ) {
 
   logoutButton.addEventListener(
-
     'click',
-
     function() {
-
-      /*
-         Logout benar-benar
-         kembali ke Apps Script.
-      */
 
       localStorage.removeItem(
         'ss_rank_session'
@@ -3086,14 +4095,13 @@ if (
       );
 
     }
-
   );
 
 }
 
 
 /* ==========================================================
-   MUSIC
+   MUSIC PLAY
 ========================================================== */
 
 async function playMusic() {
@@ -3110,7 +4118,7 @@ async function playMusic() {
   try {
 
     bgMusic.volume =
-      .30;
+      0.30;
 
 
     await bgMusic.play();
@@ -3127,11 +4135,9 @@ async function playMusic() {
 
   }
 
-  catch(error) {
+  catch {
 
-    /*
-       Browser dapat memblokir autoplay.
-    */
+    /* autoplay blocked */
 
   }
 
@@ -3139,7 +4145,7 @@ async function playMusic() {
 
 
 /* ==========================================================
-   PAUSE MUSIC
+   MUSIC PAUSE
 ========================================================== */
 
 function pauseMusic() {
@@ -3169,7 +4175,7 @@ function pauseMusic() {
 
 
 /* ==========================================================
-   AUTOSTART MUSIC
+   MUSIC AUTOSTART
 ========================================================== */
 
 async function tryStartMusic() {
@@ -3186,7 +4192,7 @@ async function tryStartMusic() {
   try {
 
     bgMusic.volume =
-      .30;
+      0.30;
 
 
     await bgMusic.play();
@@ -3203,33 +4209,18 @@ async function tryStartMusic() {
 
   }
 
-  catch(error) {
+  catch {
 
-    /*
-       Kalau autoplay diblokir,
-       musik mulai setelah
-       interaksi pertama.
-    */
-
-    const activateMusic =
+    document.addEventListener(
+      'pointerdown',
       async function() {
 
         await playMusic();
 
-      };
-
-
-    document.addEventListener(
-
-      'pointerdown',
-
-      activateMusic,
-
+      },
       {
-        once:
-          true
+        once: true
       }
-
     );
 
   }
@@ -3246,9 +4237,7 @@ if (
 ) {
 
   musicButton.addEventListener(
-
     'click',
-
     async function() {
 
       if (
@@ -3275,7 +4264,6 @@ if (
       }
 
     }
-
   );
 
 }
@@ -3298,17 +4286,21 @@ const storyContent =
 
 
 if (
+
   seasonStory &&
+
   storyContent &&
-  window.matchMedia(
-    '(hover:hover) and (pointer:fine)'
-  ).matches
+
+  window
+    .matchMedia(
+      '(hover:hover) and (pointer:fine)'
+    )
+    .matches
+
 ) {
 
   seasonStory.addEventListener(
-
     'mousemove',
-
     function(event) {
 
       const rect =
@@ -3317,35 +4309,31 @@ if (
 
 
       const x =
-
         (
           event.clientX -
           rect.left
         ) /
-
         rect.width;
 
 
       const y =
-
         (
           event.clientY -
           rect.top
         ) /
-
         rect.height;
 
 
       const moveX =
         (
-          x - .5
+          x - 0.5
         ) *
         7;
 
 
       const moveY =
         (
-          y - .5
+          y - 0.5
         ) *
         4;
 
@@ -3354,25 +4342,18 @@ if (
         .style
         .transform =
 
-        'translate3d(' +
-
-        moveX +
-
-        'px,' +
-
-        moveY +
-
-        'px,0)';
+        `translate3d(
+          ${moveX}px,
+          ${moveY}px,
+          0
+        )`;
 
     }
-
   );
 
 
   seasonStory.addEventListener(
-
     'mouseleave',
-
     function() {
 
       storyContent
@@ -3381,7 +4362,6 @@ if (
         'translate3d(0,0,0)';
 
     }
-
   );
 
 }
@@ -3392,18 +4372,19 @@ if (
 ========================================================== */
 
 if (
+
   journeySection &&
+
   'IntersectionObserver'
   in window
+
 ) {
 
   const observer =
     new IntersectionObserver(
-
       function(entries) {
 
         entries.forEach(
-
           function(entry) {
 
             if (
@@ -3424,18 +4405,12 @@ if (
             }
 
           }
-
         );
 
       },
-
       {
-
-        threshold:
-          .12
-
+        threshold: 0.12
       }
-
     );
 
 
@@ -3445,69 +4420,6 @@ if (
 
 }
 
-/* ==========================================================
-   EXPORT DATABASE
-========================================================== */
-
-if (
-  databaseExport
-) {
-
-  databaseExport.addEventListener(
-
-    'click',
-
-    function() {
-
-      const search =
-        databaseSearch
-
-          ? databaseSearch
-              .value
-              .trim()
-
-          : '';
-
-
-      const params =
-        new URLSearchParams();
-
-
-      if (
-        search
-      ) {
-
-        params.set(
-          'search',
-          search
-        );
-
-      }
-
-
-      let exportUrl =
-        '/api/ss-export';
-
-
-      if (
-        params.toString()
-      ) {
-
-        exportUrl +=
-          '?' +
-          params.toString();
-
-      }
-
-
-      window.location.href =
-        exportUrl;
-
-    }
-
-  );
-
-}
 
 /* ==========================================================
    START
