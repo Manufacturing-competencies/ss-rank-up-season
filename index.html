@@ -203,15 +203,26 @@
 
     </button>
 
+
     <!-- POINT -->
+
     <button
-  class="nav-item"
-  data-page="point"
-  type="button"
->
-  <span>◆</span>
-  <span>Point</span>
-</button>
+      class="nav-item"
+      data-page="point"
+      type="button"
+      aria-label="Point"
+    >
+
+      <span class="nav-icon">
+        ◆
+      </span>
+
+      <span class="nav-label">
+        Point
+      </span>
+
+    </button>
+
 
     <!-- LEADERBOARD -->
 
@@ -423,9 +434,7 @@
           ></div>
 
 
-          <!-- =================================================
-               RANK BADGE
-          ================================================== -->
+          <!-- RANK BADGE -->
 
           <div
             id="rankBadge"
@@ -466,12 +475,10 @@
 
               <div class="rank-shield-inner">
 
-
                 <div
                   class="rank-crystal"
                   aria-hidden="true"
                 ></div>
-
 
                 <div
                   id="rankSymbol"
@@ -479,7 +486,6 @@
                 >
                   W
                 </div>
-
 
               </div>
 
@@ -583,9 +589,7 @@
         <div class="story-content">
 
 
-          <!-- ===============================================
-               LEFT
-          ================================================ -->
+          <!-- LEFT -->
 
           <div class="story-left">
 
@@ -688,9 +692,7 @@
           ></div>
 
 
-          <!-- ===============================================
-               RIGHT
-          ================================================ -->
+          <!-- RIGHT -->
 
           <div class="story-right">
 
@@ -954,9 +956,7 @@
         </div>
 
 
-        <!-- =================================================
-             TRACK
-        ================================================== -->
+        <!-- TRACK -->
 
         <div class="journey-track-wrapper">
 
@@ -1364,9 +1364,7 @@
       </div>
 
 
-      <!-- ===================================================
-           DATABASE TOOLBAR
-      ==================================================== -->
+      <!-- DATABASE TOOLBAR -->
 
       <div class="database-toolbar">
 
@@ -1414,13 +1412,17 @@
 
         </select>
 
+
+        <!-- EXPORT -->
+
         <button
-  id="databaseExport"
-  class="database-export-button"
-  type="button"
->
-  ⇩ EXPORT CSV
-</button>
+          id="databaseExport"
+          class="database-export-button"
+          type="button"
+        >
+          ⇩ EXPORT CSV
+        </button>
+
 
       </div>
 
@@ -1435,9 +1437,7 @@
       </div>
 
 
-      <!-- ===================================================
-           DESKTOP TABLE
-      ==================================================== -->
+      <!-- DESKTOP TABLE -->
 
       <div
         id="databaseDesktop"
@@ -1532,9 +1532,7 @@
       </div>
 
 
-      <!-- ===================================================
-           MOBILE DATABASE CARD
-      ==================================================== -->
+      <!-- MOBILE DATABASE -->
 
       <div
         id="databaseMobile"
@@ -1546,9 +1544,7 @@
       </div>
 
 
-      <!-- ===================================================
-           PAGINATION
-      ==================================================== -->
+      <!-- PAGINATION -->
 
       <div class="database-pagination">
 
@@ -1569,6 +1565,404 @@
 
         <button
           id="databaseNext"
+          type="button"
+          disabled
+        >
+          NEXT →
+        </button>
+
+
+      </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         PAGE — POINT
+    ====================================================== -->
+
+    <section
+      id="page-point"
+      class="app-page point-page"
+    >
+
+
+      <!-- ===================================================
+           POINT HERO
+      ==================================================== -->
+
+      <div class="point-hero">
+
+
+        <div class="point-hero-copy">
+
+          <div class="point-kicker">
+            SEASON LEADERBOARD
+          </div>
+
+          <h1>
+            POINT RANKING
+          </h1>
+
+          <p>
+
+            Compete through improvement.
+            Complete more SS, collect points,
+            and climb the season leaderboard.
+
+          </p>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <div class="point-summary">
+
+
+          <div>
+
+            <span>
+              TOTAL PLAYER
+            </span>
+
+            <strong id="pointTotal">
+              0
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              WINNER
+            </span>
+
+            <strong id="pointWinner">
+              0
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              LOSE
+            </span>
+
+            <strong id="pointLose">
+              0
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+      <!-- ===================================================
+           RANKING RULE INFO
+      ==================================================== -->
+
+      <div class="point-ranking-rule">
+
+        <div class="point-ranking-rule-label">
+          RANKING RULE
+        </div>
+
+        <div class="point-ranking-rule-flow">
+
+          <span>
+            WINNER FIRST
+          </span>
+
+          <i>
+            →
+          </i>
+
+          <span>
+            SS DONE
+          </span>
+
+          <i>
+            →
+          </i>
+
+          <span>
+            POINT APPROVED
+          </span>
+
+          <i>
+            →
+          </i>
+
+          <span>
+            POINT
+          </span>
+
+          <i>
+            →
+          </i>
+
+          <span>
+            NAME A–Z
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           PODIUM
+      ==================================================== -->
+
+      <section class="point-podium-section">
+
+
+        <div class="point-section-heading">
+
+          <div>
+
+            <div class="point-section-kicker">
+              TOP PLAYERS
+            </div>
+
+            <h2>
+              Hall of Champions
+            </h2>
+
+          </div>
+
+          <p>
+            Top 3 peserta berstatus Winner
+            dengan performa terbaik.
+          </p>
+
+        </div>
+
+
+        <div
+          id="pointPodium"
+          class="point-podium"
+        >
+
+          <!-- GENERATED BY APP.JS -->
+
+        </div>
+
+
+      </section>
+
+
+      <!-- ===================================================
+           TOOLBAR
+      ==================================================== -->
+
+      <div class="point-toolbar">
+
+
+        <!-- SEARCH -->
+
+        <div class="point-search">
+
+          <span aria-hidden="true">
+            ⌕
+          </span>
+
+          <input
+            id="pointSearch"
+            type="search"
+            placeholder="Cari nama, departemen, superior, lokasi..."
+            autocomplete="off"
+            spellcheck="false"
+          >
+
+        </div>
+
+
+        <!-- LIMIT -->
+
+        <select
+          id="pointLimit"
+          aria-label="Jumlah peserta per halaman"
+        >
+
+          <option value="25">
+            25 Data
+          </option>
+
+          <option
+            value="50"
+            selected
+          >
+            50 Data
+          </option>
+
+          <option value="100">
+            100 Data
+          </option>
+
+        </select>
+
+
+        <!-- EXPORT -->
+
+        <button
+          id="pointExport"
+          class="point-export"
+          type="button"
+        >
+          ⇩ EXPORT CSV
+        </button>
+
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div
+        id="pointStatus"
+        class="point-status"
+      >
+        Klik menu Point untuk memuat ranking.
+      </div>
+
+
+      <!-- ===================================================
+           POINT DESKTOP TABLE
+      ==================================================== -->
+
+      <div class="point-table-wrapper">
+
+        <table class="point-table">
+
+
+          <thead>
+
+            <tr>
+
+              <th>
+                POS
+              </th>
+
+              <th>
+                NAMA
+              </th>
+
+              <th>
+                DEPARTEMEN
+              </th>
+
+              <th>
+                SUPERIOR
+              </th>
+
+              <th>
+                LOKASI KERJA
+              </th>
+
+              <th>
+                SS DONE
+              </th>
+
+              <th>
+                POINT
+              </th>
+
+              <th>
+                POINT APPROVED
+              </th>
+
+              <th>
+                SS SUBMIT
+              </th>
+
+              <th id="pointMonth1Header">
+                MONTH 1
+              </th>
+
+              <th id="pointMonth2Header">
+                MONTH 2
+              </th>
+
+              <th id="pointMonth3Header">
+                MONTH 3
+              </th>
+
+              <th>
+                STATUS
+              </th>
+
+              <th>
+                SUM
+              </th>
+
+              <th>
+                RANK
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="pointTableBody">
+
+            <!-- GENERATED BY APP.JS -->
+
+          </tbody>
+
+
+        </table>
+
+      </div>
+
+
+      <!-- ===================================================
+           POINT MOBILE
+      ==================================================== -->
+
+      <div
+        id="pointMobile"
+        class="point-mobile"
+      >
+
+        <!-- GENERATED BY APP.JS -->
+
+      </div>
+
+
+      <!-- ===================================================
+           POINT PAGINATION
+      ==================================================== -->
+
+      <div class="point-pagination">
+
+
+        <button
+          id="pointPrev"
+          type="button"
+          disabled
+        >
+          ← PREVIOUS
+        </button>
+
+
+        <span id="pointPageInfo">
+          Page 1 / 1
+        </span>
+
+
+        <button
+          id="pointNext"
           type="button"
           disabled
         >
