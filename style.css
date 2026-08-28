@@ -6875,3 +6875,1032 @@ body::-webkit-scrollbar {
   }
 
 }
+
+/* ==========================================================
+   POINT PAGE
+========================================================== */
+
+.point-page {
+  padding:
+    38px 3%;
+}
+
+
+.point-hero {
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-end;
+
+  gap:
+    30px;
+
+  padding:
+    35px;
+
+  border:
+    1px solid rgba(82,130,255,.18);
+
+  border-radius:
+    28px;
+
+  background:
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(119,54,255,.25),
+      transparent 38%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(8,29,69,.96),
+      rgba(5,10,31,.98)
+    );
+
+  box-shadow:
+    0 25px 70px
+    rgba(0,0,0,.28);
+}
+
+
+.point-kicker {
+  color:
+    #52e8d1;
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .22em;
+}
+
+
+.point-hero h1 {
+  margin:
+    8px 0 6px;
+
+  font-size:
+    clamp(34px,5vw,64px);
+
+  line-height:
+    .95;
+}
+
+
+.point-hero p {
+  color:
+    #9aa9c9;
+}
+
+
+.point-summary {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:
+    10px;
+}
+
+
+.point-summary > div {
+  min-width:
+    105px;
+
+  padding:
+    16px;
+
+  text-align:
+    center;
+
+  border:
+    1px solid
+    rgba(111,141,255,.18);
+
+  border-radius:
+    16px;
+
+  background:
+    rgba(7,14,40,.68);
+}
+
+
+.point-summary span {
+  display:
+    block;
+
+  color:
+    #8291b7;
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .14em;
+}
+
+
+.point-summary strong {
+  display:
+    block;
+
+  margin-top:
+    6px;
+
+  font-size:
+    24px;
+}
+
+
+/* ==========================================================
+   PODIUM
+========================================================== */
+
+.point-podium {
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+  align-items:
+    flex-end;
+
+  gap:
+    18px;
+
+  margin:
+    45px auto;
+
+  max-width:
+    1000px;
+}
+
+
+.podium-card {
+  position:
+    relative;
+
+  width:
+    29%;
+
+  min-height:
+    285px;
+
+  padding:
+    26px 20px;
+
+  text-align:
+    center;
+
+  border:
+    1px solid
+    rgba(91,130,255,.24);
+
+  border-radius:
+    24px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(22,41,88,.94),
+      rgba(7,14,37,.98)
+    );
+
+  box-shadow:
+    0 20px 50px
+    rgba(0,0,0,.25);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+
+.podium-card:hover {
+  transform:
+    translateY(-8px);
+
+  box-shadow:
+    0 28px 70px
+    rgba(56,100,255,.20);
+}
+
+
+.podium-1 {
+  width:
+    34%;
+
+  min-height:
+    330px;
+
+  transform:
+    translateY(-15px);
+
+  border-color:
+    rgba(255,205,63,.48);
+
+  box-shadow:
+    0 25px 70px
+    rgba(255,195,43,.13);
+}
+
+
+.podium-1:hover {
+  transform:
+    translateY(-22px);
+}
+
+
+.podium-crown {
+  font-size:
+    30px;
+
+  color:
+    #ffd95a;
+}
+
+
+.podium-position {
+  margin:
+    5px 0 15px;
+
+  color:
+    #65dfff;
+
+  font-weight:
+    900;
+}
+
+
+.podium-avatar {
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  width:
+    68px;
+
+  height:
+    68px;
+
+  margin:
+    auto;
+
+  border-radius:
+    22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3a8cff,
+      #7c45f5
+    );
+
+  font-weight:
+    900;
+
+  font-size:
+    20px;
+}
+
+
+.podium-card h3 {
+  margin:
+    16px 0 5px;
+
+  font-size:
+    15px;
+}
+
+
+.podium-card p {
+  min-height:
+    32px;
+
+  color:
+    #8290ad;
+
+  font-size:
+    10px;
+}
+
+
+.podium-score strong {
+  display:
+    block;
+
+  font-size:
+    38px;
+
+  color:
+    #62f0cf;
+}
+
+
+.podium-score span {
+  color:
+    #7c8ba8;
+
+  font-size:
+    9px;
+
+  letter-spacing:
+    .13em;
+}
+
+
+.podium-approved {
+  margin-top:
+    10px;
+
+  color:
+    #68b7ff;
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+}
+
+
+.podium-rank {
+  display:
+    inline-block;
+
+  margin-top:
+    12px;
+
+  padding:
+    7px 12px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(126,74,255,.13);
+
+  color:
+    #bd9cff;
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+}
+
+
+/* ==========================================================
+   TOOLBAR
+========================================================== */
+
+.point-toolbar {
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(240px,1fr)
+    auto
+    auto;
+
+  gap:
+    12px;
+
+  margin:
+    28px 0 10px;
+}
+
+
+.point-search {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  padding:
+    0 16px;
+
+  min-height:
+    56px;
+
+  border:
+    1px solid
+    rgba(90,124,209,.24);
+
+  border-radius:
+    16px;
+
+  background:
+    rgba(4,12,37,.84);
+}
+
+
+.point-search span {
+  color:
+    #50d8ff;
+}
+
+
+.point-search input {
+  width:
+    100%;
+
+  border:
+    0;
+
+  outline:
+    0;
+
+  background:
+    transparent;
+
+  color:
+    #fff;
+}
+
+
+#pointLimit {
+  min-width:
+    120px;
+
+  padding:
+    0 16px;
+
+  border:
+    1px solid
+    rgba(90,124,209,.24);
+
+  border-radius:
+    16px;
+
+  background:
+    #071027;
+
+  color:
+    white;
+}
+
+
+.point-export {
+  padding:
+    0 20px;
+
+  border:
+    1px solid
+    rgba(67,236,191,.30);
+
+  border-radius:
+    16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(45,207,169,.20),
+      rgba(34,126,255,.18)
+    );
+
+  color:
+    #68edc8;
+
+  font-weight:
+    900;
+
+  cursor:
+    pointer;
+}
+
+
+.point-status {
+  margin:
+    12px 0 20px;
+
+  color:
+    #8392b5;
+
+  font-size:
+    11px;
+}
+
+
+/* ==========================================================
+   TABLE
+========================================================== */
+
+.point-table-wrapper {
+  overflow-x:
+    auto;
+
+  border:
+    1px solid
+    rgba(93,120,199,.17);
+
+  border-radius:
+    22px;
+
+  scrollbar-width:
+    none;
+}
+
+
+.point-table-wrapper::-webkit-scrollbar {
+  display:
+    none;
+}
+
+
+.point-table {
+  width:
+    100%;
+
+  min-width:
+    1600px;
+
+  border-collapse:
+    collapse;
+
+  background:
+    rgba(4,12,37,.76);
+}
+
+
+.point-table th {
+  padding:
+    18px 14px;
+
+  text-align:
+    left;
+
+  background:
+    rgba(23,50,105,.88);
+
+  color:
+    #60d9ff;
+
+  font-size:
+    9px;
+
+  letter-spacing:
+    .05em;
+}
+
+
+.point-table td {
+  padding:
+    17px 14px;
+
+  border-bottom:
+    1px solid
+    rgba(82,105,167,.12);
+
+  color:
+    #c9d2eb;
+
+  font-size:
+    10px;
+}
+
+
+.point-row-winner {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(32,215,169,.045),
+      transparent 28%
+    );
+}
+
+
+.point-row-winner:hover {
+  background:
+    rgba(45,202,167,.08);
+}
+
+
+.point-row-lose:hover {
+  background:
+    rgba(89,116,180,.055);
+}
+
+
+.point-position {
+  color:
+    #69d9ff;
+
+  font-weight:
+    900;
+}
+
+
+.point-main-score {
+  color:
+    #68efc9 !important;
+
+  font-size:
+    15px !important;
+
+  font-weight:
+    900;
+}
+
+
+.point-approved-score {
+  color:
+    #65b9ff !important;
+
+  font-weight:
+    900;
+}
+
+
+.point-status-badge {
+  display:
+    inline-block;
+
+  padding:
+    6px 10px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    8px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .06em;
+}
+
+
+.point-status-badge.winner {
+  background:
+    rgba(51,224,172,.12);
+
+  color:
+    #62edc5;
+
+  border:
+    1px solid
+    rgba(51,224,172,.22);
+}
+
+
+.point-status-badge.lose {
+  background:
+    rgba(255,79,132,.11);
+
+  color:
+    #ff6f9c;
+
+  border:
+    1px solid
+    rgba(255,79,132,.22);
+}
+
+
+.point-rank-badge {
+  color:
+    #b999ff;
+
+  font-weight:
+    900;
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+.point-mobile {
+  display:
+    none;
+}
+
+
+.point-pagination {
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+  align-items:
+    center;
+
+  gap:
+    15px;
+
+  margin-top:
+    24px;
+}
+
+
+.point-pagination button {
+  padding:
+    10px 16px;
+
+  border:
+    1px solid
+    rgba(93,123,205,.24);
+
+  border-radius:
+    12px;
+
+  background:
+    #071127;
+
+  color:
+    #cad6f3;
+
+  cursor:
+    pointer;
+}
+
+
+.point-pagination button:disabled {
+  opacity:
+    .35;
+
+  cursor:
+    default;
+}
+
+
+#pointPageInfo {
+  color:
+    #8391af;
+
+  font-size:
+    11px;
+}
+
+
+@media(max-width:900px) {
+
+  .point-page {
+    padding:
+      22px 14px 100px;
+  }
+
+
+  .point-hero {
+    display:
+      block;
+
+    padding:
+      24px;
+  }
+
+
+  .point-summary {
+    margin-top:
+      25px;
+  }
+
+
+  .point-podium {
+    overflow-x:
+      auto;
+
+    justify-content:
+      flex-start;
+
+    padding:
+      20px 4px;
+
+    scrollbar-width:
+      none;
+  }
+
+
+  .point-podium::-webkit-scrollbar {
+    display:
+      none;
+  }
+
+
+  .podium-card,
+  .podium-1 {
+    flex:
+      0 0 230px;
+
+    width:
+      230px;
+
+    min-height:
+      285px;
+
+    transform:
+      none;
+  }
+
+
+  .point-toolbar {
+    grid-template-columns:
+      1fr 110px;
+  }
+
+
+  .point-export {
+    grid-column:
+      1 / -1;
+
+    min-height:
+      48px;
+  }
+
+
+  .point-table-wrapper {
+    display:
+      none;
+  }
+
+
+  .point-mobile {
+    display:
+      grid;
+
+    gap:
+      12px;
+  }
+
+
+  .point-mobile-card {
+    padding:
+      18px;
+
+    border:
+      1px solid
+      rgba(91,122,203,.18);
+
+    border-radius:
+      18px;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(14,27,64,.94),
+        rgba(5,11,31,.98)
+      );
+  }
+
+
+  .point-mobile-head {
+    display:
+      flex;
+
+    justify-content:
+      space-between;
+
+    align-items:
+      center;
+  }
+
+
+  .point-mobile-card h3 {
+    margin:
+      14px 0 4px;
+
+    font-size:
+      15px;
+  }
+
+
+  .point-mobile-card > p {
+    margin:
+      0;
+
+    color:
+      #7f8eae;
+
+    font-size:
+      10px;
+  }
+
+
+  .point-mobile-score {
+    display:
+      grid;
+
+    grid-template-columns:
+      repeat(3,1fr);
+
+    gap:
+      8px;
+
+    margin-top:
+      18px;
+  }
+
+
+  .point-mobile-score div {
+    padding:
+      12px 5px;
+
+    text-align:
+      center;
+
+    border-radius:
+      12px;
+
+    background:
+      rgba(12,24,55,.78);
+  }
+
+
+  .point-mobile-score strong {
+    display:
+      block;
+
+    color:
+      #64edc9;
+
+    font-size:
+      19px;
+  }
+
+
+  .point-mobile-score span {
+    color:
+      #7887a6;
+
+    font-size:
+      7px;
+
+    font-weight:
+      800;
+  }
+
+
+  .point-mobile-bottom {
+    display:
+      flex;
+
+    justify-content:
+      space-between;
+
+    margin-top:
+      15px;
+
+    color:
+      #8392af;
+
+    font-size:
+      9px;
+  }
+
+
+  .point-mobile-bottom strong {
+    color:
+      #bc9fff;
+  }
+
+}
+
+
+@media(max-width:520px) {
+
+  .point-summary {
+    grid-template-columns:
+      repeat(3,1fr);
+
+    gap:
+      6px;
+  }
+
+
+  .point-summary > div {
+    min-width:
+      0;
+
+    padding:
+      11px 4px;
+  }
+
+
+  .point-summary strong {
+    font-size:
+      19px;
+  }
+
+}
