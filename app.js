@@ -1,6 +1,6 @@
 /* ==========================================================
    SS RANK UP SEASON
-   FINAL APP.JS
+   APP.JS — FINAL CLEAN VERSION
 ========================================================== */
 
 
@@ -8,36 +8,33 @@
    SESSION
 ========================================================== */
 
-const query =
-  new URLSearchParams(
-    window.location.search
-  );
-
+const query = new URLSearchParams(
+  window.location.search
+);
 
 let sessionToken =
   query.get('session') ||
-  localStorage.getItem(
-    'ss_rank_session'
-  );
+  localStorage.getItem('ss_rank_session');
+
+let loginUrl = null;
 
 
-let loginUrl =
-  null;
+/*
+  Jika datang dari Apps Script:
+  ?session=xxxxx
 
+  Simpan token lalu bersihkan URL.
+*/
 
-if (
-  query.get('session')
-) {
-
-  localStorage.setItem(
-    'ss_rank_session',
-    query.get('session')
-  );
-
+if (query.get('session')) {
 
   sessionToken =
     query.get('session');
 
+  localStorage.setItem(
+    'ss_rank_session',
+    sessionToken
+  );
 
   window.history.replaceState(
     {},
@@ -49,129 +46,100 @@ if (
 
 
 /* ==========================================================
-   ELEMENTS
+   MAIN ELEMENTS
 ========================================================== */
 
 const headerUserName =
-  document.getElementById(
-    'headerUserName'
-  );
-
+  document.getElementById('headerUserName');
 
 const headerUserRole =
-  document.getElementById(
-    'headerUserRole'
-  );
-
+  document.getElementById('headerUserRole');
 
 const heroUserName =
-  document.getElementById(
-    'heroUserName'
-  );
-
+  document.getElementById('heroUserName');
 
 const avatar =
-  document.getElementById(
-    'avatar'
-  );
-
+  document.getElementById('avatar');
 
 const departmentText =
-  document.getElementById(
-    'departmentText'
-  );
-
+  document.getElementById('departmentText');
 
 const locationText =
-  document.getElementById(
-    'locationText'
-  );
-
+  document.getElementById('locationText');
 
 const rankPanel =
-  document.getElementById(
-    'rankPanel'
-  );
-
+  document.getElementById('rankPanel');
 
 const rankName =
-  document.getElementById(
-    'rankName'
-  );
-
+  document.getElementById('rankName');
 
 const rankTotal =
-  document.getElementById(
-    'rankTotal'
-  );
-
+  document.getElementById('rankTotal');
 
 const seasonStatus =
-  document.getElementById(
-    'seasonStatus'
-  );
-
+  document.getElementById('seasonStatus');
 
 const missedMonths =
-  document.getElementById(
-    'missedMonths'
-  );
-
+  document.getElementById('missedMonths');
 
 const seasonState =
-  document.getElementById(
-    'seasonState'
-  );
-
+  document.getElementById('seasonState');
 
 const rankSymbol =
-  document.getElementById(
-    'rankSymbol'
-  );
-
+  document.getElementById('rankSymbol');
 
 const logoutButton =
-  document.getElementById(
-    'logoutButton'
-  );
-
+  document.getElementById('logoutButton');
 
 const musicButton =
-  document.getElementById(
-    'musicButton'
-  );
-
+  document.getElementById('musicButton');
 
 const bgMusic =
-  document.getElementById(
-    'bgMusic'
-  );
+  document.getElementById('bgMusic');
 
 
-/* JOURNEY */
+/* ==========================================================
+   JOURNEY ELEMENTS
+========================================================== */
 
 const journeySummary =
-  document.getElementById(
-    'journeySummary'
-  );
-
+  document.getElementById('journeySummary');
 
 const journeyTrack =
-  document.getElementById(
-    'journeyTrack'
-  );
-
+  document.getElementById('journeyTrack');
 
 const journeyNote =
-  document.getElementById(
-    'journeyNote'
-  );
-
+  document.getElementById('journeyNote');
 
 const journeySection =
   document.getElementById(
     'rankJourneySection'
   );
+
+
+/* ==========================================================
+   GENERIC VALUE HELPER
+========================================================== */
+
+function firstValue(...values) {
+
+  for (const value of values) {
+
+    if (
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ''
+    ) {
+
+      return value;
+
+    }
+
+  }
+
+  return '';
+
+}
 
 
 /* ==========================================================
@@ -182,9 +150,7 @@ async function loadDashboard() {
 
   try {
 
-    if (
-      !sessionToken
-    ) {
+    if (!sessionToken) {
 
       await redirectToLogin();
 
@@ -197,26 +163,37 @@ async function loadDashboard() {
       await fetch(
 
         '/api/dashboard?session=' +
-
         encodeURIComponent(
           sessionToken
         ),
 
         {
-          cache:
-            'no-store'
+          cache: 'no-store'
         }
 
       );
 
 
-    const result =
-      await response.json();
+    let result = {};
 
 
-    if (
-      result.loginUrl
-    ) {
+    try {
+
+      result =
+        await response.json();
+
+    }
+
+    catch {
+
+      throw new Error(
+        'Dashboard response tidak valid.'
+      );
+
+    }
+
+
+    if (result.loginUrl) {
 
       loginUrl =
         result.loginUrl;
@@ -230,19 +207,14 @@ async function loadDashboard() {
     ) {
 
       throw new Error(
-
         result.message ||
         'Session invalid.'
-
       );
 
     }
 
 
-    renderDashboard(
-      result
-    );
-
+    renderDashboard(result);
 
     tryStartMusic();
 
@@ -252,7 +224,7 @@ async function loadDashboard() {
   catch(error) {
 
     console.error(
-      'LOAD DASHBOARD ERROR',
+      'LOAD DASHBOARD ERROR:',
       error
     );
 
@@ -261,14 +233,10 @@ async function loadDashboard() {
       'ss_rank_session'
     );
 
-
-    sessionToken =
-      null;
+    sessionToken = null;
 
 
-    if (
-      loginUrl
-    ) {
+    if (loginUrl) {
 
       window.location.href =
         loginUrl;
@@ -286,20 +254,26 @@ async function loadDashboard() {
 
 
 /* ==========================================================
-   DASHBOARD
+   RENDER DASHBOARD
+
+   Dibuat fleksibel terhadap:
+   name
+   user_name
+   employee_name
+
+   Jadi tidak lagi mudah fallback USER.
 ========================================================== */
 
-function renderDashboard(
-  data
-) {
+function renderDashboard(data) {
 
   const user =
     data.user || {};
 
+  const session =
+    data.session || {};
 
   const season =
     data.season || {};
-
 
   const progress =
     data.progress || {};
@@ -310,19 +284,129 @@ function renderDashboard(
     loginUrl;
 
 
-  const name =
-    user.name ||
-    'USER';
+  /* ========================================================
+     USER NAME
 
+     PRIORITAS:
+     user.name
+     user.user_name
+     user.employee_name
+     session.user_name
+     data.user_name
+     progress.employee_name
+  ======================================================== */
+
+  const name =
+    String(
+
+      firstValue(
+
+        user.name,
+
+        user.user_name,
+
+        user.employee_name,
+
+        session.user_name,
+
+        session.name,
+
+        data.user_name,
+
+        data.name,
+
+        progress.employee_name,
+
+        'USER'
+
+      )
+
+    ).trim();
+
+
+  /* ========================================================
+     ROLE
+  ======================================================== */
 
   const role =
-    user.role ||
-    'USER';
+    String(
+
+      firstValue(
+
+        user.role,
+
+        session.role,
+
+        data.role,
+
+        'USER'
+
+      )
+
+    ).trim();
 
 
-  if (
-    headerUserName
-  ) {
+  /* ========================================================
+     DEPARTMENT
+  ======================================================== */
+
+  const department =
+    String(
+
+      firstValue(
+
+        progress.department,
+
+        progress.department_name,
+
+        user.department,
+
+        user.departemen,
+
+        session.department,
+
+        data.department,
+
+        '-'
+
+      )
+
+    ).trim();
+
+
+  /* ========================================================
+     LOCATION
+  ======================================================== */
+
+  const location =
+    String(
+
+      firstValue(
+
+        progress.location,
+
+        progress.work_location,
+
+        user.location,
+
+        user.work_location,
+
+        session.location,
+
+        data.location,
+
+        '-'
+
+      )
+
+    ).trim();
+
+
+  /* ========================================================
+     HEADER
+  ======================================================== */
+
+  if (headerUserName) {
 
     headerUserName.textContent =
       name;
@@ -330,70 +414,67 @@ function renderDashboard(
   }
 
 
-  if (
-    headerUserRole
-  ) {
+  if (headerUserRole) {
 
     headerUserRole.textContent =
-      String(role)
-        .toUpperCase();
+      role.toUpperCase();
 
   }
 
 
-  if (
-    heroUserName
-  ) {
+  /* ========================================================
+     HERO
+  ======================================================== */
+
+  if (heroUserName) {
 
     heroUserName.textContent =
-      name;
+      name.toUpperCase();
 
   }
 
 
-  if (
-    avatar
-  ) {
+  if (avatar) {
 
     avatar.textContent =
-      getInitials(
-        name
-      );
+      getInitials(name);
 
   }
 
 
-  if (
-    departmentText
-  ) {
+  if (departmentText) {
 
     departmentText.textContent =
-      progress.department ||
-      user.department ||
-      '-';
+      department;
 
   }
 
 
-  if (
-    locationText
-  ) {
+  if (locationText) {
 
     locationText.textContent =
-      progress.location ||
-      user.location ||
-      '-';
+      location;
 
   }
 
 
-  if (
-    seasonState
-  ) {
+  /* ========================================================
+     SEASON
+  ======================================================== */
+
+  if (seasonState) {
+
+    const active =
+      firstValue(
+        season.active,
+        season.is_active,
+        true
+      );
+
 
     seasonState.textContent =
 
-      season.active === false
+      active === false
 
         ? 'SEASON CLOSED'
 
@@ -402,14 +483,139 @@ function renderDashboard(
   }
 
 
-  renderRank(
-    progress
-  );
+  renderRank(progress);
+
+  renderJourney(progress);
+
+}
 
 
-  renderJourney(
-    progress
-  );
+/* ==========================================================
+   PROGRESS HELPERS
+========================================================== */
+
+function getTotalApproved(progress) {
+
+  return Number(
+
+    firstValue(
+
+      progress.totalApproved,
+
+      progress.total_approved,
+
+      progress.sum,
+
+      0
+
+    )
+
+  ) || 0;
+
+}
+
+
+function getProgressStatus(progress) {
+
+  return String(
+
+    firstValue(
+
+      progress.status,
+
+      progress.season_status,
+
+      'FAILED'
+
+    )
+
+  )
+    .trim()
+    .toUpperCase();
+
+}
+
+
+function getMissedMonths(progress) {
+
+  if (
+    Array.isArray(
+      progress.missedMonths
+    )
+  ) {
+
+    return progress.missedMonths;
+
+  }
+
+
+  if (
+    Array.isArray(
+      progress.missed_months
+    )
+  ) {
+
+    return progress.missed_months;
+
+  }
+
+
+  /*
+    Kalau API tidak mengirim missedMonths,
+    hitung sendiri dari 3 bulan.
+  */
+
+  const months = [
+
+    {
+      name:
+        progress.month_1_name,
+
+      value:
+        Number(
+          progress.month_1_value || 0
+        )
+    },
+
+    {
+      name:
+        progress.month_2_name,
+
+      value:
+        Number(
+          progress.month_2_value || 0
+        )
+    },
+
+    {
+      name:
+        progress.month_3_name,
+
+      value:
+        Number(
+          progress.month_3_value || 0
+        )
+    }
+
+  ];
+
+
+  return months
+
+    .filter(function(month) {
+
+      return (
+        month.name &&
+        month.value < 1
+      );
+
+    })
+
+    .map(function(month) {
+
+      return month.name;
+
+    });
 
 }
 
@@ -418,48 +624,41 @@ function renderDashboard(
    RENDER HERO RANK
 ========================================================== */
 
-function renderRank(
-  progress
-) {
+function renderRank(progress) {
 
   const totalApproved =
-    Number(
-      progress.totalApproved ||
-      0
-    );
+    getTotalApproved(progress);
 
 
   const rank =
     normalizeRank(
-      progress.rank ||
-      calculateRankFromTotal(
-        totalApproved
+
+      firstValue(
+
+        progress.rank,
+
+        calculateRankFromTotal(
+          totalApproved
+        )
+
       )
+
     );
 
 
   const status =
-    String(
-      progress.status ||
-      'FAILED'
-    )
-      .trim()
-      .toUpperCase();
+    getProgressStatus(progress);
 
 
   const missed =
-    Array.isArray(
-      progress.missedMonths
-    )
-
-      ? progress.missedMonths
-
-      : [];
+    getMissedMonths(progress);
 
 
-  if (
-    rankPanel
-  ) {
+  /* ========================================================
+     RANK CLASS
+  ======================================================== */
+
+  if (rankPanel) {
 
     rankPanel.classList.remove(
 
@@ -475,17 +674,17 @@ function renderRank(
 
 
     rankPanel.classList.add(
-      getRankClass(
-        rank
-      )
+      getRankClass(rank)
     );
 
   }
 
 
-  if (
-    rankName
-  ) {
+  /* ========================================================
+     RANK NAME
+  ======================================================== */
+
+  if (rankName) {
 
     rankName.textContent =
       rank;
@@ -493,9 +692,11 @@ function renderRank(
   }
 
 
-  if (
-    rankTotal
-  ) {
+  /* ========================================================
+     TOTAL SS
+  ======================================================== */
+
+  if (rankTotal) {
 
     rankTotal.textContent =
       totalApproved +
@@ -504,17 +705,11 @@ function renderRank(
   }
 
 
-  /*
-   Symbol isi biasa tetap ada
-   sebagai fallback.
+  /* ========================================================
+     SYMBOL
+  ======================================================== */
 
-   CSS akan membuat bentuk
-   simbol sebenarnya.
-  */
-
-  if (
-    rankSymbol
-  ) {
+  if (rankSymbol) {
 
     const symbols = {
 
@@ -549,9 +744,11 @@ function renderRank(
   }
 
 
-  if (
-    seasonStatus
-  ) {
+  /* ========================================================
+     WINNER / FAILED
+  ======================================================== */
+
+  if (seasonStatus) {
 
     seasonStatus.classList.remove(
       'winner',
@@ -559,13 +756,10 @@ function renderRank(
     );
 
 
-    if (
-      status === 'WINNER'
-    ) {
+    if (status === 'WINNER') {
 
       seasonStatus.textContent =
         'WINNER';
-
 
       seasonStatus.classList.add(
         'winner'
@@ -578,7 +772,6 @@ function renderRank(
       seasonStatus.textContent =
         'FAILED';
 
-
       seasonStatus.classList.add(
         'failed'
       );
@@ -588,9 +781,11 @@ function renderRank(
   }
 
 
-  if (
-    missedMonths
-  ) {
+  /* ========================================================
+     MISSED MONTH
+  ======================================================== */
+
+  if (missedMonths) {
 
     if (
       status === 'FAILED' &&
@@ -620,13 +815,9 @@ function renderRank(
    RENDER JOURNEY
 ========================================================== */
 
-function renderJourney(
-  progress
-) {
+function renderJourney(progress) {
 
-  if (
-    !journeyTrack
-  ) {
+  if (!journeyTrack) {
 
     return;
 
@@ -634,41 +825,31 @@ function renderJourney(
 
 
   const totalApproved =
-    Number(
-      progress.totalApproved ||
-      0
-    );
+    getTotalApproved(progress);
 
 
   const currentRank =
     normalizeRank(
 
-      progress.rank ||
+      firstValue(
 
-      calculateRankFromTotal(
-        totalApproved
+        progress.rank,
+
+        calculateRankFromTotal(
+          totalApproved
+        )
+
       )
 
     );
 
 
   const status =
-    String(
-      progress.status ||
-      'FAILED'
-    )
-      .trim()
-      .toUpperCase();
+    getProgressStatus(progress);
 
 
   const missed =
-    Array.isArray(
-      progress.missedMonths
-    )
-
-      ? progress.missedMonths
-
-      : [];
+    getMissedMonths(progress);
 
 
   const rankOrder = [
@@ -690,131 +871,124 @@ function renderJourney(
     );
 
 
-  if (
-    currentIndex < 0
-  ) {
+  if (currentIndex < 0) {
 
-    currentIndex =
-      0;
+    currentIndex = 0;
 
   }
 
 
   const cards =
-    journeyTrack
-      .querySelectorAll(
-        '.journey-card'
-      );
+    journeyTrack.querySelectorAll(
+      '.journey-card'
+    );
 
 
   let currentCard =
     null;
 
 
-  cards.forEach(
+  cards.forEach(function(card) {
 
-    function(card) {
-
-      const cardIndex =
-        Number(
-          card.dataset.index ||
-          0
-        );
-
-
-      const state =
-        card.querySelector(
-          '.journey-card-state'
-        );
-
-
-      card.classList.remove(
-        'achieved',
-        'current',
-        'locked'
+    const cardIndex =
+      Number(
+        card.dataset.index || 0
       );
 
 
-      if (
-        cardIndex <
-        currentIndex
-      ) {
-
-        card.classList.add(
-          'achieved'
-        );
+    const state =
+      card.querySelector(
+        '.journey-card-state'
+      );
 
 
-        if (
-          state
-        ) {
-
-          state.textContent =
-            'UNLOCKED';
-
-        }
-
-      }
-
-      else if (
-        cardIndex ===
-        currentIndex
-      ) {
-
-        card.classList.add(
-          'current'
-        );
+    card.classList.remove(
+      'achieved',
+      'current',
+      'locked'
+    );
 
 
-        currentCard =
-          card;
+    /* ALREADY PASSED */
+
+    if (
+      cardIndex <
+      currentIndex
+    ) {
+
+      card.classList.add(
+        'achieved'
+      );
 
 
-        if (
-          state
-        ) {
+      if (state) {
 
-          state.textContent =
-            'CURRENT';
-
-        }
-
-      }
-
-      else {
-
-        card.classList.add(
-          'locked'
-        );
-
-
-        if (
-          state
-        ) {
-
-          state.textContent =
-            'LOCKED';
-
-        }
+        state.textContent =
+          'UNLOCKED';
 
       }
 
     }
 
-  );
+
+    /* CURRENT */
+
+    else if (
+      cardIndex ===
+      currentIndex
+    ) {
+
+      card.classList.add(
+        'current'
+      );
 
 
-  if (
-    journeySummary
-  ) {
+      currentCard =
+        card;
+
+
+      if (state) {
+
+        state.textContent =
+          'CURRENT';
+
+      }
+
+    }
+
+
+    /* LOCKED */
+
+    else {
+
+      card.classList.add(
+        'locked'
+      );
+
+
+      if (state) {
+
+        state.textContent =
+          'LOCKED';
+
+      }
+
+    }
+
+  });
+
+
+  /* ========================================================
+     SUMMARY
+  ======================================================== */
+
+  if (journeySummary) {
 
     journeySummary.innerHTML =
 
       '<b>Current Rank:</b>&nbsp;' +
 
-      escapeHtml(
-        currentRank
-      ) +
+      escapeHtml(currentRank) +
 
       '&nbsp;&nbsp; • &nbsp;&nbsp;' +
 
@@ -828,21 +1002,18 @@ function renderJourney(
 
       '<b>Season:</b>&nbsp;' +
 
-      escapeHtml(
-        status
-      );
+      escapeHtml(status);
 
   }
 
 
-  if (
-    journeyNote
-  ) {
+  /* ========================================================
+     NOTE
+  ======================================================== */
 
-    if (
-      status ===
-      'WINNER'
-    ) {
+  if (journeyNote) {
+
+    if (status === 'WINNER') {
 
       journeyNote.innerHTML =
 
@@ -862,7 +1033,6 @@ function renderJourney(
     else {
 
       const missedText =
-
         missed.length
 
           ? missed.join(', ')
@@ -884,9 +1054,7 @@ function renderJourney(
         'karena bulan yang terlewat: ' +
 
         '<b>' +
-        escapeHtml(
-          missedText
-        ) +
+        escapeHtml(missedText) +
         '</b>.';
 
     }
@@ -894,18 +1062,13 @@ function renderJourney(
   }
 
 
-  /*
-   Di mobile auto fokus
-   ke rank saat ini.
-
-   Delay kecil supaya browser
-   selesai render dulu.
-  */
+  /* ========================================================
+     MOBILE AUTO FOCUS
+  ======================================================== */
 
   if (
     currentCard &&
-    window.innerWidth <=
-    1000
+    window.innerWidth <= 1000
   ) {
 
     setTimeout(
@@ -937,17 +1100,14 @@ function renderJourney(
 
 
 /* ==========================================================
-   RANK HELPERS
+   NORMALIZE RANK
 ========================================================== */
 
-function normalizeRank(
-  value
-) {
+function normalizeRank(value) {
 
   const rank =
     String(
-      value ||
-      'WARRIOR'
+      value || 'WARRIOR'
     )
       .trim()
       .toUpperCase()
@@ -970,9 +1130,7 @@ function normalizeRank(
   ];
 
 
-  return valid.includes(
-    rank
-  )
+  return valid.includes(rank)
 
     ? rank
 
@@ -982,15 +1140,15 @@ function normalizeRank(
 
 
 /* ==========================================================
-   TOTAL → RANK
+   TOTAL APPROVED → RANK
 
-   0     WARRIOR
-   1     ELITE
-   2     EPIC
-   3     LEGEND
-   4-6   MYTHIC
-   7-9   MYTHIC HONOR
-   >=10  MYTHIC GLORY
+   0      WARRIOR
+   1      ELITE
+   2      EPIC
+   3      LEGEND
+   4-6    MYTHIC
+   7-9    MYTHIC HONOR
+   >=10   MYTHIC GLORY
 ========================================================== */
 
 function calculateRankFromTotal(
@@ -999,59 +1157,46 @@ function calculateRankFromTotal(
 
   const total =
     Number(
-      totalApproved ||
-      0
+      totalApproved || 0
     );
 
 
-  if (
-    total >= 10
-  ) {
+  if (total >= 10) {
 
     return 'MYTHIC GLORY';
 
   }
 
 
-  if (
-    total >= 7
-  ) {
+  if (total >= 7) {
 
     return 'MYTHIC HONOR';
 
   }
 
 
-  if (
-    total >= 4
-  ) {
+  if (total >= 4) {
 
     return 'MYTHIC';
 
   }
 
 
-  if (
-    total === 3
-  ) {
+  if (total === 3) {
 
     return 'LEGEND';
 
   }
 
 
-  if (
-    total === 2
-  ) {
+  if (total === 2) {
 
     return 'EPIC';
 
   }
 
 
-  if (
-    total === 1
-  ) {
+  if (total === 1) {
 
     return 'ELITE';
 
@@ -1067,9 +1212,7 @@ function calculateRankFromTotal(
    RANK CLASS
 ========================================================== */
 
-function getRankClass(
-  rank
-) {
+function getRankClass(rank) {
 
   const classMap = {
 
@@ -1109,31 +1252,21 @@ function getRankClass(
    INITIALS
 ========================================================== */
 
-function getInitials(
-  name
-) {
+function getInitials(name) {
 
-  return String(
-    name ||
-    ''
-  )
+  return String(name || '')
 
     .trim()
 
     .split(/\s+/)
 
-    .slice(0,2)
+    .slice(0, 2)
 
-    .map(
+    .map(function(word) {
 
-      function(word) {
+      return word.charAt(0);
 
-        return word
-          .charAt(0);
-
-      }
-
-    )
+    })
 
     .join('')
 
@@ -1146,13 +1279,10 @@ function getInitials(
    ESCAPE HTML
 ========================================================== */
 
-function escapeHtml(
-  value
-) {
+function escapeHtml(value) {
 
   return String(
-    value ||
-    ''
+    value ?? ''
   )
 
     .replace(
@@ -1184,7 +1314,7 @@ function escapeHtml(
 
 
 /* ==========================================================
-   LOGIN REDIRECT
+   REDIRECT LOGIN
 ========================================================== */
 
 async function redirectToLogin() {
@@ -1208,9 +1338,7 @@ async function redirectToLogin() {
       await response.json();
 
 
-    if (
-      data.loginUrl
-    ) {
+    if (data.loginUrl) {
 
       window.location.href =
         data.loginUrl;
@@ -1224,6 +1352,7 @@ async function redirectToLogin() {
   catch(error) {
 
     console.error(
+      'LOGIN REDIRECT ERROR:',
       error
     );
 
@@ -1241,9 +1370,7 @@ async function redirectToLogin() {
 
 function showSessionError() {
 
-  if (
-    headerUserName
-  ) {
+  if (headerUserName) {
 
     headerUserName.textContent =
       'SESSION ENDED';
@@ -1251,9 +1378,7 @@ function showSessionError() {
   }
 
 
-  if (
-    headerUserRole
-  ) {
+  if (headerUserRole) {
 
     headerUserRole.textContent =
       'LOGIN REQUIRED';
@@ -1261,9 +1386,7 @@ function showSessionError() {
   }
 
 
-  if (
-    heroUserName
-  ) {
+  if (heroUserName) {
 
     heroUserName.textContent =
       'PLEASE LOGIN AGAIN';
@@ -1271,9 +1394,31 @@ function showSessionError() {
   }
 
 
-  if (
-    rankName
-  ) {
+  if (avatar) {
+
+    avatar.textContent =
+      '--';
+
+  }
+
+
+  if (departmentText) {
+
+    departmentText.textContent =
+      '-';
+
+  }
+
+
+  if (locationText) {
+
+    locationText.textContent =
+      '-';
+
+  }
+
+
+  if (rankName) {
 
     rankName.textContent =
       '-';
@@ -1281,9 +1426,7 @@ function showSessionError() {
   }
 
 
-  if (
-    rankTotal
-  ) {
+  if (rankTotal) {
 
     rankTotal.textContent =
       '';
@@ -1291,9 +1434,7 @@ function showSessionError() {
   }
 
 
-  if (
-    seasonStatus
-  ) {
+  if (seasonStatus) {
 
     seasonStatus.textContent =
       '';
@@ -1307,44 +1448,37 @@ function showSessionError() {
    LOGOUT
 ========================================================== */
 
-if (
-  logoutButton
-) {
+if (logoutButton) {
 
-  logoutButton
-    .addEventListener(
+  logoutButton.addEventListener(
 
-      'click',
+    'click',
 
-      function() {
+    function() {
 
-        localStorage.removeItem(
-          'ss_rank_session'
-        );
+      localStorage.removeItem(
+        'ss_rank_session'
+      );
 
 
-        sessionToken =
-          null;
+      sessionToken = null;
 
 
-        if (
-          loginUrl
-        ) {
-
-          window.location.href =
-            loginUrl;
-
-          return;
-
-        }
-
+      if (loginUrl) {
 
         window.location.href =
-          '/';
+          loginUrl;
+
+        return;
 
       }
 
-    );
+
+      redirectToLogin();
+
+    }
+
+  );
 
 }
 
@@ -1355,9 +1489,7 @@ if (
 
 async function playMusic() {
 
-  if (
-    !bgMusic
-  ) {
+  if (!bgMusic) {
 
     return;
 
@@ -1366,16 +1498,12 @@ async function playMusic() {
 
   try {
 
-    bgMusic.volume =
-      .30;
-
+    bgMusic.volume = .30;
 
     await bgMusic.play();
 
 
-    if (
-      musicButton
-    ) {
+    if (musicButton) {
 
       musicButton.textContent =
         'II';
@@ -1386,9 +1514,9 @@ async function playMusic() {
 
   catch(error) {
 
-    /*
-     Autoplay may be blocked.
-    */
+    console.log(
+      'Music autoplay blocked.'
+    );
 
   }
 
@@ -1397,9 +1525,7 @@ async function playMusic() {
 
 function pauseMusic() {
 
-  if (
-    !bgMusic
-  ) {
+  if (!bgMusic) {
 
     return;
 
@@ -1409,9 +1535,7 @@ function pauseMusic() {
   bgMusic.pause();
 
 
-  if (
-    musicButton
-  ) {
+  if (musicButton) {
 
     musicButton.textContent =
       '▶';
@@ -1423,9 +1547,7 @@ function pauseMusic() {
 
 async function tryStartMusic() {
 
-  if (
-    !bgMusic
-  ) {
+  if (!bgMusic) {
 
     return;
 
@@ -1434,16 +1556,12 @@ async function tryStartMusic() {
 
   try {
 
-    bgMusic.volume =
-      .30;
-
+    bgMusic.volume = .30;
 
     await bgMusic.play();
 
 
-    if (
-      musicButton
-    ) {
+    if (musicButton) {
 
       musicButton.textContent =
         'II';
@@ -1453,12 +1571,6 @@ async function tryStartMusic() {
   }
 
   catch(error) {
-
-    /*
-     Browser blocked autoplay.
-
-     Play on first interaction.
-    */
 
     const activateMusic =
       async function() {
@@ -1472,8 +1584,7 @@ async function tryStartMusic() {
       'pointerdown',
       activateMusic,
       {
-        once:
-          true
+        once: true
       }
     );
 
@@ -1482,56 +1593,48 @@ async function tryStartMusic() {
 }
 
 
-if (
-  musicButton
-) {
+if (musicButton) {
 
-  musicButton
-    .addEventListener(
+  musicButton.addEventListener(
 
-      'click',
+    'click',
 
-      async function() {
+    async function() {
 
-        if (
-          !bgMusic
-        ) {
+      if (!bgMusic) {
 
-          return;
-
-        }
-
-
-        if (
-          bgMusic.paused
-        ) {
-
-          await playMusic();
-
-        }
-
-        else {
-
-          pauseMusic();
-
-        }
+        return;
 
       }
 
-    );
+
+      if (bgMusic.paused) {
+
+        await playMusic();
+
+      }
+
+      else {
+
+        pauseMusic();
+
+      }
+
+    }
+
+  );
 
 }
 
 
 /* ==========================================================
-   STORY PARALLAX DESKTOP
+   STORY PARALLAX
 ========================================================== */
 
 const seasonStory =
   document.querySelector(
     '.season-story'
   );
-
 
 const storyContent =
   document.querySelector(
@@ -1559,7 +1662,6 @@ if (
 
 
       const x =
-
         (
           event.clientX -
           rect.left
@@ -1568,7 +1670,6 @@ if (
 
 
       const y =
-
         (
           event.clientY -
           rect.top
@@ -1577,19 +1678,11 @@ if (
 
 
       const moveX =
-
-        (
-          x - .5
-        ) *
-        7;
+        (x - .5) * 7;
 
 
       const moveY =
-
-        (
-          y - .5
-        ) *
-        4;
+        (y - .5) * 4;
 
 
       storyContent.style.transform =
@@ -1639,16 +1732,16 @@ if (
       function(entries) {
 
         entries.forEach(
-
           function(entry) {
 
             if (
               entry.isIntersecting
             ) {
 
-              journeySection.classList.add(
-                'journey-visible'
-              );
+              journeySection
+                .classList.add(
+                  'journey-visible'
+                );
 
 
               observer.unobserve(
@@ -1658,7 +1751,6 @@ if (
             }
 
           }
-
         );
 
       },
@@ -1679,12 +1771,6 @@ if (
 
 
 /* ==========================================================
-   START
-========================================================== */
-
-loadDashboard();
-
-/* ==========================================================
    APP PAGE NAVIGATION
 ========================================================== */
 
@@ -1693,158 +1779,150 @@ const navItems =
     '.nav-item'
   );
 
-
 const appPages =
   document.querySelectorAll(
     '.app-page'
   );
 
 
-navItems.forEach(
+navItems.forEach(function(item) {
 
-  function(item) {
+  item.addEventListener(
 
-    item.addEventListener(
+    'click',
 
-      'click',
+    function() {
 
-      function() {
-
-        const page =
-          item.dataset.page;
+      const page =
+        item.dataset.page;
 
 
-        navItems.forEach(
-          function(nav) {
-            nav.classList.remove(
-              'active'
-            );
-          }
-        );
+      navItems.forEach(
+        function(nav) {
 
-
-        appPages.forEach(
-          function(section) {
-            section.classList.remove(
-              'active'
-            );
-          }
-        );
-
-
-        item.classList.add(
-          'active'
-        );
-
-
-        const target =
-          document.getElementById(
-            'page-' +
-            page
-          );
-
-
-        if (
-          target
-        ) {
-
-          target.classList.add(
+          nav.classList.remove(
             'active'
           );
 
         }
+      );
 
 
-        /*
-         Database baru diload
-         ketika menu Database dibuka.
-         Ini bikin initial dashboard ringan.
-        */
+      appPages.forEach(
+        function(section) {
 
-        if (
-          page === 'database'
-        ) {
-
-          initDatabasePage();
+          section.classList.remove(
+            'active'
+          );
 
         }
+      );
 
 
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
+      item.classList.add(
+        'active'
+      );
+
+
+      const target =
+        document.getElementById(
+          'page-' + page
+        );
+
+
+      if (target) {
+
+        target.classList.add(
+          'active'
+        );
 
       }
 
-    );
 
-  }
+      /*
+        DATABASE hanya load ketika dibuka.
+      */
 
-);
+      if (
+        page === 'database'
+      ) {
+
+        initDatabasePage();
+
+      }
+
+
+      window.scrollTo({
+
+        top: 0,
+
+        behavior:
+          'smooth'
+
+      });
+
+    }
+
+  );
+
+});
 
 
 /* ==========================================================
-   DATABASE
+   DATABASE STATE
 ========================================================== */
 
 let databaseLoaded =
   false;
 
-
 let databasePage =
   1;
-
 
 let databaseTotalPages =
   1;
 
-
 let databaseSearchTimer =
   null;
 
+
+/* ==========================================================
+   DATABASE ELEMENTS
+========================================================== */
 
 const databaseSearch =
   document.getElementById(
     'databaseSearch'
   );
 
-
 const databaseLimit =
   document.getElementById(
     'databaseLimit'
   );
-
 
 const databaseTableBody =
   document.getElementById(
     'databaseTableBody'
   );
 
-
 const databaseMobile =
   document.getElementById(
     'databaseMobile'
   );
-
 
 const databaseStatus =
   document.getElementById(
     'databaseStatus'
   );
 
-
 const databasePageInfo =
   document.getElementById(
     'databasePageInfo'
   );
 
-
 const databasePrev =
   document.getElementById(
     'databasePrev'
   );
-
 
 const databaseNext =
   document.getElementById(
@@ -1852,20 +1930,20 @@ const databaseNext =
   );
 
 
+/* ==========================================================
+   INIT DATABASE
+========================================================== */
+
 function initDatabasePage() {
 
-  if (
-    databaseLoaded
-  ) {
+  if (databaseLoaded) {
 
     return;
 
   }
 
 
-  databaseLoaded =
-    true;
-
+  databaseLoaded = true;
 
   loadDatabase();
 
@@ -1880,9 +1958,7 @@ async function loadDatabase() {
 
   try {
 
-    if (
-      databaseStatus
-    ) {
+    if (databaseStatus) {
 
       databaseStatus.textContent =
         'Loading database...';
@@ -1892,13 +1968,19 @@ async function loadDatabase() {
 
     const search =
       databaseSearch
-        ? databaseSearch.value.trim()
+
+        ? databaseSearch
+            .value
+            .trim()
+
         : '';
 
 
     const limit =
       databaseLimit
+
         ? databaseLimit.value
+
         : '50';
 
 
@@ -1918,9 +2000,7 @@ async function loadDatabase() {
     );
 
 
-    if (
-      search
-    ) {
+    if (search) {
 
       params.set(
         'search',
@@ -1971,42 +2051,31 @@ async function loadDatabase() {
 
 
     databaseTotalPages =
-      pagination.totalPages ||
-      1;
+      pagination.totalPages || 1;
 
 
-    if (
-      databaseStatus
-    ) {
+    if (databaseStatus) {
 
       databaseStatus.textContent =
 
         'Menampilkan ' +
 
-        (
-          pagination.from || 0
-        ) +
+        (pagination.from || 0) +
 
         '–' +
 
-        (
-          pagination.to || 0
-        ) +
+        (pagination.to || 0) +
 
         ' dari ' +
 
-        (
-          pagination.total || 0
-        ) +
+        (pagination.total || 0) +
 
         ' data';
 
     }
 
 
-    if (
-      databasePageInfo
-    ) {
+    if (databasePageInfo) {
 
       databasePageInfo.textContent =
 
@@ -2021,9 +2090,7 @@ async function loadDatabase() {
     }
 
 
-    if (
-      databasePrev
-    ) {
+    if (databasePrev) {
 
       databasePrev.disabled =
         databasePage <= 1;
@@ -2031,12 +2098,9 @@ async function loadDatabase() {
     }
 
 
-    if (
-      databaseNext
-    ) {
+    if (databaseNext) {
 
       databaseNext.disabled =
-
         databasePage >=
         databaseTotalPages;
 
@@ -2047,14 +2111,12 @@ async function loadDatabase() {
   catch(error) {
 
     console.error(
-      'DATABASE ERROR',
+      'DATABASE ERROR:',
       error
     );
 
 
-    if (
-      databaseStatus
-    ) {
+    if (databaseStatus) {
 
       databaseStatus.textContent =
         'Database gagal dimuat.';
@@ -2069,31 +2131,29 @@ async function loadDatabase() {
 /* ==========================================================
    RENDER DATABASE
 ========================================================== */
-/* ==========================================================
-   RENDER DATABASE
-========================================================== */
 
 function renderDatabaseRows(rows) {
 
-  /* ========================================================
-     RESET
-  ======================================================== */
-
   if (databaseTableBody) {
-    databaseTableBody.innerHTML = '';
+
+    databaseTableBody.innerHTML =
+      '';
+
   }
 
 
   if (databaseMobile) {
-    databaseMobile.innerHTML = '';
+
+    databaseMobile.innerHTML =
+      '';
+
   }
 
 
-  /* ========================================================
-     EMPTY
-  ======================================================== */
-
-  if (!rows || !rows.length) {
+  if (
+    !rows ||
+    !rows.length
+  ) {
 
     if (databaseStatus) {
 
@@ -2107,111 +2167,101 @@ function renderDatabaseRows(rows) {
   }
 
 
-  /* ========================================================
-     LOOP DATA
-  ======================================================== */
-
   rows.forEach(function(row) {
 
 
     /* ======================================================
-       DESKTOP TABLE
+       DESKTOP
     ====================================================== */
 
     if (databaseTableBody) {
 
       const tr =
-        document.createElement('tr');
+        document.createElement(
+          'tr'
+        );
 
 
       tr.innerHTML =
 
-        /* 01 SS ID */
         tableCell(
           row.ss_id
         ) +
 
-        /* 02 NAMA */
         tableCell(
           row.employee_name
         ) +
 
-        /* 03 DEPARTEMEN */
         tableCell(
           row.department
         ) +
 
-        /* 04 JENIS SS */
         tableCell(
           row.ss_type
         ) +
 
-        /* 05 SUPERIOR */
         tableCell(
           row.superior_name
         ) +
 
-        /* 06 STATUS ADMIN */
         tableCell(
           row.status_admin,
-          getStatusClass(row.status_admin)
+          getStatusClass(
+            row.status_admin
+          )
         ) +
 
-        /* 07 STATUS SUPERIOR */
         tableCell(
           row.status_superior,
-          getStatusClass(row.status_superior)
+          getStatusClass(
+            row.status_superior
+          )
         ) +
 
-        /* 08 STATUS IMPLEMENTASI */
         tableCell(
           row.status_implementasi,
-          getStatusClass(row.status_implementasi)
+          getStatusClass(
+            row.status_implementasi
+          )
         ) +
 
-        /* 09 CREATE TIME */
         tableCell(
           formatDateTimeDatabase(
             row.created_time
           )
         ) +
 
-        /* 10 LOKASI */
         tableCell(
           row.work_location
         ) +
 
-        /* 11 MONTH */
         tableCell(
           row.month_no
         ) +
 
-        /* 12 VALIDASI */
         tableCell(
           row.validation_month
         ) +
 
-        /* 13 TANGGAL IMPLEMENTASI */
         tableCell(
           formatImplementationDate(
             row.implementation_date
           )
         ) +
 
-        /* 14 KUALIFIKASI */
         tableCell(
           row.qualification,
-          getStatusClass(row.qualification)
+          getStatusClass(
+            row.qualification
+          )
         ) +
 
-        /* 15 POINT */
         tableCell(
           formatPointDatabase(
             row.point
           )
         ) +
 
-        /* 16 POINT APPROVAL */
         tableCell(
           formatPointDatabase(
             row.point_approval
@@ -2219,13 +2269,14 @@ function renderDatabaseRows(rows) {
         );
 
 
-      databaseTableBody.appendChild(tr);
+      databaseTableBody
+        .appendChild(tr);
 
     }
 
 
     /* ======================================================
-       MOBILE CARD
+       MOBILE
     ====================================================== */
 
     if (databaseMobile) {
@@ -2249,7 +2300,9 @@ function renderDatabaseRows(rows) {
             '<div class="database-mobile-id">' +
 
               'SS #' +
-              safeText(row.ss_id) +
+              safeText(
+                row.ss_id
+              ) +
 
             '</div>' +
 
@@ -2359,14 +2412,13 @@ function renderDatabaseRows(rows) {
 
     }
 
-
   });
 
 }
 
 
 /* ==========================================================
-   TABLE CELL
+   DATABASE TABLE CELL
 ========================================================== */
 
 function tableCell(
@@ -2376,21 +2428,27 @@ function tableCell(
 
   const cssClass =
     className
+
       ? ` class="${className}"`
+
       : '';
 
 
   return (
+
     `<td${cssClass}>` +
+
       safeText(value) +
+
     '</td>'
+
   );
 
 }
 
 
 /* ==========================================================
-   FORMAT POINT
+   POINT FORMAT
 ========================================================== */
 
 function formatPointDatabase(value) {
@@ -2410,8 +2468,12 @@ function formatPointDatabase(value) {
     Number(value);
 
 
-  if (Number.isNaN(number)) {
+  if (
+    Number.isNaN(number)
+  ) {
+
     return value;
+
   }
 
 
@@ -2423,13 +2485,7 @@ function formatPointDatabase(value) {
 
 
 /* ==========================================================
-   FORMAT IMPLEMENTATION DATE
-
-   Database:
-   2026-08-26
-
-   Website:
-   26 Aug 2026
+   IMPLEMENTATION DATE
 ========================================================== */
 
 function formatImplementationDate(value) {
@@ -2443,13 +2499,6 @@ function formatImplementationDate(value) {
 
   }
 
-
-  /*
-    Jangan pakai new Date("YYYY-MM-DD")
-    karena bisa bergeser timezone.
-
-    Kita pecah string manual.
-  */
 
   const match =
     String(value).match(
@@ -2467,16 +2516,15 @@ function formatImplementationDate(value) {
   const year =
     Number(match[1]);
 
-
   const month =
     Number(match[2]);
-
 
   const day =
     Number(match[3]);
 
 
   const monthNames = [
+
     '',
     'Jan',
     'Feb',
@@ -2490,28 +2538,33 @@ function formatImplementationDate(value) {
     'Okt',
     'Nov',
     'Des'
+
   ];
 
 
   return (
-    String(day).padStart(2, '0') +
+
+    String(day)
+      .padStart(
+        2,
+        '0'
+      ) +
+
     ' ' +
+
     monthNames[month] +
+
     ' ' +
+
     year
+
   );
 
 }
 
 
 /* ==========================================================
-   FORMAT CREATE TIME
-
-   Supabase ISO:
-   2026-07-30T03:13:00...
-
-   Website:
-   30 Jul 2026 • 10:13
+   CREATE TIME
 ========================================================== */
 
 function formatDateTimeDatabase(value) {
@@ -2591,7 +2644,7 @@ function formatDateTimeDatabase(value) {
 
 
 /* ==========================================================
-   STATUS CLASS
+   DATABASE STATUS CLASS
 ========================================================== */
 
 function getStatusClass(value) {
@@ -2642,12 +2695,10 @@ function getStatusClass(value) {
 
 
 /* ==========================================================
-   DATABASE HELPERS
+   DATABASE SAFE TEXT
 ========================================================== */
 
-function safeText(
-  value
-) {
+function safeText(value) {
 
   return escapeHtml(
 
@@ -2664,6 +2715,10 @@ function safeText(
 }
 
 
+/* ==========================================================
+   MOBILE INFO
+========================================================== */
+
 function mobileInfo(
   label,
   value
@@ -2674,11 +2729,15 @@ function mobileInfo(
     '<div>' +
 
       '<small>' +
-      escapeHtml(label) +
+
+        escapeHtml(label) +
+
       '</small>' +
 
       '<strong>' +
-      safeText(value) +
+
+        safeText(value) +
+
       '</strong>' +
 
     '</div>'
@@ -2689,13 +2748,10 @@ function mobileInfo(
 
 
 /* ==========================================================
-   SEARCH
-   Debounce supaya ringan
+   DATABASE SEARCH
 ========================================================== */
 
-if (
-  databaseSearch
-) {
+if (databaseSearch) {
 
   databaseSearch.addEventListener(
 
@@ -2713,9 +2769,7 @@ if (
 
           function() {
 
-            databasePage =
-              1;
-
+            databasePage = 1;
 
             loadDatabase();
 
@@ -2733,12 +2787,10 @@ if (
 
 
 /* ==========================================================
-   LIMIT
+   DATABASE LIMIT
 ========================================================== */
 
-if (
-  databaseLimit
-) {
+if (databaseLimit) {
 
   databaseLimit.addEventListener(
 
@@ -2746,9 +2798,7 @@ if (
 
     function() {
 
-      databasePage =
-        1;
-
+      databasePage = 1;
 
       loadDatabase();
 
@@ -2760,12 +2810,10 @@ if (
 
 
 /* ==========================================================
-   PAGINATION
+   DATABASE PREVIOUS
 ========================================================== */
 
-if (
-  databasePrev
-) {
+if (databasePrev) {
 
   databasePrev.addEventListener(
 
@@ -2779,7 +2827,6 @@ if (
 
         databasePage--;
 
-
         loadDatabase();
 
       }
@@ -2791,9 +2838,11 @@ if (
 }
 
 
-if (
-  databaseNext
-) {
+/* ==========================================================
+   DATABASE NEXT
+========================================================== */
+
+if (databaseNext) {
 
   databaseNext.addEventListener(
 
@@ -2808,7 +2857,6 @@ if (
 
         databasePage++;
 
-
         loadDatabase();
 
       }
@@ -2818,3 +2866,10 @@ if (
   );
 
 }
+
+
+/* ==========================================================
+   START APP
+========================================================== */
+
+loadDashboard();
