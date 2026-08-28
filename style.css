@@ -4701,438 +4701,291 @@ and
   }
 
 }
-
 /* ==========================================================
-   SEASON INFO / GAME RULE SECTION
+   CONTINUOUS SEASON STORY
+   Nyambung dengan HERO
 ========================================================== */
 
-.season-info-section {
+.season-story {
 
   position: relative;
 
+  margin-top: -18px;
+
   overflow: hidden;
 
-  margin-top: 34px;
+  min-height: 560px;
 
   padding:
-    42px
-    42px
-    54px;
+    72px
+    6%
+    66px;
 
-  border:
-    1px solid
-    rgba(99, 102, 241, .18);
-
-  border-radius: 40px;
-
-  background:
-
-    radial-gradient(
-      circle at 15% 20%,
-      rgba(38, 113, 255, .17),
-      transparent 28%
-    ),
-
-    radial-gradient(
-      circle at 90% 35%,
-      rgba(177, 62, 255, .16),
-      transparent 32%
-    ),
-
-    linear-gradient(
-      145deg,
-      rgba(3, 8, 25, .97),
-      rgba(4, 10, 31, .96) 48%,
-      rgba(13, 5, 32, .96)
-    );
-
-  box-shadow:
-    0 30px 90px rgba(0,0,0,.36),
-    inset 0 0 90px rgba(65,88,255,.04);
-
-}
-
-
-/* ==========================================================
-   MOVING BACKGROUND LIGHT
-========================================================== */
-
-.season-info-section::before {
-
-  content: "";
-
-  position: absolute;
-
-  inset: -30%;
-
-  pointer-events: none;
-
-  background:
-
-    conic-gradient(
-      from 180deg,
-      transparent,
-      rgba(53, 173, 255, .08),
-      transparent 30%,
-      rgba(179, 65, 255, .09),
-      transparent 65%,
-      rgba(51, 229, 255, .06)
-    );
-
-  filter: blur(24px);
-
-  animation:
-    seasonInfoRotate
-    24s
-    linear
-    infinite;
-
-}
-
-
-.season-info-section::after {
-
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  pointer-events: none;
-
-  opacity: .16;
+  border-radius:
+    0 0 42px 42px;
 
   background-image:
 
     linear-gradient(
-      rgba(255,255,255,.025) 1px,
-      transparent 1px
+      180deg,
+      rgba(5,10,29,.28),
+      rgba(4,9,27,.68) 45%,
+      rgba(10,4,26,.88)
     ),
 
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,.025) 1px,
-      transparent 1px
-    );
+    url("/assets/hero-bg.png");
 
-  background-size:
-    52px 52px;
+  background-size: cover;
 
-  animation:
-    seasonGridMove
-    18s
-    linear
-    infinite;
+  background-position:
+    center 68%;
 
-}
-
-
-/* ==========================================================
-   NEON GLOWS
-========================================================== */
-
-.season-info-glow {
-
-  position: absolute;
-
-  border-radius: 50%;
-
-  pointer-events: none;
-
-  filter: blur(95px);
-
-}
-
-
-.glow-blue {
-
-  width: 420px;
-  height: 420px;
-
-  left: -140px;
-  top: -130px;
-
-  background:
-    rgba(40, 138, 255, .20);
-
-}
-
-
-.glow-purple {
-
-  width: 460px;
-  height: 460px;
-
-  right: -160px;
-  bottom: -170px;
-
-  background:
-    rgba(176, 60, 255, .18);
-
-}
-
-
-/* ==========================================================
-   GRID
-========================================================== */
-
-.season-info-grid {
-
-  position: relative;
-
-  z-index: 3;
-
-  display: grid;
-
-  grid-template-columns:
-    minmax(0, .9fr)
-    minmax(0, 1.1fr);
-
-  gap: 26px;
-
-}
-
-
-/* ==========================================================
-   CARD
-========================================================== */
-
-.info-card {
-
-  position: relative;
-
-  overflow: hidden;
-
-  padding:
-    30px;
+  background-repeat:
+    no-repeat;
 
   border:
     1px solid
-    rgba(128, 144, 255, .16);
+    rgba(105,91,255,.16);
 
-  border-radius: 28px;
+  border-top:
+    0;
+
+  box-shadow:
+    0 30px 90px
+    rgba(0,0,0,.34);
+
+}
+
+
+/* ==========================================================
+   DARK OVERLAY
+========================================================== */
+
+.story-overlay {
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(2,7,22,.86) 0%,
+      rgba(3,8,24,.70) 48%,
+      rgba(13,4,29,.56) 100%
+    );
+
+  pointer-events:none;
+
+}
+
+
+/* ==========================================================
+   MOVING NEON
+========================================================== */
+
+.story-neon {
+
+  position:absolute;
+
+  border-radius:50%;
+
+  filter:blur(100px);
+
+  opacity:.28;
+
+  pointer-events:none;
+
+}
+
+
+.neon-a {
+
+  width:420px;
+  height:420px;
+
+  left:-120px;
+  top:90px;
+
+  background:
+    #237cff;
+
+  animation:
+    storyNeonA
+    9s
+    ease-in-out
+    infinite alternate;
+
+}
+
+
+.neon-b {
+
+  width:450px;
+  height:450px;
+
+  right:-140px;
+  bottom:-100px;
+
+  background:
+    #9a42ff;
+
+  animation:
+    storyNeonB
+    10s
+    ease-in-out
+    infinite alternate;
+
+}
+
+
+/* ==========================================================
+   CONTENT
+========================================================== */
+
+.story-content {
+
+  position:relative;
+
+  z-index:3;
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,.85fr)
+    1px
+    minmax(0,1.15fr);
+
+  gap:46px;
+
+  align-items:center;
+
+}
+
+
+/* ==========================================================
+   DIVIDER
+========================================================== */
+
+.story-divider {
+
+  width:1px;
+  height:100%;
+
+  min-height:360px;
 
   background:
 
     linear-gradient(
       180deg,
-      rgba(11, 20, 51, .78),
-      rgba(6, 11, 31, .76)
-    );
-
-  box-shadow:
-
-    0 20px 55px
-    rgba(0,0,0,.22),
-
-    inset 0 1px
-    rgba(255,255,255,.035);
-
-  backdrop-filter:
-    blur(8px);
-
-}
-
-
-.info-card::before {
-
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  left: 0;
-  right: 0;
-
-  height: 2px;
-
-  background:
-
-    linear-gradient(
-      90deg,
       transparent,
-      #36C9FF,
-      #765CFF,
-      #B746FF,
+      rgba(65,190,255,.55),
+      rgba(135,85,255,.50),
       transparent
     );
 
+  box-shadow:
+    0 0 18px
+    rgba(71,126,255,.18);
+
 }
 
 
 /* ==========================================================
-   CARD HEAD
+   TAG
 ========================================================== */
 
-.info-card-head {
+.story-tag {
 
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: flex-start;
-
-  gap: 20px;
-
-}
-
-
-.eyebrow {
-
-  width: max-content;
+  width:max-content;
 
   padding:
-    7px
-    13px;
+    7px 14px;
 
-  border-radius: 8px;
+  border-radius:999px;
 
-  font-size: 10px;
-
-  font-weight: 900;
-
-  letter-spacing: 1.6px;
-
-}
-
-
-.eyebrow.cyan {
-
-  color: #06121E;
+  color:#041720;
 
   background:
 
     linear-gradient(
       90deg,
-      #52DBFF,
-      #56E8B5
+      #4AD9FF,
+      #55E5B6
     );
+
+  font-size:10px;
+
+  font-weight:900;
+
+  letter-spacing:1.6px;
 
   box-shadow:
-
     0 0 18px
-    rgba(61, 213, 255, .18);
-
-}
-
-
-.info-card h2 {
-
-  margin-top: 15px;
-
-  color: white;
-
-  font-size:
-    clamp(
-      24px,
-      2.5vw,
-      34px
-    );
-
-  line-height: 1.15;
-
-}
-
-
-.info-lead {
-
-  margin-top: 30px;
-
-  color: #E5EAFE;
-
-  font-size: 16px;
-
-  line-height: 1.6;
-
-}
-
-
-.highlight-yellow {
-
-  color: #FFD65A;
-
-  font-weight: 850;
-
-}
-
-
-.info-text {
-
-  margin-top: 15px;
-
-  color: #98A7CB;
-
-  font-size: 14px;
-
-  line-height: 1.6;
+    rgba(55,218,255,.16);
 
 }
 
 
 /* ==========================================================
-   MINI ICON
+   TITLES
 ========================================================== */
 
-.mini-rank-icon {
+.story-left h2,
+.story-right h2 {
 
-  position: relative;
+  margin-top:17px;
 
-  width: 66px;
-  height: 70px;
+  color:white;
 
-  flex: 0 0 auto;
-
-  display: grid;
-
-  place-items: center;
-
-  clip-path:
-
-    polygon(
-      50% 0,
-      100% 23%,
-      78% 100%,
-      50% 77%,
-      22% 100%,
-      0 23%
+  font-size:
+    clamp(
+      28px,
+      3vw,
+      42px
     );
 
-  background:
-
-    linear-gradient(
-      150deg,
-      #43D0FF,
-      #655EFF 48%,
-      #B649FF
-    );
-
-  filter:
-
-    drop-shadow(
-      0 0 18px
-      rgba(107, 86, 255, .48)
-    );
-
-  animation:
-    miniBadgeFloat
-    3s
-    ease-in-out
-    infinite;
+  line-height:1.08;
 
 }
 
 
-.mini-rank-icon span {
+.story-lead {
 
-  width: 14px;
-  height: 14px;
+  margin-top:30px;
 
-  transform: rotate(45deg);
+  max-width:560px;
 
-  background: white;
+  color:#E9EDFF;
 
-  box-shadow:
-    0 0 12px white;
+  font-size:16px;
+
+  line-height:1.65;
+
+}
+
+
+.story-lead span {
+
+  color:#FFD756;
+
+  font-weight:900;
+
+}
+
+
+.story-sub {
+
+  margin-top:16px;
+
+  max-width:520px;
+
+  color:#93A3C7;
+
+  font-size:14px;
+
+  line-height:1.65;
 
 }
 
@@ -5141,238 +4994,208 @@ and
    MISSION
 ========================================================== */
 
-.mission-list {
+.story-mission {
 
-  margin-top: 25px;
+  margin-top:28px;
 
-  display: grid;
+  display:grid;
 
-  gap: 12px;
+  gap:14px;
 
 }
 
 
-.mission-item {
+.mission-line {
 
-  display: grid;
+  display:grid;
 
   grid-template-columns:
     58px
     1fr;
 
-  align-items: center;
+  align-items:center;
 
-  gap: 14px;
+  gap:15px;
+
+  max-width:520px;
 
   padding:
-    13px
-    15px;
+    14px
+    18px;
 
-  border:
-    1px solid
-    rgba(77, 236, 188, .28);
-
-  border-radius: 15px;
+  border-radius:16px;
 
   background:
 
     linear-gradient(
       90deg,
-      rgba(75, 232, 183, .90),
-      rgba(80, 215, 171, .78)
+      rgba(66,224,181,.92),
+      rgba(66,201,177,.76)
     );
 
+  color:#04151A;
+
   box-shadow:
-    0 8px 20px
-    rgba(49, 216, 167, .08);
+    0 10px 28px
+    rgba(51,222,178,.08);
 
 }
 
 
-.mission-number {
+.mission-badge {
 
   font-family:
     "Orbitron",
     sans-serif;
 
-  color: #051820;
+  font-size:21px;
 
-  font-size: 22px;
-
-  font-weight: 900;
+  font-weight:900;
 
 }
 
 
-.mission-copy {
+.mission-line div:last-child {
 
-  display: flex;
+  display:flex;
 
-  flex-direction: column;
+  flex-direction:column;
 
-  gap: 3px;
-
-  color: #04151C;
+  gap:3px;
 
 }
 
 
-.mission-copy strong {
+.mission-line strong {
 
-  font-size: 13px;
+  font-size:13px;
 
 }
 
 
-.mission-copy span {
+.mission-line span {
 
-  font-size: 11px;
+  font-size:11px;
 
-  font-weight: 700;
+  font-weight:700;
 
 }
 
 
 /* ==========================================================
-   RULE GRID
+   RULE TRACK
 ========================================================== */
 
-.rule-top h2 {
+.rule-track {
 
-  margin-top: 16px;
+  margin-top:34px;
 
-}
+  display:flex;
 
+  align-items:center;
 
-.rule-grid {
-
-  margin-top: 25px;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  gap: 12px;
+  gap:10px;
 
 }
 
 
-.rule-box {
+.rule-node {
 
-  min-height: 130px;
+  flex:1;
 
-  display: flex;
+  min-width:105px;
 
-  flex-direction: column;
+  min-height:130px;
 
-  align-items: center;
+  display:flex;
 
-  justify-content: center;
+  flex-direction:column;
 
-  gap: 4px;
+  align-items:center;
 
-  border-radius: 18px;
+  justify-content:center;
+
+  border-radius:18px;
 
   border:
-    2px solid
-    rgba(255,255,255,.60);
+    1px solid
+    rgba(255,255,255,.42);
 
   box-shadow:
-
-    0 12px 30px
-    rgba(0,0,0,.18),
-
-    inset 0 1px
-    rgba(255,255,255,.20);
-
-  transition:
-    transform .25s ease,
-    box-shadow .25s ease;
+    0 10px 25px
+    rgba(0,0,0,.20);
 
 }
 
 
-.rule-box:hover {
-
-  transform:
-    translateY(-5px);
-
-}
-
-
-.rule-box strong {
-
-  font-family:
-    "Orbitron",
-    sans-serif;
-
-  color: white;
-
-  font-size: 38px;
-
-  line-height: 1;
-
-}
-
-
-.rule-box span {
-
-  margin-top: 3px;
-
-  color: white;
-
-  font-size: 12px;
-
-  font-weight: 900;
-
-}
-
-
-.rule-box small {
-
-  color:
-    rgba(255,255,255,.85);
-
-  font-size: 10px;
-
-  font-weight: 750;
-
-}
-
-
-.cyan-box {
+.rule-node.cyan {
 
   background:
 
     linear-gradient(
       145deg,
-      rgba(50, 204, 232, .90),
-      rgba(51, 165, 194, .90)
+      rgba(51,205,231,.95),
+      rgba(40,151,190,.94)
     );
-
-  box-shadow:
-
-    0 0 25px
-    rgba(43, 203, 233, .13);
 
 }
 
 
-.gold-box {
+.rule-node.gold {
 
   background:
 
     linear-gradient(
       145deg,
-      #D9B25C,
-      #B88A31
+      #DDB75E,
+      #AA7C2C
     );
 
-  box-shadow:
+}
 
-    0 0 25px
-    rgba(223, 173, 65, .12);
+
+.rule-node strong {
+
+  color:white;
+
+  font-size:39px;
+
+  line-height:1;
+
+}
+
+
+.rule-node span {
+
+  margin-top:5px;
+
+  color:white;
+
+  font-size:12px;
+
+  font-weight:900;
+
+}
+
+
+.rule-node small {
+
+  margin-top:3px;
+
+  color:rgba(255,255,255,.88);
+
+  font-size:9px;
+
+  font-weight:800;
+
+}
+
+
+.rule-link {
+
+  color:#8494BD;
+
+  font-size:18px;
 
 }
 
@@ -5381,817 +5204,372 @@ and
    TARGET
 ========================================================== */
 
-.target-box {
+.season-target {
 
-  margin-top: 23px;
+  margin-top:26px;
 
-  display: grid;
+  display:grid;
 
   grid-template-columns:
-    54px
+    56px
     1fr;
 
-  align-items: center;
+  align-items:center;
 
-  gap: 15px;
+  gap:16px;
 
   padding:
-    17px
-    18px;
+    17px 18px;
 
-  border-radius: 18px;
+  border-radius:16px;
 
   border:
     1px solid
-    rgba(83, 227, 185, .18);
+    rgba(67,226,185,.18);
 
   background:
-    rgba(5, 17, 33, .58);
+    rgba(4,13,28,.62);
 
 }
 
 
-.target-icon {
+.target-check {
 
-  width: 48px;
-  height: 48px;
+  width:49px;
+  height:49px;
 
-  display: grid;
+  display:grid;
 
-  place-items: center;
+  place-items:center;
 
-  border-radius: 50%;
+  border-radius:50%;
 
-  color: white;
+  background:#17C83D;
 
-  background:
-    #16C542;
+  color:white;
 
-  font-size: 28px;
+  font-size:28px;
 
-  font-weight: 900;
+  font-weight:900;
 
   box-shadow:
-
-    0 0 22px
-    rgba(30, 217, 84, .25);
-
-  animation:
-    targetPulse
-    2s
-    ease-in-out
-    infinite;
+    0 0 24px
+    rgba(29,221,81,.24);
 
 }
 
 
-.target-box strong {
+.season-target strong {
 
-  color: white;
+  color:white;
 
-  font-size: 14px;
-
-}
-
-
-.target-box p {
-
-  margin-top: 4px;
-
-  color: #B3BED9;
-
-  font-size: 12px;
-
-  line-height: 1.5;
+  font-size:14px;
 
 }
 
 
-.target-box b {
+.season-target p {
 
-  color: white;
+  margin-top:4px;
+
+  color:#AEB9D3;
+
+  font-size:12px;
+
+  line-height:1.5;
+
+}
+
+
+.season-target b {
+
+  color:white;
 
 }
 
 
 /* ==========================================================
-   FLOW
+   PROCESS
 ========================================================== */
 
-.improvement-flow {
+.process-flow {
 
-  margin-top: 20px;
+  margin-top:22px;
 
-  display: flex;
+  display:flex;
 
-  align-items: center;
+  align-items:center;
 
-  gap: 8px;
+  flex-wrap:wrap;
+
+  gap:8px;
 
 }
 
 
-.flow-step {
-
-  min-height: 42px;
-
-  flex: 1;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 7px;
+.process-flow span {
 
   padding:
-    8px
-    10px;
+    9px 13px;
 
-  border-radius: 10px;
+  border-radius:9px;
 
-  color: #DCE7FF;
+  color:#DDE5FF;
 
   background:
 
     linear-gradient(
       90deg,
-      rgba(46, 154, 255, .16),
-      rgba(125, 73, 255, .20)
+      rgba(49,153,255,.17),
+      rgba(112,68,255,.23)
     );
 
   border:
     1px solid
-    rgba(103, 128, 255, .20);
+    rgba(97,118,255,.20);
 
-  font-size: 10px;
+  font-size:10px;
 
-  font-weight: 800;
-
-}
-
-
-.flow-step span {
-
-  width: 22px;
-  height: 22px;
-
-  flex: 0 0 22px;
-
-  display: grid;
-
-  place-items: center;
-
-  border-radius: 50%;
-
-  color: #05121E;
-
-  background: #54D7FF;
-
-  font-size: 8px;
-
-  font-weight: 900;
+  font-weight:800;
 
 }
 
 
-.flow-step.final {
+.process-flow i {
+
+  color:#8290B8;
+
+  font-style:normal;
+
+}
+
+
+.process-flow .final-flow {
 
   background:
 
     linear-gradient(
       90deg,
-      rgba(98, 69, 255, .28),
-      rgba(183, 62, 255, .26)
+      rgba(105,74,255,.30),
+      rgba(183,65,255,.30)
     );
 
-}
-
-
-.flow-step.final span {
-
-  background:
-    #BE62FF;
-
-}
-
-
-.flow-arrow {
-
-  color: #7E8EBA;
-
-  font-size: 14px;
+  color:#fff;
 
 }
 
 
 /* ==========================================================
-   STAGE / PODIUM
+   MOBILE
 ========================================================== */
 
-.season-stage {
+@media(max-width:900px) {
 
-  position: relative;
+  .season-story {
 
-  z-index: 2;
+    margin-top:-12px;
 
-  width: 100%;
+    padding:
+      42px
+      24px
+      36px;
 
-  height: 220px;
+    border-radius:
+      0 0 30px 30px;
 
-  margin-top: 30px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: flex-end;
-
-}
-
-
-.stage-light {
-
-  position: absolute;
-
-  width: 260px;
-  height: 260px;
-
-  top: -50px;
-
-  border-radius: 50%;
-
-  background:
-
-    radial-gradient(
-      circle,
-      rgba(255, 220, 100, .30),
-      rgba(141, 85, 255, .14) 38%,
-      transparent 70%
-    );
-
-  filter:
-    blur(25px);
-
-  animation:
-    stageGlow
-    2.5s
-    ease-in-out
-    infinite;
-
-}
-
-
-.stage-step {
-
-  position: absolute;
-
-  left: 50%;
-
-  transform:
-    translateX(-50%);
-
-  border:
-    1px solid
-    rgba(112, 112, 255, .25);
-
-  border-radius:
-    10px 10px 3px 3px;
-
-  background:
-
-    linear-gradient(
-      180deg,
-      rgba(29, 38, 93, .95),
-      rgba(6, 10, 34, .98)
-    );
-
-  box-shadow:
-
-    0 0 15px
-    rgba(73, 113, 255, .12),
-
-    inset 0 1px
-    rgba(255,255,255,.04);
-
-}
-
-
-.step-one {
-
-  width: 58%;
-  height: 43px;
-
-  bottom: 0;
-
-}
-
-
-.step-two {
-
-  width: 48%;
-  height: 40px;
-
-  bottom: 36px;
-
-}
-
-
-.step-three {
-
-  width: 38%;
-  height: 38px;
-
-  bottom: 68px;
-
-}
-
-
-.step-four {
-
-  width: 28%;
-  height: 36px;
-
-  bottom: 98px;
-
-}
-
-
-.step-five {
-
-  width: 18%;
-  height: 34px;
-
-  bottom: 126px;
-
-}
-
-
-.stage-crown {
-
-  position: absolute;
-
-  top: 15px;
-
-  width: 90px;
-  height: 70px;
-
-  display: flex;
-
-  align-items: flex-end;
-
-  justify-content: center;
-
-  gap: 4px;
-
-  filter:
-
-    drop-shadow(
-      0 0 20px
-      rgba(255, 215, 91, .34)
-    );
-
-  animation:
-    crownFloat
-    2.6s
-    ease-in-out
-    infinite;
-
-}
-
-
-.stage-crown span {
-
-  width: 25px;
-
-  background:
-
-    linear-gradient(
-      180deg,
-      #FFF1A6,
-      #AA7CFF 68%
-    );
-
-  clip-path:
-
-    polygon(
-      50% 0,
-      100% 100%,
-      0 100%
-    );
-
-}
-
-
-.stage-crown span:nth-child(1),
-.stage-crown span:nth-child(3) {
-
-  height: 39px;
-
-}
-
-
-.stage-crown span:nth-child(2) {
-
-  height: 62px;
-
-}
-
-
-/* ==========================================================
-   ANIMATION
-========================================================== */
-
-@keyframes seasonInfoRotate {
-
-  from {
-    transform:
-      rotate(0deg);
   }
 
-  to {
-    transform:
-      rotate(360deg);
-  }
 
-}
-
-
-@keyframes seasonGridMove {
-
-  from {
-    background-position:
-      0 0,
-      0 0;
-  }
-
-  to {
-    background-position:
-      52px 52px,
-      52px 52px;
-  }
-
-}
-
-
-@keyframes miniBadgeFloat {
-
-  0%,
-  100% {
-    transform:
-      translateY(0);
-  }
-
-  50% {
-    transform:
-      translateY(-6px);
-  }
-
-}
-
-
-@keyframes targetPulse {
-
-  0%,
-  100% {
-    transform:
-      scale(.96);
-  }
-
-  50% {
-    transform:
-      scale(1.06);
-  }
-
-}
-
-
-@keyframes stageGlow {
-
-  0%,
-  100% {
-    opacity: .50;
-    transform:
-      scale(.90);
-  }
-
-  50% {
-    opacity: .90;
-    transform:
-      scale(1.08);
-  }
-
-}
-
-
-@keyframes crownFloat {
-
-  0%,
-  100% {
-    transform:
-      translateY(0);
-  }
-
-  50% {
-    transform:
-      translateY(-8px);
-  }
-
-}
-
-
-/* ==========================================================
-   RESPONSIVE
-========================================================== */
-
-@media(max-width:1000px) {
-
-  .season-info-grid {
+  .story-content {
 
     grid-template-columns:
       1fr;
 
-  }
-
-
-  .season-stage {
-
-    height:
-      190px;
-
-  }
-
-}
-
-
-@media(max-width:700px) {
-
-  .season-info-section {
-
-    margin-top:
-      18px;
-
-    padding:
-      18px
-      12px
-      26px;
-
-    border-radius:
-      25px;
+    gap:38px;
 
   }
 
 
-  /*
-   Matikan efek berat di HP.
-  */
+  .story-divider {
 
-  .season-info-section::before {
+    width:100%;
+    height:1px;
 
-    display:
-      none;
+    min-height:1px;
 
-  }
+    background:
 
-
-  .season-info-section::after {
-
-    opacity:
-      .08;
-
-    animation:
-      none;
-
-  }
-
-
-  .season-info-glow {
-
-    display:
-      none;
-
-  }
-
-
-  .info-card {
-
-    padding:
-      19px
-      16px;
-
-    border-radius:
-      20px;
-
-    backdrop-filter:
-      none;
-
-  }
-
-
-  .info-card h2 {
-
-    font-size:
-      23px;
-
-  }
-
-
-  .info-lead {
-
-    margin-top:
-      20px;
-
-    font-size:
-      13px;
-
-  }
-
-
-  .info-text {
-
-    font-size:
-      12px;
-
-  }
-
-
-  .mini-rank-icon {
-
-    width:
-      48px;
-
-    height:
-      52px;
-
-    animation:
-      none;
-
-  }
-
-
-  .mission-item {
-
-    grid-template-columns:
-      43px
-      1fr;
-
-    padding:
-      10px
-      11px;
-
-  }
-
-
-  .mission-number {
-
-    font-size:
-      17px;
-
-  }
-
-
-  .mission-copy span {
-
-    font-size:
-      9px;
-
-  }
-
-
-  .rule-grid {
-
-    grid-template-columns:
-      repeat(
-        2,
-        1fr
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(65,190,255,.55),
+        rgba(135,85,255,.50),
+        transparent
       );
 
   }
 
 
-  .rule-box {
+  .rule-track {
 
-    min-height:
-      105px;
-
-  }
-
-
-  .rule-box strong {
-
-    font-size:
-      30px;
-
-  }
-
-
-  .target-box {
+    display:grid;
 
     grid-template-columns:
-      43px
-      1fr;
+      repeat(2,1fr);
+
+  }
+
+
+  .rule-link {
+
+    display:none;
+
+  }
+
+}
+
+
+@media(max-width:600px) {
+
+  .story-neon {
+
+    display:none;
+
+  }
+
+
+  .season-story {
 
     padding:
-      13px;
+      30px
+      16px
+      28px;
+
+    background-position:
+      70% center;
 
   }
 
 
-  .target-icon {
+  .story-left h2,
+  .story-right h2 {
 
-    width:
-      39px;
-
-    height:
-      39px;
-
-    font-size:
-      22px;
-
-    animation:
-      none;
+    font-size:25px;
 
   }
 
 
-  .improvement-flow {
+  .story-lead {
 
-    display:
-      grid;
+    font-size:13px;
+
+  }
+
+
+  .story-sub {
+
+    font-size:12px;
+
+  }
+
+
+  .mission-line {
 
     grid-template-columns:
-      1fr;
+      44px 1fr;
+
+    padding:
+      11px 12px;
 
   }
 
 
-  .flow-arrow {
+  .mission-badge {
 
-    display:
-      none;
-
-  }
-
-
-  .season-stage {
-
-    height:
-      145px;
+    font-size:17px;
 
   }
 
 
-  .step-one {
+  .rule-node {
 
-    width:
-      92%;
-
-  }
-
-
-  .step-two {
-
-    width:
-      74%;
+    min-height:105px;
 
   }
 
 
-  .step-three {
+  .rule-node strong {
 
-    width:
-      57%;
-
-  }
-
-
-  .step-four {
-
-    width:
-      40%;
+    font-size:31px;
 
   }
 
 
-  .step-five {
+  .season-target {
 
-    width:
-      25%;
+    grid-template-columns:
+      43px 1fr;
 
   }
 
 
-  .stage-crown {
+  .target-check {
 
+    width:39px;
+    height:39px;
+
+    font-size:22px;
+
+  }
+
+
+  .process-flow {
+
+    display:grid;
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .process-flow i {
+
+    display:none;
+
+  }
+
+}
+
+
+/* ==========================================================
+   ANIMATIONS
+========================================================== */
+
+@keyframes storyNeonA {
+
+  from {
     transform:
-      scale(.75);
+      translate3d(0,0,0);
+  }
 
-    animation:
-      none;
+  to {
+    transform:
+      translate3d(120px,50px,0);
+  }
 
+}
+
+
+@keyframes storyNeonB {
+
+  from {
+    transform:
+      translate3d(0,0,0);
+  }
+
+  to {
+    transform:
+      translate3d(-100px,-50px,0);
   }
 
 }
