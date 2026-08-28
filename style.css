@@ -7904,3 +7904,61 @@ body::-webkit-scrollbar {
   }
 
 }
+
+/* ==========================================================
+   POINT CHAMPION HEADING — CLEAN GAME STYLE
+========================================================== */
+
+.point-champion-heading {
+  justify-content: center;
+  text-align: center;
+  margin-top: 34px;
+}
+
+.point-champion-heading > div {
+  width: 100%;
+}
+
+.point-champion-heading .point-section-kicker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 7px 14px;
+
+  border: 1px solid rgba(96, 220, 255, .22);
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(54, 157, 255, .10),
+      rgba(119, 72, 255, .12)
+    );
+
+  color: #65dfff;
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .18em;
+}
+
+.point-champion-heading h2 {
+  margin: 12px 0 6px;
+
+  font-size: clamp(26px, 4vw, 42px);
+  line-height: 1;
+
+  color: #f4f7ff;
+
+  text-shadow:
+    0 0 28px rgba(88, 124, 255, .20);
+}
+
+.point-champion-heading p {
+  margin: 0;
+
+  color: #8998b9;
+
+  font-size: 11px;
+}
