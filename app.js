@@ -254,6 +254,10 @@ const databaseLimit =
     'databaseLimit'
   );
 
+const databaseExport =
+  document.getElementById(
+    'databaseExport'
+  );
 
 const databaseTableBody =
   document.getElementById(
@@ -3327,6 +3331,69 @@ if (
 
 }
 
+/* ==========================================================
+   EXPORT DATABASE
+========================================================== */
+
+if (
+  databaseExport
+) {
+
+  databaseExport.addEventListener(
+
+    'click',
+
+    function() {
+
+      const search =
+        databaseSearch
+
+          ? databaseSearch
+              .value
+              .trim()
+
+          : '';
+
+
+      const params =
+        new URLSearchParams();
+
+
+      if (
+        search
+      ) {
+
+        params.set(
+          'search',
+          search
+        );
+
+      }
+
+
+      let exportUrl =
+        '/api/ss-export';
+
+
+      if (
+        params.toString()
+      ) {
+
+        exportUrl +=
+          '?' +
+          params.toString();
+
+      }
+
+
+      window.location.href =
+        exportUrl;
+
+    }
+
+  );
+
+}
 
 /* ==========================================================
    START
