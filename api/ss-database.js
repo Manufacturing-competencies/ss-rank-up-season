@@ -1,18 +1,28 @@
 /* ==========================================================
    SS RANK UP SEASON
-   DATABASE API — FINAL SEARCH FIX
+   API / SS DATABASE — FINAL REBUILD
 ========================================================== */
 
-export default async function handler(req, res) {
+export default async function handler(
+  req,
+  res
+) {
 
   try {
+
+    /* ======================================================
+       ENVIRONMENT
+    ====================================================== */
 
     const supabaseUrl =
       String(
         process.env.SUPABASE_URL || ''
       )
         .trim()
-        .replace(/\/+$/, '');
+        .replace(
+          /\/+$/,
+          ''
+        );
 
 
     const serviceKey =
@@ -31,7 +41,8 @@ export default async function handler(req, res) {
         .status(500)
         .json({
 
-          success: false,
+          success:
+            false,
 
           message:
             'Supabase environment belum tersedia.'
@@ -42,7 +53,7 @@ export default async function handler(req, res) {
 
 
     /* ======================================================
-       PAGINATION
+       PARAMETER
     ====================================================== */
 
     const page =
@@ -51,7 +62,7 @@ export default async function handler(req, res) {
         parseInt(
           req.query.page || '1',
           10
-        )
+        ) || 1
       );
 
 
@@ -63,25 +74,10 @@ export default async function handler(req, res) {
           parseInt(
             req.query.limit || '50',
             10
-          )
+          ) || 50
         )
       );
 
-
-    const from =
-      (page - 1) *
-      limit;
-
-
-    const to =
-      from +
-      limit -
-      1;
-
-
-    /* ======================================================
-       SEARCH
-    ====================================================== */
 
     const search =
       String(
@@ -89,6 +85,14 @@ export default async function handler(req, res) {
       )
         .trim();
 
+
+    /* ======================================================
+       FETCH ALL MATCHING DATA
+       lalu sort priority server-side.
+
+       Dataset sekitar ribuan row masih aman untuk API server.
+       Browser tetap hanya menerima 25/50/100 row.
+    ====================================================== */
 
     const params =
       new URLSearchParams();
@@ -122,10 +126,12 @@ export default async function handler(req, res) {
 
 
     /* ======================================================
-       SEARCH LOGIC
+       SEARCH
     ====================================================== */
 
-    if (search) {
+    if (
+      search
+    ) {
 
       const clean =
         cleanSearchValue(
@@ -134,8 +140,7 @@ export default async function handler(req, res) {
 
 
       /*
-        Kalau angka saja:
-        cari SS ID.
+         ANGKA → EXACT SS ID
       */
 
       if (
@@ -149,20 +154,12 @@ export default async function handler(req, res) {
 
       }
 
+
       /*
-        Kalau teks:
-        cari nama.
+         TEXT → NAMA
       */
 
       else {
-
-        /*
-          Supabase ilike
-          contoh:
-          deni
-          DENI
-          deni saputra
-        */
 
         params.set(
           'employee_name',
@@ -177,23 +174,20 @@ export default async function handler(req, res) {
 
 
     /* ======================================================
-       SORTING
+       BASE SORT
 
-       DONE paling atas.
-       Setelah itu source row.
+       Supabase tetap beri urutan stabil.
+       Priority DONE nanti diproses JS server.
     ====================================================== */
 
     params.set(
       'order',
-      [
-        'qualification.desc.nullslast',
-        'source_row.asc'
-      ].join(',')
+      'source_row.asc'
     );
 
 
     /* ======================================================
-       REQUEST
+       REQUEST SUPABASE
     ====================================================== */
 
     const url =
@@ -225,10 +219,7 @@ export default async function handler(req, res) {
               serviceKey,
 
             Prefer:
-              'count=exact',
-
-            Range:
-              `${from}-${to}`
+              'count=exact'
 
           },
 
@@ -249,7 +240,7 @@ export default async function handler(req, res) {
     ) {
 
       console.error(
-        'SUPABASE ERROR:',
+        'SUPABASE DATABASE ERROR:',
         response.status,
         text
       );
@@ -273,71 +264,160 @@ export default async function handler(req, res) {
     }
 
 
-    let data = [];
+    let allRows = [];
 
 
     try {
 
-      data =
+      allRows =
         text
-          ? JSON.parse(text)
+          ? JSON.parse(
+              text
+            )
           : [];
 
     }
 
-    catch {
+    catch(error) {
 
-      data = [];
+      console.error(
+        'DATABASE JSON ERROR:',
+        error
+      );
+
+
+      allRows = [];
+
+    }
+
+
+    if (
+      !Array.isArray(
+        allRows
+      )
+    ) {
+
+      allRows = [];
 
     }
 
 
     /* ======================================================
-       TOTAL
+       PRIORITY SORT — GLOBAL
+
+       1. DONE
+       2. QUALIFIED
+       3. NOT QUALIFIED
+       4. STATUS LAIN
+       5. BLANK
+
+       Kemudian source_row.
     ====================================================== */
 
-    const contentRange =
-      response.headers.get(
-        'content-range'
-      );
+    allRows.sort(
+
+      function(a, b) {
+
+        const aPriority =
+          getQualificationPriority(
+            a.qualification
+          );
 
 
-    let total = 0;
+        const bPriority =
+          getQualificationPriority(
+            b.qualification
+          );
 
 
-    if (
-      contentRange &&
-      contentRange.includes('/')
-    ) {
+        if (
+          aPriority !==
+          bPriority
+        ) {
 
-      const totalText =
-        contentRange
-          .split('/')
-          .pop();
+          return (
+            aPriority -
+            bPriority
+          );
+
+        }
 
 
-      if (
-        totalText !== '*'
-      ) {
+        /*
+           Dalam kelompok yang sama,
+           gunakan source row agar stabil.
+        */
 
-        total =
+        const aSource =
           Number(
-            totalText
-          ) || 0;
+            a.source_row || 0
+          );
+
+
+        const bSource =
+          Number(
+            b.source_row || 0
+          );
+
+
+        return (
+          aSource -
+          bSource
+        );
 
       }
 
-    }
+    );
+
+
+    /* ======================================================
+       PAGINATION SETELAH SORT
+    ====================================================== */
+
+    const total =
+      allRows.length;
 
 
     const totalPages =
       total > 0
 
         ? Math.ceil(
-            total / limit
+            total /
+            limit
           )
 
         : 1;
+
+
+    /*
+       Kalau page terlalu besar,
+       tetap aman.
+    */
+
+    const safePage =
+      Math.min(
+        page,
+        totalPages
+      );
+
+
+    const startIndex =
+      (
+        safePage - 1
+      ) *
+      limit;
+
+
+    const endIndex =
+      startIndex +
+      limit;
+
+
+    const data =
+      allRows.slice(
+        startIndex,
+        endIndex
+      );
 
 
     /* ======================================================
@@ -357,7 +437,7 @@ export default async function handler(req, res) {
         pagination: {
 
           page:
-            page,
+            safePage,
 
           limit:
             limit,
@@ -370,13 +450,13 @@ export default async function handler(req, res) {
 
           from:
             total > 0
-              ? from + 1
+              ? startIndex + 1
               : 0,
 
           to:
             total > 0
               ? Math.min(
-                  to + 1,
+                  endIndex,
                   total
                 )
               : 0
@@ -385,12 +465,13 @@ export default async function handler(req, res) {
 
       });
 
+
   }
 
   catch(error) {
 
     console.error(
-      'DATABASE API ERROR:',
+      'SS DATABASE API ERROR:',
       error
     );
 
@@ -413,10 +494,69 @@ export default async function handler(req, res) {
 
 
 /* ==========================================================
+   QUALIFICATION PRIORITY
+========================================================== */
+
+function getQualificationPriority(
+  value
+) {
+
+  const status =
+    String(
+      value || ''
+    )
+      .trim()
+      .toUpperCase();
+
+
+  if (
+    status === 'DONE'
+  ) {
+
+    return 0;
+
+  }
+
+
+  if (
+    status === 'QUALIFIED'
+  ) {
+
+    return 1;
+
+  }
+
+
+  if (
+    status === 'NOT QUALIFIED'
+  ) {
+
+    return 2;
+
+  }
+
+
+  if (
+    status === ''
+  ) {
+
+    return 4;
+
+  }
+
+
+  return 3;
+
+}
+
+
+/* ==========================================================
    CLEAN SEARCH
 ========================================================== */
 
-function cleanSearchValue(value) {
+function cleanSearchValue(
+  value
+) {
 
   return String(
     value || ''
@@ -425,8 +565,8 @@ function cleanSearchValue(value) {
     .trim()
 
     /*
-      Hapus karakter yang bisa
-      mengganggu filter PostgREST.
+       Hapus karakter yang berisiko
+       mengganggu filter PostgREST.
     */
 
     .replace(
@@ -435,7 +575,7 @@ function cleanSearchValue(value) {
     )
 
     /*
-      Rapikan spasi ganda.
+       Rapikan spasi ganda.
     */
 
     .replace(
