@@ -297,271 +297,728 @@
     <!-- =====================================================
          PAGE — HOME
     ====================================================== -->
+<section
+  id="page-home"
+  class="app-page active"
+>
 
-    <section
-      id="page-home"
-      class="app-page active"
+  <!-- =====================================================
+       HOME HERO / PLAYER LOBBY
+  ====================================================== -->
+
+  <section class="home-lobby">
+
+    <div class="home-lobby-glow home-glow-blue"></div>
+    <div class="home-lobby-glow home-glow-purple"></div>
+
+    <!-- LEFT -->
+    <div class="home-lobby-main">
+
+      <div class="season-chip">
+        <span class="season-dot"></span>
+        <span id="seasonState">
+          SEASON ACTIVE
+        </span>
+      </div>
+
+      <div class="home-welcome">
+        Welcome back,
+      </div>
+
+      <h1
+        id="heroUserName"
+        class="home-player-name"
+      >
+        LOADING...
+      </h1>
+
+      <p class="home-player-subtitle">
+        Your improvement journey continues.
+        Complete missions, collect progress,
+        and keep climbing.
+      </p>
+
+      <div class="home-user-meta">
+
+        <span id="departmentText">
+          -
+        </span>
+
+        <i>•</i>
+
+        <span id="locationText">
+          -
+        </span>
+
+      </div>
+
+      <!-- QUICK STATS -->
+
+      <div class="home-stat-grid">
+
+        <article class="home-stat-card">
+
+          <span>
+            SS SUBMIT
+          </span>
+
+          <strong id="homeSsSubmit">
+            0
+          </strong>
+
+          <small>
+            Total submission
+          </small>
+
+        </article>
+
+        <article class="home-stat-card">
+
+          <span>
+            SS DONE
+          </span>
+
+          <strong id="homeSsDone">
+            0
+          </strong>
+
+          <small>
+            Improvement completed
+          </small>
+
+        </article>
+
+        <article class="home-stat-card">
+
+          <span>
+            POINT APPROVED
+          </span>
+
+          <strong id="homePointApproved">
+            0
+          </strong>
+
+          <small>
+            Approved score
+          </small>
+
+        </article>
+
+      </div>
+
+      <!-- QUICK ACTION -->
+
+      <div class="home-quick-actions">
+
+        <button
+          type="button"
+          class="home-action-btn"
+          data-home-target="database"
+        >
+          <span>▦</span>
+          Database
+        </button>
+
+        <button
+          type="button"
+          class="home-action-btn"
+          data-home-target="point"
+        >
+          <span>◆</span>
+          Point
+        </button>
+
+        <button
+          type="button"
+          class="home-action-btn primary"
+          data-home-target="leaderboard"
+        >
+          <span>♛</span>
+          Leaderboard
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- RIGHT / RANK -->
+
+    <aside
+      id="rankPanel"
+      class="home-rank-card rank-warrior"
     >
 
+      <div class="home-rank-orbit orbit-a"></div>
+      <div class="home-rank-orbit orbit-b"></div>
 
-      <!-- ===================================================
-           HERO
-      ==================================================== -->
+      <div class="home-rank-label">
+        CURRENT RANK
+      </div>
 
-      <section class="hero">
+      <div class="home-rank-emblem">
 
+        <div class="home-rank-shield">
 
-        <!-- BACKGROUND LIGHT -->
-
-        <div
-          class="hero-light hero-light-blue"
-          aria-hidden="true"
-        ></div>
-
-        <div
-          class="hero-light hero-light-purple"
-          aria-hidden="true"
-        ></div>
-
-
-        <!-- =================================================
-             HERO LEFT
-        ================================================== -->
-
-        <div class="hero-left">
-
-
-          <!-- SEASON STATE -->
-
-          <div class="season-chip">
-
-            <span
-              class="season-dot"
-              aria-hidden="true"
-            ></span>
-
-            <span id="seasonState">
-              SEASON ACTIVE
-            </span>
-
-          </div>
-
-
-          <!-- WELCOME -->
-
-          <div class="welcome-label">
-            Welcome back,
-          </div>
-
-
-          <!-- USER NAME -->
-
-          <h1
-            id="heroUserName"
-            class="hero-user-name"
+          <div
+            id="rankSymbol"
+            class="home-rank-symbol"
           >
-            LOADING...
-          </h1>
-
-
-          <!-- DESCRIPTION -->
-
-          <p class="hero-description">
-
-            Turn every idea into impact.
-            Complete your improvement and climb the rank.
-
-          </p>
-
-
-          <!-- IDENTITY -->
-
-          <div class="identity-info">
-
-            <span id="departmentText">
-              -
-            </span>
-
-            <span
-              class="identity-divider"
-              aria-hidden="true"
-            >
-              •
-            </span>
-
-            <span id="locationText">
-              -
-            </span>
-
+            W
           </div>
 
         </div>
 
+      </div>
 
-        <!-- =================================================
-             HERO RIGHT / RANK
-        ================================================== -->
+      <div
+        id="rankName"
+        class="home-rank-name"
+      >
+        WARRIOR
+      </div>
+
+      <div
+        id="rankTotal"
+        class="home-rank-score"
+      >
+        0 SS
+      </div>
+
+      <div
+        id="seasonStatus"
+        class="season-status failed"
+      >
+        FAILED
+      </div>
+
+      <div
+        id="missedMonths"
+        class="missed-months"
+      ></div>
+
+      <!-- NEXT RANK -->
+
+      <div class="home-next-rank">
+
+        <div class="home-next-rank-head">
+
+          <span>
+            NEXT TARGET
+          </span>
+
+          <strong id="homeNextRankName">
+            ELITE
+          </strong>
+
+        </div>
+
+        <div class="home-next-progress">
+
+          <div
+            id="homeNextProgressBar"
+            class="home-next-progress-fill"
+          ></div>
+
+        </div>
 
         <div
-          id="rankPanel"
-          class="rank-panel rank-warrior"
+          id="homeNextRankText"
+          class="home-next-rank-text"
+        >
+          1 SS to next rank
+        </div>
+
+      </div>
+
+    </aside>
+
+  </section>
+
+
+  <!-- =====================================================
+       MONTHLY MISSION
+  ====================================================== -->
+
+  <section class="home-mission-section">
+
+    <div class="home-section-heading">
+
+      <div>
+
+        <span>
+          SEASON MISSION
+        </span>
+
+        <h2>
+          Monthly Progress
+        </h2>
+
+      </div>
+
+      <p>
+        Minimal 1 SS Approved Implementasi setiap bulan.
+      </p>
+
+    </div>
+
+    <div class="home-month-grid">
+
+      <article
+        id="homeMonth1Card"
+        class="home-month-card"
+      >
+
+        <div
+          id="homeMonth1Name"
+          class="home-month-name"
+        >
+          MONTH 1
+        </div>
+
+        <strong
+          id="homeMonth1Value"
+          class="home-month-value"
+        >
+          0
+        </strong>
+
+        <span class="home-month-unit">
+          SS APPROVED
+        </span>
+
+        <div
+          id="homeMonth1State"
+          class="home-month-state missed"
+        >
+          MISSED
+        </div>
+
+      </article>
+
+      <article
+        id="homeMonth2Card"
+        class="home-month-card"
+      >
+
+        <div
+          id="homeMonth2Name"
+          class="home-month-name"
+        >
+          MONTH 2
+        </div>
+
+        <strong
+          id="homeMonth2Value"
+          class="home-month-value"
+        >
+          0
+        </strong>
+
+        <span class="home-month-unit">
+          SS APPROVED
+        </span>
+
+        <div
+          id="homeMonth2State"
+          class="home-month-state missed"
+        >
+          MISSED
+        </div>
+
+      </article>
+
+      <article
+        id="homeMonth3Card"
+        class="home-month-card"
+      >
+
+        <div
+          id="homeMonth3Name"
+          class="home-month-name"
+        >
+          MONTH 3
+        </div>
+
+        <strong
+          id="homeMonth3Value"
+          class="home-month-value"
+        >
+          0
+        </strong>
+
+        <span class="home-month-unit">
+          SS APPROVED
+        </span>
+
+        <div
+          id="homeMonth3State"
+          class="home-month-state missed"
+        >
+          MISSED
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       HOW TO PLAY
+  ====================================================== -->
+
+  <section class="home-how-section">
+
+    <div class="home-section-heading">
+
+      <div>
+
+        <span>
+          HOW TO PLAY
+        </span>
+
+        <h2>
+          Complete the Season
+        </h2>
+
+      </div>
+
+    </div>
+
+    <div class="home-how-grid">
+
+      <article class="home-how-card">
+
+        <div class="home-how-number">
+          01
+        </div>
+
+        <h3>
+          Submit
+        </h3>
+
+        <p>
+          Masukkan ide Sumbang Saran kamu.
+        </p>
+
+      </article>
+
+      <article class="home-how-card">
+
+        <div class="home-how-number">
+          02
+        </div>
+
+        <h3>
+          Superior Approval
+        </h3>
+
+        <p>
+          Pastikan ide mendapatkan approval Superior.
+        </p>
+
+      </article>
+
+      <article class="home-how-card">
+
+        <div class="home-how-number">
+          03
+        </div>
+
+        <h3>
+          Implement
+        </h3>
+
+        <p>
+          Jalankan improvement sampai tahap implementasi.
+        </p>
+
+      </article>
+
+      <article class="home-how-card highlight">
+
+        <div class="home-how-number">
+          04
+        </div>
+
+        <h3>
+          Approved Implementasi
+        </h3>
+
+        <p>
+          Mission complete. Progress rank akan bertambah.
+        </p>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       RANK JOURNEY
+  ====================================================== -->
+
+  <section
+    id="rankJourneySection"
+    class="home-rank-journey"
+  >
+
+    <div class="home-section-heading centered">
+
+      <div>
+
+        <span>
+          RANK JOURNEY
+        </span>
+
+        <h2>
+          Climb Your Rank
+        </h2>
+
+        <p>
+          Every approved implementation moves you forward.
+        </p>
+
+      </div>
+
+    </div>
+
+    <div
+      id="journeySummary"
+      class="home-journey-summary"
+    >
+      Loading progress...
+    </div>
+
+    <div class="home-journey-scroll">
+
+      <div
+        id="journeyTrack"
+        class="home-journey-track"
+      >
+
+        <article
+          class="journey-card"
+          data-rank="WARRIOR"
+          data-index="0"
         >
 
-
-          <!-- ORBIT -->
-
-          <div
-            class="rank-orbit orbit-one"
-            aria-hidden="true"
-          ></div>
-
-          <div
-            class="rank-orbit orbit-two"
-            aria-hidden="true"
-          ></div>
-
-          <div
-            class="rank-orbit orbit-three"
-            aria-hidden="true"
-          ></div>
-
-
-          <!-- GLOW -->
-
-          <div
-            class="rank-glow"
-            aria-hidden="true"
-          ></div>
-
-
-          <!-- RANK BADGE -->
-
-          <div
-            id="rankBadge"
-            class="rank-badge"
-          >
-
-
-            <!-- WINGS -->
-
-            <div
-              class="rank-wing rank-wing-left"
-              aria-hidden="true"
-            ></div>
-
-            <div
-              class="rank-wing rank-wing-right"
-              aria-hidden="true"
-            ></div>
-
-
-            <!-- CROWN -->
-
-            <div
-              class="rank-crown"
-              aria-hidden="true"
-            >
-
-              <span></span>
-              <span></span>
-              <span></span>
-
-            </div>
-
-
-            <!-- SHIELD -->
-
-            <div class="rank-shield">
-
-              <div class="rank-shield-inner">
-
-                <div
-                  class="rank-crystal"
-                  aria-hidden="true"
-                ></div>
-
-                <div
-                  id="rankSymbol"
-                  class="rank-symbol"
-                >
-                  W
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <!-- PARTICLES -->
-
-            <div
-              class="rank-star rank-star-one"
-              aria-hidden="true"
-            ></div>
-
-            <div
-              class="rank-star rank-star-two"
-              aria-hidden="true"
-            ></div>
-
-            <div
-              class="rank-star rank-star-three"
-              aria-hidden="true"
-            ></div>
-
-
+          <div class="home-rank-mini">
+            W
           </div>
 
+          <h3>
+            Warrior
+          </h3>
 
-          <!-- RANK LABEL -->
-
-          <div class="rank-label">
-            SEASON RANK
-          </div>
-
-
-          <!-- RANK NAME -->
-
-          <div
-            id="rankName"
-            class="rank-name"
-          >
-            WARRIOR
-          </div>
-
-
-          <!-- TOTAL -->
-
-          <div
-            id="rankTotal"
-            class="rank-total"
-          >
+          <strong>
             0 SS
+          </strong>
+
+          <span class="journey-card-state">
+            LOCKED
+          </span>
+
+        </article>
+
+        <article
+          class="journey-card"
+          data-rank="ELITE"
+          data-index="1"
+        >
+
+          <div class="home-rank-mini elite">
+            E
           </div>
 
+          <h3>
+            Elite
+          </h3>
 
-          <!-- STATUS -->
+          <strong>
+            1 SS
+          </strong>
 
-          <div
-            id="seasonStatus"
-            class="season-status failed"
-          >
-            FAILED
+          <span class="journey-card-state">
+            LOCKED
+          </span>
+
+        </article>
+
+        <article
+          class="journey-card"
+          data-rank="EPIC"
+          data-index="2"
+        >
+
+          <div class="home-rank-mini epic">
+            E
           </div>
 
+          <h3>
+            Epic
+          </h3>
 
-          <!-- MISSED MONTHS -->
+          <strong>
+            2 SS
+          </strong>
 
-          <div
-            id="missedMonths"
-            class="missed-months"
-          ></div>
+          <span class="journey-card-state">
+            LOCKED
+          </span>
+
+        </article>
+
+        <article
+          class="journey-card"
+          data-rank="LEGEND"
+          data-index="3"
+        >
+
+          <div class="home-rank-mini legend">
+            L
+          </div>
+
+          <h3>
+            Legend
+          </h3>
+
+          <strong>
+            3 SS
+          </strong>
+
+          <span class="journey-card-state">
+            LOCKED
+          </span>
+
+        </article>
+
+        <article
+          class="journey-card"
+          data-rank="MYTHIC"
+          data-index="4"
+        >
+
+          <div class="home-rank-mini mythic">
+            M
+          </div>
+
+          <h3>
+            Mythic
+          </h3>
+
+          <strong>
+            4–6 SS
+          </strong>
+
+          <span class="journey-card-state">
+            LOCKED
+          </span>
+
+        </article>
+
+        <article
+          class="journey-card"
+          data-rank="MYTHIC HONOR"
+          data-index="5"
+        >
+
+          <div class="home-rank-mini mythic">
+            MH
+          </div>
+
+          <h3>
+            Mythic Honor
+          </h3>
+
+          <strong>
+            7–9 SS
+          </strong>
+
+          <span class="journey-card-state">
+            LOCKED
+          </span>
+
+        </article>
+
+        <article
+          class="journey-card"
+          data-rank="MYTHIC GLORY"
+          data-index="6"
+        >
+
+          <div class="home-rank-mini glory">
+            MG
+          </div>
+
+          <h3>
+            Mythic Glory
+          </h3>
+
+          <strong>
+            10+ SS
+          </strong>
+
+          <span class="journey-card-state">
+            LOCKED
+          </span>
+
+        </article>
+
+      </div>
+
+    </div>
+
+    <div
+      id="journeyNote"
+      class="home-journey-note"
+    >
+      Loading note...
+    </div>
+
+  </section>
 
 
-        </div>
+  <!-- =====================================================
+       MOTIVATION
+  ====================================================== -->
 
-      </section>
+  <section class="home-final-banner">
 
+    <div>
+
+      <span>
+        STILL IN THE GAME
+      </span>
+
+      <h2>
+        Your season can end.
+        Your game doesn’t.
+      </h2>
+
+      <p>
+        Keep submitting, keep improving,
+        and continue competing on the Leaderboard.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="home-final-button"
+      data-home-target="leaderboard"
+    >
+      GO TO LEADERBOARD
+    </button>
+
+  </section>
+
+</section>
+    
 
       <!-- ===================================================
            BACKGROUND / GAME RULE
