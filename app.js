@@ -1398,3 +1398,87 @@ if (logoutButton) {
 tryAutoPlayMusic();
 
 loadDashboard();
+
+/* ==========================================================
+   SEASON STORY INTERACTION
+========================================================== */
+
+const seasonStory =
+  document.querySelector(
+    '.season-story'
+  );
+
+
+const storyContent =
+  document.querySelector(
+    '.story-content'
+  );
+
+
+if (
+  seasonStory &&
+  storyContent &&
+  window.matchMedia(
+    '(hover:hover) and (pointer:fine)'
+  ).matches
+) {
+
+  seasonStory.addEventListener(
+    'mousemove',
+    function(event) {
+
+      const rect =
+        seasonStory
+          .getBoundingClientRect();
+
+
+      const mouseX =
+        (
+          event.clientX -
+          rect.left
+        ) /
+        rect.width;
+
+
+      const mouseY =
+        (
+          event.clientY -
+          rect.top
+        ) /
+        rect.height;
+
+
+      const moveX =
+        (
+          mouseX - .5
+        ) * 8;
+
+
+      const moveY =
+        (
+          mouseY - .5
+        ) * 5;
+
+
+      storyContent.style.transform =
+        'translate3d(' +
+        moveX +
+        'px,' +
+        moveY +
+        'px,0)';
+
+    }
+  );
+
+
+  seasonStory.addEventListener(
+    'mouseleave',
+    function() {
+
+      storyContent.style.transform =
+        'translate3d(0,0,0)';
+
+    }
+  );
+
+}
