@@ -1683,3 +1683,778 @@ if (
 ========================================================== */
 
 loadDashboard();
+
+/* ==========================================================
+   APP PAGE NAVIGATION
+========================================================== */
+
+const navItems =
+  document.querySelectorAll(
+    '.nav-item'
+  );
+
+
+const appPages =
+  document.querySelectorAll(
+    '.app-page'
+  );
+
+
+navItems.forEach(
+
+  function(item) {
+
+    item.addEventListener(
+
+      'click',
+
+      function() {
+
+        const page =
+          item.dataset.page;
+
+
+        navItems.forEach(
+          function(nav) {
+            nav.classList.remove(
+              'active'
+            );
+          }
+        );
+
+
+        appPages.forEach(
+          function(section) {
+            section.classList.remove(
+              'active'
+            );
+          }
+        );
+
+
+        item.classList.add(
+          'active'
+        );
+
+
+        const target =
+          document.getElementById(
+            'page-' +
+            page
+          );
+
+
+        if (
+          target
+        ) {
+
+          target.classList.add(
+            'active'
+          );
+
+        }
+
+
+        /*
+         Database baru diload
+         ketika menu Database dibuka.
+         Ini bikin initial dashboard ringan.
+        */
+
+        if (
+          page === 'database'
+        ) {
+
+          initDatabasePage();
+
+        }
+
+
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+
+      }
+
+    );
+
+  }
+
+);
+
+
+/* ==========================================================
+   DATABASE
+========================================================== */
+
+let databaseLoaded =
+  false;
+
+
+let databasePage =
+  1;
+
+
+let databaseTotalPages =
+  1;
+
+
+let databaseSearchTimer =
+  null;
+
+
+const databaseSearch =
+  document.getElementById(
+    'databaseSearch'
+  );
+
+
+const databaseLimit =
+  document.getElementById(
+    'databaseLimit'
+  );
+
+
+const databaseTableBody =
+  document.getElementById(
+    'databaseTableBody'
+  );
+
+
+const databaseMobile =
+  document.getElementById(
+    'databaseMobile'
+  );
+
+
+const databaseStatus =
+  document.getElementById(
+    'databaseStatus'
+  );
+
+
+const databasePageInfo =
+  document.getElementById(
+    'databasePageInfo'
+  );
+
+
+const databasePrev =
+  document.getElementById(
+    'databasePrev'
+  );
+
+
+const databaseNext =
+  document.getElementById(
+    'databaseNext'
+  );
+
+
+function initDatabasePage() {
+
+  if (
+    databaseLoaded
+  ) {
+
+    return;
+
+  }
+
+
+  databaseLoaded =
+    true;
+
+
+  loadDatabase();
+
+}
+
+
+/* ==========================================================
+   LOAD DATABASE
+========================================================== */
+
+async function loadDatabase() {
+
+  try {
+
+    if (
+      databaseStatus
+    ) {
+
+      databaseStatus.textContent =
+        'Loading database...';
+
+    }
+
+
+    const search =
+      databaseSearch
+        ? databaseSearch.value.trim()
+        : '';
+
+
+    const limit =
+      databaseLimit
+        ? databaseLimit.value
+        : '50';
+
+
+    const params =
+      new URLSearchParams();
+
+
+    params.set(
+      'page',
+      databasePage
+    );
+
+
+    params.set(
+      'limit',
+      limit
+    );
+
+
+    if (
+      search
+    ) {
+
+      params.set(
+        'search',
+        search
+      );
+
+    }
+
+
+    const response =
+      await fetch(
+
+        '/api/ss-database?' +
+        params.toString(),
+
+        {
+          cache:
+            'no-store'
+        }
+
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+
+      throw new Error(
+        result.message ||
+        'Database gagal dimuat.'
+      );
+
+    }
+
+
+    renderDatabaseRows(
+      result.data || []
+    );
+
+
+    const pagination =
+      result.pagination || {};
+
+
+    databaseTotalPages =
+      pagination.totalPages ||
+      1;
+
+
+    if (
+      databaseStatus
+    ) {
+
+      databaseStatus.textContent =
+
+        'Menampilkan ' +
+
+        (
+          pagination.from || 0
+        ) +
+
+        '–' +
+
+        (
+          pagination.to || 0
+        ) +
+
+        ' dari ' +
+
+        (
+          pagination.total || 0
+        ) +
+
+        ' data';
+
+    }
+
+
+    if (
+      databasePageInfo
+    ) {
+
+      databasePageInfo.textContent =
+
+        'Page ' +
+
+        databasePage +
+
+        ' / ' +
+
+        databaseTotalPages;
+
+    }
+
+
+    if (
+      databasePrev
+    ) {
+
+      databasePrev.disabled =
+        databasePage <= 1;
+
+    }
+
+
+    if (
+      databaseNext
+    ) {
+
+      databaseNext.disabled =
+
+        databasePage >=
+        databaseTotalPages;
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(
+      'DATABASE ERROR',
+      error
+    );
+
+
+    if (
+      databaseStatus
+    ) {
+
+      databaseStatus.textContent =
+        'Database gagal dimuat.';
+
+    }
+
+  }
+
+}
+
+
+/* ==========================================================
+   RENDER DATABASE
+========================================================== */
+
+function renderDatabaseRows(
+  rows
+) {
+
+  if (
+    databaseTableBody
+  ) {
+
+    databaseTableBody.innerHTML =
+      '';
+
+  }
+
+
+  if (
+    databaseMobile
+  ) {
+
+    databaseMobile.innerHTML =
+      '';
+
+  }
+
+
+  if (
+    !rows.length
+  ) {
+
+    if (
+      databaseStatus
+    ) {
+
+      databaseStatus.textContent =
+        'Data tidak ditemukan.';
+
+    }
+
+
+    return;
+
+  }
+
+
+  rows.forEach(
+
+    function(row) {
+
+      /* DESKTOP */
+
+      if (
+        databaseTableBody
+      ) {
+
+        const tr =
+          document.createElement(
+            'tr'
+          );
+
+
+        tr.innerHTML =
+
+          '<td>' +
+          safeText(row.ss_id) +
+          '</td>' +
+
+          '<td>' +
+          safeText(row.employee_name) +
+          '</td>' +
+
+          '<td>' +
+          safeText(row.department) +
+          '</td>' +
+
+          '<td>' +
+          safeText(row.ss_type) +
+          '</td>' +
+
+          '<td>' +
+          safeText(row.superior_name) +
+          '</td>' +
+
+          '<td>' +
+          safeText(row.status_superior) +
+          '</td>' +
+
+          '<td>' +
+          safeText(row.status_implementasi) +
+          '</td>' +
+
+          '<td>' +
+          safeText(row.work_location) +
+          '</td>' +
+
+          '<td>' +
+          safeText(
+            row.validation_month ||
+            row.month_no
+          ) +
+          '</td>' +
+
+          '<td>' +
+          safeText(row.qualification) +
+          '</td>' +
+
+          '<td>' +
+          safeText(row.point) +
+          '</td>' +
+
+          '<td>' +
+          safeText(row.point_approval) +
+          '</td>';
+
+
+        databaseTableBody
+          .appendChild(
+            tr
+          );
+
+      }
+
+
+      /* MOBILE */
+
+      if (
+        databaseMobile
+      ) {
+
+        const card =
+          document.createElement(
+            'article'
+          );
+
+
+        card.className =
+          'database-mobile-card';
+
+
+        card.innerHTML =
+
+          '<div class="database-mobile-card-head">' +
+
+            '<div>' +
+
+              '<div class="database-mobile-id">' +
+                'SS #' +
+                safeText(row.ss_id) +
+              '</div>' +
+
+              '<div class="database-mobile-name">' +
+                safeText(row.employee_name) +
+              '</div>' +
+
+              '<div class="database-mobile-dept">' +
+                safeText(row.department) +
+              '</div>' +
+
+            '</div>' +
+
+          '</div>' +
+
+
+          '<div class="database-mobile-info">' +
+
+            mobileInfo(
+              'Superior',
+              row.superior_name
+            ) +
+
+            mobileInfo(
+              'Status',
+              row.status_superior
+            ) +
+
+            mobileInfo(
+              'Implementasi',
+              row.status_implementasi
+            ) +
+
+            mobileInfo(
+              'Month',
+              row.validation_month ||
+              row.month_no
+            ) +
+
+            mobileInfo(
+              'Point',
+              row.point
+            ) +
+
+            mobileInfo(
+              'Approval',
+              row.point_approval
+            ) +
+
+          '</div>';
+
+
+        databaseMobile
+          .appendChild(
+            card
+          );
+
+      }
+
+    }
+
+  );
+
+}
+
+
+/* ==========================================================
+   DATABASE HELPERS
+========================================================== */
+
+function safeText(
+  value
+) {
+
+  return escapeHtml(
+
+    value === null ||
+    value === undefined ||
+    value === ''
+
+      ? '-'
+
+      : String(value)
+
+  );
+
+}
+
+
+function mobileInfo(
+  label,
+  value
+) {
+
+  return (
+
+    '<div>' +
+
+      '<small>' +
+      escapeHtml(label) +
+      '</small>' +
+
+      '<strong>' +
+      safeText(value) +
+      '</strong>' +
+
+    '</div>'
+
+  );
+
+}
+
+
+/* ==========================================================
+   SEARCH
+   Debounce supaya ringan
+========================================================== */
+
+if (
+  databaseSearch
+) {
+
+  databaseSearch.addEventListener(
+
+    'input',
+
+    function() {
+
+      clearTimeout(
+        databaseSearchTimer
+      );
+
+
+      databaseSearchTimer =
+        setTimeout(
+
+          function() {
+
+            databasePage =
+              1;
+
+
+            loadDatabase();
+
+          },
+
+          400
+
+        );
+
+    }
+
+  );
+
+}
+
+
+/* ==========================================================
+   LIMIT
+========================================================== */
+
+if (
+  databaseLimit
+) {
+
+  databaseLimit.addEventListener(
+
+    'change',
+
+    function() {
+
+      databasePage =
+        1;
+
+
+      loadDatabase();
+
+    }
+
+  );
+
+}
+
+
+/* ==========================================================
+   PAGINATION
+========================================================== */
+
+if (
+  databasePrev
+) {
+
+  databasePrev.addEventListener(
+
+    'click',
+
+    function() {
+
+      if (
+        databasePage > 1
+      ) {
+
+        databasePage--;
+
+
+        loadDatabase();
+
+      }
+
+    }
+
+  );
+
+}
+
+
+if (
+  databaseNext
+) {
+
+  databaseNext.addEventListener(
+
+    'click',
+
+    function() {
+
+      if (
+        databasePage <
+        databaseTotalPages
+      ) {
+
+        databasePage++;
+
+
+        loadDatabase();
+
+      }
+
+    }
+
+  );
+
+}
