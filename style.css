@@ -6664,3 +6664,126 @@ body::after {
   }
 
 }
+/* ==========================================================
+   FINAL SCROLLBAR FIX
+   HILANGKAN SCROLLBAR PUTIH
+========================================================== */
+
+
+/* PAGE SCROLLBAR */
+
+html {
+
+  scrollbar-width:
+    none;
+
+}
+
+
+body {
+
+  scrollbar-width:
+    none;
+
+}
+
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+
+  width:
+    0;
+
+  height:
+    0;
+
+  display:
+    none;
+
+}
+
+
+/* DATABASE HORIZONTAL SCROLL */
+
+.database-table-wrapper {
+
+  scrollbar-width:
+    none;
+
+  -ms-overflow-style:
+    none;
+
+}
+
+
+.database-table-wrapper::-webkit-scrollbar {
+
+  width:
+    0;
+
+  height:
+    0;
+
+  display:
+    none;
+
+}
+
+
+/* JOURNEY SCROLL */
+
+.journey-track-wrapper,
+.journey-track {
+
+  scrollbar-width:
+    none;
+
+  -ms-overflow-style:
+    none;
+
+}
+
+
+.journey-track-wrapper::-webkit-scrollbar,
+.journey-track::-webkit-scrollbar {
+
+  display:
+    none;
+
+}
+
+/* ==========================================================
+   DATABASE STATUS COLORS
+========================================================== */
+
+.database-table td.db-status-success {
+
+  color:
+    #72F0B6;
+
+  font-weight:
+    800;
+
+}
+
+
+.database-table td.db-status-danger {
+
+  color:
+    #FF7D9E;
+
+  font-weight:
+    800;
+
+}
+
+
+.database-table td.db-status-process {
+
+  color:
+    #FFD76A;
+
+  font-weight:
+    800;
+
+}
