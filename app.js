@@ -192,6 +192,89 @@ const journeySection =
   );
 
 /* ==========================================================
+   DOM — HOME LOBBY
+========================================================== */
+
+const homeSsSubmit =
+  document.getElementById(
+    'homeSsSubmit'
+  );
+
+const homeSsDone =
+  document.getElementById(
+    'homeSsDone'
+  );
+
+const homePointApproved =
+  document.getElementById(
+    'homePointApproved'
+  );
+
+const homeMonth1Name =
+  document.getElementById(
+    'homeMonth1Name'
+  );
+
+const homeMonth1Value =
+  document.getElementById(
+    'homeMonth1Value'
+  );
+
+const homeMonth1State =
+  document.getElementById(
+    'homeMonth1State'
+  );
+
+const homeMonth2Name =
+  document.getElementById(
+    'homeMonth2Name'
+  );
+
+const homeMonth2Value =
+  document.getElementById(
+    'homeMonth2Value'
+  );
+
+const homeMonth2State =
+  document.getElementById(
+    'homeMonth2State'
+  );
+
+const homeMonth3Name =
+  document.getElementById(
+    'homeMonth3Name'
+  );
+
+const homeMonth3Value =
+  document.getElementById(
+    'homeMonth3Value'
+  );
+
+const homeMonth3State =
+  document.getElementById(
+    'homeMonth3State'
+  );
+
+const homeNextRankName =
+  document.getElementById(
+    'homeNextRankName'
+  );
+
+const homeNextRankText =
+  document.getElementById(
+    'homeNextRankText'
+  );
+
+const homeNextProgressBar =
+  document.getElementById(
+    'homeNextProgressBar'
+  );
+
+const homeActionButtons =
+  document.querySelectorAll(
+    '[data-home-target]'
+  );
+/* ==========================================================
    DOM — NAVIGATION
 ========================================================== */
 const navItems =
@@ -910,6 +993,10 @@ function renderDashboard(
   renderJourney(
     progress
   );
+
+   renderHomeLobby(
+  progress
+);
 
 }
 
@@ -1642,6 +1729,417 @@ function renderJourney(
     );
 
   }
+
+}
+
+/* ==========================================================
+   HOME LOBBY
+========================================================== */
+
+function renderHomeLobby(
+  progress
+) {
+
+  const ssSubmit =
+    safeNumber(
+      firstValue(
+        progress.ssSubmit,
+        progress.ss_submit,
+        0
+      )
+    );
+
+  const ssDone =
+    safeNumber(
+      firstValue(
+        progress.ssDone,
+        progress.ss_done,
+        0
+      )
+    );
+
+  const pointApproved =
+    safeNumber(
+      firstValue(
+        progress.pointApproved,
+        progress.point_approved,
+        0
+      )
+    );
+
+  if (
+    homeSsSubmit
+  ) {
+
+    homeSsSubmit.textContent =
+      ssSubmit;
+
+  }
+
+  if (
+    homeSsDone
+  ) {
+
+    homeSsDone.textContent =
+      ssDone;
+
+  }
+
+  if (
+    homePointApproved
+  ) {
+
+    homePointApproved.textContent =
+      pointApproved.toLocaleString(
+        'id-ID'
+      );
+
+  }
+
+
+  const months = [
+
+    {
+      name:
+        progress.month_1_name ||
+        'MONTH 1',
+
+      value:
+        safeNumber(
+          progress.month_1_value
+        ),
+
+      nameEl:
+        homeMonth1Name,
+
+      valueEl:
+        homeMonth1Value,
+
+      stateEl:
+        homeMonth1State
+    },
+
+    {
+      name:
+        progress.month_2_name ||
+        'MONTH 2',
+
+      value:
+        safeNumber(
+          progress.month_2_value
+        ),
+
+      nameEl:
+        homeMonth2Name,
+
+      valueEl:
+        homeMonth2Value,
+
+      stateEl:
+        homeMonth2State
+    },
+
+    {
+      name:
+        progress.month_3_name ||
+        'MONTH 3',
+
+      value:
+        safeNumber(
+          progress.month_3_value
+        ),
+
+      nameEl:
+        homeMonth3Name,
+
+      valueEl:
+        homeMonth3Value,
+
+      stateEl:
+        homeMonth3State
+    }
+
+  ];
+
+
+  months.forEach(
+    function(month) {
+
+      if (
+        month.nameEl
+      ) {
+
+        month.nameEl.textContent =
+          month.name;
+
+      }
+
+      if (
+        month.valueEl
+      ) {
+
+        month.valueEl.textContent =
+          month.value;
+
+      }
+
+      if (
+        month.stateEl
+      ) {
+
+        month.stateEl.classList.remove(
+          'complete',
+          'missed'
+        );
+
+        if (
+          month.value >= 1
+        ) {
+
+          month.stateEl.textContent =
+            'COMPLETE';
+
+          month.stateEl.classList.add(
+            'complete'
+          );
+
+        }
+
+        else {
+
+          month.stateEl.textContent =
+            'MISSED';
+
+          month.stateEl.classList.add(
+            'missed'
+          );
+
+        }
+
+      }
+
+    }
+  );
+
+
+  const totalApproved =
+    getTotalApproved(
+      progress
+    );
+
+
+  const nextRank =
+    getNextRankInfo(
+      totalApproved
+    );
+
+
+  if (
+    homeNextRankName
+  ) {
+
+    homeNextRankName.textContent =
+      nextRank.name;
+
+  }
+
+
+  if (
+    homeNextRankText
+  ) {
+
+    homeNextRankText.textContent =
+      nextRank.text;
+
+  }
+
+
+  if (
+    homeNextProgressBar
+  ) {
+
+    homeNextProgressBar.style.width =
+      nextRank.progress +
+      '%';
+
+  }
+
+}
+
+
+/* ==========================================================
+   NEXT RANK
+========================================================== */
+
+function getNextRankInfo(
+  totalApproved
+) {
+
+  const total =
+    safeNumber(
+      totalApproved
+    );
+
+
+  if (
+    total >= 10
+  ) {
+
+    return {
+
+      name:
+        'MAX RANK',
+
+      text:
+        'Mythic Glory reached',
+
+      progress:
+        100
+
+    };
+
+  }
+
+
+  const targets = [
+
+    {
+      name:
+        'ELITE',
+
+      target:
+        1
+    },
+
+    {
+      name:
+        'EPIC',
+
+      target:
+        2
+    },
+
+    {
+      name:
+        'LEGEND',
+
+      target:
+        3
+    },
+
+    {
+      name:
+        'MYTHIC',
+
+      target:
+        4
+    },
+
+    {
+      name:
+        'MYTHIC HONOR',
+
+      target:
+        7
+    },
+
+    {
+      name:
+        'MYTHIC GLORY',
+
+      target:
+        10
+    }
+
+  ];
+
+
+  const next =
+    targets.find(
+      item =>
+        total <
+        item.target
+    );
+
+
+  const remaining =
+    Math.max(
+      0,
+      next.target -
+      total
+    );
+
+
+  let previousTarget =
+    0;
+
+
+  const index =
+    targets.indexOf(
+      next
+    );
+
+
+  if (
+    index >
+    0
+  ) {
+
+    previousTarget =
+      targets[
+        index - 1
+      ].target;
+
+  }
+
+
+  const range =
+    next.target -
+    previousTarget;
+
+
+  const progressInRange =
+    total -
+    previousTarget;
+
+
+  const progress =
+    range > 0
+
+      ? Math.max(
+          0,
+          Math.min(
+            100,
+            Math.round(
+              (
+                progressInRange /
+                range
+              ) *
+              100
+            )
+          )
+        )
+
+      : 0;
+
+
+  return {
+
+    name:
+      next.name,
+
+    text:
+
+      remaining +
+
+      ' SS to ' +
+
+      next.name,
+
+    progress:
+      progress
+
+  };
 
 }
 
@@ -5132,6 +5630,41 @@ if (
   );
 
 }
+
+/* ==========================================================
+   HOME QUICK ACTION
+========================================================== */
+
+homeActionButtons.forEach(
+  function(button) {
+
+    button.addEventListener(
+      'click',
+      function() {
+
+        const target =
+          button.dataset.homeTarget;
+
+
+        const nav =
+          document.querySelector(
+            `.nav-item[data-page="${target}"]`
+          );
+
+
+        if (
+          nav
+        ) {
+
+          nav.click();
+
+        }
+
+      }
+    );
+
+  }
+);
 
 /* ==========================================================
    START
