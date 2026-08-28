@@ -3,44 +3,40 @@
    APP.JS — FINAL COMPLETE
 ========================================================== */
 
-
 /* ==========================================================
    CONFIG
 ========================================================== */
-
 const DEFAULT_LOGIN_URL =
   'https://script.google.com/macros/s/AKfycbw8wpMyhTvg0_O9Nj2TSyp6gZvDlWllv-hRnJHMknIcfwFrTx9p7R241gZZHRiMutRN/exec';
-
 
 const DASHBOARD_API =
   '/api/dashboard';
 
-
 const DATABASE_API =
   '/api/ss-database';
-
 
 const DATABASE_EXPORT_API =
   '/api/ss-export';
 
-
 const POINT_API =
   '/api/points';
-
 
 const POINT_EXPORT_API =
   '/api/point-export';
 
+const LEADERBOARD_API =
+  '/api/leaderboard';
+
+const LEADERBOARD_EXPORT_API =
+  '/api/leaderboard-export';
 
 /* ==========================================================
    SESSION
 ========================================================== */
-
 const urlParams =
   new URLSearchParams(
     window.location.search
   );
-
 
 let sessionToken =
   urlParams.get('session') ||
@@ -48,22 +44,18 @@ let sessionToken =
     'ss_rank_session'
   );
 
-
 let loginUrl =
   DEFAULT_LOGIN_URL;
-
 
 /* ==========================================================
    SAVE SESSION
 ========================================================== */
-
 if (
   urlParams.has('session')
 ) {
 
   const incomingToken =
     urlParams.get('session');
-
 
   if (
     incomingToken
@@ -72,14 +64,12 @@ if (
     sessionToken =
       incomingToken;
 
-
     localStorage.setItem(
       'ss_rank_session',
       incomingToken
     );
 
   }
-
 
   window.history.replaceState(
     {},
@@ -89,361 +79,381 @@ if (
 
 }
 
-
 /* ==========================================================
    DOM — USER
 ========================================================== */
-
 const headerUserName =
   document.getElementById(
     'headerUserName'
   );
-
 
 const headerUserRole =
   document.getElementById(
     'headerUserRole'
   );
 
-
 const heroUserName =
   document.getElementById(
     'heroUserName'
   );
-
 
 const avatar =
   document.getElementById(
     'avatar'
   );
 
-
 const departmentText =
   document.getElementById(
     'departmentText'
   );
-
 
 const locationText =
   document.getElementById(
     'locationText'
   );
 
-
 /* ==========================================================
    DOM — HERO / RANK
 ========================================================== */
-
 const seasonState =
   document.getElementById(
     'seasonState'
   );
-
 
 const rankPanel =
   document.getElementById(
     'rankPanel'
   );
 
-
 const rankName =
   document.getElementById(
     'rankName'
   );
-
 
 const rankTotal =
   document.getElementById(
     'rankTotal'
   );
 
-
 const seasonStatus =
   document.getElementById(
     'seasonStatus'
   );
-
 
 const missedMonths =
   document.getElementById(
     'missedMonths'
   );
 
-
 const rankSymbol =
   document.getElementById(
     'rankSymbol'
   );
 
-
 /* ==========================================================
    DOM — BUTTON
 ========================================================== */
-
 const logoutButton =
   document.getElementById(
     'logoutButton'
   );
-
 
 const musicButton =
   document.getElementById(
     'musicButton'
   );
 
-
 const bgMusic =
   document.getElementById(
     'bgMusic'
   );
 
-
 /* ==========================================================
    DOM — JOURNEY
 ========================================================== */
-
 const journeySummary =
   document.getElementById(
     'journeySummary'
   );
-
 
 const journeyTrack =
   document.getElementById(
     'journeyTrack'
   );
 
-
 const journeyNote =
   document.getElementById(
     'journeyNote'
   );
-
 
 const journeySection =
   document.getElementById(
     'rankJourneySection'
   );
 
-
 /* ==========================================================
    DOM — NAVIGATION
 ========================================================== */
-
 const navItems =
   document.querySelectorAll(
     '.nav-item'
   );
-
 
 const appPages =
   document.querySelectorAll(
     '.app-page'
   );
 
-
 /* ==========================================================
    DOM — DATABASE
 ========================================================== */
-
 const databaseSearch =
   document.getElementById(
     'databaseSearch'
   );
-
 
 const databaseLimit =
   document.getElementById(
     'databaseLimit'
   );
 
-
 const databaseExport =
   document.getElementById(
     'databaseExport'
   );
-
 
 const databaseTableBody =
   document.getElementById(
     'databaseTableBody'
   );
 
-
 const databaseMobile =
   document.getElementById(
     'databaseMobile'
   );
-
 
 const databaseStatus =
   document.getElementById(
     'databaseStatus'
   );
 
-
 const databasePageInfo =
   document.getElementById(
     'databasePageInfo'
   );
-
 
 const databasePrev =
   document.getElementById(
     'databasePrev'
   );
 
-
 const databaseNext =
   document.getElementById(
     'databaseNext'
   );
 
-
 /* ==========================================================
    DOM — POINT
 ========================================================== */
-
 const pointSearch =
   document.getElementById(
     'pointSearch'
   );
-
 
 const pointLimit =
   document.getElementById(
     'pointLimit'
   );
 
-
 const pointExport =
   document.getElementById(
     'pointExport'
   );
-
 
 const pointTableBody =
   document.getElementById(
     'pointTableBody'
   );
 
-
 const pointMobile =
   document.getElementById(
     'pointMobile'
   );
-
 
 const pointPodium =
   document.getElementById(
     'pointPodium'
   );
 
-
 const pointStatus =
   document.getElementById(
     'pointStatus'
   );
-
 
 const pointPrev =
   document.getElementById(
     'pointPrev'
   );
 
-
 const pointNext =
   document.getElementById(
     'pointNext'
   );
-
 
 const pointPageInfo =
   document.getElementById(
     'pointPageInfo'
   );
 
-
 const pointTotal =
   document.getElementById(
     'pointTotal'
   );
-
 
 const pointWinner =
   document.getElementById(
     'pointWinner'
   );
 
-
 const pointLose =
   document.getElementById(
     'pointLose'
   );
-
 
 const pointMonth1Header =
   document.getElementById(
     'pointMonth1Header'
   );
 
-
 const pointMonth2Header =
   document.getElementById(
     'pointMonth2Header'
   );
-
 
 const pointMonth3Header =
   document.getElementById(
     'pointMonth3Header'
   );
 
+/* ==========================================================
+   DOM — LEADERBOARD
+========================================================== */
+const leaderboardTotalPlayers =
+  document.getElementById(
+    'leaderboardTotalPlayers'
+  );
+
+const leaderboardMaxPlayers =
+  document.getElementById(
+    'leaderboardMaxPlayers'
+  );
+
+const leaderboardPlayer =
+  document.getElementById(
+    'leaderboardPlayer'
+  );
+
+const leaderboardTop10 =
+  document.getElementById(
+    'leaderboardTop10'
+  );
+
+const leaderboardSearch =
+  document.getElementById(
+    'leaderboardSearch'
+  );
+
+const leaderboardLimit =
+  document.getElementById(
+    'leaderboardLimit'
+  );
+
+const leaderboardExport =
+  document.getElementById(
+    'leaderboardExport'
+  );
+
+const leaderboardStatus =
+  document.getElementById(
+    'leaderboardStatus'
+  );
+
+const leaderboardTableBody =
+  document.getElementById(
+    'leaderboardTableBody'
+  );
+
+const leaderboardMobile =
+  document.getElementById(
+    'leaderboardMobile'
+  );
+
+const leaderboardPrev =
+  document.getElementById(
+    'leaderboardPrev'
+  );
+
+const leaderboardNext =
+  document.getElementById(
+    'leaderboardNext'
+  );
+
+const leaderboardPageInfo =
+  document.getElementById(
+    'leaderboardPageInfo'
+  );
 
 /* ==========================================================
    STATE — DATABASE
 ========================================================== */
-
 let databaseLoaded =
   false;
-
 
 let databasePage =
   1;
 
-
 let databaseTotalPages =
   1;
-
 
 let databaseSearchTimer =
   null;
 
-
 /* ==========================================================
    STATE — POINT
 ========================================================== */
-
 let pointLoaded =
   false;
-
 
 let pointPage =
   1;
 
-
 let pointTotalPages =
   1;
-
 
 let pointSearchTimer =
   null;
 
+/* ==========================================================
+   STATE — LEADERBOARD
+========================================================== */
+let leaderboardLoaded =
+  false;
+
+let leaderboardPage =
+  1;
+
+let leaderboardTotalPages =
+  1;
+
+let leaderboardSearchTimer =
+  null;
+
+let currentUserName =
+  '';
 
 /* ==========================================================
    HELPER
 ========================================================== */
-
 function firstValue(
   ...values
 ) {
@@ -464,16 +474,13 @@ function firstValue(
 
   }
 
-
   return '';
 
 }
 
-
 /* ==========================================================
    ESCAPE HTML
 ========================================================== */
-
 function escapeHtml(
   value
 ) {
@@ -481,27 +488,22 @@ function escapeHtml(
   return String(
     value ?? ''
   )
-
     .replace(
       /&/g,
       '&amp;'
     )
-
     .replace(
       /</g,
       '&lt;'
     )
-
     .replace(
       />/g,
       '&gt;'
     )
-
     .replace(
       /"/g,
       '&quot;'
     )
-
     .replace(
       /'/g,
       '&#039;'
@@ -509,11 +511,9 @@ function escapeHtml(
 
 }
 
-
 /* ==========================================================
    SAFE TEXT
 ========================================================== */
-
 function safeText(
   value
 ) {
@@ -528,18 +528,15 @@ function safeText(
 
   }
 
-
   return escapeHtml(
     value
   );
 
 }
 
-
 /* ==========================================================
    NUMBER
 ========================================================== */
-
 function safeNumber(
   value
 ) {
@@ -549,18 +546,15 @@ function safeNumber(
       value
     );
 
-
   return Number.isFinite(number)
     ? number
     : 0;
 
 }
 
-
 /* ==========================================================
    INITIALS
 ========================================================== */
-
 function getInitials(
   name
 ) {
@@ -573,7 +567,6 @@ function getInitials(
       .split(/\s+/)
       .filter(Boolean);
 
-
   if (
     !words.length
   ) {
@@ -582,40 +575,30 @@ function getInitials(
 
   }
 
-
   return words
-
     .slice(0, 2)
-
     .map(
       word =>
         word.charAt(0)
     )
-
     .join('')
-
     .toUpperCase();
 
 }
 
-
 /* ==========================================================
    LOGIN REDIRECT
 ========================================================== */
-
 function goToLogin() {
 
   localStorage.removeItem(
     'ss_rank_session'
   );
 
-
   sessionStorage.clear();
-
 
   sessionToken =
     null;
-
 
   window.location.replace(
     loginUrl ||
@@ -624,11 +607,9 @@ function goToLogin() {
 
 }
 
-
 /* ==========================================================
    DASHBOARD
 ========================================================== */
-
 async function loadDashboard() {
 
   if (
@@ -640,7 +621,6 @@ async function loadDashboard() {
     return;
 
   }
-
 
   try {
 
@@ -654,15 +634,15 @@ async function loadDashboard() {
         ),
 
         {
-          method: 'GET',
-          cache: 'no-store'
+          method:
+            'GET',
+          cache:
+            'no-store'
         }
 
       );
 
-
     let result = {};
-
 
     try {
 
@@ -679,7 +659,6 @@ async function loadDashboard() {
 
     }
 
-
     if (
       result.loginUrl
     ) {
@@ -688,7 +667,6 @@ async function loadDashboard() {
         result.loginUrl;
 
     }
-
 
     if (
       response.status === 401 ||
@@ -700,7 +678,6 @@ async function loadDashboard() {
       return;
 
     }
-
 
     if (
       !response.ok ||
@@ -714,11 +691,9 @@ async function loadDashboard() {
 
     }
 
-
     renderDashboard(
       result
     );
-
 
     tryStartMusic();
 
@@ -731,18 +706,15 @@ async function loadDashboard() {
       error
     );
 
-
     goToLogin();
 
   }
 
 }
 
-
 /* ==========================================================
    RENDER DASHBOARD
 ========================================================== */
-
 function renderDashboard(
   data
 ) {
@@ -750,18 +722,14 @@ function renderDashboard(
   const user =
     data.user || {};
 
-
   const session =
     data.session || {};
-
 
   const season =
     data.season || {};
 
-
   const progress =
     data.progress || {};
-
 
   const name =
     String(
@@ -792,6 +760,8 @@ function renderDashboard(
       .trim()
       .toUpperCase();
 
+  currentUserName =
+    name;
 
   const role =
     String(
@@ -811,7 +781,6 @@ function renderDashboard(
     )
       .trim()
       .toUpperCase();
-
 
   const department =
     String(
@@ -833,7 +802,6 @@ function renderDashboard(
       )
 
     ).trim();
-
 
   const location =
     String(
@@ -858,7 +826,6 @@ function renderDashboard(
 
     ).trim();
 
-
   if (
     headerUserName
   ) {
@@ -867,7 +834,6 @@ function renderDashboard(
       name;
 
   }
-
 
   if (
     headerUserRole
@@ -878,7 +844,6 @@ function renderDashboard(
 
   }
 
-
   if (
     heroUserName
   ) {
@@ -887,7 +852,6 @@ function renderDashboard(
       name;
 
   }
-
 
   if (
     avatar
@@ -900,7 +864,6 @@ function renderDashboard(
 
   }
 
-
   if (
     departmentText
   ) {
@@ -910,7 +873,6 @@ function renderDashboard(
 
   }
 
-
   if (
     locationText
   ) {
@@ -919,7 +881,6 @@ function renderDashboard(
       location;
 
   }
-
 
   if (
     seasonState
@@ -932,7 +893,6 @@ function renderDashboard(
         true
       );
 
-
     seasonState.textContent =
 
       active === false
@@ -943,11 +903,9 @@ function renderDashboard(
 
   }
 
-
   renderRank(
     progress
   );
-
 
   renderJourney(
     progress
@@ -955,11 +913,9 @@ function renderDashboard(
 
 }
 
-
 /* ==========================================================
    TOTAL APPROVED
 ========================================================== */
-
 function getTotalApproved(
   progress
 ) {
@@ -982,11 +938,9 @@ function getTotalApproved(
 
 }
 
-
 /* ==========================================================
    STATUS
 ========================================================== */
-
 function getProgressStatus(
   progress
 ) {
@@ -1009,11 +963,9 @@ function getProgressStatus(
 
 }
 
-
 /* ==========================================================
    MISSED MONTH
 ========================================================== */
-
 function getMissedMonths(
   progress
 ) {
@@ -1028,7 +980,6 @@ function getMissedMonths(
 
   }
 
-
   if (
     Array.isArray(
       progress.missed_months
@@ -1039,38 +990,44 @@ function getMissedMonths(
 
   }
 
-
   return [
 
     {
-      name: progress.month_1_name,
-      value: safeNumber(
-        progress.month_1_value
-      )
+      name:
+        progress.month_1_name,
+
+      value:
+        safeNumber(
+          progress.month_1_value
+        )
     },
 
     {
-      name: progress.month_2_name,
-      value: safeNumber(
-        progress.month_2_value
-      )
+      name:
+        progress.month_2_name,
+
+      value:
+        safeNumber(
+          progress.month_2_value
+        )
     },
 
     {
-      name: progress.month_3_name,
-      value: safeNumber(
-        progress.month_3_value
-      )
+      name:
+        progress.month_3_name,
+
+      value:
+        safeNumber(
+          progress.month_3_value
+        )
     }
 
   ]
-
     .filter(
       month =>
         month.name &&
         month.value < 1
     )
-
     .map(
       month =>
         month.name
@@ -1078,11 +1035,9 @@ function getMissedMonths(
 
 }
 
-
 /* ==========================================================
    NORMALIZE RANK
 ========================================================== */
-
 function normalizeRank(
   value
 ) {
@@ -1097,7 +1052,6 @@ function normalizeRank(
         /\s+/g,
         ' '
       );
-
 
   const validRanks = [
 
@@ -1117,7 +1071,6 @@ function normalizeRank(
 
   ];
 
-
   return validRanks.includes(
     rank
   )
@@ -1128,11 +1081,9 @@ function normalizeRank(
 
 }
 
-
 /* ==========================================================
    CALCULATE RANK
 ========================================================== */
-
 function calculateRankFromTotal(
   total
 ) {
@@ -1142,7 +1093,6 @@ function calculateRankFromTotal(
       total
     );
 
-
   if (
     value >= 10
   ) {
@@ -1150,7 +1100,6 @@ function calculateRankFromTotal(
     return 'MYTHIC GLORY';
 
   }
-
 
   if (
     value >= 7
@@ -1160,7 +1109,6 @@ function calculateRankFromTotal(
 
   }
 
-
   if (
     value >= 4
   ) {
@@ -1168,7 +1116,6 @@ function calculateRankFromTotal(
     return 'MYTHIC';
 
   }
-
 
   if (
     value === 3
@@ -1178,7 +1125,6 @@ function calculateRankFromTotal(
 
   }
 
-
   if (
     value === 2
   ) {
@@ -1186,7 +1132,6 @@ function calculateRankFromTotal(
     return 'EPIC';
 
   }
-
 
   if (
     value === 1
@@ -1196,16 +1141,13 @@ function calculateRankFromTotal(
 
   }
 
-
   return 'WARRIOR';
 
 }
 
-
 /* ==========================================================
    RANK CLASS
 ========================================================== */
-
 function getRankClass(
   rank
 ) {
@@ -1235,7 +1177,6 @@ function getRankClass(
 
   };
 
-
   return (
     map[rank] ||
     'rank-warrior'
@@ -1243,11 +1184,9 @@ function getRankClass(
 
 }
 
-
 /* ==========================================================
    RENDER RANK
 ========================================================== */
-
 function renderRank(
   progress
 ) {
@@ -1256,7 +1195,6 @@ function renderRank(
     getTotalApproved(
       progress
     );
-
 
   const rank =
     normalizeRank(
@@ -1273,18 +1211,15 @@ function renderRank(
 
     );
 
-
   const status =
     getProgressStatus(
       progress
     );
 
-
   const missed =
     getMissedMonths(
       progress
     );
-
 
   if (
     rankPanel
@@ -1308,7 +1243,6 @@ function renderRank(
 
     );
 
-
     rankPanel.classList.add(
       getRankClass(
         rank
@@ -1316,7 +1250,6 @@ function renderRank(
     );
 
   }
-
 
   if (
     rankName
@@ -1326,7 +1259,6 @@ function renderRank(
       rank;
 
   }
-
 
   if (
     rankTotal
@@ -1338,36 +1270,40 @@ function renderRank(
 
   }
 
-
   if (
     rankSymbol
   ) {
 
     const symbols = {
 
-      WARRIOR: 'W',
+      WARRIOR:
+        'W',
 
-      ELITE: 'E',
+      ELITE:
+        'E',
 
-      EPIC: 'E',
+      EPIC:
+        'E',
 
-      LEGEND: 'L',
+      LEGEND:
+        'L',
 
-      MYTHIC: 'M',
+      MYTHIC:
+        'M',
 
-      'MYTHIC HONOR': 'MH',
+      'MYTHIC HONOR':
+        'MH',
 
-      'MYTHIC GLORY': 'MG'
+      'MYTHIC GLORY':
+        'MG'
 
     };
-
 
     rankSymbol.textContent =
       symbols[rank] ||
       'W';
 
   }
-
 
   if (
     seasonStatus
@@ -1378,14 +1314,12 @@ function renderRank(
       'failed'
     );
 
-
     if (
       status === 'WINNER'
     ) {
 
       seasonStatus.textContent =
         'WINNER';
-
 
       seasonStatus.classList.add(
         'winner'
@@ -1398,7 +1332,6 @@ function renderRank(
       seasonStatus.textContent =
         'FAILED';
 
-
       seasonStatus.classList.add(
         'failed'
       );
@@ -1406,7 +1339,6 @@ function renderRank(
     }
 
   }
-
 
   if (
     missedMonths
@@ -1434,11 +1366,9 @@ function renderRank(
 
 }
 
-
 /* ==========================================================
    RENDER JOURNEY
 ========================================================== */
-
 function renderJourney(
   progress
 ) {
@@ -1451,12 +1381,10 @@ function renderJourney(
 
   }
 
-
   const totalApproved =
     getTotalApproved(
       progress
     );
-
 
   const currentRank =
     normalizeRank(
@@ -1473,18 +1401,15 @@ function renderJourney(
 
     );
 
-
   const status =
     getProgressStatus(
       progress
     );
 
-
   const missed =
     getMissedMonths(
       progress
     );
-
 
   const rankOrder = [
 
@@ -1504,12 +1429,10 @@ function renderJourney(
 
   ];
 
-
   let currentIndex =
     rankOrder.indexOf(
       currentRank
     );
-
 
   if (
     currentIndex < 0
@@ -1520,16 +1443,13 @@ function renderJourney(
 
   }
 
-
   const cards =
     journeyTrack.querySelectorAll(
       '.journey-card'
     );
 
-
   let currentCard =
     null;
-
 
   cards.forEach(
     function(card) {
@@ -1539,19 +1459,16 @@ function renderJourney(
           card.dataset.index
         );
 
-
       const state =
         card.querySelector(
           '.journey-card-state'
         );
-
 
       card.classList.remove(
         'achieved',
         'current',
         'locked'
       );
-
 
       if (
         cardIndex <
@@ -1561,7 +1478,6 @@ function renderJourney(
         card.classList.add(
           'achieved'
         );
-
 
         if (
           state
@@ -1583,10 +1499,8 @@ function renderJourney(
           'current'
         );
 
-
         currentCard =
           card;
-
 
         if (
           state
@@ -1605,7 +1519,6 @@ function renderJourney(
           'locked'
         );
 
-
         if (
           state
         ) {
@@ -1619,7 +1532,6 @@ function renderJourney(
 
     }
   );
-
 
   if (
     journeySummary
@@ -1651,7 +1563,6 @@ function renderJourney(
 
   }
 
-
   if (
     journeyNote
   ) {
@@ -1681,7 +1592,6 @@ function renderJourney(
 
           : '-';
 
-
       journeyNote.innerHTML =
 
         'Season Status: ' +
@@ -1706,7 +1616,6 @@ function renderJourney(
 
   }
 
-
   if (
     currentCard &&
     window.innerWidth <= 1000
@@ -1717,11 +1626,14 @@ function renderJourney(
 
         currentCard.scrollIntoView({
 
-          behavior: 'smooth',
+          behavior:
+            'smooth',
 
-          block: 'nearest',
+          block:
+            'nearest',
 
-          inline: 'center'
+          inline:
+            'center'
 
         });
 
@@ -1733,11 +1645,9 @@ function renderJourney(
 
 }
 
-
 /* ==========================================================
    NAVIGATION
 ========================================================== */
-
 navItems.forEach(
   function(item) {
 
@@ -1748,14 +1658,12 @@ navItems.forEach(
         const pageName =
           item.dataset.page;
 
-
         navItems.forEach(
           nav =>
             nav.classList.remove(
               'active'
             )
         );
-
 
         appPages.forEach(
           page =>
@@ -1764,18 +1672,15 @@ navItems.forEach(
             )
         );
 
-
         item.classList.add(
           'active'
         );
-
 
         const targetPage =
           document.getElementById(
             'page-' +
             pageName
           );
-
 
         if (
           targetPage
@@ -1787,7 +1692,6 @@ navItems.forEach(
 
         }
 
-
         if (
           pageName === 'database'
         ) {
@@ -1795,7 +1699,6 @@ navItems.forEach(
           initDatabasePage();
 
         }
-
 
         if (
           pageName === 'point'
@@ -1805,12 +1708,21 @@ navItems.forEach(
 
         }
 
+        if (
+          pageName === 'leaderboard'
+        ) {
+
+          initLeaderboardPage();
+
+        }
 
         window.scrollTo({
 
-          top: 0,
+          top:
+            0,
 
-          behavior: 'smooth'
+          behavior:
+            'smooth'
 
         });
 
@@ -1820,11 +1732,9 @@ navItems.forEach(
   }
 );
 
-
 /* ==========================================================
    DATABASE INIT
 ========================================================== */
-
 function initDatabasePage() {
 
   if (
@@ -1835,24 +1745,19 @@ function initDatabasePage() {
 
   }
 
-
   databaseLoaded =
     true;
 
-
   databasePage =
     1;
-
 
   loadDatabase();
 
 }
 
-
 /* ==========================================================
    LOAD DATABASE
 ========================================================== */
-
 async function loadDatabase() {
 
   try {
@@ -1866,34 +1771,28 @@ async function loadDatabase() {
 
     }
 
-
     const search =
       databaseSearch
         ? databaseSearch.value.trim()
         : '';
-
 
     const limit =
       databaseLimit
         ? databaseLimit.value
         : '50';
 
-
     const params =
       new URLSearchParams();
-
 
     params.set(
       'page',
       databasePage
     );
 
-
     params.set(
       'limit',
       limit
     );
-
 
     if (
       search
@@ -1906,7 +1805,6 @@ async function loadDatabase() {
 
     }
 
-
     const response =
       await fetch(
 
@@ -1915,15 +1813,15 @@ async function loadDatabase() {
         params.toString(),
 
         {
-          method: 'GET',
-          cache: 'no-store'
+          method:
+            'GET',
+          cache:
+            'no-store'
         }
 
       );
 
-
     let result = {};
-
 
     try {
 
@@ -1940,7 +1838,6 @@ async function loadDatabase() {
 
     }
 
-
     if (
       !response.ok ||
       !result.success
@@ -1953,27 +1850,22 @@ async function loadDatabase() {
 
     }
 
-
     renderDatabaseRows(
       result.data || []
     );
 
-
     const pagination =
       result.pagination || {};
-
 
     databasePage =
       safeNumber(
         pagination.page
       ) || 1;
 
-
     databaseTotalPages =
       safeNumber(
         pagination.totalPages
       ) || 1;
-
 
     if (
       databaseStatus
@@ -2003,7 +1895,6 @@ async function loadDatabase() {
 
     }
 
-
     if (
       databasePageInfo
     ) {
@@ -2020,7 +1911,6 @@ async function loadDatabase() {
 
     }
 
-
     if (
       databasePrev
     ) {
@@ -2029,7 +1919,6 @@ async function loadDatabase() {
         databasePage <= 1;
 
     }
-
 
     if (
       databaseNext
@@ -2050,7 +1939,6 @@ async function loadDatabase() {
       error
     );
 
-
     if (
       databaseStatus
     ) {
@@ -2064,11 +1952,9 @@ async function loadDatabase() {
 
 }
 
-
 /* ==========================================================
    RENDER DATABASE
 ========================================================== */
-
 function renderDatabaseRows(
   rows
 ) {
@@ -2082,7 +1968,6 @@ function renderDatabaseRows(
 
   }
 
-
   if (
     databaseMobile
   ) {
@@ -2091,7 +1976,6 @@ function renderDatabaseRows(
       '';
 
   }
-
 
   if (
     !Array.isArray(rows) ||
@@ -2107,11 +1991,9 @@ function renderDatabaseRows(
 
     }
 
-
     return;
 
   }
-
 
   rows.forEach(
     function(row) {
@@ -2124,7 +2006,6 @@ function renderDatabaseRows(
           document.createElement(
             'tr'
           );
-
 
         tr.innerHTML =
 
@@ -2212,14 +2093,12 @@ function renderDatabaseRows(
             )
           );
 
-
         databaseTableBody
           .appendChild(
             tr
           );
 
       }
-
 
       if (
         databaseMobile
@@ -2230,10 +2109,8 @@ function renderDatabaseRows(
             'article'
           );
 
-
         card.className =
           'database-mobile-card';
-
 
         card.innerHTML = `
 
@@ -2242,27 +2119,20 @@ function renderDatabaseRows(
             <div>
 
               <div class="database-mobile-id">
-
                 SS #${safeText(row.ss_id)}
-
               </div>
 
               <div class="database-mobile-name">
-
                 ${safeText(row.employee_name)}
-
               </div>
 
               <div class="database-mobile-dept">
-
                 ${safeText(row.department)}
-
               </div>
 
             </div>
 
           </div>
-
 
           <div class="database-mobile-info">
 
@@ -2343,7 +2213,6 @@ function renderDatabaseRows(
 
         `;
 
-
         databaseMobile
           .appendChild(
             card
@@ -2356,11 +2225,9 @@ function renderDatabaseRows(
 
 }
 
-
 /* ==========================================================
    TABLE CELL
 ========================================================== */
-
 function tableCell(
   value,
   className = ''
@@ -2370,7 +2237,6 @@ function tableCell(
     className
       ? ` class="${className}"`
       : '';
-
 
   return (
 
@@ -2386,11 +2252,9 @@ function tableCell(
 
 }
 
-
 /* ==========================================================
    MOBILE INFO
 ========================================================== */
-
 function mobileInfo(
   label,
   value
@@ -2414,11 +2278,9 @@ function mobileInfo(
 
 }
 
-
 /* ==========================================================
    POINT FORMAT
 ========================================================== */
-
 function formatPointDatabase(
   value
 ) {
@@ -2433,12 +2295,10 @@ function formatPointDatabase(
 
   }
 
-
   const number =
     Number(
       value
     );
-
 
   if (
     Number.isNaN(number)
@@ -2448,18 +2308,15 @@ function formatPointDatabase(
 
   }
 
-
   return number.toLocaleString(
     'id-ID'
   );
 
 }
 
-
 /* ==========================================================
    IMPLEMENTATION DATE
 ========================================================== */
-
 function formatImplementationDate(
   value
 ) {
@@ -2473,13 +2330,11 @@ function formatImplementationDate(
 
   }
 
-
   const match =
     String(value)
       .match(
         /^(\d{4})-(\d{2})-(\d{2})/
       );
-
 
   if (
     !match
@@ -2490,7 +2345,6 @@ function formatImplementationDate(
     );
 
   }
-
 
   const months = [
 
@@ -2522,7 +2376,6 @@ function formatImplementationDate(
 
   ];
 
-
   return (
 
     String(
@@ -2547,11 +2400,9 @@ function formatImplementationDate(
 
 }
 
-
 /* ==========================================================
    DATETIME
 ========================================================== */
-
 function formatDateTimeDatabase(
   value
 ) {
@@ -2565,12 +2416,10 @@ function formatDateTimeDatabase(
 
   }
 
-
   const date =
     new Date(
       value
     );
-
 
   if (
     Number.isNaN(
@@ -2583,7 +2432,6 @@ function formatDateTimeDatabase(
     );
 
   }
-
 
   try {
 
@@ -2637,11 +2485,9 @@ function formatDateTimeDatabase(
 
 }
 
-
 /* ==========================================================
    STATUS CLASS
 ========================================================== */
-
 function getStatusClass(
   value
 ) {
@@ -2652,7 +2498,6 @@ function getStatusClass(
     )
       .trim()
       .toUpperCase();
-
 
   if (
 
@@ -2669,7 +2514,6 @@ function getStatusClass(
     return 'db-status-success';
 
   }
-
 
   if (
 
@@ -2691,7 +2535,6 @@ function getStatusClass(
 
   }
 
-
   if (
 
     status === 'SUBMITTED' ||
@@ -2706,16 +2549,13 @@ function getStatusClass(
 
   }
 
-
   return '';
 
 }
 
-
 /* ==========================================================
    DATABASE SEARCH
 ========================================================== */
-
 if (
   databaseSearch
 ) {
@@ -2728,14 +2568,12 @@ if (
         databaseSearchTimer
       );
 
-
       databaseSearchTimer =
         setTimeout(
           function() {
 
             databasePage =
               1;
-
 
             loadDatabase();
 
@@ -2748,11 +2586,9 @@ if (
 
 }
 
-
 /* ==========================================================
    DATABASE LIMIT
 ========================================================== */
-
 if (
   databaseLimit
 ) {
@@ -2764,7 +2600,6 @@ if (
       databasePage =
         1;
 
-
       loadDatabase();
 
     }
@@ -2772,11 +2607,9 @@ if (
 
 }
 
-
 /* ==========================================================
    DATABASE PREV
 ========================================================== */
-
 if (
   databasePrev
 ) {
@@ -2791,7 +2624,6 @@ if (
 
         databasePage--;
 
-
         loadDatabase();
 
       }
@@ -2801,11 +2633,9 @@ if (
 
 }
 
-
 /* ==========================================================
    DATABASE NEXT
 ========================================================== */
-
 if (
   databaseNext
 ) {
@@ -2821,7 +2651,6 @@ if (
 
         databasePage++;
 
-
         loadDatabase();
 
       }
@@ -2831,11 +2660,9 @@ if (
 
 }
 
-
 /* ==========================================================
    DATABASE EXPORT
 ========================================================== */
-
 if (
   databaseExport
 ) {
@@ -2849,10 +2676,8 @@ if (
           ? databaseSearch.value.trim()
           : '';
 
-
       const params =
         new URLSearchParams();
-
 
       if (
         search
@@ -2865,10 +2690,8 @@ if (
 
       }
 
-
       let exportUrl =
         DATABASE_EXPORT_API;
-
 
       if (
         params.toString()
@@ -2880,7 +2703,6 @@ if (
 
       }
 
-
       window.location.href =
         exportUrl;
 
@@ -2889,11 +2711,9 @@ if (
 
 }
 
-
 /* ==========================================================
    POINT INIT
 ========================================================== */
-
 function initPointPage() {
 
   if (
@@ -2904,24 +2724,19 @@ function initPointPage() {
 
   }
 
-
   pointLoaded =
     true;
 
-
   pointPage =
     1;
-
 
   loadPoint();
 
 }
 
-
 /* ==========================================================
    LOAD POINT
 ========================================================== */
-
 async function loadPoint() {
 
   try {
@@ -2935,34 +2750,28 @@ async function loadPoint() {
 
     }
 
-
     const search =
       pointSearch
         ? pointSearch.value.trim()
         : '';
-
 
     const limit =
       pointLimit
         ? pointLimit.value
         : '50';
 
-
     const params =
       new URLSearchParams();
-
 
     params.set(
       'page',
       pointPage
     );
 
-
     params.set(
       'limit',
       limit
     );
-
 
     if (
       search
@@ -2975,7 +2784,6 @@ async function loadPoint() {
 
     }
 
-
     const response =
       await fetch(
 
@@ -2984,15 +2792,15 @@ async function loadPoint() {
         params.toString(),
 
         {
-          method: 'GET',
-          cache: 'no-store'
+          method:
+            'GET',
+          cache:
+            'no-store'
         }
 
       );
 
-
     let result = {};
-
 
     try {
 
@@ -3009,7 +2817,6 @@ async function loadPoint() {
 
     }
 
-
     if (
       !response.ok ||
       !result.success
@@ -3022,37 +2829,30 @@ async function loadPoint() {
 
     }
 
-
     renderPointSummary(
       result.summary || {}
     );
-
 
     renderPointPodium(
       result.podium || []
     );
 
-
     renderPointRows(
       result.data || []
     );
 
-
     const pagination =
       result.pagination || {};
-
 
     pointPage =
       safeNumber(
         pagination.page
       ) || 1;
 
-
     pointTotalPages =
       safeNumber(
         pagination.totalPages
       ) || 1;
-
 
     if (
       pointStatus
@@ -3082,7 +2882,6 @@ async function loadPoint() {
 
     }
 
-
     if (
       pointPageInfo
     ) {
@@ -3099,7 +2898,6 @@ async function loadPoint() {
 
     }
 
-
     if (
       pointPrev
     ) {
@@ -3108,7 +2906,6 @@ async function loadPoint() {
         pointPage <= 1;
 
     }
-
 
     if (
       pointNext
@@ -3129,7 +2926,6 @@ async function loadPoint() {
       error
     );
 
-
     if (
       pointStatus
     ) {
@@ -3138,7 +2934,6 @@ async function loadPoint() {
         'Leaderboard gagal dimuat.';
 
     }
-
 
     if (
       pointPodium
@@ -3149,7 +2944,6 @@ async function loadPoint() {
 
     }
 
-
     if (
       pointTableBody
     ) {
@@ -3158,7 +2952,6 @@ async function loadPoint() {
         '';
 
     }
-
 
     if (
       pointMobile
@@ -3173,11 +2966,9 @@ async function loadPoint() {
 
 }
 
-
 /* ==========================================================
    POINT SUMMARY
 ========================================================== */
-
 function renderPointSummary(
   summary
 ) {
@@ -3193,7 +2984,6 @@ function renderPointSummary(
 
   }
 
-
   if (
     pointWinner
   ) {
@@ -3204,7 +2994,6 @@ function renderPointSummary(
       );
 
   }
-
 
   if (
     pointLose
@@ -3219,11 +3008,9 @@ function renderPointSummary(
 
 }
 
-
 /* ==========================================================
    POINT PODIUM
 ========================================================== */
-
 function renderPointPodium(
   rows
 ) {
@@ -3236,10 +3023,8 @@ function renderPointPodium(
 
   }
 
-
   pointPodium.innerHTML =
     '';
-
 
   if (
     !Array.isArray(rows) ||
@@ -3256,27 +3041,18 @@ function renderPointPodium(
 
     `;
 
-
     return;
 
   }
 
-
-  /*
-     Visual order:
-     Juara 2 | Juara 1 | Juara 3
-  */
-
   const visualOrder =
     [1, 0, 2];
-
 
   visualOrder.forEach(
     function(index) {
 
       const row =
         rows[index];
-
 
       if (
         !row
@@ -3286,10 +3062,8 @@ function renderPointPodium(
 
       }
 
-
       const position =
         index + 1;
-
 
       const icon =
 
@@ -3303,17 +3077,14 @@ function renderPointPodium(
 
             : '▲';
 
-
       const card =
         document.createElement(
           'article'
         );
 
-
       card.className =
         'podium-card podium-' +
         position;
-
 
       card.innerHTML = `
 
@@ -3321,34 +3092,35 @@ function renderPointPodium(
           ${icon}
         </div>
 
-
         <div class="podium-position">
           #${position}
         </div>
 
-
         <div class="podium-avatar">
+
           ${escapeHtml(
             getInitials(
               row.employee_name
             )
           )}
+
         </div>
 
-
         <h3>
+
           ${safeText(
             row.employee_name
           )}
+
         </h3>
 
-
         <p>
+
           ${safeText(
             row.department
           )}
-        </p>
 
+        </p>
 
         <div class="podium-score">
 
@@ -3364,7 +3136,6 @@ function renderPointPodium(
 
         </div>
 
-
         <div class="podium-approved">
 
           ${formatPointDatabase(
@@ -3375,17 +3146,16 @@ function renderPointPodium(
 
         </div>
 
-
         <div class="podium-rank">
 
           ${safeText(
-            row.rank || 'WARRIOR'
+            row.rank ||
+            'WARRIOR'
           )}
 
         </div>
 
       `;
-
 
       pointPodium.appendChild(
         card
@@ -3396,11 +3166,9 @@ function renderPointPodium(
 
 }
 
-
 /* ==========================================================
    POINT RENDER ROWS
 ========================================================== */
-
 function renderPointRows(
   rows
 ) {
@@ -3414,7 +3182,6 @@ function renderPointRows(
 
   }
 
-
   if (
     pointMobile
   ) {
@@ -3423,7 +3190,6 @@ function renderPointRows(
       '';
 
   }
-
 
   if (
     !Array.isArray(rows) ||
@@ -3439,15 +3205,9 @@ function renderPointRows(
 
     }
 
-
     return;
 
   }
-
-
-  /* ========================================================
-     MONTH HEADER DYNAMIC
-  ======================================================== */
 
   const monthSource =
     rows.find(
@@ -3457,7 +3217,6 @@ function renderPointRows(
         row.month_3_name
     ) ||
     rows[0];
-
 
   if (
     pointMonth1Header
@@ -3469,7 +3228,6 @@ function renderPointRows(
 
   }
 
-
   if (
     pointMonth2Header
   ) {
@@ -3479,7 +3237,6 @@ function renderPointRows(
       'MONTH 2';
 
   }
-
 
   if (
     pointMonth3Header
@@ -3491,7 +3248,6 @@ function renderPointRows(
 
   }
 
-
   rows.forEach(
     function(row) {
 
@@ -3500,11 +3256,6 @@ function renderPointRows(
           row.status ||
           row.season_status
         );
-
-
-      /* ====================================================
-         DESKTOP
-      ==================================================== */
 
       if (
         pointTableBody
@@ -3515,7 +3266,6 @@ function renderPointRows(
             'tr'
           );
 
-
         tr.className =
 
           status === 'WINNER'
@@ -3524,118 +3274,59 @@ function renderPointRows(
 
             : 'point-row-lose';
 
-
         tr.innerHTML = `
 
           <td>
-
             <span class="point-position">
-
-              #${safeNumber(
-                row.position
-              )}
-
+              #${safeNumber(row.position)}
             </span>
-
           </td>
 
-
           <td>
-
             <strong>
-
-              ${safeText(
-                row.employee_name
-              )}
-
+              ${safeText(row.employee_name)}
             </strong>
-
           </td>
-
 
           <td>
-            ${safeText(
-              row.department
-            )}
+            ${safeText(row.department)}
           </td>
-
 
           <td>
-            ${safeText(
-              row.superior_name
-            )}
+            ${safeText(row.superior_name)}
           </td>
-
 
           <td>
-            ${safeText(
-              row.work_location
-            )}
+            ${safeText(row.work_location)}
           </td>
-
 
           <td class="point-main-score">
-
-            ${safeNumber(
-              row.ss_done
-            )}
-
+            ${safeNumber(row.ss_done)}
           </td>
-
 
           <td>
-
-            ${formatPointDatabase(
-              row.point
-            )}
-
+            ${formatPointDatabase(row.point)}
           </td>
-
 
           <td class="point-approved-score">
-
-            ${formatPointDatabase(
-              row.point_approved
-            )}
-
+            ${formatPointDatabase(row.point_approved)}
           </td>
-
 
           <td>
-
-            ${safeNumber(
-              row.ss_submit
-            )}
-
+            ${safeNumber(row.ss_submit)}
           </td>
-
 
           <td>
-
-            ${safeNumber(
-              row.month_1_value
-            )}
-
+            ${safeNumber(row.month_1_value)}
           </td>
-
 
           <td>
-
-            ${safeNumber(
-              row.month_2_value
-            )}
-
+            ${safeNumber(row.month_2_value)}
           </td>
-
 
           <td>
-
-            ${safeNumber(
-              row.month_3_value
-            )}
-
+            ${safeNumber(row.month_3_value)}
           </td>
-
 
           <td>
 
@@ -3645,14 +3336,11 @@ function renderPointRows(
                 : 'lose'
             }">
 
-              ${escapeHtml(
-                status
-              )}
+              ${escapeHtml(status)}
 
             </span>
 
           </td>
-
 
           <td>
 
@@ -3665,7 +3353,6 @@ function renderPointRows(
             )}
 
           </td>
-
 
           <td>
 
@@ -3682,17 +3369,11 @@ function renderPointRows(
 
         `;
 
-
         pointTableBody.appendChild(
           tr
         );
 
       }
-
-
-      /* ====================================================
-         MOBILE
-      ==================================================== */
 
       if (
         pointMobile
@@ -3703,23 +3384,16 @@ function renderPointRows(
             'article'
           );
 
-
         card.className =
           'point-mobile-card';
-
 
         card.innerHTML = `
 
           <div class="point-mobile-head">
 
             <span class="point-position">
-
-              #${safeNumber(
-                row.position
-              )}
-
+              #${safeNumber(row.position)}
             </span>
-
 
             <span class="point-status-badge ${
               status === 'WINNER'
@@ -3727,42 +3401,26 @@ function renderPointRows(
                 : 'lose'
             }">
 
-              ${escapeHtml(
-                status
-              )}
+              ${escapeHtml(status)}
 
             </span>
 
           </div>
 
-
           <h3>
-
-            ${safeText(
-              row.employee_name
-            )}
-
+            ${safeText(row.employee_name)}
           </h3>
 
-
           <p>
-
-            ${safeText(
-              row.department
-            )}
-
+            ${safeText(row.department)}
           </p>
 
-
           <div class="point-mobile-score">
-
 
             <div>
 
               <strong>
-                ${safeNumber(
-                  row.ss_done
-                )}
+                ${safeNumber(row.ss_done)}
               </strong>
 
               <span>
@@ -3771,13 +3429,10 @@ function renderPointRows(
 
             </div>
 
-
             <div>
 
               <strong>
-                ${formatPointDatabase(
-                  row.point_approved
-                )}
+                ${formatPointDatabase(row.point_approved)}
               </strong>
 
               <span>
@@ -3786,13 +3441,10 @@ function renderPointRows(
 
             </div>
 
-
             <div>
 
               <strong>
-                ${formatPointDatabase(
-                  row.point
-                )}
+                ${formatPointDatabase(row.point)}
               </strong>
 
               <span>
@@ -3801,18 +3453,12 @@ function renderPointRows(
 
             </div>
 
-
           </div>
-
 
           <div class="point-mobile-bottom">
 
             <span>
-
-              ${safeText(
-                row.work_location
-              )}
-
+              ${safeText(row.work_location)}
             </span>
 
             <strong>
@@ -3828,7 +3474,6 @@ function renderPointRows(
 
         `;
 
-
         pointMobile.appendChild(
           card
         );
@@ -3840,11 +3485,9 @@ function renderPointRows(
 
 }
 
-
 /* ==========================================================
    NORMALIZE POINT STATUS
 ========================================================== */
-
 function normalizePointStatus(
   value
 ) {
@@ -3856,7 +3499,6 @@ function normalizePointStatus(
       .trim()
       .toUpperCase();
 
-
   if (
     status === 'WINNER'
   ) {
@@ -3864,7 +3506,6 @@ function normalizePointStatus(
     return 'WINNER';
 
   }
-
 
   if (
 
@@ -3880,17 +3521,14 @@ function normalizePointStatus(
 
   }
 
-
   return status ||
     'LOSE';
 
 }
 
-
 /* ==========================================================
    POINT SEARCH
 ========================================================== */
-
 if (
   pointSearch
 ) {
@@ -3903,14 +3541,12 @@ if (
         pointSearchTimer
       );
 
-
       pointSearchTimer =
         setTimeout(
           function() {
 
             pointPage =
               1;
-
 
             loadPoint();
 
@@ -3923,11 +3559,9 @@ if (
 
 }
 
-
 /* ==========================================================
    POINT LIMIT
 ========================================================== */
-
 if (
   pointLimit
 ) {
@@ -3939,7 +3573,6 @@ if (
       pointPage =
         1;
 
-
       loadPoint();
 
     }
@@ -3947,11 +3580,9 @@ if (
 
 }
 
-
 /* ==========================================================
    POINT PREV
 ========================================================== */
-
 if (
   pointPrev
 ) {
@@ -3966,7 +3597,6 @@ if (
 
         pointPage--;
 
-
         loadPoint();
 
       }
@@ -3976,11 +3606,9 @@ if (
 
 }
 
-
 /* ==========================================================
    POINT NEXT
 ========================================================== */
-
 if (
   pointNext
 ) {
@@ -3996,7 +3624,6 @@ if (
 
         pointPage++;
 
-
         loadPoint();
 
       }
@@ -4006,11 +3633,9 @@ if (
 
 }
 
-
 /* ==========================================================
    POINT EXPORT
 ========================================================== */
-
 if (
   pointExport
 ) {
@@ -4024,10 +3649,8 @@ if (
           ? pointSearch.value.trim()
           : '';
 
-
       const params =
         new URLSearchParams();
-
 
       if (
         search
@@ -4040,10 +3663,8 @@ if (
 
       }
 
-
       let exportUrl =
         POINT_EXPORT_API;
-
 
       if (
         params.toString()
@@ -4055,6 +3676,1132 @@ if (
 
       }
 
+      window.location.href =
+        exportUrl;
+
+    }
+  );
+
+}
+
+/* ==========================================================
+   LEADERBOARD INIT
+========================================================== */
+function initLeaderboardPage() {
+
+  if (
+    leaderboardLoaded
+  ) {
+
+    return;
+
+  }
+
+  leaderboardLoaded =
+    true;
+
+  leaderboardPage =
+    1;
+
+  loadLeaderboard();
+
+}
+
+/* ==========================================================
+   LOAD LEADERBOARD
+========================================================== */
+async function loadLeaderboard() {
+
+  try {
+
+    if (
+      leaderboardStatus
+    ) {
+
+      leaderboardStatus.textContent =
+        'Loading leaderboard arena...';
+
+    }
+
+    const search =
+      leaderboardSearch
+
+        ? leaderboardSearch
+            .value
+            .trim()
+
+        : '';
+
+    const limit =
+      leaderboardLimit
+
+        ? leaderboardLimit.value
+
+        : '50';
+
+    const params =
+      new URLSearchParams();
+
+    params.set(
+      'page',
+      leaderboardPage
+    );
+
+    params.set(
+      'limit',
+      limit
+    );
+
+    if (
+      search
+    ) {
+
+      params.set(
+        'search',
+        search
+      );
+
+    }
+
+    if (
+      currentUserName
+    ) {
+
+      params.set(
+        'player',
+        currentUserName
+      );
+
+    }
+
+    const response =
+      await fetch(
+
+        LEADERBOARD_API +
+        '?' +
+        params.toString(),
+
+        {
+          method:
+            'GET',
+
+          cache:
+            'no-store'
+        }
+
+      );
+
+    let result = {};
+
+    try {
+
+      result =
+        await response.json();
+
+    }
+
+    catch {
+
+      throw new Error(
+        'Response Leaderboard tidak valid.'
+      );
+
+    }
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+
+      throw new Error(
+        result.message ||
+        'Leaderboard gagal dimuat.'
+      );
+
+    }
+
+    renderLeaderboardSummary(
+      result.summary || {}
+    );
+
+    renderLeaderboardPlayer(
+      result.player || null
+    );
+
+    renderLeaderboardTop10(
+      result.top10 || []
+    );
+
+    renderLeaderboardRows(
+      result.data || []
+    );
+
+    const pagination =
+      result.pagination || {};
+
+    leaderboardPage =
+      safeNumber(
+        pagination.page
+      ) || 1;
+
+    leaderboardTotalPages =
+      safeNumber(
+        pagination.totalPages
+      ) || 1;
+
+    if (
+      leaderboardStatus
+    ) {
+
+      leaderboardStatus.textContent =
+
+        'Menampilkan ' +
+
+        safeNumber(
+          pagination.from
+        ) +
+
+        '–' +
+
+        safeNumber(
+          pagination.to
+        ) +
+
+        ' dari ' +
+
+        safeNumber(
+          pagination.total
+        ) +
+
+        ' pemain';
+
+    }
+
+    if (
+      leaderboardPageInfo
+    ) {
+
+      leaderboardPageInfo.textContent =
+
+        'Page ' +
+
+        leaderboardPage +
+
+        ' / ' +
+
+        leaderboardTotalPages;
+
+    }
+
+    if (
+      leaderboardPrev
+    ) {
+
+      leaderboardPrev.disabled =
+        leaderboardPage <= 1;
+
+    }
+
+    if (
+      leaderboardNext
+    ) {
+
+      leaderboardNext.disabled =
+        leaderboardPage >=
+        leaderboardTotalPages;
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(
+      'LEADERBOARD ERROR:',
+      error
+    );
+
+    if (
+      leaderboardStatus
+    ) {
+
+      leaderboardStatus.textContent =
+        'Leaderboard gagal dimuat.';
+
+    }
+
+    if (
+      leaderboardPlayer
+    ) {
+
+      leaderboardPlayer.innerHTML =
+        '<div class="lb-player-loading">Your position gagal dimuat.</div>';
+
+    }
+
+    if (
+      leaderboardTop10
+    ) {
+
+      leaderboardTop10.innerHTML =
+        '';
+
+    }
+
+    if (
+      leaderboardTableBody
+    ) {
+
+      leaderboardTableBody.innerHTML =
+        '';
+
+    }
+
+    if (
+      leaderboardMobile
+    ) {
+
+      leaderboardMobile.innerHTML =
+        '';
+
+    }
+
+  }
+
+}
+
+/* ==========================================================
+   LEADERBOARD SUMMARY
+========================================================== */
+function renderLeaderboardSummary(
+  summary
+) {
+
+  if (
+    leaderboardTotalPlayers
+  ) {
+
+    leaderboardTotalPlayers.textContent =
+      safeNumber(
+        summary.totalPlayers
+      );
+
+  }
+
+  if (
+    leaderboardMaxPlayers
+  ) {
+
+    leaderboardMaxPlayers.textContent =
+      safeNumber(
+        summary.maxScorePlayers
+      );
+
+  }
+
+}
+
+/* ==========================================================
+   YOUR POSITION
+========================================================== */
+function renderLeaderboardPlayer(
+  player
+) {
+
+  if (
+    !leaderboardPlayer
+  ) {
+
+    return;
+
+  }
+
+  if (
+    !player
+  ) {
+
+    leaderboardPlayer.innerHTML = `
+
+      <div class="lb-player-loading">
+
+        Posisi kamu belum ditemukan pada leaderboard.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  const score =
+    safeNumber(
+      player.game_score
+    );
+
+  const progress =
+    Math.min(
+      100,
+      Math.max(
+        0,
+        safeNumber(
+          player.progress
+        )
+      )
+    );
+
+  leaderboardPlayer.innerHTML = `
+
+    <div class="lb-player-rank">
+
+      <span>
+        YOUR POSITION
+      </span>
+
+      <strong>
+        #${safeNumber(player.position)}
+      </strong>
+
+    </div>
+
+    <div class="lb-player-identity">
+
+      <div class="lb-player-avatar">
+
+        ${escapeHtml(
+          getInitials(
+            player.employee_name
+          )
+        )}
+
+      </div>
+
+      <div>
+
+        <h3>
+          ${safeText(player.employee_name)}
+        </h3>
+
+        <p>
+
+          ${safeText(player.department)}
+
+          •
+
+          ${safeText(player.work_location)}
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <div class="lb-player-score">
+
+      <div>
+
+        <span>
+          GAME SCORE
+        </span>
+
+        <strong>
+
+          ${score}
+
+          <small>
+            / 240
+          </small>
+
+        </strong>
+
+      </div>
+
+      <div class="lb-player-progress">
+
+        <div class="lb-progress-track">
+
+          <div
+            class="lb-progress-fill"
+            style="width:${progress}%"
+          ></div>
+
+        </div>
+
+        <div class="lb-progress-label">
+
+          <span>
+
+            ${safeNumber(player.approved_ss)}
+
+            / 6 SS
+
+          </span>
+
+          <strong>
+
+            ${
+              player.maxed
+
+                ? 'MAX POINT'
+
+                : safeNumber(
+                    player.remaining
+                  ) +
+                  ' POINT TO MAX'
+            }
+
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+/* ==========================================================
+   TOP 10 ARENA
+========================================================== */
+function renderLeaderboardTop10(
+  rows
+) {
+
+  if (
+    !leaderboardTop10
+  ) {
+
+    return;
+
+  }
+
+  leaderboardTop10.innerHTML =
+    '';
+
+  if (
+    !Array.isArray(rows) ||
+    !rows.length
+  ) {
+
+    leaderboardTop10.innerHTML = `
+
+      <div class="lb-empty">
+        Belum ada leaderboard.
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  rows.forEach(
+    function(row) {
+
+      const position =
+        safeNumber(
+          row.position
+        );
+
+      const progress =
+        Math.min(
+          100,
+          Math.max(
+            0,
+            safeNumber(
+              row.progress
+            )
+          )
+        );
+
+      const card =
+        document.createElement(
+          'article'
+        );
+
+      card.className =
+
+        'lb-top-card ' +
+
+        'lb-top-' +
+        position +
+
+        (
+          row.maxed
+            ? ' lb-maxed'
+            : ''
+        );
+
+      const icon =
+
+        position === 1
+
+          ? '♛'
+
+          : position === 2
+
+            ? '◆'
+
+            : position === 3
+
+              ? '▲'
+
+              : '✦';
+
+      card.innerHTML = `
+
+        <div class="lb-top-shine"></div>
+
+        <div class="lb-top-position">
+
+          <span>
+            ${icon}
+          </span>
+
+          <strong>
+            #${position}
+          </strong>
+
+        </div>
+
+        <div class="lb-top-avatar">
+
+          ${escapeHtml(
+            getInitials(
+              row.employee_name
+            )
+          )}
+
+        </div>
+
+        <h3>
+
+          ${safeText(
+            row.employee_name
+          )}
+
+        </h3>
+
+        <p>
+
+          ${safeText(
+            row.department
+          )}
+
+        </p>
+
+        <div class="lb-top-score">
+
+          <strong>
+
+            ${safeNumber(
+              row.game_score
+            )}
+
+          </strong>
+
+          <span>
+            POINT
+          </span>
+
+        </div>
+
+        <div class="lb-top-progress">
+
+          <div>
+
+            <span
+              style="width:${progress}%"
+            ></span>
+
+          </div>
+
+        </div>
+
+        <div class="lb-top-footer">
+
+          <span>
+
+            ${safeNumber(
+              row.approved_ss
+            )}
+
+            / 6 SS
+
+          </span>
+
+          ${
+            row.maxed
+
+              ? '<b>MAX POINT</b>'
+
+              : (
+                  '<b>' +
+
+                  safeNumber(
+                    row.remaining
+                  ) +
+
+                  ' LEFT</b>'
+                )
+          }
+
+        </div>
+
+      `;
+
+      leaderboardTop10
+        .appendChild(
+          card
+        );
+
+    }
+  );
+
+}
+
+/* ==========================================================
+   FULL LEADERBOARD
+========================================================== */
+function renderLeaderboardRows(
+  rows
+) {
+
+  if (
+    leaderboardTableBody
+  ) {
+
+    leaderboardTableBody.innerHTML =
+      '';
+
+  }
+
+  if (
+    leaderboardMobile
+  ) {
+
+    leaderboardMobile.innerHTML =
+      '';
+
+  }
+
+  if (
+    !Array.isArray(rows) ||
+    !rows.length
+  ) {
+
+    if (
+      leaderboardStatus
+    ) {
+
+      leaderboardStatus.textContent =
+        'Data tidak ditemukan.';
+
+    }
+
+    return;
+
+  }
+
+  rows.forEach(
+    function(row) {
+
+      const progress =
+        Math.min(
+          100,
+          Math.max(
+            0,
+            safeNumber(
+              row.progress
+            )
+          )
+        );
+
+      const isCurrentUser =
+        String(
+          row.employee_name || ''
+        )
+          .trim()
+          .toUpperCase() ===
+        String(
+          currentUserName || ''
+        )
+          .trim()
+          .toUpperCase();
+
+      if (
+        leaderboardTableBody
+      ) {
+
+        const tr =
+          document.createElement(
+            'tr'
+          );
+
+        if (
+          isCurrentUser
+        ) {
+
+          tr.classList.add(
+            'lb-current-row'
+          );
+
+        }
+
+        tr.innerHTML = `
+
+          <td>
+
+            <span class="lb-table-position">
+
+              #${safeNumber(row.position)}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            <strong>
+
+              ${safeText(row.employee_name)}
+
+            </strong>
+
+          </td>
+
+          <td>
+            ${safeText(row.department)}
+          </td>
+
+          <td>
+            ${safeText(row.superior_name)}
+          </td>
+
+          <td>
+            ${safeText(row.work_location)}
+          </td>
+
+          <td>
+
+            <div class="lb-table-score">
+
+              <strong>
+
+                ${safeNumber(
+                  row.game_score
+                )}
+
+              </strong>
+
+              <span>
+                / 240
+              </span>
+
+            </div>
+
+          </td>
+
+          <td>
+
+            <div class="lb-table-progress">
+
+              <div>
+
+                <span
+                  style="width:${progress}%"
+                ></span>
+
+              </div>
+
+              <small>
+
+                ${safeNumber(
+                  row.approved_ss
+                )}
+
+                / 6 SS
+
+              </small>
+
+            </div>
+
+          </td>
+
+        `;
+
+        leaderboardTableBody
+          .appendChild(
+            tr
+          );
+
+      }
+
+      if (
+        leaderboardMobile
+      ) {
+
+        const card =
+          document.createElement(
+            'article'
+          );
+
+        card.className =
+          'lb-mobile-card' +
+          (
+            isCurrentUser
+              ? ' lb-current-mobile'
+              : ''
+          );
+
+        card.innerHTML = `
+
+          <div class="lb-mobile-head">
+
+            <span>
+              #${safeNumber(row.position)}
+            </span>
+
+            ${
+              row.maxed
+                ? '<b>MAX POINT</b>'
+                : ''
+            }
+
+          </div>
+
+          <h3>
+
+            ${safeText(
+              row.employee_name
+            )}
+
+          </h3>
+
+          <p>
+
+            ${safeText(
+              row.department
+            )}
+
+          </p>
+
+          <div class="lb-mobile-score">
+
+            <strong>
+
+              ${safeNumber(
+                row.game_score
+              )}
+
+            </strong>
+
+            <span>
+              / 240 POINT
+            </span>
+
+          </div>
+
+          <div class="lb-progress-track">
+
+            <div
+              class="lb-progress-fill"
+              style="width:${progress}%"
+            ></div>
+
+          </div>
+
+          <div class="lb-mobile-footer">
+
+            <span>
+
+              ${safeText(
+                row.work_location
+              )}
+
+            </span>
+
+            <strong>
+
+              ${safeNumber(
+                row.approved_ss
+              )}
+
+              / 6 SS
+
+            </strong>
+
+          </div>
+
+        `;
+
+        leaderboardMobile
+          .appendChild(
+            card
+          );
+
+      }
+
+    }
+  );
+
+}
+
+/* ==========================================================
+   LEADERBOARD SEARCH
+========================================================== */
+if (
+  leaderboardSearch
+) {
+
+  leaderboardSearch.addEventListener(
+    'input',
+    function() {
+
+      clearTimeout(
+        leaderboardSearchTimer
+      );
+
+      leaderboardSearchTimer =
+        setTimeout(
+          function() {
+
+            leaderboardPage =
+              1;
+
+            loadLeaderboard();
+
+          },
+          400
+        );
+
+    }
+  );
+
+}
+
+/* ==========================================================
+   LEADERBOARD LIMIT
+========================================================== */
+if (
+  leaderboardLimit
+) {
+
+  leaderboardLimit.addEventListener(
+    'change',
+    function() {
+
+      leaderboardPage =
+        1;
+
+      loadLeaderboard();
+
+    }
+  );
+
+}
+
+/* ==========================================================
+   LEADERBOARD PREVIOUS
+========================================================== */
+if (
+  leaderboardPrev
+) {
+
+  leaderboardPrev.addEventListener(
+    'click',
+    function() {
+
+      if (
+        leaderboardPage > 1
+      ) {
+
+        leaderboardPage--;
+
+        loadLeaderboard();
+
+      }
+
+    }
+  );
+
+}
+
+/* ==========================================================
+   LEADERBOARD NEXT
+========================================================== */
+if (
+  leaderboardNext
+) {
+
+  leaderboardNext.addEventListener(
+    'click',
+    function() {
+
+      if (
+        leaderboardPage <
+        leaderboardTotalPages
+      ) {
+
+        leaderboardPage++;
+
+        loadLeaderboard();
+
+      }
+
+    }
+  );
+
+}
+
+/* ==========================================================
+   LEADERBOARD EXPORT
+========================================================== */
+if (
+  leaderboardExport
+) {
+
+  leaderboardExport.addEventListener(
+    'click',
+    function() {
+
+      const search =
+        leaderboardSearch
+
+          ? leaderboardSearch
+              .value
+              .trim()
+
+          : '';
+
+      const params =
+        new URLSearchParams();
+
+      if (
+        search
+      ) {
+
+        params.set(
+          'search',
+          search
+        );
+
+      }
+
+      let exportUrl =
+        LEADERBOARD_EXPORT_API;
+
+      if (
+        params.toString()
+      ) {
+
+        exportUrl +=
+          '?' +
+          params.toString();
+
+      }
 
       window.location.href =
         exportUrl;
@@ -4064,11 +4811,9 @@ if (
 
 }
 
-
 /* ==========================================================
    LOGOUT
 ========================================================== */
-
 if (
   logoutButton
 ) {
@@ -4081,13 +4826,10 @@ if (
         'ss_rank_session'
       );
 
-
       sessionStorage.clear();
-
 
       sessionToken =
         null;
-
 
       window.location.replace(
         loginUrl ||
@@ -4099,11 +4841,9 @@ if (
 
 }
 
-
 /* ==========================================================
    MUSIC PLAY
 ========================================================== */
-
 async function playMusic() {
 
   if (
@@ -4114,15 +4854,12 @@ async function playMusic() {
 
   }
 
-
   try {
 
     bgMusic.volume =
       0.30;
 
-
     await bgMusic.play();
-
 
     if (
       musicButton
@@ -4143,11 +4880,9 @@ async function playMusic() {
 
 }
 
-
 /* ==========================================================
    MUSIC PAUSE
 ========================================================== */
-
 function pauseMusic() {
 
   if (
@@ -4158,9 +4893,7 @@ function pauseMusic() {
 
   }
 
-
   bgMusic.pause();
-
 
   if (
     musicButton
@@ -4173,11 +4906,9 @@ function pauseMusic() {
 
 }
 
-
 /* ==========================================================
    MUSIC AUTOSTART
 ========================================================== */
-
 async function tryStartMusic() {
 
   if (
@@ -4188,15 +4919,12 @@ async function tryStartMusic() {
 
   }
 
-
   try {
 
     bgMusic.volume =
       0.30;
 
-
     await bgMusic.play();
-
 
     if (
       musicButton
@@ -4219,7 +4947,8 @@ async function tryStartMusic() {
 
       },
       {
-        once: true
+        once:
+          true
       }
     );
 
@@ -4227,11 +4956,9 @@ async function tryStartMusic() {
 
 }
 
-
 /* ==========================================================
    MUSIC BUTTON
 ========================================================== */
-
 if (
   musicButton
 ) {
@@ -4247,7 +4974,6 @@ if (
         return;
 
       }
-
 
       if (
         bgMusic.paused
@@ -4268,22 +4994,18 @@ if (
 
 }
 
-
 /* ==========================================================
    STORY PARALLAX
 ========================================================== */
-
 const seasonStory =
   document.querySelector(
     '.season-story'
   );
 
-
 const storyContent =
   document.querySelector(
     '.story-content'
   );
-
 
 if (
 
@@ -4307,14 +5029,12 @@ if (
         seasonStory
           .getBoundingClientRect();
 
-
       const x =
         (
           event.clientX -
           rect.left
         ) /
         rect.width;
-
 
       const y =
         (
@@ -4323,20 +5043,17 @@ if (
         ) /
         rect.height;
 
-
       const moveX =
         (
           x - 0.5
         ) *
         7;
 
-
       const moveY =
         (
           y - 0.5
         ) *
         4;
-
 
       storyContent
         .style
@@ -4350,7 +5067,6 @@ if (
 
     }
   );
-
 
   seasonStory.addEventListener(
     'mouseleave',
@@ -4366,11 +5082,9 @@ if (
 
 }
 
-
 /* ==========================================================
    JOURNEY OBSERVER
 ========================================================== */
-
 if (
 
   journeySection &&
@@ -4397,7 +5111,6 @@ if (
                   'journey-visible'
                 );
 
-
               observer.unobserve(
                 entry.target
               );
@@ -4409,10 +5122,10 @@ if (
 
       },
       {
-        threshold: 0.12
+        threshold:
+          0.12
       }
     );
-
 
   observer.observe(
     journeySection
@@ -4420,9 +5133,7 @@ if (
 
 }
 
-
 /* ==========================================================
    START
 ========================================================== */
-
 loadDashboard();
