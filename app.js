@@ -294,6 +294,120 @@ const databaseNext =
     'databaseNext'
   );
 
+/* ==========================================================
+   DOM — POINT
+========================================================== */
+
+const pointSearch =
+  document.getElementById(
+    'pointSearch'
+  );
+
+
+const pointLimit =
+  document.getElementById(
+    'pointLimit'
+  );
+
+
+const pointExport =
+  document.getElementById(
+    'pointExport'
+  );
+
+
+const pointTableBody =
+  document.getElementById(
+    'pointTableBody'
+  );
+
+
+const pointMobile =
+  document.getElementById(
+    'pointMobile'
+  );
+
+
+const pointPodium =
+  document.getElementById(
+    'pointPodium'
+  );
+
+
+const pointStatus =
+  document.getElementById(
+    'pointStatus'
+  );
+
+
+const pointPrev =
+  document.getElementById(
+    'pointPrev'
+  );
+
+
+const pointNext =
+  document.getElementById(
+    'pointNext'
+  );
+
+
+const pointPageInfo =
+  document.getElementById(
+    'pointPageInfo'
+  );
+
+
+const pointTotal =
+  document.getElementById(
+    'pointTotal'
+  );
+
+
+const pointWinner =
+  document.getElementById(
+    'pointWinner'
+  );
+
+
+const pointLose =
+  document.getElementById(
+    'pointLose'
+  );
+
+
+const pointMonth1Header =
+  document.getElementById(
+    'pointMonth1Header'
+  );
+
+
+const pointMonth2Header =
+  document.getElementById(
+    'pointMonth2Header'
+  );
+
+
+const pointMonth3Header =
+  document.getElementById(
+    'pointMonth3Header'
+  );
+
+
+let pointPage =
+  1;
+
+
+let pointTotalPages =
+  1;
+
+
+let pointLoaded =
+  false;
+
+
+let pointSearchTimer =
+  null;
 
 /* ==========================================================
    APP STATE
