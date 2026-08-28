@@ -1,27 +1,25 @@
 /* ==========================================================
    SS RANK UP SEASON
-   API: /api/ss-database
-
-   FEATURES
-   - pagination
-   - search nama / SS ID
-   - filter
-   - ringan untuk dataset besar
+   DATABASE API — FINAL SEARCH FIX
 ========================================================== */
 
-export default async function handler(
-  req,
-  res
-) {
+export default async function handler(req, res) {
 
   try {
 
     const supabaseUrl =
-      process.env.SUPABASE_URL;
+      String(
+        process.env.SUPABASE_URL || ''
+      )
+        .trim()
+        .replace(/\/+$/, '');
 
 
     const serviceKey =
-      process.env.SUPABASE_SERVICE_KEY;
+      String(
+        process.env.SUPABASE_SERVICE_KEY || ''
+      )
+        .trim();
 
 
     if (
@@ -33,8 +31,7 @@ export default async function handler(
         .status(500)
         .json({
 
-          success:
-            false,
+          success: false,
 
           message:
             'Supabase environment belum tersedia.'
@@ -45,82 +42,53 @@ export default async function handler(
 
 
     /* ======================================================
-       QUERY PARAMS
+       PAGINATION
     ====================================================== */
 
-    const {
-
-      page = '1',
-
-      limit = '50',
-
-      search = '',
-
-      department = '',
-
-      superior = '',
-
-      location = '',
-
-      type = '',
-
-      month = '',
-
-      superiorStatus = '',
-
-      implementationStatus = '',
-
-      qualification = ''
-
-    } = req.query;
-
-
-    const currentPage =
+    const page =
       Math.max(
         1,
         parseInt(
-          page,
+          req.query.page || '1',
           10
-        ) || 1
+        )
       );
 
 
-    /*
-      Maximum 100 agar tidak berat.
-    */
-
-    const pageSize =
+    const limit =
       Math.min(
-
         100,
-
         Math.max(
           1,
           parseInt(
-            limit,
+            req.query.limit || '50',
             10
-          ) || 50
+          )
         )
-
       );
 
 
     const from =
-      (
-        currentPage - 1
-      ) *
-      pageSize;
+      (page - 1) *
+      limit;
 
 
     const to =
       from +
-      pageSize -
+      limit -
       1;
 
 
     /* ======================================================
-       BUILD SUPABASE URL
+       SEARCH
     ====================================================== */
+
+    const search =
+      String(
+        req.query.search || ''
+      )
+        .trim();
+
 
     const params =
       new URLSearchParams();
@@ -153,145 +121,84 @@ export default async function handler(
     );
 
 
-    /*
-      Sort terbaru dulu.
-    */
+    /* ======================================================
+       SEARCH LOGIC
+    ====================================================== */
+
+    if (search) {
+
+      const clean =
+        cleanSearchValue(
+          search
+        );
+
+
+      /*
+        Kalau angka saja:
+        cari SS ID.
+      */
+
+      if (
+        /^\d+$/.test(clean)
+      ) {
+
+        params.set(
+          'ss_id',
+          'eq.' + clean
+        );
+
+      }
+
+      /*
+        Kalau teks:
+        cari nama.
+      */
+
+      else {
+
+        /*
+          Supabase ilike
+          contoh:
+          deni
+          DENI
+          deni saputra
+        */
+
+        params.set(
+          'employee_name',
+          'ilike.*' +
+          clean +
+          '*'
+        );
+
+      }
+
+    }
+
+
+    /* ======================================================
+       SORTING
+
+       DONE paling atas.
+       Setelah itu source row.
+    ====================================================== */
 
     params.set(
       'order',
-      'created_time.desc.nullslast'
+      [
+        'qualification.desc.nullslast',
+        'source_row.asc'
+      ].join(',')
     );
 
 
     /* ======================================================
-       SEARCH
-       Nama atau SS ID
-    ====================================================== */
-
-    const cleanSearch =
-      String(
-        search || ''
-      )
-        .trim();
-
-
-    if (
-      cleanSearch
-    ) {
-
-      /*
-        ilike = case insensitive.
-
-        Search satu box bisa:
-        DENI
-        Deni
-        deni
-        156678
-      */
-
-      params.set(
-
-        'or',
-
-        [
-          'employee_name.ilike.*' +
-          escapeFilterValue(
-            cleanSearch
-          ) +
-          '*',
-
-          'ss_id.ilike.*' +
-          escapeFilterValue(
-            cleanSearch
-          ) +
-          '*'
-        ].join(',')
-
-      );
-
-    }
-
-
-    /* ======================================================
-       FILTERS
-    ====================================================== */
-
-    addExactFilter(
-      params,
-      'department',
-      department
-    );
-
-
-    addExactFilter(
-      params,
-      'superior_name',
-      superior
-    );
-
-
-    addExactFilter(
-      params,
-      'work_location',
-      location
-    );
-
-
-    addExactFilter(
-      params,
-      'ss_type',
-      type
-    );
-
-
-    addExactFilter(
-      params,
-      'status_superior',
-      superiorStatus
-    );
-
-
-    addExactFilter(
-      params,
-      'status_implementasi',
-      implementationStatus
-    );
-
-
-    addExactFilter(
-      params,
-      'qualification',
-      qualification
-    );
-
-
-    if (
-      String(
-        month || ''
-      ).trim()
-    ) {
-
-      params.set(
-        'month_no',
-        'eq.' +
-        encodeURIComponent(
-          String(month)
-        )
-      );
-
-    }
-
-
-    /* ======================================================
-       FETCH
+       REQUEST
     ====================================================== */
 
     const url =
 
-      supabaseUrl.replace(
-        /\/+$/,
-        ''
-      ) +
+      supabaseUrl +
 
       '/rest/v1/ss_rank_up_database?' +
 
@@ -321,9 +228,7 @@ export default async function handler(
               'count=exact',
 
             Range:
-              from +
-              '-' +
-              to
+              `${from}-${to}`
 
           },
 
@@ -344,7 +249,7 @@ export default async function handler(
     ) {
 
       console.error(
-        'SUPABASE DATABASE ERROR',
+        'SUPABASE ERROR:',
         response.status,
         text
       );
@@ -358,23 +263,37 @@ export default async function handler(
             false,
 
           message:
-            'Gagal mengambil database.'
+            'Database gagal dimuat.',
+
+          detail:
+            text
 
         });
 
     }
 
 
-    const data =
-      text
-        ? JSON.parse(
-            text
-          )
-        : [];
+    let data = [];
+
+
+    try {
+
+      data =
+        text
+          ? JSON.parse(text)
+          : [];
+
+    }
+
+    catch {
+
+      data = [];
+
+    }
 
 
     /* ======================================================
-       TOTAL COUNT
+       TOTAL
     ====================================================== */
 
     const contentRange =
@@ -383,8 +302,7 @@ export default async function handler(
       );
 
 
-    let total =
-      0;
+    let total = 0;
 
 
     if (
@@ -392,38 +310,39 @@ export default async function handler(
       contentRange.includes('/')
     ) {
 
-      const parts =
-        contentRange.split('/');
-
-
       const totalText =
-        parts[
-          parts.length - 1
-        ];
+        contentRange
+          .split('/')
+          .pop();
 
 
-      total =
-        totalText === '*'
+      if (
+        totalText !== '*'
+      ) {
 
-          ? 0
+        total =
+          Number(
+            totalText
+          ) || 0;
 
-          : Number(
-              totalText
-            ) || 0;
+      }
 
     }
 
 
     const totalPages =
-      total
+      total > 0
 
         ? Math.ceil(
-            total /
-            pageSize
+            total / limit
           )
 
-        : 0;
+        : 1;
 
+
+    /* ======================================================
+       RESPONSE
+    ====================================================== */
 
     return res
       .status(200)
@@ -438,10 +357,10 @@ export default async function handler(
         pagination: {
 
           page:
-            currentPage,
+            page,
 
           limit:
-            pageSize,
+            limit,
 
           total:
             total,
@@ -450,12 +369,12 @@ export default async function handler(
             totalPages,
 
           from:
-            total
+            total > 0
               ? from + 1
               : 0,
 
           to:
-            total
+            total > 0
               ? Math.min(
                   to + 1,
                   total
@@ -466,13 +385,12 @@ export default async function handler(
 
       });
 
-
   }
 
   catch(error) {
 
     console.error(
-      'SS DATABASE API ERROR',
+      'DATABASE API ERROR:',
       error
     );
 
@@ -495,58 +413,34 @@ export default async function handler(
 
 
 /* ==========================================================
-   EXACT FILTER
+   CLEAN SEARCH
 ========================================================== */
 
-function addExactFilter(
-  params,
-  column,
-  value
-) {
-
-  const clean =
-    String(
-      value || ''
-    )
-      .trim();
-
-
-  if (!clean) {
-
-    return;
-
-  }
-
-
-  params.set(
-
-    column,
-
-    'eq.' +
-    encodeURIComponent(
-      clean
-    )
-
-  );
-
-}
-
-
-/* ==========================================================
-   SAFE FILTER VALUE
-========================================================== */
-
-function escapeFilterValue(
-  value
-) {
+function cleanSearchValue(value) {
 
   return String(
     value || ''
   )
+
+    .trim()
+
+    /*
+      Hapus karakter yang bisa
+      mengganggu filter PostgREST.
+    */
+
     .replace(
       /[%*(),]/g,
       ''
     )
-    .trim();
+
+    /*
+      Rapikan spasi ganda.
+    */
+
+    .replace(
+      /\s+/g,
+      ' '
+    );
 
 }
