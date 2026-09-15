@@ -7362,17 +7362,12 @@ document.addEventListener('keydown', function(event) {
 
 /*
   Tambahkan media IGS di folder:
-  assets/campaign/story-1.jpg
   assets/campaign/story-2.mp4
   assets/campaign/story-3.jpg
 
   Rasio ideal: 9:16 (1080 x 1920).
 */
 const CAMPAIGN_STORIES = [
-  {
-    type: 'image',
-    src: './assets/campaign/story-1.jpg'
-  },
   {
     type: 'video',
     src: './assets/campaign/story-2.mp4'
