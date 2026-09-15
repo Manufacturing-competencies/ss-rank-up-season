@@ -1,0 +1,34 @@
+SS RANK UP SEASON — FINAL STRUCTURE
+
+API FINAL:
+- api/dashboard.js
+- api/leaderboard.js
+- api/points.js
+- api/profile.js
+- api/rewards.js
+- api/session.js
+- api/ss-database.js
+
+KEEP your existing binary files:
+- assets/hero-bg.png
+- Rank Up Season.mp3
+
+Vercel Environment Variables:
+- SUPABASE_URL
+- SUPABASE_SERVICE_KEY
+- LOGIN_URL (recommended)
+- SEASON_CODE (optional; default SS-RANK-UP-2026)
+
+REMOVE old API files if they still exist:
+- leaderboard-export.js
+- point-export.js
+- logout.js
+- player-photos.js
+- profile-photo.js
+- reward-export.js
+- ss-export.js
+
+Deploy:
+git add .
+git commit -m "Rebuild API structure"
+git push origin main
