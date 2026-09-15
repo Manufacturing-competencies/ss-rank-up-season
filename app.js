@@ -6739,3 +6739,612 @@ document.addEventListener(
 
   }
 );
+
+
+
+/* ==========================================================
+   FINAL SEASON LOGIC — CONSISTENCY GATE + REWARD CLAIM
+   RULE:
+   - Potential Rank = total Approved Implementasi.
+   - Monthly Quest wajib lengkap: semua 3 bulan >= 1.
+   - Jika total >= 1 tetapi Monthly Quest belum lengkap:
+     Active Rank berhenti di ELITE.
+   - Jika Monthly Quest lengkap:
+     Active Rank = Potential Rank.
+   - Total/Point/Leaderboard tetap bertambah meski Rank terkunci.
+========================================================== */
+
+function finalMonthList(source) {
+  return [
+    {
+      name: firstValue(source.month_1_name, 'MONTH 1'),
+      value: safeNumber(source.month_1_value)
+    },
+    {
+      name: firstValue(source.month_2_name, 'MONTH 2'),
+      value: safeNumber(source.month_2_value)
+    },
+    {
+      name: firstValue(source.month_3_name, 'MONTH 3'),
+      value: safeNumber(source.month_3_value)
+    }
+  ];
+}
+
+function finalConsistencyInfo(source) {
+  const months = finalMonthList(source || {});
+  const completed = months.filter(item => item.value >= 1);
+  const missed = months.filter(item => item.value < 1);
+
+  return {
+    months,
+    completeCount: completed.length,
+    completed,
+    missed,
+    isComplete: completed.length === months.length
+  };
+}
+
+function finalTotalApproved(source) {
+  return safeNumber(
+    firstValue(
+      source.totalApproved,
+      source.total_approved,
+      source.sum,
+      source.ss_done,
+      source.approved_ss,
+      0
+    )
+  );
+}
+
+function finalRankState(source) {
+  const total = finalTotalApproved(source || {});
+  const consistency = finalConsistencyInfo(source || {});
+  const potentialRank = calculateRankFromTotal(total);
+
+  let activeRank = 'WARRIOR';
+
+  if (total >= 1) {
+    activeRank = consistency.isComplete
+      ? potentialRank
+      : 'ELITE';
+  }
+
+  return {
+    total,
+    consistency,
+    potentialRank,
+    activeRank,
+    seasonStatus: consistency.isComplete ? 'WINNER' : 'FAILED',
+    rankLocked: !consistency.isComplete && total >= 2
+  };
+}
+
+function finalNextRankDisplay(source) {
+  const state = finalRankState(source);
+
+  if (!state.consistency.isComplete) {
+    const missedNames = state.consistency.missed.map(item => item.name);
+
+    return {
+      name: state.potentialRank === 'WARRIOR'
+        ? 'ELITE'
+        : state.potentialRank,
+      progress: Math.round((state.consistency.completeCount / 3) * 100),
+      text: missedNames.length
+        ? 'Complete ' + missedNames.join(', ') + ' to continue'
+        : 'Complete Monthly Quest to continue'
+    };
+  }
+
+  return getNextRankInfo(state.total);
+}
+
+function finalRewardKey(rank) {
+  return (
+    'ss_rank_reward_claimed::' +
+    String(currentUserName || 'PLAYER').trim().toUpperCase() +
+    '::' +
+    String(rank || '').trim().toUpperCase()
+  );
+}
+
+function finalRewardClaimed(rank) {
+  try {
+    return localStorage.getItem(finalRewardKey(rank)) === '1';
+  }
+  catch {
+    return false;
+  }
+}
+
+function finalSetRewardClaimed(rank) {
+  try {
+    localStorage.setItem(finalRewardKey(rank), '1');
+  }
+  catch {
+    /* browser storage unavailable */
+  }
+}
+
+function finalRankReward(rank) {
+  const slug = String(rank || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-');
+
+  const label = String(rank || 'RANK').toUpperCase();
+
+  return {
+    title: label + ' REWARD',
+    text: 'Rank unlocked. Your achievement reward is ready to collect.',
+    image: './assets/rewards/' + slug + '.png'
+  };
+}
+
+function finalCreateRewardParticles() {
+  const host = document.getElementById('rankRewardParticles');
+
+  if (!host) {
+    return;
+  }
+
+  host.innerHTML = '';
+
+  const colors = [
+    '#58ddff',
+    '#9368ff',
+    '#5be5bd',
+    '#ffd768',
+    '#ff74af'
+  ];
+
+  for (let i = 0; i < 34; i += 1) {
+    const item = document.createElement('i');
+    item.className = 'rank-reward-particle';
+
+    const angle = (Math.PI * 2 * i) / 34;
+    const distance = 120 + Math.random() * 170;
+
+    item.style.left = '50%';
+    item.style.top = '42%';
+    item.style.color = colors[i % colors.length];
+    item.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+    item.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+    item.style.setProperty('--rot', (180 + Math.random() * 540) + 'deg');
+    item.style.animationDelay = (Math.random() * .18) + 's';
+
+    host.appendChild(item);
+  }
+}
+
+function finalOpenReward(rank) {
+  const modal = document.getElementById('rankRewardModal');
+  const image = document.getElementById('rankRewardImage');
+  const fallback = document.getElementById('rankRewardFallback');
+  const title = document.getElementById('rankRewardTitle');
+  const text = document.getElementById('rankRewardText');
+  const rankText = document.getElementById('rankRewardRank');
+
+  if (!modal) {
+    return;
+  }
+
+  const reward = finalRankReward(rank);
+
+  finalSetRewardClaimed(rank);
+
+  if (title) {
+    title.textContent = reward.title;
+  }
+
+  if (text) {
+    text.textContent = reward.text;
+  }
+
+  if (rankText) {
+    rankText.textContent = String(rank).toUpperCase();
+  }
+
+  if (fallback) {
+    fallback.textContent = getRankSymbol(rank);
+    fallback.hidden = false;
+  }
+
+  if (image) {
+    image.hidden = true;
+    image.removeAttribute('src');
+
+    image.onload = function() {
+      image.hidden = false;
+      if (fallback) {
+        fallback.hidden = true;
+      }
+    };
+
+    image.onerror = function() {
+      image.hidden = true;
+      if (fallback) {
+        fallback.hidden = false;
+      }
+    };
+
+    image.src = reward.image;
+  }
+
+  modal.hidden = false;
+  modal.setAttribute('aria-hidden', 'false');
+
+  finalCreateRewardParticles();
+
+  requestAnimationFrame(function() {
+    document.querySelectorAll(
+      '.journey-card .rank-claim-button[data-rank="' +
+      CSS.escape(String(rank)) +
+      '"]'
+    ).forEach(button => {
+      button.textContent = 'VIEW REWARD';
+      button.classList.add('claimed');
+    });
+  });
+}
+
+function finalCloseReward() {
+  const modal = document.getElementById('rankRewardModal');
+
+  if (!modal) {
+    return;
+  }
+
+  modal.hidden = true;
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function finalDecorateJourneyRewards(state, order) {
+  if (!journeyTrack) {
+    return;
+  }
+
+  const activeIndex = Math.max(0, order.indexOf(state.activeRank));
+  const potentialIndex = Math.max(0, order.indexOf(state.potentialRank));
+
+  journeyTrack.querySelectorAll('.journey-card').forEach(card => {
+    const rank = String(card.dataset.rank || '').toUpperCase();
+    const index = safeNumber(card.dataset.index);
+
+    card.classList.remove('consistency-lock');
+
+    const oldButton = card.querySelector('.rank-claim-button');
+    if (oldButton) {
+      oldButton.remove();
+    }
+
+    if (index === 0) {
+      return;
+    }
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'rank-claim-button';
+    button.dataset.rank = rank;
+
+    if (index <= activeIndex) {
+      if (finalRewardClaimed(rank)) {
+        button.textContent = 'VIEW REWARD';
+        button.classList.add('claimed');
+      }
+      else {
+        button.textContent = 'CLAIM REWARD';
+      }
+
+      button.addEventListener('click', function(event) {
+        event.stopPropagation();
+        finalOpenReward(rank);
+      });
+    }
+    else {
+      button.disabled = true;
+      button.textContent = '🔒 REWARD LOCKED';
+
+      if (
+        !state.consistency.isComplete &&
+        index <= potentialIndex
+      ) {
+        card.classList.add('consistency-lock');
+      }
+    }
+
+    card.appendChild(button);
+  });
+}
+
+
+/* ---------- HOME CURRENT RANK ---------- */
+
+renderRank = function(progress) {
+  const state = finalRankState(progress || {});
+  const rank = state.activeRank;
+
+  if (rankPanel) {
+    rankPanel.classList.remove(
+      'rank-warrior',
+      'rank-elite',
+      'rank-epic',
+      'rank-legend',
+      'rank-mythic',
+      'rank-mythic-honor',
+      'rank-mythic-glory'
+    );
+    rankPanel.classList.add(getRankClass(rank));
+  }
+
+  if (rankSymbol) {
+    rankSymbol.textContent = getRankSymbol(rank);
+  }
+
+  if (rankName) {
+    rankName.textContent = rank;
+  }
+
+  if (rankTotal) {
+    rankTotal.textContent = state.total + ' SS';
+  }
+
+  if (seasonStatus) {
+    seasonStatus.classList.remove('winner', 'failed');
+    seasonStatus.textContent = state.seasonStatus;
+    seasonStatus.classList.add(
+      state.seasonStatus === 'WINNER'
+        ? 'winner'
+        : 'failed'
+    );
+  }
+
+  if (missedMonths) {
+    missedMonths.textContent =
+      state.consistency.missed.length
+        ? 'Missed: ' +
+          state.consistency.missed.map(item => item.name).join(', ')
+        : '';
+  }
+};
+
+
+/* ---------- HOME MONTHLY + NEXT TARGET ---------- */
+
+const finalLegacyRenderHomeLobby = renderHomeLobby;
+
+renderHomeLobby = function(progress) {
+  finalLegacyRenderHomeLobby(progress);
+
+  const next = finalNextRankDisplay(progress || {});
+
+  if (homeNextRankName) {
+    homeNextRankName.textContent = next.name;
+  }
+
+  if (homeNextProgressBar) {
+    homeNextProgressBar.style.width = next.progress + '%';
+  }
+
+  if (homeNextRankText) {
+    homeNextRankText.textContent = next.text;
+  }
+};
+
+
+/* ---------- RANK JOURNEY ---------- */
+
+renderJourney = function(progress) {
+  if (!journeyTrack) {
+    return;
+  }
+
+  const state = finalRankState(progress || {});
+
+  const order = [
+    'WARRIOR',
+    'ELITE',
+    'EPIC',
+    'LEGEND',
+    'MYTHIC',
+    'MYTHIC HONOR',
+    'MYTHIC GLORY'
+  ];
+
+  const currentIndex = Math.max(0, order.indexOf(state.activeRank));
+  const potentialIndex = Math.max(0, order.indexOf(state.potentialRank));
+
+  journeyTrack.querySelectorAll('.journey-card').forEach(card => {
+    const index = safeNumber(card.dataset.index);
+    const stateLabel = card.querySelector('.journey-card-state');
+
+    card.classList.remove(
+      'current',
+      'achieved',
+      'locked',
+      'consistency-lock'
+    );
+
+    if (index < currentIndex) {
+      card.classList.add('achieved');
+
+      if (stateLabel) {
+        stateLabel.textContent = 'UNLOCKED';
+      }
+    }
+    else if (index === currentIndex) {
+      card.classList.add('current');
+
+      if (stateLabel) {
+        stateLabel.textContent = 'CURRENT';
+      }
+    }
+    else {
+      card.classList.add('locked');
+
+      const consistencyLocked =
+        !state.consistency.isComplete &&
+        index <= potentialIndex;
+
+      if (consistencyLocked) {
+        card.classList.add('consistency-lock');
+      }
+
+      if (stateLabel) {
+        stateLabel.textContent =
+          consistencyLocked
+            ? 'CONSISTENCY LOCK'
+            : 'LOCKED';
+      }
+    }
+  });
+
+  if (journeySummary) {
+    journeySummary.innerHTML =
+      '<b>Current:</b> ' +
+      escapeHtml(state.activeRank) +
+      ' &nbsp;•&nbsp; ' +
+      '<b>Potential:</b> ' +
+      escapeHtml(state.potentialRank) +
+      ' &nbsp;•&nbsp; ' +
+      '<b>Approved:</b> ' +
+      state.total +
+      ' SS &nbsp;•&nbsp; ' +
+      '<b>Season:</b> ' +
+      escapeHtml(state.seasonStatus);
+  }
+
+  if (journeyNote) {
+    if (state.consistency.isComplete) {
+      journeyNote.innerHTML =
+        'Season Status: ' +
+        '<strong class="winner">WINNER</strong> — ' +
+        'Monthly Quest complete. Rank progression is fully unlocked.';
+    }
+    else {
+      const missed = state.consistency.missed
+        .map(item => item.name)
+        .join(', ');
+
+      journeyNote.innerHTML =
+        'Season Status: ' +
+        '<strong class="failed">FAILED</strong> — ' +
+        'Active Rank berhenti di <b>' +
+        escapeHtml(state.activeRank) +
+        '</b>. Potential Rank <b>' +
+        escapeHtml(state.potentialRank) +
+        '</b> terkunci sampai seluruh Monthly Quest lengkap.' +
+        (missed ? ' Missed: <b>' + escapeHtml(missed) + '</b>.' : '');
+    }
+  }
+
+  finalDecorateJourneyRewards(state, order);
+};
+
+
+/* ---------- POINT PAGE: STATUS + ACTIVE RANK ---------- */
+
+normalizePointStatus = function(value) {
+  const status = String(value || '').trim().toUpperCase();
+  return status === 'WINNER' ? 'WINNER' : 'FAILED';
+};
+
+function finalDecoratePointRow(row) {
+  const state = finalRankState(row || {});
+
+  return {
+    ...row,
+    status: state.seasonStatus,
+    season_status: state.seasonStatus,
+    rank: state.activeRank,
+    potential_rank: state.potentialRank
+  };
+}
+
+const finalLegacyRenderPointRows = renderPointRows;
+renderPointRows = function(rows) {
+  finalLegacyRenderPointRows(
+    (rows || []).map(finalDecoratePointRow)
+  );
+
+  if (pointTableBody) {
+    const sourceRows = (rows || []).map(finalDecoratePointRow);
+    Array.from(pointTableBody.querySelectorAll('tr')).forEach((tr, index) => {
+      const row = sourceRows[index];
+      if (!row) {
+        return;
+      }
+
+      const state = finalRankState(row);
+      const rankCell = tr.lastElementChild;
+
+      if (
+        rankCell &&
+        state.potentialRank !== state.activeRank
+      ) {
+        rankCell.innerHTML =
+          '<strong class="rank-text">' +
+          escapeHtml(state.activeRank) +
+          '</strong>' +
+          '<small class="rank-lock-note">🔒 Potential: ' +
+          escapeHtml(state.potentialRank) +
+          '</small>';
+      }
+    });
+  }
+};
+
+const finalLegacyRenderPointPodium = renderPointPodium;
+renderPointPodium = function(rows) {
+  finalLegacyRenderPointPodium(
+    (rows || []).map(finalDecoratePointRow)
+  );
+};
+
+
+/* ---------- PROFILE ---------- */
+
+const finalLegacyRenderProfile = renderProfile;
+
+renderProfile = function(result) {
+  finalLegacyRenderProfile(result);
+
+  const progress = result?.progress || {};
+  const state = finalRankState(progress);
+
+  if (profileRank) {
+    profileRank.textContent = state.activeRank;
+  }
+
+  if (profileSeasonStatus) {
+    profileSeasonStatus.textContent = state.seasonStatus;
+    profileSeasonStatus.classList.toggle(
+      'winner',
+      state.seasonStatus === 'WINNER'
+    );
+    profileSeasonStatus.classList.toggle(
+      'failed',
+      state.seasonStatus !== 'WINNER'
+    );
+  }
+};
+
+
+/* ---------- MODAL EVENTS ---------- */
+
+document.addEventListener('click', function(event) {
+  const closeTarget = event.target.closest('[data-reward-close]');
+
+  if (closeTarget) {
+    finalCloseReward();
+  }
+});
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    finalCloseReward();
+  }
+});
+

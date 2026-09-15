@@ -1120,7 +1120,7 @@
           </article>
 
           <article>
-            <span>LOSE</span>
+            <span>FAILED</span>
             <strong id="pointLose">0</strong>
           </article>
 
@@ -1231,9 +1231,9 @@
               <th id="pointMonth1Header">MONTH 1</th>
               <th id="pointMonth2Header">MONTH 2</th>
               <th id="pointMonth3Header">MONTH 3</th>
-              <th>STATUS</th>
+              <th>SEASON</th>
               <th>SUM</th>
-              <th>RANK</th>
+              <th>ACTIVE RANK</th>
             </tr>
 
           </thead>
@@ -1996,6 +1996,70 @@
 
 
   </main>
+
+
+  <!-- =====================================================
+       RANK REWARD REVEAL
+  ====================================================== -->
+
+  <div
+    id="rankRewardModal"
+    class="rank-reward-modal"
+    hidden
+    aria-hidden="true"
+  >
+    <div class="rank-reward-backdrop" data-reward-close></div>
+
+    <section
+      class="rank-reward-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="rankRewardTitle"
+    >
+      <div class="rank-reward-burst" aria-hidden="true"></div>
+      <div id="rankRewardParticles" class="rank-reward-particles" aria-hidden="true"></div>
+
+      <span class="rank-reward-kicker">
+        REWARD UNLOCKED
+      </span>
+
+      <div class="rank-reward-photo-shell">
+        <img
+          id="rankRewardImage"
+          class="rank-reward-image"
+          alt=""
+          hidden
+        >
+        <div
+          id="rankRewardFallback"
+          class="rank-reward-fallback"
+        >
+          ✦
+        </div>
+      </div>
+
+      <h2 id="rankRewardTitle">
+        RANK REWARD
+      </h2>
+
+      <p id="rankRewardText">
+        Achievement unlocked.
+      </p>
+
+      <div id="rankRewardRank" class="rank-reward-rank">
+        ELITE
+      </div>
+
+      <button
+        id="rankRewardClose"
+        class="rank-reward-close"
+        type="button"
+        data-reward-close
+      >
+        COLLECTED ✓
+      </button>
+    </section>
+  </div>
 
 
   <!-- =====================================================

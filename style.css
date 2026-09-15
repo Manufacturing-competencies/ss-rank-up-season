@@ -7033,3 +7033,280 @@ canvas {
     scroll-behavior: auto !important;
   }
 }
+
+
+
+/* ==========================================================
+   FINAL GAME RULES + RANK REWARD CLAIM
+========================================================== */
+
+.rank-lock-note {
+  display: block;
+  margin-top: 4px;
+  color: var(--warning);
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.journey-card.consistency-lock {
+  border-color: rgba(255, 200, 98, .22);
+  background:
+    linear-gradient(145deg, rgba(48, 35, 18, .28), rgba(5, 12, 31, .94));
+}
+
+.journey-card.consistency-lock .journey-card-state {
+  color: var(--warning);
+  border-color: rgba(255, 200, 98, .28);
+  background: rgba(255, 200, 98, .08);
+}
+
+.rank-claim-button {
+  width: 100%;
+  min-height: 34px;
+  margin-top: 12px;
+  padding: 0 10px;
+  border: 1px solid rgba(91, 229, 189, .34);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(32, 178, 139, .18), rgba(66, 116, 255, .18));
+  color: var(--green);
+  font-family: var(--font-game);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.rank-claim-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: rgba(91, 229, 189, .68);
+  box-shadow: 0 10px 25px rgba(91, 229, 189, .12);
+}
+
+.rank-claim-button.claimed {
+  color: var(--cyan);
+  border-color: rgba(88, 221, 255, .32);
+}
+
+.rank-claim-button:disabled {
+  cursor: not-allowed;
+  color: #6f7c98;
+  border-color: rgba(111, 145, 225, .12);
+  background: rgba(5, 12, 31, .50);
+  opacity: .65;
+}
+
+.rank-reward-modal[hidden] {
+  display: none !important;
+}
+
+.rank-reward-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.rank-reward-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 4, 15, .82);
+  backdrop-filter: blur(12px);
+}
+
+.rank-reward-dialog {
+  position: relative;
+  z-index: 2;
+  width: min(480px, 94vw);
+  padding: 34px 30px 30px;
+  overflow: hidden;
+  border: 1px solid rgba(88, 221, 255, .34);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(88, 221, 255, .20), transparent 34%),
+    radial-gradient(circle at 85% 75%, rgba(147, 104, 255, .24), transparent 38%),
+    linear-gradient(145deg, #08183c, #050b20 55%, #140b35);
+  box-shadow:
+    0 35px 90px rgba(0, 0, 0, .55),
+    0 0 55px rgba(88, 221, 255, .10);
+  text-align: center;
+  animation: rewardDialogIn .5s cubic-bezier(.2,.9,.2,1) both;
+}
+
+@keyframes rewardDialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(.88);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rank-reward-burst {
+  position: absolute;
+  inset: -55%;
+  pointer-events: none;
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0 8deg,
+      rgba(88,221,255,.13) 8deg 11deg,
+      transparent 11deg 25deg,
+      rgba(147,104,255,.12) 25deg 28deg,
+      transparent 28deg 44deg
+    );
+  animation: rewardBurstSpin 12s linear infinite;
+}
+
+@keyframes rewardBurstSpin {
+  to { transform: rotate(360deg); }
+}
+
+.rank-reward-kicker {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(91, 229, 189, .10);
+  color: var(--green);
+  font-family: var(--font-game);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .10em;
+}
+
+.rank-reward-photo-shell {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 190px;
+  height: 190px;
+  margin: 24px auto 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle, rgba(88,221,255,.16), transparent 60%),
+    rgba(8, 18, 45, .90);
+  box-shadow:
+    0 0 0 8px rgba(88,221,255,.025),
+    0 22px 45px rgba(0,0,0,.30);
+  animation: rewardPhotoPop .65s .12s cubic-bezier(.2,1,.25,1) both;
+}
+
+@keyframes rewardPhotoPop {
+  from {
+    opacity: 0;
+    transform: scale(.55) rotate(-7deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rank-reward-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rank-reward-fallback {
+  display: grid;
+  place-items: center;
+  width: 115px;
+  height: 135px;
+  clip-path: polygon(50% 0,100% 22%,84% 100%,50% 77%,16% 100%,0 22%);
+  background: linear-gradient(145deg, #55d5ff, #527cff, #8d52ff);
+  color: #fff;
+  font-family: var(--font-game);
+  font-size: 34px;
+  font-weight: 900;
+  filter: drop-shadow(0 0 20px rgba(88,221,255,.38));
+}
+
+.rank-reward-dialog h2 {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  font-family: var(--font-game);
+  font-size: 26px;
+}
+
+.rank-reward-dialog p {
+  position: relative;
+  z-index: 2;
+  margin: 10px auto 0;
+  max-width: 380px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.rank-reward-rank {
+  position: relative;
+  z-index: 2;
+  margin-top: 14px;
+  color: var(--cyan);
+  font-family: var(--font-game);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.rank-reward-close {
+  position: relative;
+  z-index: 2;
+  min-height: 43px;
+  margin-top: 22px;
+  padding: 0 20px;
+  border: 1px solid rgba(91,229,189,.38);
+  border-radius: 12px;
+  background: rgba(91,229,189,.10);
+  color: var(--green);
+  font-family: var(--font-game);
+  font-size: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.rank-reward-particle {
+  position: absolute;
+  z-index: 3;
+  width: 7px;
+  height: 14px;
+  border-radius: 3px;
+  background: currentColor;
+  pointer-events: none;
+  animation: rewardParticleFly 1.45s ease-out forwards;
+}
+
+@keyframes rewardParticleFly {
+  from {
+    opacity: 1;
+    transform: translate(0,0) rotate(0deg) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform:
+      translate(var(--tx), var(--ty))
+      rotate(var(--rot))
+      scale(.55);
+  }
+}
+
+@media (max-width: 1100px) {
+  .rank-claim-button {
+    min-height: 29px;
+    margin-top: 8px;
+    font-size: 7px;
+  }
+}
