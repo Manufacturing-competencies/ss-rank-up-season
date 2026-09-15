@@ -9962,3 +9962,764 @@ canvas {
     transition-duration: .001ms !important;
   }
 }
+
+
+/* ==========================================================
+   102. FINAL FLUID COMPACT RESPONSIVE
+   Desktop layout tetap seperti semula.
+   Semakin kecil layar, semua elemen mengecil secara proporsional.
+========================================================== */
+
+/* ---------- DESKTOP: JANGAN UBAH POSISI ---------- */
+@media (min-width: 1201px) {
+  .topbar,
+  .app-navigation,
+  .home-lobby,
+  .game-section,
+  .season-banner,
+  .page-game-hero,
+  .reward-hero,
+  .profile-hero {
+    transform: none !important;
+  }
+}
+
+/* ---------- TABLET / SMALL LAPTOP ---------- */
+@media (max-width: 1200px) and (min-width: 901px) {
+
+  body {
+    font-size: 13.5px !important;
+  }
+
+  .topbar {
+    min-height: 78px !important;
+    padding: 11px 20px !important;
+  }
+
+  .brand-icon {
+    width: 42px !important;
+    height: 50px !important;
+  }
+
+  .brand-title {
+    font-size: 18px !important;
+  }
+
+  .brand-subtitle {
+    font-size: 9px !important;
+  }
+
+  .music-button,
+  .logout-button {
+    min-height: 40px !important;
+  }
+
+  .avatar {
+    width: 44px !important;
+    height: 44px !important;
+    flex-basis: 44px !important;
+  }
+
+  .app-navigation {
+    top: 78px !important;
+    padding: 5px !important;
+  }
+
+  .nav-item {
+    min-height: 39px !important;
+    padding: 0 12px !important;
+    font-size: 11px !important;
+  }
+
+  .nav-icon {
+    font-size: 14px !important;
+  }
+
+  .home-lobby {
+    min-height: 520px !important;
+    padding: 38px 40px !important;
+    gap: 28px !important;
+  }
+
+  .home-player-name {
+    font-size: clamp(36px, 4.8vw, 54px) !important;
+  }
+
+  .home-player-subtitle {
+    font-size: 14px !important;
+  }
+
+  .home-welcome {
+    font-size: 17px !important;
+  }
+
+  .home-stat-card {
+    padding: 14px !important;
+  }
+
+  .home-stat-card strong {
+    font-size: 21px !important;
+  }
+
+  .home-rank-card {
+    min-height: 400px !important;
+    padding: 25px !important;
+  }
+
+  .home-rank-emblem {
+    width: 138px !important;
+    height: 156px !important;
+  }
+
+  .home-rank-shield {
+    width: 116px !important;
+    height: 136px !important;
+  }
+
+  .home-rank-symbol {
+    width: 84px !important;
+    height: 102px !important;
+  }
+
+  .game-section,
+  .season-banner {
+    padding: 30px !important;
+  }
+
+  .section-heading h2,
+  .page-header h1,
+  .page-game-hero h1,
+  .reward-hero h1,
+  .profile-copy h1 {
+    font-size: clamp(25px, 2.8vw, 34px) !important;
+  }
+
+  .journey-card {
+    min-height: 190px !important;
+  }
+}
+
+/* ---------- TABLET / LARGE PHONE ---------- */
+@media (max-width: 900px) {
+
+  body {
+    font-size: 12px !important;
+    line-height: 1.48 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .topbar {
+    min-height: 62px !important;
+    padding: 8px 12px !important;
+  }
+
+  .brand {
+    gap: 8px !important;
+  }
+
+  .brand-icon {
+    width: 32px !important;
+    height: 39px !important;
+    flex-basis: 32px !important;
+  }
+
+  .brand-title {
+    font-size: 14px !important;
+  }
+
+  .brand-subtitle {
+    font-size: 7px !important;
+    letter-spacing: .16em !important;
+  }
+
+  .music-button {
+    width: 36px !important;
+    min-height: 36px !important;
+    border-radius: 10px !important;
+    font-size: 9px !important;
+  }
+
+  .avatar {
+    width: 36px !important;
+    height: 36px !important;
+    flex-basis: 36px !important;
+    border-radius: 10px !important;
+  }
+
+  .user-info,
+  .logout-button {
+    display: none !important;
+  }
+
+  /* tetap di atas, bukan bottom dock */
+  .app-navigation {
+    position: sticky !important;
+    top: 62px !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: calc(100% - 12px) !important;
+    max-width: 100% !important;
+    margin: 7px auto 0 !important;
+    padding: 4px !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    gap: 3px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    border-radius: 14px !important;
+    transform: none !important;
+    scrollbar-width: none;
+  }
+
+  .app-navigation::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-item {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+    min-height: 36px !important;
+    padding: 0 9px !important;
+    flex-direction: row !important;
+    gap: 5px !important;
+    border-radius: 9px !important;
+    font-size: 9px !important;
+  }
+
+  .nav-icon {
+    font-size: 12px !important;
+  }
+
+  .nav-label {
+    display: inline !important;
+    font-size: 9px !important;
+  }
+
+  .home-lobby {
+    width: calc(100% - 10px) !important;
+    min-height: auto !important;
+    margin-top: 10px !important;
+    padding: 20px 16px !important;
+    gap: 16px !important;
+    border-radius: 18px !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .season-chip {
+    min-height: 27px !important;
+    padding: 0 9px !important;
+    font-size: 7px !important;
+  }
+
+  .season-dot {
+    width: 5px !important;
+    height: 5px !important;
+  }
+
+  .home-welcome {
+    margin-top: 16px !important;
+    font-size: 13px !important;
+  }
+
+  .home-player-name {
+    margin: 4px 0 9px !important;
+    font-size: clamp(28px, 8vw, 40px) !important;
+    line-height: 1.02 !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+  }
+
+  .home-player-subtitle {
+    font-size: 11px !important;
+    line-height: 1.55 !important;
+  }
+
+  .home-user-meta {
+    margin-top: 11px !important;
+    font-size: 9px !important;
+  }
+
+  .home-stat-grid {
+    margin-top: 17px !important;
+    gap: 8px !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .home-stat-card {
+    min-height: 68px !important;
+    padding: 9px !important;
+    gap: 8px !important;
+    border-radius: 11px !important;
+  }
+
+  .stat-icon {
+    width: 30px !important;
+    height: 30px !important;
+    flex-basis: 30px !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+  }
+
+  .home-stat-card span,
+  .home-stat-card small {
+    font-size: 8px !important;
+  }
+
+  .home-stat-card strong {
+    font-size: 16px !important;
+  }
+
+  .home-quick-actions {
+    margin-top: 12px !important;
+    gap: 6px !important;
+  }
+
+  .home-action-btn {
+    min-height: 35px !important;
+    padding: 0 10px !important;
+    border-radius: 9px !important;
+    font-size: 9px !important;
+  }
+
+  .home-rank-card {
+    min-height: 320px !important;
+    padding: 18px 14px !important;
+    border-radius: 17px !important;
+  }
+
+  .home-rank-label {
+    font-size: 8px !important;
+  }
+
+  .home-rank-emblem {
+    width: 112px !important;
+    height: 126px !important;
+    margin: 8px auto 4px !important;
+  }
+
+  .home-rank-shield {
+    width: 94px !important;
+    height: 110px !important;
+  }
+
+  .home-rank-symbol {
+    width: 68px !important;
+    height: 82px !important;
+    font-size: 20px !important;
+  }
+
+  .home-rank-name {
+    font-size: 23px !important;
+  }
+
+  .home-rank-score {
+    font-size: 11px !important;
+  }
+
+  .season-status,
+  .missed-months {
+    font-size: 8px !important;
+  }
+
+  .next-rank-panel {
+    padding: 10px !important;
+    border-radius: 10px !important;
+  }
+
+  .next-rank-head,
+  .next-rank-panel small {
+    font-size: 8px !important;
+  }
+
+  .game-section,
+  .season-banner {
+    width: calc(100% - 10px) !important;
+    margin-top: 12px !important;
+    padding: 18px 14px !important;
+    border-radius: 17px !important;
+  }
+
+  .section-heading {
+    gap: 12px !important;
+  }
+
+  .section-kicker,
+  .page-kicker {
+    min-height: 25px !important;
+    padding: 0 8px !important;
+    font-size: 7px !important;
+  }
+
+  .section-heading h2,
+  .page-header h1,
+  .page-game-hero h1,
+  .reward-hero h1,
+  .profile-copy h1 {
+    font-size: clamp(21px, 5vw, 28px) !important;
+  }
+
+  .section-heading p,
+  .page-header p,
+  .page-game-hero p,
+  .reward-hero p {
+    font-size: 10px !important;
+    line-height: 1.55 !important;
+  }
+
+  .month-grid,
+  .profile-month-grid,
+  .profile-stat-grid,
+  .profile-achievement-grid,
+  .reward-card-grid,
+  .mini-summary {
+    gap: 8px !important;
+  }
+
+  .month-card,
+  .profile-month-card,
+  .profile-stat-card,
+  .reward-card {
+    padding: 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .month-value {
+    font-size: 24px !important;
+  }
+
+  .month-name,
+  .month-card span,
+  .month-state {
+    font-size: 8px !important;
+  }
+
+  .game-flow {
+    gap: 8px !important;
+  }
+
+  .game-flow article {
+    padding: 12px !important;
+    border-radius: 11px !important;
+  }
+
+  .game-flow article span,
+  .game-flow article strong,
+  .game-flow article small {
+    font-size: 9px !important;
+  }
+
+  .journey-summary,
+  .journey-note {
+    font-size: 9px !important;
+    padding: 9px !important;
+  }
+
+  .journey-scroll {
+    padding: 8px 0 !important;
+  }
+
+  .journey-track {
+    gap: 8px !important;
+  }
+
+  .journey-card {
+    flex: 0 0 min(55vw, 165px) !important;
+    min-height: 162px !important;
+    padding: 12px !important;
+    border-radius: 11px !important;
+  }
+
+  .journey-card h3 {
+    font-size: 13px !important;
+  }
+
+  .journey-card strong {
+    font-size: 10px !important;
+  }
+
+  .journey-card small,
+  .journey-card-state {
+    font-size: 7px !important;
+  }
+
+  .rank-mini {
+    transform: scale(.82);
+    transform-origin: center;
+  }
+
+  .season-banner h2 {
+    font-size: 21px !important;
+  }
+
+  .season-banner p,
+  .season-banner button {
+    font-size: 9px !important;
+  }
+
+  .data-page,
+  .point-page,
+  .leaderboard-page,
+  .reward-page,
+  .profile-page {
+    padding: 14px 5px 30px !important;
+  }
+
+  .page-game-hero,
+  .reward-hero,
+  .profile-hero {
+    padding: 17px 13px !important;
+    border-radius: 15px !important;
+  }
+
+  .data-toolbar {
+    gap: 7px !important;
+  }
+
+  .search-box,
+  .data-toolbar select,
+  .export-button {
+    min-height: 36px !important;
+    font-size: 9px !important;
+    border-radius: 9px !important;
+  }
+
+  .mobile-card-list {
+    gap: 7px !important;
+  }
+
+  .pagination {
+    gap: 6px !important;
+    font-size: 8px !important;
+  }
+
+  .pagination button {
+    min-height: 34px !important;
+    font-size: 8px !important;
+  }
+}
+
+/* ---------- SMALL PHONE ---------- */
+@media (max-width: 480px) {
+
+  body {
+    font-size: 11px !important;
+  }
+
+  .topbar {
+    min-height: 54px !important;
+    padding: 7px 8px !important;
+  }
+
+  .brand-icon {
+    width: 28px !important;
+    height: 34px !important;
+    flex-basis: 28px !important;
+  }
+
+  .brand-title {
+    font-size: 12px !important;
+  }
+
+  .brand-subtitle {
+    font-size: 6px !important;
+  }
+
+  .music-button {
+    width: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .avatar {
+    width: 32px !important;
+    height: 32px !important;
+    flex-basis: 32px !important;
+  }
+
+  .app-navigation {
+    top: 54px !important;
+    width: calc(100% - 8px) !important;
+    margin-top: 5px !important;
+    padding: 3px !important;
+  }
+
+  .nav-item {
+    min-height: 32px !important;
+    padding: 0 7px !important;
+    font-size: 8px !important;
+  }
+
+  .nav-icon {
+    font-size: 11px !important;
+  }
+
+  .nav-label {
+    font-size: 8px !important;
+  }
+
+  .home-lobby {
+    width: calc(100% - 8px) !important;
+    margin-top: 7px !important;
+    padding: 15px 11px !important;
+    gap: 12px !important;
+    border-radius: 15px !important;
+  }
+
+  .season-chip {
+    min-height: 23px !important;
+    font-size: 6px !important;
+  }
+
+  .home-welcome {
+    margin-top: 12px !important;
+    font-size: 11px !important;
+  }
+
+  .home-player-name {
+    margin: 3px 0 7px !important;
+    font-size: clamp(23px, 7.6vw, 30px) !important;
+  }
+
+  .home-player-subtitle {
+    font-size: 9px !important;
+  }
+
+  .home-user-meta {
+    font-size: 8px !important;
+  }
+
+  .home-stat-grid {
+    margin-top: 13px !important;
+    gap: 6px !important;
+  }
+
+  .home-stat-card {
+    padding: 7px !important;
+    min-height: 60px !important;
+  }
+
+  .stat-icon {
+    width: 26px !important;
+    height: 26px !important;
+    flex-basis: 26px !important;
+    font-size: 10px !important;
+  }
+
+  .home-stat-card span,
+  .home-stat-card small {
+    font-size: 6.5px !important;
+  }
+
+  .home-stat-card strong {
+    font-size: 14px !important;
+  }
+
+  .home-action-btn {
+    min-height: 31px !important;
+    padding: 0 8px !important;
+    font-size: 8px !important;
+  }
+
+  .home-rank-card {
+    min-height: 285px !important;
+    padding: 15px 10px !important;
+  }
+
+  .home-rank-emblem {
+    width: 98px !important;
+    height: 112px !important;
+  }
+
+  .home-rank-shield {
+    width: 82px !important;
+    height: 96px !important;
+  }
+
+  .home-rank-symbol {
+    width: 60px !important;
+    height: 72px !important;
+    font-size: 17px !important;
+  }
+
+  .home-rank-name {
+    font-size: 20px !important;
+  }
+
+  .game-section,
+  .season-banner {
+    width: calc(100% - 8px) !important;
+    padding: 15px 11px !important;
+    border-radius: 15px !important;
+  }
+
+  .section-heading h2,
+  .page-header h1,
+  .page-game-hero h1,
+  .reward-hero h1,
+  .profile-copy h1 {
+    font-size: clamp(19px, 5.5vw, 24px) !important;
+  }
+
+  .section-heading p,
+  .page-header p,
+  .page-game-hero p,
+  .reward-hero p {
+    font-size: 9px !important;
+  }
+
+  .journey-card {
+    flex-basis: min(52vw, 150px) !important;
+    min-height: 150px !important;
+    padding: 10px !important;
+  }
+
+  .season-banner h2 {
+    font-size: 18px !important;
+  }
+}
+
+/* ---------- EXTRA SMALL PHONE ---------- */
+@media (max-width: 360px) {
+
+  .brand-subtitle {
+    display: none !important;
+  }
+
+  .brand-title {
+    font-size: 11px !important;
+  }
+
+  .nav-item {
+    padding: 0 6px !important;
+  }
+
+  .nav-label {
+    font-size: 7px !important;
+  }
+
+  .home-player-name {
+    font-size: 22px !important;
+  }
+
+  .home-stat-grid {
+    gap: 4px !important;
+  }
+
+  .home-stat-card {
+    padding: 6px !important;
+  }
+
+  .home-stat-card span,
+  .home-stat-card small {
+    font-size: 6px !important;
+  }
+
+  .home-stat-card strong {
+    font-size: 13px !important;
+  }
+
+  .journey-card {
+    flex-basis: 145px !important;
+  }
+}
