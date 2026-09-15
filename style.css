@@ -8211,3 +8211,493 @@ button:disabled {
    END
 ========================================================== */
    
+
+/* ==========================================================
+   99. FLUID RESPONSIVE + LIVING BACKGROUND — FINAL OVERRIDE
+   Desktop / Laptop / Tablet / Mobile
+========================================================== */
+
+:root {
+  --fluid-page-x: clamp(12px, 2.6vw, 38px);
+  --fluid-section-gap: clamp(18px, 2.8vw, 34px);
+  --fluid-card-gap: clamp(12px, 1.8vw, 22px);
+  --fluid-card-pad: clamp(16px, 2.2vw, 28px);
+  --fluid-radius: clamp(18px, 2vw, 28px);
+  --content-max: 1480px;
+}
+
+html {
+  width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  width: 100%;
+  min-width: 0;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(64,126,255,.17), transparent 28%),
+    radial-gradient(circle at 84% 18%, rgba(147,104,255,.16), transparent 30%),
+    radial-gradient(circle at 52% 88%, rgba(88,221,255,.08), transparent 34%),
+    linear-gradient(145deg, #01040d, #020611 52%, #071127);
+  background-attachment: fixed;
+}
+
+/* Living background */
+.global-background {
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(3,9,24,.20), rgba(1,4,13,.72)),
+    url('/assets/hero-bg.png') center / cover no-repeat;
+}
+
+.global-background::before,
+.global-background::after {
+  content: '';
+  position: absolute;
+  inset: -30%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.global-background::before {
+  z-index: -3;
+  background:
+    conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0 20%,
+      rgba(88,221,255,.055) 30%,
+      transparent 40% 62%,
+      rgba(147,104,255,.06) 72%,
+      transparent 82% 100%
+    );
+  filter: blur(32px);
+  animation: ambientSpin 42s linear infinite;
+}
+
+.global-background::after {
+  z-index: -2;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(88,221,255,.10), transparent 18%),
+    radial-gradient(circle at 68% 55%, rgba(147,104,255,.11), transparent 20%),
+    radial-gradient(circle at 52% 72%, rgba(85,140,255,.08), transparent 16%);
+  filter: blur(26px);
+  animation: ambientDrift 18s ease-in-out infinite alternate;
+}
+
+.global-grid {
+  opacity: .52;
+  background-size: 54px 54px;
+  animation: gridTravel 24s linear infinite;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.95), rgba(0,0,0,.35) 65%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.95), rgba(0,0,0,.35) 65%, transparent 100%);
+}
+
+.global-orb {
+  filter: blur(clamp(34px, 5vw, 72px));
+  opacity: .42;
+  will-change: transform;
+  animation: orbFloat 11s ease-in-out infinite alternate;
+}
+
+.orb-blue {
+  width: clamp(260px, 42vw, 680px);
+  height: clamp(260px, 42vw, 680px);
+  animation-duration: 12s;
+}
+
+.orb-purple {
+  width: clamp(240px, 38vw, 620px);
+  height: clamp(240px, 38vw, 620px);
+  animation-duration: 15s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes gridTravel {
+  from { background-position: 0 0; }
+  to { background-position: 108px 108px; }
+}
+
+@keyframes orbFloat {
+  0% { transform: translate3d(-3vw, -2vh, 0) scale(.94); }
+  50% { transform: translate3d(2vw, 3vh, 0) scale(1.04); }
+  100% { transform: translate3d(5vw, -1vh, 0) scale(1.12); }
+}
+
+@keyframes ambientSpin {
+  to { transform: rotate(360deg) scale(1.08); }
+}
+
+@keyframes ambientDrift {
+  from { transform: translate3d(-3%, -2%, 0) scale(1); opacity: .58; }
+  to { transform: translate3d(4%, 3%, 0) scale(1.08); opacity: .88; }
+}
+
+/* Fluid topbar */
+.topbar {
+  width: 100%;
+  min-width: 0;
+  padding-left: var(--fluid-page-x);
+  padding-right: var(--fluid-page-x);
+  gap: clamp(10px, 2vw, 24px);
+}
+
+.brand {
+  min-width: 0;
+}
+
+.brand-title {
+  font-size: clamp(14px, 1.45vw, 21px);
+}
+
+.brand-subtitle {
+  font-size: clamp(7px, .72vw, 10px);
+}
+
+.user-panel {
+  min-width: 0;
+  gap: clamp(6px, 1vw, 12px);
+}
+
+.user-info {
+  min-width: 0;
+}
+
+.header-user-name {
+  max-width: clamp(90px, 18vw, 250px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Main pages become fluid */
+.app-page {
+  width: min(100%, var(--content-max));
+  max-width: var(--content-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--fluid-page-x);
+  padding-right: var(--fluid-page-x);
+}
+
+.home-lobby,
+.section-shell,
+.profile-hero,
+.profile-game-card,
+.season-banner,
+.rank-panel,
+.journey-panel {
+  border-radius: var(--fluid-radius);
+}
+
+.home-lobby {
+  width: min(100%, 1420px);
+  padding: clamp(24px, 4vw, 58px);
+  overflow: hidden;
+}
+
+.home-lobby::after {
+  opacity: .80;
+  animation: heroGlowPulse 7s ease-in-out infinite alternate;
+}
+
+@keyframes heroGlowPulse {
+  from { transform: translate3d(-2%, 0, 0) scale(.98); opacity: .55; }
+  to { transform: translate3d(3%, -1%, 0) scale(1.06); opacity: .92; }
+}
+
+.home-player-name {
+  font-size: clamp(32px, 6vw, 78px);
+  line-height: .98;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.home-player-subtitle {
+  max-width: 70ch;
+  font-size: clamp(13px, 1.2vw, 17px);
+}
+
+.section-heading h2,
+.page-title,
+.profile-copy h2 {
+  font-size: clamp(22px, 3.1vw, 42px);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+/* True auto-responsive grids */
+.home-stat-grid,
+.month-grid,
+.game-flow,
+.profile-month-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+  gap: var(--fluid-card-gap);
+}
+
+.home-stat-card,
+.month-card,
+.game-flow article {
+  min-width: 0;
+  padding: var(--fluid-card-pad);
+}
+
+.point-podium {
+  width: min(100%, 1180px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 24px);
+}
+
+.lb-top10 {
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  gap: var(--fluid-card-gap);
+}
+
+.profile-hero {
+  grid-template-columns: minmax(130px, .34fr) minmax(0, 1fr);
+  gap: clamp(22px, 4vw, 52px);
+  padding: clamp(22px, 4vw, 48px);
+}
+
+.profile-game-card {
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: var(--fluid-card-gap);
+}
+
+/* Flexible toolbar */
+.data-toolbar {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(110px, 150px) auto;
+  align-items: center;
+  gap: clamp(9px, 1.4vw, 15px);
+}
+
+.data-toolbar > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Desktop/tablet table behaves naturally */
+.table-shell {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
+}
+
+.table-shell table {
+  width: max(100%, 980px);
+}
+
+/* Navigation scales rather than abruptly breaking */
+.app-navigation {
+  width: min(calc(100% - 24px), 760px);
+  max-width: calc(100vw - 24px);
+  gap: clamp(2px, .8vw, 8px);
+  padding: clamp(5px, .8vw, 9px);
+}
+
+.nav-item {
+  min-width: 0;
+  padding-inline: clamp(3px, .8vw, 11px);
+  font-size: clamp(8px, .82vw, 11px);
+}
+
+.nav-icon {
+  font-size: clamp(15px, 1.5vw, 20px);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  :root {
+    --fluid-page-x: clamp(14px, 2.5vw, 24px);
+  }
+
+  .profile-hero {
+    grid-template-columns: minmax(120px, 180px) minmax(0, 1fr);
+  }
+
+  .data-toolbar {
+    grid-template-columns: minmax(0, 1fr) 130px;
+  }
+
+  .data-toolbar .export-button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+/* Small tablet / large phone */
+@media (max-width: 760px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .home-lobby {
+    padding: clamp(22px, 7vw, 34px) clamp(16px, 5vw, 26px);
+  }
+
+  .home-stat-grid,
+  .month-grid,
+  .game-flow,
+  .profile-month-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
+  }
+
+  .point-podium {
+    grid-template-columns: 1fr;
+    max-width: 540px;
+  }
+
+  .podium-1 {
+    order: -1;
+  }
+
+  .profile-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .profile-avatar {
+    margin-inline: auto;
+  }
+
+  .profile-meta {
+    justify-content: center;
+  }
+
+  .lb-player-card {
+    grid-template-columns: 1fr;
+  }
+
+  .data-toolbar {
+    grid-template-columns: minmax(0, 1fr) 120px;
+  }
+}
+
+/* Phone */
+@media (max-width: 560px) {
+  :root {
+    --fluid-page-x: 10px;
+    --fluid-card-gap: 10px;
+    --fluid-card-pad: 15px;
+  }
+
+  .topbar {
+    padding: 9px 10px;
+  }
+
+  .brand-icon {
+    flex: 0 0 auto;
+  }
+
+  .music-button,
+  .logout-button {
+    min-width: 38px;
+  }
+
+  .home-player-name {
+    font-size: clamp(31px, 11vw, 48px);
+  }
+
+  .home-stat-grid,
+  .month-grid,
+  .game-flow,
+  .profile-month-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .data-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .data-toolbar .export-button {
+    grid-column: auto;
+  }
+
+  .app-navigation {
+    width: calc(100% - 10px);
+    max-width: calc(100vw - 10px);
+    bottom: max(5px, env(safe-area-inset-bottom));
+  }
+
+  .nav-item {
+    min-height: 52px;
+    padding: 4px 1px;
+  }
+
+  .nav-item span:not(.nav-icon) {
+    max-width: 62px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .table-shell {
+    display: none;
+  }
+
+  .mobile-card-list {
+    display: grid;
+  }
+
+  .global-orb {
+    opacity: .28;
+  }
+
+  .global-grid {
+    opacity: .34;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 390px) {
+  .brand-subtitle {
+    display: none;
+  }
+
+  .brand-title {
+    font-size: 13px;
+  }
+
+  .logout-button {
+    padding-inline: 7px;
+    font-size: 8px;
+  }
+
+  .app-navigation {
+    border-radius: 15px;
+  }
+
+  .nav-item {
+    font-size: 7.5px;
+  }
+}
+
+/* Large monitors */
+@media (min-width: 1600px) {
+  :root {
+    --content-max: 1540px;
+  }
+
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Accessibility + performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
