@@ -11658,3 +11658,604 @@ body {
     transform: scale(.32) !important;
   }
 }
+
+
+/* ==========================================================
+   105. REAL MOBILE FIX — FINAL
+   Menghapus scale/transform body yang bikin layout HP berantakan.
+   Desktop tetap.
+   Mobile menyesuaikan proporsional tanpa memaksa canvas 1024px.
+========================================================== */
+
+/* RESET semua scaling lama */
+html,
+body {
+  transform: none !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+.page {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 1600px !important;
+  margin: 0 auto !important;
+}
+
+/* ==========================================================
+   TABLET & MOBILE
+========================================================== */
+@media (max-width: 900px) {
+
+  body {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  .topbar {
+    min-height: 64px !important;
+    padding: 8px 12px !important;
+    gap: 10px !important;
+  }
+
+  .brand {
+    gap: 8px !important;
+    min-width: 0 !important;
+  }
+
+  .brand-icon {
+    width: 34px !important;
+    height: 41px !important;
+    flex: 0 0 34px !important;
+  }
+
+  .brand-title {
+    font-size: 15px !important;
+    white-space: nowrap !important;
+  }
+
+  .brand-subtitle {
+    font-size: 7px !important;
+    letter-spacing: .18em !important;
+  }
+
+  .user-panel {
+    gap: 7px !important;
+    min-width: 0 !important;
+  }
+
+  .user-info {
+    display: none !important;
+  }
+
+  .logout-button {
+    display: none !important;
+  }
+
+  .music-button {
+    width: 36px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+  }
+
+  .avatar {
+    width: 36px !important;
+    height: 36px !important;
+    flex: 0 0 36px !important;
+  }
+
+  /* NAV tetap di atas, bisa geser horizontal */
+  .app-navigation {
+    position: sticky !important;
+    top: 64px !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: calc(100% - 12px) !important;
+    max-width: 100% !important;
+    margin: 6px auto 0 !important;
+    padding: 4px !important;
+    gap: 3px !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+    transform: none !important;
+    border-radius: 14px !important;
+  }
+
+  .app-navigation::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-item {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+    min-height: 36px !important;
+    padding: 0 9px !important;
+    flex-direction: row !important;
+    gap: 5px !important;
+    font-size: 9px !important;
+    white-space: nowrap !important;
+    border-radius: 9px !important;
+  }
+
+  .nav-icon {
+    font-size: 12px !important;
+  }
+
+  .nav-label {
+    display: inline !important;
+    font-size: 9px !important;
+  }
+
+  /* HOME — tetap rasa desktop, tapi aman di HP */
+  .home-lobby {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.18fr) minmax(0, .82fr) !important;
+    width: calc(100% - 10px) !important;
+    min-height: auto !important;
+    margin: 8px auto 0 !important;
+    padding: 18px 14px !important;
+    gap: 14px !important;
+    border-radius: 18px !important;
+    align-items: stretch !important;
+  }
+
+  .home-lobby-copy,
+  .home-rank-card {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .season-chip {
+    min-height: 27px !important;
+    padding: 0 9px !important;
+    font-size: 7px !important;
+  }
+
+  .home-welcome {
+    margin-top: 16px !important;
+    font-size: 13px !important;
+  }
+
+  .home-player-name {
+    margin: 4px 0 9px !important;
+    font-size: clamp(23px, 6vw, 34px) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -.02em !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .home-player-subtitle {
+    font-size: 10px !important;
+    line-height: 1.55 !important;
+  }
+
+  .home-user-meta {
+    margin-top: 10px !important;
+    font-size: 8px !important;
+    gap: 5px !important;
+  }
+
+  .home-stat-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 6px !important;
+    margin-top: 14px !important;
+  }
+
+  .home-stat-card {
+    min-width: 0 !important;
+    min-height: 66px !important;
+    padding: 8px !important;
+    gap: 6px !important;
+    border-radius: 10px !important;
+  }
+
+  .stat-icon {
+    width: 26px !important;
+    height: 26px !important;
+    flex: 0 0 26px !important;
+    font-size: 10px !important;
+    border-radius: 7px !important;
+  }
+
+  .home-stat-card span,
+  .home-stat-card small {
+    font-size: 6.5px !important;
+    line-height: 1.25 !important;
+  }
+
+  .home-stat-card strong {
+    font-size: 14px !important;
+  }
+
+  .home-quick-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 5px !important;
+    margin-top: 10px !important;
+  }
+
+  .home-action-btn {
+    min-height: 30px !important;
+    padding: 0 8px !important;
+    font-size: 7.5px !important;
+    gap: 4px !important;
+    border-radius: 8px !important;
+  }
+
+  .home-rank-card {
+    min-height: 280px !important;
+    padding: 14px 10px !important;
+    border-radius: 16px !important;
+  }
+
+  .home-rank-label {
+    font-size: 7px !important;
+  }
+
+  .home-rank-emblem {
+    width: 95px !important;
+    height: 108px !important;
+    margin: 6px auto 2px !important;
+  }
+
+  .home-rank-shield {
+    width: 80px !important;
+    height: 94px !important;
+  }
+
+  .home-rank-symbol {
+    width: 58px !important;
+    height: 70px !important;
+    font-size: 17px !important;
+  }
+
+  .home-rank-name {
+    font-size: 18px !important;
+  }
+
+  .home-rank-score {
+    font-size: 9px !important;
+  }
+
+  .season-status,
+  .missed-months {
+    font-size: 7px !important;
+  }
+
+  .next-rank-panel {
+    width: 100% !important;
+    padding: 8px !important;
+    border-radius: 9px !important;
+  }
+
+  .next-rank-head,
+  .next-rank-panel small {
+    font-size: 7px !important;
+  }
+
+  /* COMMON SECTIONS */
+  .game-section,
+  .season-banner {
+    width: calc(100% - 10px) !important;
+    margin-top: 10px !important;
+    padding: 16px 12px !important;
+    border-radius: 16px !important;
+  }
+
+  .section-heading {
+    gap: 10px !important;
+  }
+
+  .section-heading h2,
+  .page-header h1,
+  .page-game-hero h1,
+  .reward-hero h1,
+  .profile-copy h1 {
+    font-size: clamp(19px, 5vw, 26px) !important;
+    line-height: 1.08 !important;
+  }
+
+  .section-heading p,
+  .page-header p,
+  .page-game-hero p,
+  .reward-hero p {
+    font-size: 9px !important;
+    line-height: 1.55 !important;
+  }
+
+  .section-kicker,
+  .page-kicker {
+    min-height: 24px !important;
+    padding: 0 8px !important;
+    font-size: 6.5px !important;
+  }
+
+  .month-grid,
+  .profile-month-grid,
+  .profile-stat-grid,
+  .profile-achievement-grid,
+  .reward-card-grid,
+  .mini-summary {
+    gap: 7px !important;
+  }
+
+  .month-card,
+  .profile-month-card,
+  .profile-stat-card,
+  .reward-card {
+    padding: 10px !important;
+    border-radius: 11px !important;
+  }
+
+  .month-value {
+    font-size: 21px !important;
+  }
+
+  .month-name,
+  .month-card span,
+  .month-state {
+    font-size: 7px !important;
+  }
+
+  /* GAME FLOW */
+  .game-flow {
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr !important;
+    gap: 5px !important;
+  }
+
+  .game-flow article {
+    padding: 9px !important;
+    border-radius: 9px !important;
+  }
+
+  .game-flow article span,
+  .game-flow article strong,
+  .game-flow article small {
+    font-size: 7px !important;
+  }
+
+  /* RANK JOURNEY */
+  .journey-scroll {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .journey-track {
+    display: grid !important;
+    grid-template-columns: repeat(7, 145px) !important;
+    min-width: max-content !important;
+    width: max-content !important;
+    gap: 7px !important;
+  }
+
+  .journey-card {
+    min-height: 150px !important;
+    padding: 10px !important;
+    border-radius: 10px !important;
+  }
+
+  .journey-card h3 {
+    font-size: 12px !important;
+  }
+
+  .journey-card strong {
+    font-size: 9px !important;
+  }
+
+  .journey-card small,
+  .journey-card-state {
+    font-size: 6.5px !important;
+  }
+
+  /* DATA PAGES */
+  .data-page,
+  .point-page,
+  .leaderboard-page,
+  .reward-page,
+  .profile-page {
+    padding: 12px 5px 28px !important;
+  }
+
+  .page-game-hero,
+  .reward-hero,
+  .profile-hero {
+    padding: 15px 12px !important;
+    border-radius: 15px !important;
+  }
+
+  .data-toolbar {
+    gap: 6px !important;
+  }
+
+  .search-box,
+  .data-toolbar select,
+  .export-button {
+    min-height: 34px !important;
+    font-size: 8px !important;
+    border-radius: 8px !important;
+  }
+
+  /* TABLE: jangan paksa desktop canvas; cukup horizontal scroll */
+  .table-shell {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .game-table {
+    min-width: 980px !important;
+    font-size: 9px !important;
+  }
+
+  .game-table th,
+  .game-table td {
+    padding: 9px 8px !important;
+  }
+
+  .mobile-card-list {
+    display: none !important;
+  }
+
+  /* PROFILE tetap proporsional */
+  .profile-hero {
+    display: grid !important;
+    grid-template-columns: 120px minmax(0,1fr) 160px !important;
+    gap: 14px !important;
+    align-items: center !important;
+  }
+
+  .profile-avatar {
+    width: 110px !important;
+    height: 110px !important;
+  }
+
+  .profile-copy h1 {
+    font-size: 26px !important;
+  }
+
+  /* REWARD tetap 4 kolom bila cukup */
+  .reward-card-grid {
+    grid-template-columns: repeat(4, minmax(0,1fr)) !important;
+  }
+
+  /* LEADERBOARD */
+  .lb-player-card {
+    min-width: 0 !important;
+  }
+}
+
+/* ==========================================================
+   SMALL PHONE
+========================================================== */
+@media (max-width: 430px) {
+
+  .home-lobby {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr) !important;
+    padding: 14px 10px !important;
+    gap: 10px !important;
+  }
+
+  .home-player-name {
+    font-size: clamp(20px, 6vw, 27px) !important;
+  }
+
+  .home-player-subtitle {
+    font-size: 8px !important;
+  }
+
+  .home-stat-grid {
+    gap: 4px !important;
+  }
+
+  .home-stat-card {
+    padding: 6px !important;
+    min-height: 58px !important;
+  }
+
+  .home-stat-card span,
+  .home-stat-card small {
+    font-size: 5.8px !important;
+  }
+
+  .home-stat-card strong {
+    font-size: 12px !important;
+  }
+
+  .home-action-btn {
+    font-size: 6.5px !important;
+    padding: 0 6px !important;
+  }
+
+  .home-rank-card {
+    min-height: 245px !important;
+    padding: 11px 8px !important;
+  }
+
+  .home-rank-emblem {
+    width: 80px !important;
+    height: 92px !important;
+  }
+
+  .home-rank-shield {
+    width: 68px !important;
+    height: 80px !important;
+  }
+
+  .home-rank-symbol {
+    width: 49px !important;
+    height: 60px !important;
+  }
+
+  .home-rank-name {
+    font-size: 16px !important;
+  }
+
+  .profile-hero {
+    grid-template-columns: 92px minmax(0,1fr) 125px !important;
+    gap: 9px !important;
+  }
+
+  .profile-avatar {
+    width: 84px !important;
+    height: 84px !important;
+  }
+
+  .profile-copy h1 {
+    font-size: 21px !important;
+  }
+
+  .reward-card-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+}
+
+/* ==========================================================
+   EXTRA SMALL PHONE
+========================================================== */
+@media (max-width: 360px) {
+
+  .brand-subtitle {
+    display: none !important;
+  }
+
+  .brand-title {
+    font-size: 12px !important;
+  }
+
+  .home-player-name {
+    font-size: 19px !important;
+  }
+
+  .home-stat-card span,
+  .home-stat-card small {
+    font-size: 5.3px !important;
+  }
+
+  .home-stat-card strong {
+    font-size: 11px !important;
+  }
+
+  .profile-hero {
+    grid-template-columns: 78px minmax(0,1fr) 108px !important;
+  }
+
+  .profile-avatar {
+    width: 72px !important;
+    height: 72px !important;
+  }
+
+  .profile-copy h1 {
+    font-size: 18px !important;
+  }
+}
