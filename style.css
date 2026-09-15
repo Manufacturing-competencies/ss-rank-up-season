@@ -9307,3 +9307,658 @@ button:active,
     transition-duration: .001ms !important;
   }
 }
+
+/* ==========================================================
+   100. FINAL RESPONSIVE FOUNDATION — ALL PLATFORM
+   Desktop / Laptop / Tablet / Mobile
+   Critical layout override placed LAST intentionally.
+========================================================== */
+
+/* ---------- GLOBAL SAFETY ---------- */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.page,
+.app-page,
+.home-lobby,
+.home-lobby-copy,
+.home-rank-card,
+.game-section,
+.season-banner,
+.page-header,
+.page-game-hero,
+.reward-hero,
+.profile-hero,
+.data-toolbar,
+.table-shell,
+.mobile-card-list {
+  min-width: 0;
+  max-width: 100%;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- HERO: FLUID BY AVAILABLE SPACE ---------- */
+/*
+   auto-fit prevents the left column from becoming a tiny strip.
+   At narrow widths it automatically becomes ONE column even when
+   browser/device reports an unusual viewport width.
+*/
+.home-lobby {
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(
+        min(100%, 420px),
+        1fr
+      )
+    ) !important;
+  align-items: stretch;
+}
+
+.home-lobby-copy {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.home-player-name {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-size: clamp(30px, 4.7vw, 68px);
+  line-height: 1.04;
+  letter-spacing: -.035em;
+  white-space: normal;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  hyphens: none;
+}
+
+.home-player-subtitle {
+  width: 100%;
+  max-width: 720px;
+}
+
+.home-stat-grid {
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(
+        min(100%, 190px),
+        1fr
+      )
+    );
+}
+
+.home-stat-card {
+  width: 100%;
+  min-width: 0;
+}
+
+.home-rank-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ---------- COMMON FLUID GRIDS ---------- */
+
+.month-grid,
+.profile-month-grid,
+.profile-stat-grid,
+.profile-achievement-grid,
+.reward-card-grid,
+.lb-top10 {
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(
+        min(100%, 220px),
+        1fr
+      )
+    );
+}
+
+.mini-summary {
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(
+        min(100%, 120px),
+        1fr
+      )
+    );
+}
+
+.game-flow {
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(
+        min(100%, 180px),
+        1fr
+      )
+    );
+}
+
+/* ---------- DESKTOP / LARGE LAPTOP ---------- */
+
+@media (min-width: 1201px) {
+  .page {
+    max-width: 1680px;
+  }
+
+  .home-lobby {
+    width: calc(100% - 48px);
+    gap: clamp(30px, 3vw, 52px);
+    padding:
+      clamp(44px, 4vw, 66px)
+      clamp(44px, 4vw, 72px);
+  }
+
+  .home-rank-card {
+    min-height: 460px;
+  }
+}
+
+/* ---------- SMALL LAPTOP / TABLET LANDSCAPE ---------- */
+
+@media (max-width: 1200px) {
+  .home-lobby {
+    width: calc(100% - 28px);
+    gap: 28px;
+    padding: 38px;
+  }
+
+  .home-player-name {
+    font-size: clamp(34px, 5.5vw, 56px);
+  }
+
+  .game-section,
+  .season-banner {
+    width: calc(100% - 28px);
+  }
+
+  .profile-hero,
+  .page-game-hero,
+  .reward-hero {
+    gap: 22px;
+  }
+}
+
+/* ---------- TABLET / LARGE PHONE ---------- */
+
+@media (max-width: 900px) {
+  body {
+    padding-bottom: 92px;
+  }
+
+  .topbar {
+    min-height: 72px;
+    padding:
+      10px
+      max(12px, env(safe-area-inset-right))
+      10px
+      max(12px, env(safe-area-inset-left));
+    gap: 10px;
+  }
+
+  .brand {
+    min-width: 0;
+    flex: 1 1 auto;
+    gap: 10px;
+  }
+
+  .brand-copy {
+    min-width: 0;
+  }
+
+  .brand-icon {
+    width: 38px;
+    height: 46px;
+    flex: 0 0 38px;
+  }
+
+  .brand-title {
+    font-size: clamp(15px, 3vw, 19px);
+    white-space: nowrap;
+  }
+
+  .brand-subtitle {
+    font-size: 8px;
+    letter-spacing: .21em;
+  }
+
+  .user-panel {
+    flex: 0 0 auto;
+    gap: 7px;
+  }
+
+  .user-info,
+  .logout-button {
+    display: none !important;
+  }
+
+  .music-button,
+  .avatar {
+    flex: 0 0 auto;
+  }
+
+  /* Mobile navigation behaves like an app dock */
+  .app-navigation {
+    position: fixed !important;
+    left: 10px !important;
+    right: 10px !important;
+    bottom: max(8px, env(safe-area-inset-bottom)) !important;
+    top: auto !important;
+    z-index: 500 !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    transform: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 4px;
+    padding: 6px;
+    overflow: visible !important;
+    border-radius: 18px;
+  }
+
+  .nav-item {
+    min-width: 0 !important;
+    min-height: 54px;
+    padding: 5px 2px !important;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: 12px;
+    font-size: clamp(7px, 1.6vw, 10px);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .nav-icon {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .nav-label {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+
+  .home-lobby {
+    width: calc(100% - 16px) !important;
+    margin-top: 16px;
+    padding: 28px 22px;
+    gap: 24px;
+    border-radius: 24px;
+  }
+
+  .home-player-name {
+    font-size: clamp(32px, 8vw, 48px);
+    line-height: 1.02;
+  }
+
+  .home-rank-card {
+    min-height: auto !important;
+    padding: 28px 20px;
+  }
+
+  .home-stat-grid {
+    grid-template-columns:
+      repeat(
+        auto-fit,
+        minmax(
+          min(100%, 170px),
+          1fr
+        )
+      ) !important;
+  }
+
+  .game-section,
+  .season-banner {
+    width: calc(100% - 16px) !important;
+  }
+
+  .journey-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 12px 4px 16px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .journey-track {
+    display: flex !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    grid-template-columns: none !important;
+    gap: 12px;
+  }
+
+  .journey-card {
+    flex: 0 0 min(64vw, 220px);
+    scroll-snap-align: start;
+  }
+
+  .table-shell {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .data-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .data-toolbar select,
+  .data-toolbar .export-button {
+    width: 100%;
+  }
+}
+
+/* ---------- PHONE ---------- */
+
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+
+  .topbar {
+    min-height: 66px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .brand-icon {
+    width: 34px;
+    height: 41px;
+    flex-basis: 34px;
+  }
+
+  .brand-title {
+    font-size: clamp(14px, 4.2vw, 17px);
+  }
+
+  .brand-subtitle {
+    font-size: 7px;
+  }
+
+  .music-button {
+    width: 40px;
+    min-height: 40px;
+    border-radius: 11px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+    border-radius: 12px;
+  }
+
+  .home-lobby {
+    width: calc(100% - 12px) !important;
+    padding: 24px 16px !important;
+    gap: 22px;
+    border-radius: 22px;
+  }
+
+  .season-chip {
+    min-height: 32px;
+    padding-inline: 10px;
+    font-size: 9px;
+  }
+
+  .home-welcome {
+    margin-top: 22px;
+    font-size: 16px;
+  }
+
+  .home-player-name {
+    margin: 6px 0 14px;
+    font-size: clamp(28px, 9vw, 40px) !important;
+    line-height: 1.03;
+    letter-spacing: -.025em;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+  }
+
+  .home-player-subtitle {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .home-user-meta {
+    gap: 6px;
+    font-size: 10px;
+  }
+
+  .home-stat-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .home-stat-card {
+    min-height: 82px;
+    padding: 14px;
+  }
+
+  .home-quick-actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+
+  .home-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .home-rank-card {
+    min-height: 390px !important;
+    padding: 25px 15px;
+    border-radius: 22px;
+  }
+
+  .home-rank-emblem {
+    width: min(48vw, 150px);
+    height: 168px;
+  }
+
+  .home-rank-shield {
+    width: 120px;
+    height: 142px;
+  }
+
+  .home-rank-symbol {
+    width: 88px;
+    height: 108px;
+  }
+
+  .game-section,
+  .season-banner {
+    width: calc(100% - 12px) !important;
+    padding: 20px 15px;
+    border-radius: 20px;
+  }
+
+  .section-heading {
+    display: block !important;
+  }
+
+  .section-heading h2,
+  .page-header h1,
+  .page-game-hero h1,
+  .reward-hero h1,
+  .profile-copy h1 {
+    font-size: clamp(23px, 7vw, 32px) !important;
+    line-height: 1.08;
+  }
+
+  .section-heading p,
+  .page-header p,
+  .page-game-hero p,
+  .reward-hero p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .month-grid,
+  .profile-month-grid,
+  .profile-stat-grid,
+  .profile-achievement-grid,
+  .reward-card-grid,
+  .lb-top10,
+  .mini-summary {
+    grid-template-columns: 1fr !important;
+  }
+
+  .game-flow {
+    grid-template-columns: 1fr !important;
+  }
+
+  .game-flow i {
+    display: none !important;
+  }
+
+  .journey-card {
+    flex-basis: min(76vw, 205px);
+  }
+
+  .journey-summary,
+  .journey-note {
+    width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .data-page,
+  .point-page,
+  .leaderboard-page,
+  .reward-page,
+  .profile-page {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    padding-bottom: 100px !important;
+  }
+
+  .page-game-hero,
+  .reward-hero,
+  .profile-hero {
+    padding: 22px 15px !important;
+    border-radius: 20px;
+  }
+
+  .profile-hero {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+  }
+
+  .profile-avatar {
+    margin-inline: auto;
+  }
+
+  .profile-meta {
+    justify-content: center;
+  }
+
+  .pagination {
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+
+  .pagination button {
+    min-height: 42px;
+  }
+
+  /* Six icons remain accessible; hide long labels on very small phones */
+  .nav-item {
+    min-height: 50px;
+  }
+
+  .nav-label {
+    font-size: 7px;
+  }
+}
+
+/* ---------- VERY SMALL PHONE ---------- */
+
+@media (max-width: 390px) {
+  .brand-subtitle {
+    display: none;
+  }
+
+  .brand-title {
+    font-size: 13px;
+  }
+
+  .music-button {
+    width: 38px;
+  }
+
+  .avatar {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+
+  .home-player-name {
+    font-size: clamp(26px, 8.5vw, 34px) !important;
+  }
+
+  .nav-item {
+    min-height: 48px;
+  }
+
+  .nav-label {
+    display: none;
+  }
+
+  .nav-icon {
+    font-size: 18px;
+  }
+}
+
+/* ---------- TOUCH DEVICES: REAL FEEDBACK, NO HOVER DEPENDENCY ---------- */
+
+@media (hover: none) and (pointer: coarse) {
+  .home-stat-card:active,
+  .journey-card:active,
+  .month-card:active,
+  .reward-card:active,
+  .podium-card:active,
+  .lb-top-card:active,
+  .home-action-btn:active,
+  .nav-item:active {
+    transform: scale(.975);
+    filter: brightness(1.08);
+  }
+}
+
+/* ---------- REDUCED MOTION ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
