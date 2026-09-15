@@ -172,7 +172,7 @@
       type="button"
     >
       <span class="nav-icon">◆</span>
-      <span class="nav-label">Point</span>
+      <span class="nav-label">Point Terbaik</span>
     </button>
 
 
@@ -182,7 +182,7 @@
       type="button"
     >
       <span class="nav-icon">♛</span>
-      <span class="nav-label">Leaderboard</span>
+      <span class="nav-label">Leaderboard Terbaik</span>
     </button>
 
 
@@ -378,7 +378,7 @@
               type="button"
             >
               ◆
-              <span>Point Arena</span>
+              <span>Point Approved</span>
             </button>
 
             <button
@@ -387,7 +387,7 @@
               type="button"
             >
               ♛
-              <span>Leaderboard</span>
+              <span>Leaderboard Terbaik</span>
             </button>
 
           </div>
@@ -1091,17 +1091,16 @@
         <div>
 
           <span class="page-kicker">
-            SEASON POINT
+            POINT APPROVED
           </span>
 
           <h1>
-            POINT RANKING
+            POINT APPROVED TERBAIK
           </h1>
 
           <p>
-            Winner first. SS Done terbanyak.
-            Point Approved terbesar.
-            Point terbesar.
+            Peringkat terbaik berdasarkan performa SS Done,
+            Point Approved, dan total Point.
           </p>
 
         </div>
@@ -1122,6 +1121,11 @@
           <article>
             <span>FAILED</span>
             <strong id="pointLose">0</strong>
+          </article>
+
+          <article>
+            <span>POINT APPROVED</span>
+            <strong id="pointApprovedSummary">0</strong>
           </article>
 
         </div>
@@ -1294,11 +1298,11 @@
         <div>
 
           <span class="page-kicker">
-            LEADERBOARD ARENA
+            LEADERBOARD TERBAIK
           </span>
 
           <h1>
-            KEEP PLAYING.
+            PEMAIN TERBAIK.
             <br>
             KEEP CLIMBING.
           </h1>
@@ -1395,11 +1399,11 @@
           <div>
 
             <span class="section-kicker">
-              TOP PLAYERS
+              PEMAIN TERBAIK
             </span>
 
             <h2>
-              TOP 10 ARENA
+              TOP 10 TERBAIK
             </h2>
 
             <p>
@@ -1433,7 +1437,7 @@
             </span>
 
             <h2>
-              Full Leaderboard
+              Leaderboard Lengkap
             </h2>
 
           </div>
@@ -1996,6 +2000,103 @@
 
 
   </main>
+
+
+  
+
+  <!-- =====================================================
+       LOGIN CAMPAIGN STORY POPUP — 9:16 IGS
+       Mendukung foto & video.
+  ====================================================== -->
+
+  <div
+    id="campaignStoryModal"
+    class="campaign-story-modal"
+    hidden
+    aria-hidden="true"
+  >
+    <div
+      class="campaign-story-backdrop"
+      data-campaign-close
+    ></div>
+
+    <section
+      class="campaign-story-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Campaign Story"
+    >
+      <button
+        class="campaign-story-close"
+        type="button"
+        aria-label="Close campaign"
+        data-campaign-close
+      >
+        ×
+      </button>
+
+      <div class="campaign-story-progress">
+        <span id="campaignStoryProgress"></span>
+      </div>
+
+      <div class="campaign-story-stage">
+
+        <img
+          id="campaignStoryImage"
+          class="campaign-story-media"
+          alt="Campaign"
+          hidden
+        >
+
+        <video
+          id="campaignStoryVideo"
+          class="campaign-story-media"
+          playsinline
+          controls
+          muted
+          hidden
+        ></video>
+
+        <div
+          id="campaignStoryFallback"
+          class="campaign-story-fallback"
+        >
+          <span>SS RANK UP SEASON</span>
+          <strong>CAMPAIGN UPDATE</strong>
+          <p>
+            Tambahkan foto atau video ukuran IG Story 9:16
+            pada folder assets/campaign.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="campaign-story-footer">
+
+        <button
+          id="campaignStoryPrev"
+          type="button"
+          aria-label="Previous story"
+        >
+          ‹
+        </button>
+
+        <div
+          id="campaignStoryDots"
+          class="campaign-story-dots"
+        ></div>
+
+        <button
+          id="campaignStoryNext"
+          type="button"
+          aria-label="Next story"
+        >
+          ›
+        </button>
+
+      </div>
+    </section>
+  </div>
 
 
   <!-- =====================================================

@@ -419,6 +419,11 @@ const pointLose =
     'pointLose'
   );
 
+const pointApprovedSummary =
+  document.getElementById(
+    'pointApprovedSummary'
+  );
+
 const pointPodium =
   document.getElementById(
     'pointPodium'
@@ -7348,3 +7353,554 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
+
+
+
+/* ==========================================================
+   FINAL UX — CAMPAIGN STORY + UI SOUND + RANK LOCK LABEL
+========================================================== */
+
+/*
+  Tambahkan media IGS di folder:
+  assets/campaign/story-1.jpg
+  assets/campaign/story-2.mp4
+  assets/campaign/story-3.jpg
+
+  Rasio ideal: 9:16 (1080 x 1920).
+*/
+const CAMPAIGN_STORIES = [
+  {
+    type: 'image',
+    src: './assets/campaign/story-1.jpg'
+  },
+  {
+    type: 'video',
+    src: './assets/campaign/story-2.mp4'
+  },
+  {
+    type: 'image',
+    src: './assets/campaign/story-3.jpg'
+  }
+];
+
+let campaignStoryIndex = 0;
+let campaignStoryAvailable = [];
+let campaignStoryTimer = null;
+
+
+/* ---------- SIMPLE WOW SOUND WITHOUT EXTRA AUDIO FILE ---------- */
+
+let uiAudioContext = null;
+
+function getUiAudioContext() {
+  if (!uiAudioContext) {
+    const AudioContextClass =
+      window.AudioContext ||
+      window.webkitAudioContext;
+
+    if (AudioContextClass) {
+      uiAudioContext = new AudioContextClass();
+    }
+  }
+
+  return uiAudioContext;
+}
+
+function playUiSound(type = 'click') {
+  try {
+    const ctx = getUiAudioContext();
+
+    if (!ctx) {
+      return;
+    }
+
+    if (ctx.state === 'suspended') {
+      ctx.resume();
+    }
+
+    const now = ctx.currentTime;
+
+    const makeTone = (
+      frequency,
+      start,
+      duration,
+      gainValue,
+      wave = 'sine'
+    ) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = wave;
+      osc.frequency.setValueAtTime(frequency, now + start);
+
+      gain.gain.setValueAtTime(0.0001, now + start);
+      gain.gain.exponentialRampToValueAtTime(
+        gainValue,
+        now + start + .015
+      );
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        now + start + duration
+      );
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now + start);
+      osc.stop(now + start + duration + .02);
+    };
+
+    if (type === 'unlock') {
+      makeTone(523.25, 0, .18, .08, 'triangle');
+      makeTone(659.25, .10, .20, .08, 'triangle');
+      makeTone(783.99, .20, .26, .09, 'triangle');
+      makeTone(1046.50, .34, .38, .07, 'sine');
+    }
+    else if (type === 'story') {
+      makeTone(392.00, 0, .16, .045, 'sine');
+      makeTone(587.33, .08, .22, .05, 'triangle');
+      makeTone(783.99, .18, .28, .04, 'sine');
+    }
+    else if (type === 'locked') {
+      makeTone(220, 0, .20, .045, 'square');
+      makeTone(174.61, .12, .25, .035, 'square');
+    }
+    else {
+      makeTone(520, 0, .08, .025, 'sine');
+    }
+  }
+  catch {
+    /* Sound is enhancement only. */
+  }
+}
+
+
+/* ---------- CAMPAIGN STORY ---------- */
+
+function getCampaignEls() {
+  return {
+    modal: document.getElementById('campaignStoryModal'),
+    image: document.getElementById('campaignStoryImage'),
+    video: document.getElementById('campaignStoryVideo'),
+    fallback: document.getElementById('campaignStoryFallback'),
+    progress: document.getElementById('campaignStoryProgress'),
+    dots: document.getElementById('campaignStoryDots'),
+    prev: document.getElementById('campaignStoryPrev'),
+    next: document.getElementById('campaignStoryNext')
+  };
+}
+
+function campaignSessionKey() {
+  return 'ss_rank_campaign_seen::' +
+    String(currentUserName || 'PLAYER')
+      .trim()
+      .toUpperCase();
+}
+
+function shouldShowCampaignStory() {
+  try {
+    return sessionStorage.getItem(
+      campaignSessionKey()
+    ) !== '1';
+  }
+  catch {
+    return true;
+  }
+}
+
+function markCampaignStorySeen() {
+  try {
+    sessionStorage.setItem(
+      campaignSessionKey(),
+      '1'
+    );
+  }
+  catch {
+    /* ignore */
+  }
+}
+
+function clearCampaignStoryTimer() {
+  if (campaignStoryTimer) {
+    clearTimeout(campaignStoryTimer);
+    campaignStoryTimer = null;
+  }
+}
+
+function renderCampaignDots() {
+  const { dots } = getCampaignEls();
+
+  if (!dots) {
+    return;
+  }
+
+  dots.innerHTML = '';
+
+  const total = Math.max(
+    campaignStoryAvailable.length,
+    1
+  );
+
+  for (let i = 0; i < total; i += 1) {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className =
+      'campaign-story-dot' +
+      (i === campaignStoryIndex ? ' active' : '');
+
+    dot.addEventListener('click', function() {
+      campaignStoryIndex = i;
+      renderCampaignStory();
+      playUiSound('click');
+    });
+
+    dots.appendChild(dot);
+  }
+}
+
+function updateCampaignProgress() {
+  const { progress } = getCampaignEls();
+
+  if (!progress) {
+    return;
+  }
+
+  const total = Math.max(
+    campaignStoryAvailable.length,
+    1
+  );
+
+  progress.style.width =
+    (((campaignStoryIndex + 1) / total) * 100) + '%';
+}
+
+function renderCampaignStory() {
+  const {
+    image,
+    video,
+    fallback
+  } = getCampaignEls();
+
+  clearCampaignStoryTimer();
+
+  if (!image || !video || !fallback) {
+    return;
+  }
+
+  image.hidden = true;
+  video.hidden = true;
+  fallback.hidden = true;
+
+  video.pause();
+  video.removeAttribute('src');
+
+  const story =
+    campaignStoryAvailable[campaignStoryIndex];
+
+  if (!story) {
+    fallback.hidden = false;
+    renderCampaignDots();
+    updateCampaignProgress();
+    return;
+  }
+
+  if (story.type === 'video') {
+    video.hidden = false;
+    video.src = story.src;
+
+    video.onloadeddata = function() {
+      fallback.hidden = true;
+      video.play().catch(() => {});
+    };
+
+    video.onerror = function() {
+      video.hidden = true;
+      fallback.hidden = false;
+    };
+
+    video.onended = function() {
+      nextCampaignStory();
+    };
+  }
+  else {
+    image.hidden = false;
+    image.src = story.src;
+
+    image.onload = function() {
+      fallback.hidden = true;
+    };
+
+    image.onerror = function() {
+      image.hidden = true;
+      fallback.hidden = false;
+    };
+
+    campaignStoryTimer =
+      setTimeout(nextCampaignStory, 6500);
+  }
+
+  renderCampaignDots();
+  updateCampaignProgress();
+}
+
+function nextCampaignStory() {
+  if (!campaignStoryAvailable.length) {
+    return;
+  }
+
+  campaignStoryIndex =
+    (campaignStoryIndex + 1) %
+    campaignStoryAvailable.length;
+
+  renderCampaignStory();
+}
+
+function previousCampaignStory() {
+  if (!campaignStoryAvailable.length) {
+    return;
+  }
+
+  campaignStoryIndex =
+    (
+      campaignStoryIndex -
+      1 +
+      campaignStoryAvailable.length
+    ) %
+    campaignStoryAvailable.length;
+
+  renderCampaignStory();
+}
+
+function openCampaignStory() {
+  const { modal } = getCampaignEls();
+
+  if (!modal || !shouldShowCampaignStory()) {
+    return;
+  }
+
+  campaignStoryAvailable =
+    CAMPAIGN_STORIES.slice();
+
+  campaignStoryIndex = 0;
+
+  modal.hidden = false;
+  modal.setAttribute('aria-hidden', 'false');
+
+  renderCampaignStory();
+  playUiSound('story');
+}
+
+function closeCampaignStory() {
+  const {
+    modal,
+    video
+  } = getCampaignEls();
+
+  if (!modal) {
+    return;
+  }
+
+  clearCampaignStoryTimer();
+
+  if (video) {
+    video.pause();
+  }
+
+  modal.hidden = true;
+  modal.setAttribute('aria-hidden', 'true');
+
+  markCampaignStorySeen();
+}
+
+
+/* ---------- POINT APPROVED SUMMARY ---------- */
+
+function finalPointApprovedFromSummary(summary) {
+  return safeNumber(
+    firstValue(
+      summary.point_approved,
+      summary.pointApproved,
+      summary.total_point_approved,
+      summary.totalPointApproved,
+      0
+    )
+  );
+}
+
+const finalUxLegacyRenderPointSummary =
+  renderPointSummary;
+
+renderPointSummary = function(summary) {
+  finalUxLegacyRenderPointSummary(summary);
+
+  if (pointApprovedSummary) {
+    pointApprovedSummary.textContent =
+      formatNumber(
+        finalPointApprovedFromSummary(summary || {})
+      );
+  }
+};
+
+
+/* ---------- HOME RANK: FAILED -> LOCKED ---------- */
+
+const finalUxLegacyRenderRank = renderRank;
+
+renderRank = function(progress) {
+  finalUxLegacyRenderRank(progress);
+
+  const state = finalRankState(progress || {});
+
+  if (
+    seasonStatus &&
+    state.seasonStatus !== 'WINNER'
+  ) {
+    seasonStatus.textContent = 'LOCKED';
+    seasonStatus.classList.remove(
+      'winner',
+      'failed'
+    );
+    seasonStatus.classList.add('locked');
+  }
+};
+
+
+/* ---------- PROFILE RANK: FAILED -> LOCKED ---------- */
+
+const finalUxLegacyRenderProfile =
+  renderProfile;
+
+renderProfile = function(result) {
+  finalUxLegacyRenderProfile(result);
+
+  const state =
+    finalRankState(result?.progress || {});
+
+  if (
+    profileSeasonStatus &&
+    state.seasonStatus !== 'WINNER'
+  ) {
+    profileSeasonStatus.textContent = 'LOCKED';
+    profileSeasonStatus.classList.remove(
+      'winner',
+      'failed'
+    );
+    profileSeasonStatus.classList.add('locked');
+  }
+};
+
+
+/* ---------- RANK JOURNEY NOTE: FAILED -> LOCKED ---------- */
+
+const finalUxLegacyRenderJourney =
+  renderJourney;
+
+renderJourney = function(progress) {
+  finalUxLegacyRenderJourney(progress);
+
+  const state = finalRankState(progress || {});
+
+  if (
+    journeyNote &&
+    state.seasonStatus !== 'WINNER'
+  ) {
+    const missed = state.consistency.missed
+      .map(item => item.name)
+      .join(', ');
+
+    journeyNote.innerHTML =
+      'Rank Status: ' +
+      '<strong style="color:var(--warning)">LOCKED</strong> — ' +
+      'Active Rank tetap di <b>' +
+      escapeHtml(state.activeRank) +
+      '</b>. Potential Rank <b>' +
+      escapeHtml(state.potentialRank) +
+      '</b> akan terbuka setelah seluruh Monthly Quest lengkap.' +
+      (
+        missed
+          ? ' Missed: <b>' +
+            escapeHtml(missed) +
+            '</b>.'
+          : ''
+      );
+  }
+};
+
+
+/* ---------- ENHANCE REWARD SOUND ---------- */
+
+const finalUxLegacyOpenReward =
+  finalOpenReward;
+
+finalOpenReward = function(rank) {
+  finalUxLegacyOpenReward(rank);
+  playUiSound('unlock');
+};
+
+
+/* ---------- EVENTS ---------- */
+
+document.addEventListener(
+  'click',
+  function(event) {
+
+    if (event.target.closest('[data-campaign-close]')) {
+      closeCampaignStory();
+      playUiSound('click');
+      return;
+    }
+
+    if (event.target.closest('.nav-item')) {
+      playUiSound('click');
+    }
+  }
+);
+
+document.addEventListener(
+  'DOMContentLoaded',
+  function() {
+
+    const {
+      prev,
+      next
+    } = getCampaignEls();
+
+    if (prev) {
+      prev.addEventListener(
+        'click',
+        function() {
+          previousCampaignStory();
+          playUiSound('click');
+        }
+      );
+    }
+
+    if (next) {
+      next.addEventListener(
+        'click',
+        function() {
+          nextCampaignStory();
+          playUiSound('click');
+        }
+      );
+    }
+
+  }
+);
+
+
+/* ---------- SHOW POPUP AFTER LOGIN/DASHBOARD SUCCESS ---------- */
+
+const finalUxLegacyRenderDashboard =
+  renderDashboard;
+
+renderDashboard = function(result) {
+  finalUxLegacyRenderDashboard(result);
+
+  setTimeout(
+    function() {
+      openCampaignStory();
+    },
+    700
+  );
+};
