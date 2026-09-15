@@ -7899,3 +7899,301 @@ renderDashboard = function(result) {
     700
   );
 };
+
+
+
+/* ==========================================================
+   FINAL MEDIA AUDIO + BIG GONG
+   - Video campaign memakai suara video
+   - Background music pause selama video
+   - Background music resume setelah video selesai
+   - Fallback tap-to-play untuk browser yang blok autoplay suara
+========================================================== */
+
+let campaignMusicWasPlaying = false;
+let campaignVideoOwnsAudio = false;
+
+function finalCampaignSoundGate() {
+  return document.getElementById('campaignVideoSoundGate');
+}
+
+function finalPauseBackgroundMusicForVideo() {
+  if (!bgMusic) {
+    campaignMusicWasPlaying = false;
+    return;
+  }
+
+  campaignMusicWasPlaying =
+    !bgMusic.paused &&
+    !bgMusic.ended;
+
+  if (campaignMusicWasPlaying) {
+    bgMusic.pause();
+  }
+}
+
+function finalResumeBackgroundMusicAfterVideo() {
+  if (
+    !bgMusic ||
+    !campaignMusicWasPlaying
+  ) {
+    campaignMusicWasPlaying = false;
+    campaignVideoOwnsAudio = false;
+    return;
+  }
+
+  bgMusic
+    .play()
+    .catch(() => {});
+
+  campaignMusicWasPlaying = false;
+  campaignVideoOwnsAudio = false;
+}
+
+async function finalPlayCampaignVideoWithSound(video) {
+  if (!video) {
+    return;
+  }
+
+  finalPauseBackgroundMusicForVideo();
+
+  campaignVideoOwnsAudio = true;
+
+  video.muted = false;
+  video.volume = 1;
+
+  const gate = finalCampaignSoundGate();
+
+  if (gate) {
+    gate.hidden = true;
+  }
+
+  try {
+    await video.play();
+  }
+  catch {
+    /*
+      Safari / Chrome mobile bisa memblokir autoplay bersuara
+      jika tidak ada user gesture. Tombol ini membuatnya tetap
+      bekerja di HP, tablet, dan laptop.
+    */
+    video.pause();
+
+    if (gate) {
+      gate.hidden = false;
+    }
+  }
+}
+
+function finalStopCampaignVideoAudio(video) {
+  if (video) {
+    video.pause();
+  }
+
+  const gate = finalCampaignSoundGate();
+
+  if (gate) {
+    gate.hidden = true;
+  }
+
+  if (campaignVideoOwnsAudio) {
+    finalResumeBackgroundMusicAfterVideo();
+  }
+}
+
+
+/* Override story renderer supaya audio sinkron */
+const finalMediaLegacyRenderCampaignStory =
+  renderCampaignStory;
+
+renderCampaignStory = function() {
+  const els = getCampaignEls();
+  const previousWasVideo =
+    campaignVideoOwnsAudio;
+
+  /*
+    Renderer lama akan mengganti source / pause video lama.
+    Resume music dulu jika kita pindah dari story video.
+  */
+  if (previousWasVideo) {
+    finalResumeBackgroundMusicAfterVideo();
+  }
+
+  finalMediaLegacyRenderCampaignStory();
+
+  const story =
+    campaignStoryAvailable[campaignStoryIndex];
+
+  if (
+    story &&
+    story.type === 'video' &&
+    els.video
+  ) {
+    els.video.muted = false;
+    els.video.volume = 1;
+
+    els.video.onloadeddata = function() {
+      if (els.fallback) {
+        els.fallback.hidden = true;
+      }
+
+      finalPlayCampaignVideoWithSound(
+        els.video
+      );
+    };
+
+    els.video.onended = function() {
+      finalResumeBackgroundMusicAfterVideo();
+      nextCampaignStory();
+    };
+  }
+};
+
+
+/* Close popup: video stop, music kembali */
+const finalMediaLegacyCloseCampaignStory =
+  closeCampaignStory;
+
+closeCampaignStory = function() {
+  const { video } = getCampaignEls();
+
+  finalStopCampaignVideoAudio(video);
+  finalMediaLegacyCloseCampaignStory();
+};
+
+
+/* Tombol tap-to-play jika autoplay suara diblokir */
+document.addEventListener(
+  'click',
+  function(event) {
+    const gate =
+      event.target.closest(
+        '#campaignVideoSoundGate'
+      );
+
+    if (!gate) {
+      return;
+    }
+
+    const { video } = getCampaignEls();
+
+    if (!video) {
+      return;
+    }
+
+    gate.hidden = true;
+
+    finalPauseBackgroundMusicForVideo();
+    campaignVideoOwnsAudio = true;
+
+    video.muted = false;
+    video.volume = 1;
+
+    video
+      .play()
+      .catch(() => {
+        gate.hidden = false;
+      });
+  }
+);
+
+
+/* ==========================================================
+   EXTRA GONG / SHIMMER
+========================================================== */
+
+function playFinalGong() {
+  try {
+    const ctx = getUiAudioContext();
+
+    if (!ctx) {
+      return;
+    }
+
+    if (ctx.state === 'suspended') {
+      ctx.resume();
+    }
+
+    const now = ctx.currentTime;
+
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(.0001, now);
+    master.gain.exponentialRampToValueAtTime(.24, now + .025);
+    master.gain.exponentialRampToValueAtTime(.0001, now + 2.4);
+    master.connect(ctx.destination);
+
+    const partials = [
+      [110.00, .12, 2.30],
+      [164.81, .075, 1.95],
+      [220.00, .055, 1.65],
+      [329.63, .030, 1.30],
+      [659.25, .014, .95]
+    ];
+
+    partials.forEach(([freq, gainValue, duration], index) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type =
+        index < 2
+          ? 'sine'
+          : 'triangle';
+
+      osc.frequency.setValueAtTime(freq, now);
+
+      gain.gain.setValueAtTime(gainValue, now);
+      gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now + duration
+      );
+
+      osc.connect(gain);
+      gain.connect(master);
+
+      osc.start(now);
+      osc.stop(now + duration + .05);
+    });
+
+    /* high shimmer */
+    [880, 1174.66, 1567.98].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + .15 + i * .07);
+
+      gain.gain.setValueAtTime(.0001, now + .15 + i * .07);
+      gain.gain.exponentialRampToValueAtTime(
+        .022,
+        now + .19 + i * .07
+      );
+      gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now + .85 + i * .10
+      );
+
+      osc.connect(gain);
+      gain.connect(master);
+
+      osc.start(now + .15 + i * .07);
+      osc.stop(now + 1.1 + i * .10);
+    });
+  }
+  catch {
+    /* enhancement only */
+  }
+}
+
+
+/* Reward open = existing unlock sound + gong lebih besar */
+const finalMediaLegacyOpenReward =
+  finalOpenReward;
+
+finalOpenReward = function(rank) {
+  finalMediaLegacyOpenReward(rank);
+
+  setTimeout(
+    playFinalGong,
+    70
+  );
+};
