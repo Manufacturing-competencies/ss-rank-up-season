@@ -1,11 +1,31 @@
 /* ==========================================================
    SS RANK UP SEASON
-   POINT API — FINAL
+   POINT API + POINT EXPORT — FINAL MERGED
 ========================================================== */
 
 export default async function handler(req, res) {
 
   try {
+
+    /* ======================================================
+       METHOD
+    ====================================================== */
+
+    if (req.method !== 'GET') {
+
+      res.setHeader('Allow', ['GET']);
+
+      return res.status(405).json({
+        success: false,
+        message: 'Method tidak diizinkan.'
+      });
+
+    }
+
+
+    /* ======================================================
+       ENVIRONMENT
+    ====================================================== */
 
     const supabaseUrl =
       String(process.env.SUPABASE_URL || '')
@@ -29,25 +49,21 @@ export default async function handler(req, res) {
 
 
     /* ======================================================
-       PARAMETER
+       MODE
+
+       /api/points
+       /api/points?mode=export
     ====================================================== */
 
-    const requestedPage =
-      Math.max(
-        1,
-        parseInt(req.query.page || '1', 10) || 1
-      );
+    const mode =
+      String(req.query.mode || '')
+        .trim()
+        .toLowerCase();
 
 
-    const limit =
-      Math.min(
-        100,
-        Math.max(
-          1,
-          parseInt(req.query.limit || '50', 10) || 50
-        )
-      );
-
+    /* ======================================================
+       SEARCH
+    ====================================================== */
 
     const search =
       cleanSearchValue(
@@ -172,7 +188,7 @@ export default async function handler(req, res) {
 
 
     /* ======================================================
-       POSITION GLOBAL
+       GLOBAL POSITION
     ====================================================== */
 
     rows =
@@ -183,9 +199,44 @@ export default async function handler(req, res) {
 
 
     /* ======================================================
+       EXPORT CSV
+    ====================================================== */
+
+    if (mode === 'export') {
+
+      return sendPointCsv(
+        res,
+        rows
+      );
+
+    }
+
+
+    /* ======================================================
+       PAGINATION
+    ====================================================== */
+
+    const requestedPage =
+      Math.max(
+        1,
+        parseInt(req.query.page || '1', 10) || 1
+      );
+
+
+    const limit =
+      Math.min(
+        100,
+        Math.max(
+          1,
+          parseInt(req.query.limit || '50', 10) || 50
+        )
+      );
+
+
+    /* ======================================================
        PODIUM
 
-       Top 3 hanya dari WINNER.
+       TOP 3 hanya WINNER
     ====================================================== */
 
     const podium =
@@ -252,6 +303,12 @@ export default async function handler(req, res) {
        RESPONSE
     ====================================================== */
 
+    res.setHeader(
+      'Cache-Control',
+      'no-store'
+    );
+
+
     return res.status(200).json({
 
       success: true,
@@ -311,6 +368,134 @@ export default async function handler(req, res) {
     });
 
   }
+
+}
+
+
+/* ==========================================================
+   EXPORT CSV
+========================================================== */
+
+function sendPointCsv(
+  res,
+  rows
+) {
+
+  const csv = [];
+
+
+  csv.push([
+
+    'NO',
+    'NAMA',
+    'DEPARTEMEN',
+    'SUPERIOR',
+    'LOKASI KERJA',
+    'SS DONE',
+    'POINT',
+    'POINT APPROVED',
+    'SS SUBMIT',
+    'BULAN 1',
+    'BULAN 1 VALUE',
+    'BULAN 2',
+    'BULAN 2 VALUE',
+    'BULAN 3',
+    'BULAN 3 VALUE',
+    'STATUS',
+    'SUM',
+    'RANK'
+
+  ]);
+
+
+  rows.forEach(
+    (row, index) => {
+
+      csv.push([
+
+        index + 1,
+
+        row.employee_name,
+
+        row.department,
+
+        row.superior_name,
+
+        row.work_location,
+
+        row.ss_done,
+
+        row.point,
+
+        row.point_approved,
+
+        row.ss_submit,
+
+        row.month_1_name,
+
+        row.month_1_value,
+
+        row.month_2_name,
+
+        row.month_2_value,
+
+        row.month_3_name,
+
+        row.month_3_value,
+
+        row.status,
+
+        row.sum,
+
+        row.rank
+
+      ]);
+
+    }
+  );
+
+
+  const content =
+    csv
+      .map(
+        row =>
+          row
+            .map(csvEscape)
+            .join(',')
+      )
+      .join('\n');
+
+
+  const date =
+    new Date()
+      .toISOString()
+      .slice(0, 10);
+
+
+  res.setHeader(
+    'Content-Type',
+    'text/csv; charset=utf-8'
+  );
+
+
+  res.setHeader(
+    'Content-Disposition',
+    `attachment; filename="SS_Rank_Up_Point_${date}.csv"`
+  );
+
+
+  res.setHeader(
+    'Cache-Control',
+    'no-store'
+  );
+
+
+  return res
+    .status(200)
+    .send(
+      '\uFEFF' +
+      content
+    );
 
 }
 
@@ -540,13 +725,17 @@ function normalizeRow(row) {
     status,
 
     sum:
-      numberValue(row.total_approved),
+      numberValue(
+        row.total_approved
+      ),
 
     rank:
       row.rank || 'WARRIOR',
 
     source_row:
-      numberValue(row.source_row)
+      numberValue(
+        row.source_row
+      )
 
   };
 
@@ -619,5 +808,24 @@ function cleanSearchValue(value) {
       /\s+/g,
       ' '
     );
+
+}
+
+
+/* ==========================================================
+   CSV ESCAPE
+========================================================== */
+
+function csvEscape(value) {
+
+  return (
+    '"' +
+    String(value ?? '')
+      .replace(
+        /"/g,
+        '""'
+      ) +
+    '"'
+  );
 
 }
