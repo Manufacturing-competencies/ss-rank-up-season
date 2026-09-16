@@ -9494,3 +9494,716 @@ canvas {
     font-size: 16px !important;
   }
 }
+
+/* ==========================================================
+   FINAL UNIVERSAL MOBILE SWIPE SYSTEM
+   <= 500px
+   Prinsip:
+   - Konten penting tetap besar & readable
+   - Jika card tidak muat -> horizontal swipe
+   - Hindari mengecilkan text/card sampai bertabrakan
+========================================================== */
+
+@media (max-width: 500px) {
+
+  /* ========================================================
+     1. GLOBAL MOBILE SAFETY
+  ======================================================== */
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .app-page,
+  .page,
+  .home-lobby,
+  .game-section,
+  .season-banner,
+  .data-page,
+  .point-page,
+  .leaderboard-page,
+  .reward-page,
+  .profile-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  span,
+  small,
+  strong {
+    word-break: normal !important;
+  }
+
+  /* ========================================================
+     2. NAVIGATION
+     Tetap swipe horizontal
+  ======================================================== */
+  .app-navigation {
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .app-navigation::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .nav-item {
+    flex: 0 0 auto !important;
+  }
+
+  /* ========================================================
+     3. HOME HERO
+  ======================================================== */
+  .home-lobby {
+    grid-template-columns: 1fr !important;
+  }
+
+  .home-player-name {
+    font-size: clamp(25px, 8vw, 34px) !important;
+    line-height: 1.08 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .home-player-subtitle {
+    font-size: 11px !important;
+    line-height: 1.55 !important;
+  }
+
+  /* ========================================================
+     4. HOME STATS -> SWIPE
+  ======================================================== */
+  .home-stat-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 8px !important;
+
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+
+    margin-top: 20px !important;
+    margin-right: -8px !important;
+
+    padding: 2px 18px 12px 0 !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .home-stat-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .home-stat-card {
+    flex: 0 0 145px !important;
+    width: 145px !important;
+    min-width: 145px !important;
+
+    display: flex !important;
+    text-align: left !important;
+
+    padding: 13px 11px !important;
+    border-radius: 15px !important;
+
+    scroll-snap-align: start !important;
+  }
+
+  .home-stat-card:last-child {
+    grid-column: auto !important;
+  }
+
+  .home-stat-card span,
+  .home-stat-card small {
+    font-size: 8px !important;
+  }
+
+  .home-stat-card strong {
+    font-size: 20px !important;
+  }
+
+  /* Quick actions tetap full width agar mudah ditap */
+  .home-quick-actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+
+  .home-action-btn {
+    width: 100% !important;
+    min-height: 39px !important;
+    justify-content: center !important;
+    font-size: 8px !important;
+  }
+
+  /* ========================================================
+     5. MONTHLY QUEST -> SWIPE
+  ======================================================== */
+  .month-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 9px !important;
+
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+
+    margin-top: 18px !important;
+    margin-right: -8px !important;
+
+    padding: 2px 18px 13px 0 !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .month-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .month-card {
+    flex: 0 0 132px !important;
+    width: 132px !important;
+    min-width: 132px !important;
+
+    padding: 16px 10px !important;
+
+    scroll-snap-align: start !important;
+  }
+
+  .month-name,
+  .month-card > span,
+  .month-state {
+    font-size: 8px !important;
+  }
+
+  .month-value {
+    font-size: 26px !important;
+  }
+
+  /* ========================================================
+     6. GAME FLOW -> SWIPE
+  ======================================================== */
+  .game-flow {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 9px !important;
+
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+
+    margin-top: 18px !important;
+    margin-right: -8px !important;
+
+    padding: 2px 18px 13px 0 !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .game-flow::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .game-flow i {
+    display: none !important;
+  }
+
+  .game-flow article {
+    flex: 0 0 165px !important;
+    width: 165px !important;
+    min-width: 165px !important;
+    min-height: 145px !important;
+
+    padding: 15px 12px !important;
+
+    scroll-snap-align: start !important;
+  }
+
+  .game-flow strong {
+    font-size: 13px !important;
+  }
+
+  .game-flow small {
+    font-size: 10px !important;
+  }
+
+  /* ========================================================
+     7. RANK JOURNEY -> SWIPE
+  ======================================================== */
+  .journey-scroll {
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+    margin-right: -8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    scroll-snap-type: x mandatory !important;
+  }
+
+  .journey-scroll::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .journey-track {
+    display: flex !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    gap: 9px !important;
+    padding-right: 18px !important;
+  }
+
+  .journey-card {
+    flex: 0 0 150px !important;
+    width: 150px !important;
+    min-width: 150px !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* ========================================================
+     8. DATA / DATABASE
+     Table hidden, mobile card readable.
+  ======================================================== */
+  .table-shell {
+    display: none !important;
+  }
+
+  .mobile-card-list {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .database-mobile-card,
+  .point-mobile-card,
+  .lb-mobile-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 14px 12px !important;
+  }
+
+  /* ========================================================
+     9. POINT APPROVED / LEADERBOARD HERO
+  ======================================================== */
+  .page-game-hero,
+  .reward-hero {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 18px 13px !important;
+  }
+
+  .page-game-hero h1,
+  .reward-hero h1 {
+    font-size: clamp(23px, 7.8vw, 30px) !important;
+    line-height: 1.08 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .page-game-hero p,
+  .reward-hero p {
+    font-size: 10.5px !important;
+    line-height: 1.55 !important;
+  }
+
+  /* Hero summary -> swipe agar tidak squeeze */
+  .page-game-hero .mini-summary,
+  .reward-hero .mini-summary,
+  .mini-summary {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 7px !important;
+
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+
+    margin-right: -8px !important;
+
+    padding: 2px 18px 10px 0 !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .page-game-hero .mini-summary::-webkit-scrollbar,
+  .reward-hero .mini-summary::-webkit-scrollbar,
+  .mini-summary::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .page-game-hero .mini-summary article,
+  .reward-hero .mini-summary article,
+  .mini-summary article {
+    flex: 0 0 105px !important;
+    width: 105px !important;
+    min-width: 105px !important;
+    padding: 11px 7px !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* ========================================================
+     10. YOUR POSITION
+  ======================================================== */
+  .lb-player-card {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    width: 100% !important;
+    padding: 16px 13px !important;
+  }
+
+  .lb-player-rank {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  .lb-player-identity {
+    display: grid !important;
+    grid-template-columns: 56px minmax(0,1fr) !important;
+    gap: 11px !important;
+    align-items: center !important;
+  }
+
+  .lb-player-avatar {
+    width: 56px !important;
+    height: 56px !important;
+  }
+
+  .lb-player-score {
+    width: 100% !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(111,145,225,.15) !important;
+  }
+
+  /* ========================================================
+     11. TOP 10 -> SWIPE
+  ======================================================== */
+  .lb-top10,
+  .leaderboard-top-grid,
+  .point-podium {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 10px !important;
+
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+
+    margin-right: -8px !important;
+
+    padding: 4px 18px 14px 0 !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .lb-top10::-webkit-scrollbar,
+  .leaderboard-top-grid::-webkit-scrollbar,
+  .point-podium::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .lb-top-card,
+  .leaderboard-top-grid > *,
+  .point-podium > * {
+    flex: 0 0 min(74vw, 210px) !important;
+    width: min(74vw, 210px) !important;
+    min-width: min(74vw, 210px) !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* ========================================================
+     12. REWARD CARDS -> SWIPE
+  ======================================================== */
+  .reward-card-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 10px !important;
+
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+
+    margin-right: -8px !important;
+
+    padding: 2px 18px 14px 0 !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .reward-card-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .reward-card {
+    flex: 0 0 min(78vw, 230px) !important;
+    width: min(78vw, 230px) !important;
+    min-width: min(78vw, 230px) !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* ========================================================
+     13. PROFILE
+  ======================================================== */
+  .profile-hero {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    text-align: center !important;
+  }
+
+  /* Profile stat -> swipe */
+  .profile-stat-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 8px !important;
+
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+
+    margin-right: -8px !important;
+
+    padding: 2px 18px 12px 0 !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .profile-stat-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .profile-stat-grid article {
+    flex: 0 0 112px !important;
+    width: 112px !important;
+    min-width: 112px !important;
+    padding: 13px 9px !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* Game score full width */
+  .profile-game-card {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    width: 100% !important;
+    padding: 16px 12px !important;
+  }
+
+  /* Monthly profile -> swipe */
+  .profile-month-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 9px !important;
+
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+
+    margin-right: -8px !important;
+
+    padding: 2px 18px 13px 0 !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .profile-month-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .profile-month-card {
+    flex: 0 0 132px !important;
+    width: 132px !important;
+    min-width: 132px !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* Achievements -> swipe */
+  .profile-achievement-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 10px !important;
+
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+
+    margin-right: -8px !important;
+
+    padding: 2px 18px 14px 0 !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .profile-achievement-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .profile-achievement-card {
+    flex: 0 0 min(78vw, 220px) !important;
+    width: min(78vw, 220px) !important;
+    min-width: min(78vw, 220px) !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* ========================================================
+     14. SWIPE HINT
+  ======================================================== */
+  .mission-section::after,
+  .rank-journey::after,
+  .leaderboard-top-section::after {
+    content: "← GESER UNTUK MELIHAT LAINNYA →";
+    display: block;
+    margin-top: 5px;
+    color: #7183a8;
+    font-family: var(--font-game);
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-align: center;
+  }
+}
+
+/* ==========================================================
+   SMALLER MOBILE <= 360px
+========================================================== */
+
+@media (max-width: 360px) {
+
+  .home-stat-card {
+    flex-basis: 132px !important;
+    width: 132px !important;
+    min-width: 132px !important;
+  }
+
+  .month-card,
+  .profile-month-card {
+    flex-basis: 124px !important;
+    width: 124px !important;
+    min-width: 124px !important;
+  }
+
+  .game-flow article {
+    flex-basis: 155px !important;
+    width: 155px !important;
+    min-width: 155px !important;
+  }
+
+  .journey-card {
+    flex-basis: 142px !important;
+    width: 142px !important;
+    min-width: 142px !important;
+  }
+
+  .profile-stat-grid article {
+    flex-basis: 106px !important;
+    width: 106px !important;
+    min-width: 106px !important;
+  }
+
+  .lb-top-card,
+  .leaderboard-top-grid > *,
+  .point-podium > * {
+    flex-basis: min(80vw, 195px) !important;
+    width: min(80vw, 195px) !important;
+    min-width: min(80vw, 195px) !important;
+  }
+}
+
+/* ==========================================================
+   ULTRA SMALL <= 320px
+========================================================== */
+
+@media (max-width: 320px) {
+
+  .home-stat-card {
+    flex-basis: 125px !important;
+    width: 125px !important;
+    min-width: 125px !important;
+  }
+
+  .month-card,
+  .profile-month-card {
+    flex-basis: 118px !important;
+    width: 118px !important;
+    min-width: 118px !important;
+  }
+
+  .game-flow article {
+    flex-basis: 148px !important;
+    width: 148px !important;
+    min-width: 148px !important;
+  }
+
+  .journey-card {
+    flex-basis: 136px !important;
+    width: 136px !important;
+    min-width: 136px !important;
+  }
+
+  .profile-stat-grid article {
+    flex-basis: 100px !important;
+    width: 100px !important;
+    min-width: 100px !important;
+  }
+
+  .profile-achievement-card,
+  .reward-card {
+    flex-basis: 84vw !important;
+    width: 84vw !important;
+    min-width: 84vw !important;
+  }
+
+  .lb-top-card,
+  .leaderboard-top-grid > *,
+  .point-podium > * {
+    flex-basis: 82vw !important;
+    width: 82vw !important;
+    min-width: 82vw !important;
+  }
+}
