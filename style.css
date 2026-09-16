@@ -6715,324 +6715,20 @@ canvas {
 }
 
 /* ---------- LARGE DESKTOP ---------- */
-@media (min-width: 1500px) {
-  .page {
-    max-width: 1720px;
-  }
 
-  .home-lobby {
-    min-height: 640px;
-    padding: 65px 70px;
-  }
-
-  .home-player-name {
-    font-size: 70px;
-  }
-
-  .lb-top10 {
-    gap: 16px;
-  }
-}
 
 /* ---------- 1024–1100: COMPACT DESKTOP ----------
    Tidak ada stacking. Posisi utama tetap sama.
 */
-@media (max-width: 1100px) {
-  body {
-    font-size: 13px;
-  }
 
-  .topbar {
-    min-height: 78px;
-    padding: 10px 20px;
-  }
-
-  .brand-icon {
-    width: 40px;
-    height: 48px;
-  }
-
-  .brand-title {
-    font-size: 18px;
-  }
-
-  .brand-subtitle {
-    font-size: 9px;
-  }
-
-  .avatar {
-    width: 44px;
-    height: 44px;
-    flex-basis: 44px;
-  }
-
-  .music-button,
-  .logout-button {
-    min-height: 40px;
-  }
-
-  .app-navigation {
-    top: 78px;
-    margin-top: 7px;
-    padding: 5px;
-  }
-
-  .nav-item {
-    min-height: 39px;
-    padding: 0 11px;
-    font-size: 11px;
-  }
-
-  .nav-icon {
-    font-size: 14px;
-  }
-
-  .home-lobby {
-    grid-template-columns: minmax(0,1.25fr) minmax(290px,.75fr);
-    width: calc(100% - 26px);
-    min-height: 500px;
-    margin-top: 18px;
-    padding: 34px 38px;
-    gap: 26px;
-    border-radius: 26px;
-  }
-
-  .season-chip {
-    min-height: 32px;
-    font-size: 10px;
-  }
-
-  .home-welcome {
-    margin-top: 24px;
-    font-size: 16px;
-  }
-
-  .home-player-name {
-    font-size: clamp(38px,5vw,54px);
-  }
-
-  .home-player-subtitle {
-    font-size: 13px;
-    line-height: 1.6;
-  }
-
-  .home-user-meta {
-    font-size: 10px;
-  }
-
-  .home-stat-grid {
-    grid-template-columns: repeat(3,minmax(0,1fr));
-    gap: 8px;
-    margin-top: 20px;
-  }
-
-  .home-stat-card {
-    padding: 11px;
-    gap: 8px;
-  }
-
-  .stat-icon {
-    width: 32px;
-    height: 32px;
-    flex-basis: 32px;
-    font-size: 13px;
-  }
-
-  .home-stat-card span,
-  .home-stat-card small {
-    font-size: 9px;
-  }
-
-  .home-stat-card strong {
-    font-size: 18px;
-  }
-
-  .home-quick-actions {
-    margin-top: 14px;
-    gap: 7px;
-  }
-
-  .home-action-btn {
-    min-height: 36px;
-    padding: 0 10px;
-    font-size: 10px;
-  }
-
-  .home-rank-card {
-    min-height: 390px;
-    padding: 23px;
-    border-radius: 22px;
-  }
-
-  .home-rank-emblem {
-    width: 125px;
-    height: 142px;
-  }
-
-  .home-rank-shield {
-    width: 108px;
-    height: 126px;
-  }
-
-  .home-rank-symbol {
-    width: 78px;
-    height: 96px;
-  }
-
-  .home-rank-name {
-    font-size: 26px;
-  }
-
-  .game-section,
-  .season-banner {
-    width: calc(100% - 26px);
-  }
-
-  .game-section {
-    padding: 27px;
-  }
-
-  .section-heading {
-    gap: 18px;
-  }
-
-  .section-heading h2 {
-    font-size: 30px;
-  }
-
-  .section-heading p {
-    font-size: 12px;
-  }
-
-  .page-kicker,
-  .section-kicker {
-    min-height: 29px;
-    padding: 0 10px;
-    font-size: 9px;
-  }
-
-  .month-grid {
-    grid-template-columns: repeat(3,minmax(0,1fr));
-  }
-
-  .game-flow {
-    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-    gap: 8px;
-  }
-
-  .journey-track {
-    min-width: 900px;
-  }
-
-  .journey-card {
-    min-height: 170px;
-  }
-
-  .data-page,
-  .point-page,
-  .leaderboard-page,
-  .reward-page,
-  .profile-page {
-    padding: 24px 13px 55px;
-  }
-
-  .page-game-hero,
-  .reward-hero,
-  .profile-hero {
-    padding: 28px;
-  }
-
-  .page-header h1,
-  .page-game-hero h1,
-  .reward-hero h1,
-  .profile-copy h1 {
-    font-size: 32px;
-  }
-
-  .data-toolbar {
-    grid-template-columns: minmax(230px,1fr) auto auto;
-  }
-
-  .lb-top10 {
-    grid-template-columns: repeat(5,minmax(0,1fr));
-  }
-
-  .profile-hero {
-    grid-template-columns: auto minmax(0,1fr) auto;
-  }
-
-  .profile-stat-grid {
-    grid-template-columns: repeat(4,minmax(0,1fr));
-  }
-
-  .reward-card-grid {
-    grid-template-columns: repeat(4,minmax(0,1fr));
-  }
-}
 
 /* ---------- FALLBACK IF A BROWSER IGNORES FIXED VIEWPORT ----------
    Masih mempertahankan posisi utama.
 */
-@media (max-width: 700px) {
-  .home-lobby {
-    grid-template-columns: minmax(0,1.18fr) minmax(190px,.82fr);
-    padding: 18px 14px;
-    gap: 12px;
-  }
 
-  .home-player-name {
-    font-size: clamp(24px,6vw,34px);
-  }
-
-  .home-player-subtitle {
-    font-size: 10px;
-  }
-
-  .home-rank-card {
-    min-height: 275px;
-    padding: 14px 10px;
-  }
-
-  .home-rank-emblem {
-    width: 88px;
-    height: 100px;
-  }
-
-  .home-rank-shield {
-    width: 74px;
-    height: 88px;
-  }
-
-  .home-rank-symbol {
-    width: 54px;
-    height: 66px;
-  }
-
-  .nav-item {
-    padding: 0 7px;
-    font-size: 8px;
-  }
-
-  .game-section {
-    padding: 18px 12px;
-  }
-
-  .section-heading h2 {
-    font-size: 22px;
-  }
-}
 
 /* ---------- ACCESSIBILITY ---------- */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: .001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .001ms !important;
-    scroll-behavior: auto !important;
-  }
-}
+
 
 
 
@@ -7303,13 +6999,7 @@ canvas {
   }
 }
 
-@media (max-width: 1100px) {
-  .rank-claim-button {
-    min-height: 29px;
-    margin-top: 8px;
-    font-size: 7px;
-  }
-}
+
 
 
 
@@ -7334,15 +7024,7 @@ canvas {
   padding-top: 78px !important;
 }
 
-@media (max-width: 1100px) {
-  .app-navigation {
-    top: 86px !important;
-  }
 
-  .page {
-    padding-top: 62px !important;
-  }
-}
 
 /* Point summary menjadi 4 card */
 .point-page .mini-summary {
@@ -7561,11 +7243,7 @@ canvas {
 }
 
 /* fixed viewport mode tetap proporsional */
-@media (max-width: 1100px) {
-  .campaign-story-dialog {
-    width: min(330px, 78vw);
-  }
-}
+
 
 
 
@@ -7795,192 +7473,19 @@ canvas {
 }
 
 /* Touch devices */
-@media (hover: none) {
-  .nav-item:hover::before {
-    opacity: 0;
-  }
-}
+
 
 /* Tablet */
-@media (max-width: 1100px) {
-  :root {
-    --fixed-topbar-h: 72px;
-    --fixed-nav-gap: 8px;
-    --fixed-nav-h: 50px;
-  }
 
-  .topbar {
-    min-height: var(--fixed-topbar-h) !important;
-    padding: 8px 14px !important;
-  }
-
-  .app-navigation {
-    top: calc(var(--fixed-topbar-h) + var(--fixed-nav-gap)) !important;
-    max-width: calc(100vw - 24px) !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    justify-content: flex-start !important;
-    scrollbar-width: none;
-  }
-
-  .app-navigation::-webkit-scrollbar {
-    display: none;
-  }
-
-  .page {
-    padding-top:
-      calc(
-        var(--fixed-topbar-h) +
-        var(--fixed-nav-gap) +
-        var(--fixed-nav-h) +
-        18px
-      ) !important;
-  }
-}
 
 /* Phone */
-@media (max-width: 700px) {
-  :root {
-    --fixed-topbar-h: 62px;
-    --fixed-nav-gap: 6px;
-    --fixed-nav-h: 44px;
-  }
 
-  .topbar {
-    min-height: 62px !important;
-    padding: 7px 9px !important;
-    gap: 7px !important;
-  }
-
-  .brand-icon {
-    width: 32px !important;
-    height: 39px !important;
-    flex: 0 0 32px !important;
-  }
-
-  .brand-title {
-    font-size: 14px !important;
-  }
-
-  .brand-subtitle {
-    font-size: 7px !important;
-    letter-spacing: .15em !important;
-  }
-
-  .user-panel {
-    gap: 6px !important;
-  }
-
-  .user-info {
-    display: none !important;
-  }
-
-  .avatar {
-    width: 35px !important;
-    height: 35px !important;
-    flex: 0 0 35px !important;
-    border-radius: 10px !important;
-  }
-
-  .music-button {
-    width: 35px !important;
-    min-height: 35px !important;
-    padding: 0 !important;
-  }
-
-  .logout-button {
-    min-height: 35px !important;
-    padding: 0 9px !important;
-    font-size: 8px !important;
-  }
-
-  .app-navigation {
-    top: calc(var(--fixed-topbar-h) + var(--fixed-nav-gap)) !important;
-    width: calc(100vw - 12px) !important;
-    max-width: calc(100vw - 12px) !important;
-    min-height: 42px !important;
-    padding: 4px !important;
-    border-radius: 14px !important;
-  }
-
-  .nav-item {
-    flex: 0 0 auto !important;
-    min-width: max-content !important;
-    min-height: 34px !important;
-    padding: 0 9px !important;
-    gap: 5px !important;
-    font-size: 9px !important;
-  }
-
-  .nav-icon {
-    font-size: 11px !important;
-  }
-
-  .nav-label {
-    font-size: 9px !important;
-    white-space: nowrap !important;
-  }
-
-  .page {
-    padding-top:
-      calc(
-        var(--fixed-topbar-h) +
-        var(--fixed-nav-gap) +
-        var(--fixed-nav-h) +
-        14px
-      ) !important;
-  }
-
-  .campaign-story-modal {
-    padding: 8px !important;
-  }
-
-  .campaign-story-dialog {
-    width: min(92vw, 380px) !important;
-    max-height: 88dvh !important;
-    border-radius: 21px !important;
-  }
-
-  .rank-reward-dialog {
-    width: min(94vw, 460px) !important;
-    max-height: 90dvh;
-    overflow-y: auto;
-  }
-}
 
 /* Short laptop/tablet viewport */
-@media (max-height: 720px) and (min-width: 701px) {
-  :root {
-    --fixed-topbar-h: 68px;
-    --fixed-nav-gap: 7px;
-    --fixed-nav-h: 48px;
-  }
 
-  .topbar {
-    min-height: 68px !important;
-    padding-top: 7px !important;
-    padding-bottom: 7px !important;
-  }
-
-  .brand-icon {
-    width: 38px !important;
-    height: 46px !important;
-  }
-
-  .campaign-story-dialog {
-    max-height: 84dvh !important;
-    width: auto !important;
-  }
-}
 
 /* Reduced motion accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .brand-icon span,
-  .rank-reward-photo-shell,
-  .campaign-story-dialog::after {
-    animation: none !important;
-  }
-}
+
 
 
 
@@ -8238,6 +7743,77 @@ canvas {
   transform: translateY(1px) scale(.985) !important;
 }
 
+/* ==========================================================
+   FINAL RESPONSIVE SYSTEM — CLEAN
+   Satu-satunya responsive system.
+   Target:
+   - Desktop       > 1100 px
+   - Tablet        701–1100 px
+   - Mobile        <= 700 px
+   - Small Mobile  <= 500 px
+   - Tiny Mobile   <= 380 px
+========================================================== */
+
+/* ---------- GLOBAL WIDTH SAFETY ---------- */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+* {
+  min-width: 0;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+.page,
+.app-page,
+.home-lobby,
+.game-section,
+.season-banner,
+.page-header,
+.page-game-hero,
+.reward-hero,
+.profile-hero,
+.data-page,
+.point-page,
+.leaderboard-page,
+.reward-page,
+.profile-page {
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* ---------- DESKTOP BESAR ---------- */
+@media (min-width: 1500px) {
+  .page {
+    max-width: 1720px;
+  }
+
+  .home-lobby {
+    min-height: 640px;
+    padding: 65px 70px;
+  }
+
+  .home-player-name {
+    font-size: 70px;
+  }
+
+  .lb-top10 {
+    gap: 16px;
+  }
+}
+
+/* ---------- TABLET / SMALL LAPTOP ---------- */
 @media (max-width: 1100px) {
   :root {
     --final-topbar-h: 72px;
@@ -8245,9 +7821,38 @@ canvas {
     --final-nav-h: 50px;
   }
 
+  body {
+    font-size: 13px;
+  }
+
   .topbar {
-    min-height: var(--final-topbar-h) !important;
+    min-height: 72px !important;
     padding: 8px 14px !important;
+  }
+
+  .brand-icon {
+    width: 40px;
+    height: 48px;
+    flex: 0 0 40px;
+  }
+
+  .brand-title {
+    font-size: 18px;
+  }
+
+  .brand-subtitle {
+    font-size: 9px;
+  }
+
+  .avatar {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+  }
+
+  .music-button,
+  .logout-button {
+    min-height: 40px;
   }
 
   .app-navigation {
@@ -8258,32 +7863,61 @@ canvas {
     overflow-y: hidden !important;
     justify-content: flex-start !important;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .app-navigation::-webkit-scrollbar { display: none; }
+  .app-navigation::-webkit-scrollbar {
+    display: none;
+  }
 
   .page {
-    padding-top: calc(var(--final-topbar-h) + var(--final-nav-gap) + var(--final-nav-h) + 18px) !important;
+    padding-top:
+      calc(
+        var(--final-topbar-h) +
+        var(--final-nav-gap) +
+        var(--final-nav-h) +
+        18px
+      ) !important;
   }
 
   .home-lobby {
-    gap: 24px !important;
-    padding: 38px 34px !important;
+    width: calc(100% - 24px);
+    gap: 24px;
+    padding: 38px 34px;
+  }
+
+  .game-section,
+  .season-banner {
+    width: calc(100% - 24px);
+  }
+
+  .home-player-name {
+    font-size: clamp(38px, 5.8vw, 54px);
+  }
+
+  .data-page,
+  .point-page,
+  .leaderboard-page,
+  .reward-page,
+  .profile-page {
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }
 
+/* ---------- MOBILE ---------- */
 @media (max-width: 700px) {
   :root {
     --final-topbar-h: 60px;
     --final-nav-gap: 6px;
-    --final-nav-h: 43px;
+    --final-nav-h: 44px;
   }
 
   html,
   body {
     width: 100% !important;
-    min-width: 0 !important;
     max-width: 100% !important;
+    min-width: 0 !important;
     overflow-x: hidden !important;
   }
 
@@ -8294,7 +7928,11 @@ canvas {
 
   .topbar {
     min-height: 60px !important;
-    padding: 7px 9px !important;
+    padding:
+      7px
+      max(9px, env(safe-area-inset-right))
+      7px
+      max(9px, env(safe-area-inset-left)) !important;
     gap: 7px !important;
   }
 
@@ -8324,7 +7962,9 @@ canvas {
     min-width: 0 !important;
   }
 
-  .user-info { display: none !important; }
+  .user-info {
+    display: none !important;
+  }
 
   .avatar {
     width: 34px !important;
@@ -8348,13 +7988,25 @@ canvas {
 
   .app-navigation {
     top: calc(var(--final-topbar-h) + var(--final-nav-gap)) !important;
-    width: calc(100vw - 10px) !important;
-    max-width: calc(100vw - 10px) !important;
+    width: calc(
+      100vw -
+      max(12px, env(safe-area-inset-left)) -
+      max(12px, env(safe-area-inset-right))
+    ) !important;
+    max-width: calc(100vw - 12px) !important;
     min-height: 42px !important;
     padding: 4px !important;
     gap: 3px !important;
     border-radius: 13px !important;
     overflow-x: auto !important;
+    overflow-y: hidden !important;
+    justify-content: flex-start !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-navigation::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-item {
@@ -8368,7 +8020,9 @@ canvas {
     font-size: 8px !important;
   }
 
-  .nav-icon { font-size: 11px !important; }
+  .nav-icon {
+    font-size: 11px !important;
+  }
 
   .nav-label {
     display: inline !important;
@@ -8378,19 +8032,36 @@ canvas {
 
   .page {
     width: 100% !important;
-    min-width: 0 !important;
     max-width: 100% !important;
-    padding-top: calc(var(--final-topbar-h) + var(--final-nav-gap) + var(--final-nav-h) + 12px) !important;
+    min-width: 0 !important;
+    padding-top:
+      calc(
+        var(--final-topbar-h) +
+        var(--final-nav-gap) +
+        var(--final-nav-h) +
+        12px
+      ) !important;
   }
 
+  /* HOME */
   .home-lobby {
     width: calc(100% - 12px) !important;
+    max-width: calc(100% - 12px) !important;
     min-height: auto !important;
-    margin-top: 8px !important;
+    margin: 8px auto 0 !important;
     padding: 20px 14px !important;
     gap: 16px !important;
+    grid-template-columns: minmax(0,1fr) !important;
     border-radius: 18px !important;
-    grid-template-columns: 1fr !important;
+  }
+
+  .home-lobby-copy {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .season-chip {
+    max-width: 100%;
   }
 
   .home-welcome {
@@ -8399,19 +8070,24 @@ canvas {
   }
 
   .home-player-name {
-    font-size: clamp(27px, 9vw, 38px) !important;
-    line-height: 1.04 !important;
-    overflow-wrap: anywhere;
+    max-width: 100% !important;
+    font-size: clamp(26px, 9vw, 38px) !important;
+    line-height: 1.06 !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
   }
 
   .home-player-subtitle {
     max-width: 100% !important;
     font-size: 12px !important;
+    line-height: 1.6 !important;
+    overflow-wrap: anywhere !important;
   }
 
   .home-user-meta {
     flex-wrap: wrap !important;
     gap: 6px !important;
+    max-width: 100% !important;
   }
 
   .home-stat-grid {
@@ -8423,86 +8099,297 @@ canvas {
     min-width: 0 !important;
     padding: 10px 7px !important;
     gap: 6px !important;
+    overflow: hidden;
   }
 
-  .home-stat-card .stat-icon {
+  .stat-icon {
     width: 26px !important;
     height: 26px !important;
+    flex: 0 0 26px !important;
     font-size: 11px !important;
   }
 
   .home-stat-card span,
   .home-stat-card small {
     font-size: 7px !important;
-    overflow-wrap: anywhere;
+    line-height: 1.25 !important;
+    overflow-wrap: anywhere !important;
   }
 
-  .home-stat-card strong { font-size: 17px !important; }
+  .home-stat-card strong {
+    font-size: 17px !important;
+  }
 
   .home-quick-actions {
-    flex-wrap: wrap !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
     gap: 6px !important;
+    width: 100% !important;
   }
 
   .home-action-btn {
+    width: 100% !important;
     min-width: 0 !important;
-    flex: 1 1 30% !important;
-    padding: 0 8px !important;
+    min-height: 38px !important;
+    justify-content: center !important;
+    padding: 0 6px !important;
+    gap: 4px !important;
     font-size: 8px !important;
+    overflow: hidden;
+  }
+
+  .home-action-btn span {
+    overflow-wrap: anywhere;
   }
 
   .home-rank-card {
-    min-height: 360px !important;
-    padding: 25px 16px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 350px !important;
+    padding: 24px 16px !important;
     border-radius: 20px !important;
   }
 
+  .home-rank-emblem {
+    width: 118px !important;
+    height: 135px !important;
+  }
+
+  .home-rank-shield {
+    width: 102px !important;
+    height: 120px !important;
+  }
+
+  .home-rank-symbol {
+    width: 74px !important;
+    height: 91px !important;
+    font-size: 22px !important;
+  }
+
+  .ring-one {
+    width: 220px !important;
+    height: 220px !important;
+  }
+
+  .ring-two {
+    width: 260px !important;
+    height: 165px !important;
+  }
+
+  .home-rank-name {
+    font-size: 22px !important;
+  }
+
+  .next-rank-panel {
+    min-width: 0 !important;
+  }
+
+  .next-rank-head {
+    gap: 8px !important;
+  }
+
+  /* COMMON SECTIONS */
   .game-section,
   .season-banner {
     width: calc(100% - 12px) !important;
+    max-width: calc(100% - 12px) !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    padding-left: 14px !important;
-    padding-right: 14px !important;
+    padding: 18px 14px !important;
     border-radius: 18px !important;
   }
 
-  .section-heading { gap: 12px !important; }
-  .section-heading h2 { font-size: clamp(20px, 7vw, 28px) !important; }
-  .section-heading p { font-size: 11px !important; }
+  .section-heading {
+    display: block !important;
+  }
 
-  .month-grid { gap: 7px !important; }
+  .section-heading h2 {
+    font-size: clamp(20px, 7vw, 28px) !important;
+  }
+
+  .section-heading p {
+    max-width: 100% !important;
+    font-size: 11px !important;
+  }
+
+  /* MONTH QUEST */
+  .month-grid {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 6px !important;
+  }
 
   .month-card {
     min-width: 0 !important;
-    padding: 13px 7px !important;
+    padding: 12px 6px !important;
   }
 
   .month-name,
-  .month-card span,
-  .month-state { font-size: 7px !important; }
+  .month-card > span,
+  .month-state {
+    font-size: 7px !important;
+  }
 
-  .month-value { font-size: 24px !important; }
+  .month-value {
+    font-size: 24px !important;
+  }
 
+  /* GAME FLOW */
   .game-flow {
     grid-template-columns: repeat(2, minmax(0,1fr)) !important;
     gap: 7px !important;
   }
 
-  .game-flow i { display: none !important; }
+  .game-flow i {
+    display: none !important;
+  }
 
-  .journey-scroll,
-  .table-wrap,
-  .data-table-wrap {
+  .game-flow article {
+    min-height: 128px !important;
+    padding: 13px !important;
+  }
+
+  .game-flow strong {
+    font-size: 12px !important;
+  }
+
+  .game-flow small {
+    font-size: 10px !important;
+  }
+
+  /* RANK JOURNEY */
+  .journey-summary {
+    width: auto !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .journey-scroll {
+    width: 100% !important;
+    max-width: 100% !important;
     overflow-x: auto !important;
+    overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch;
   }
 
-  .journey-track { min-width: max-content !important; }
+  .journey-track {
+    display: flex !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    gap: 8px !important;
+  }
 
   .journey-card {
+    flex: 0 0 145px !important;
     width: 145px !important;
     min-width: 145px !important;
+    min-height: 190px !important;
+    padding: 15px 10px !important;
+  }
+
+  .journey-note {
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* BANNER */
+  .season-banner {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 14px !important;
+  }
+
+  .season-banner h2 {
+    font-size: clamp(21px, 7vw, 29px) !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .season-banner p {
+    font-size: 11px !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .season-banner button {
+    width: 100% !important;
+    white-space: normal !important;
+  }
+
+  /* DATA / POINT / LEADERBOARD / REWARD / PROFILE */
+  .data-page,
+  .point-page,
+  .leaderboard-page,
+  .reward-page,
+  .profile-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding:
+      18px
+      max(8px, env(safe-area-inset-right))
+      60px
+      max(8px, env(safe-area-inset-left)) !important;
+  }
+
+  .page-header,
+  .page-game-hero,
+  .reward-hero,
+  .profile-hero {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .page-header h1,
+  .page-game-hero h1,
+  .reward-hero h1,
+  .profile-copy h1 {
+    max-width: 100% !important;
+    font-size: clamp(25px, 8vw, 34px) !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .page-header p,
+  .page-game-hero p,
+  .reward-hero p {
+    max-width: 100% !important;
+    font-size: 11px !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .data-toolbar {
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 7px !important;
+  }
+
+  .search-box,
+  .data-toolbar select,
+  .export-button {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 44px !important;
+  }
+
+  .table-shell {
+    display: none !important;
+  }
+
+  .mobile-card-list {
+    display: grid !important;
+    gap: 10px !important;
+  }
+
+  .database-mobile-card,
+  .point-mobile-card,
+  .lb-mobile-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 14px !important;
+    overflow: hidden;
+  }
+
+  .database-mobile-card *,
+  .point-mobile-card *,
+  .lb-mobile-card * {
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   .mini-summary,
@@ -8511,56 +8398,297 @@ canvas {
     gap: 7px !important;
   }
 
-  .mini-summary article { min-width: 0 !important; }
+  .mini-summary article {
+    min-width: 0 !important;
+  }
 
-  .reward-card-grid { grid-template-columns: 1fr !important; }
+  .point-podium,
+  .leaderboard-top-grid,
+  .reward-card-grid,
+  .profile-stat-grid,
+  .profile-month-grid,
+  .profile-achievement-grid {
+    max-width: 100% !important;
+  }
+
+  .point-podium {
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 10px !important;
+  }
+
+  .leaderboard-top-grid {
+    grid-template-columns: minmax(0,1fr) !important;
+  }
+
+  .reward-card-grid {
+    grid-template-columns: minmax(0,1fr) !important;
+  }
 
   .profile-hero {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: minmax(0,1fr) !important;
     text-align: center;
   }
 
-  .profile-rank-box { grid-column: auto !important; }
+  .profile-rank-box {
+    grid-column: auto !important;
+  }
 
-  .campaign-story-modal { padding: 7px !important; }
+  /* PAGINATION */
+  .pagination {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* POPUPS */
+  .campaign-story-modal,
+  .rank-reward-modal {
+    padding:
+      max(8px, env(safe-area-inset-top))
+      max(8px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(8px, env(safe-area-inset-left)) !important;
+  }
 
   .campaign-story-dialog {
     width: min(92vw, 380px) !important;
+    max-width: 92vw !important;
     max-height: 88dvh !important;
     border-radius: 20px !important;
   }
 
   .rank-reward-dialog {
     width: min(94vw, 460px) !important;
+    max-width: 94vw !important;
     max-height: 90dvh !important;
     overflow-y: auto !important;
   }
+}
 
-  .page-header h1,
-  .page-header p,
-  .section-heading h2,
-  .section-heading p,
-  .journey-note,
-  .journey-summary,
-  .reward-card,
-  .profile-rank-box,
-  .season-banner h2,
-  .season-banner p {
-    overflow-wrap: anywhere !important;
-    word-break: normal !important;
+/* ---------- SMALL MOBILE: 500 PX KE BAWAH ---------- */
+@media (max-width: 500px) {
+  :root {
+    --final-topbar-h: 58px;
+    --final-nav-gap: 5px;
+    --final-nav-h: 42px;
+  }
+
+  .topbar {
+    min-height: 58px !important;
+    padding:
+      6px
+      max(7px, env(safe-area-inset-right))
+      6px
+      max(7px, env(safe-area-inset-left)) !important;
+  }
+
+  .brand-icon {
+    width: 29px !important;
+    height: 35px !important;
+    flex: 0 0 29px !important;
+  }
+
+  .brand-title {
+    font-size: 12px !important;
+  }
+
+  .brand-subtitle {
+    font-size: 5.5px !important;
+  }
+
+  .avatar,
+  .music-button {
+    width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    flex-basis: 32px !important;
+  }
+
+  .logout-button {
+    min-height: 32px !important;
+    padding: 0 7px !important;
+    font-size: 7px !important;
+  }
+
+  .app-navigation {
+    width: calc(100vw - 8px) !important;
+    max-width: calc(100vw - 8px) !important;
+    padding: 3px !important;
+  }
+
+  .nav-item {
+    min-height: 32px !important;
+    padding: 0 7px !important;
+  }
+
+  .nav-label {
+    font-size: 7.5px !important;
+  }
+
+  .page {
+    padding-top:
+      calc(
+        var(--final-topbar-h) +
+        var(--final-nav-gap) +
+        var(--final-nav-h) +
+        10px
+      ) !important;
+  }
+
+  .home-lobby {
+    width: calc(100% - 8px) !important;
+    max-width: calc(100% - 8px) !important;
+    padding: 16px 11px !important;
+    gap: 13px !important;
+    border-radius: 15px !important;
+  }
+
+  .home-player-name {
+    font-size: clamp(24px, 8.6vw, 34px) !important;
+  }
+
+  .home-stat-grid {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 4px !important;
+  }
+
+  .home-stat-card {
+    display: block !important;
+    padding: 9px 5px !important;
+    text-align: center;
+  }
+
+  .stat-icon {
+    margin: 0 auto 5px !important;
+  }
+
+  .home-stat-card strong {
+    font-size: 16px !important;
+  }
+
+  .home-stat-card span,
+  .home-stat-card small {
+    font-size: 6.5px !important;
+  }
+
+  .home-quick-actions {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 4px !important;
+  }
+
+  .home-action-btn {
+    min-height: 36px !important;
+    padding: 0 4px !important;
+    font-size: 7px !important;
+    line-height: 1.15 !important;
+  }
+
+  .home-rank-card {
+    min-height: 330px !important;
+    padding: 21px 13px !important;
+  }
+
+  .game-section,
+  .season-banner {
+    width: calc(100% - 8px) !important;
+    max-width: calc(100% - 8px) !important;
+    padding: 16px 11px !important;
+  }
+
+  .month-grid {
+    gap: 4px !important;
+  }
+
+  .month-card {
+    padding: 10px 4px !important;
+  }
+
+  .month-value {
+    font-size: 22px !important;
+  }
+
+  .game-flow {
+    gap: 5px !important;
+  }
+
+  .game-flow article {
+    min-height: 118px !important;
+    padding: 11px !important;
+  }
+
+  .journey-card {
+    flex-basis: 138px !important;
+    width: 138px !important;
+    min-width: 138px !important;
+  }
+
+  .data-page,
+  .point-page,
+  .leaderboard-page,
+  .reward-page,
+  .profile-page {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .mini-summary,
+  .point-page .mini-summary {
+    gap: 5px !important;
+  }
+
+  .campaign-story-dialog {
+    width: min(94vw, 360px) !important;
+    max-width: 94vw !important;
+  }
+
+  .rank-reward-dialog {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
   }
 }
 
+/* ---------- TINY MOBILE ---------- */
 @media (max-width: 380px) {
-  .logout-button { display: none !important; }
+  .logout-button {
+    display: none !important;
+  }
 
   .home-stat-grid {
     grid-template-columns: repeat(2, minmax(0,1fr)) !important;
   }
 
-  .home-stat-card:last-child { grid-column: 1 / -1; }
+  .home-stat-card:last-child {
+    grid-column: 1 / -1 !important;
+  }
+
+  .home-quick-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .home-action-btn {
+    min-height: 34px !important;
+  }
+
+  .month-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .month-card {
+    padding: 10px !important;
+  }
+
+  .game-flow {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mini-summary,
+  .point-page .mini-summary {
+    grid-template-columns: 1fr !important;
+  }
 }
 
+/* ---------- SHORT SCREEN ---------- */
 @media (max-height: 720px) and (min-width: 701px) {
   :root {
     --final-topbar-h: 68px;
@@ -8580,17 +8708,21 @@ canvas {
   }
 }
 
+/* ---------- TOUCH ---------- */
 @media (hover: none) {
-  .nav-item:hover::before { opacity: 0; }
+  .nav-item:hover::before {
+    opacity: 0;
+  }
 }
 
+/* ---------- ACCESSIBILITY ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .brand-icon span,
-  .home-rank-card::before,
-  .next-rank-track::after,
-  .profile-game-progress::after,
-  .rank-reward-photo-shell,
-  .campaign-story-dialog::after {
-    animation: none !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
   }
 }
