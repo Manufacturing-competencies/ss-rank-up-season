@@ -7569,6 +7569,79 @@ function updateCampaignProgress() {
     (((campaignStoryIndex + 1) / total) * 100) + '%';
 }
 
+
+/* ==========================================================
+   FINAL CAMPAIGN AUDIO CONTROL
+========================================================== */
+
+function finalCampaignSoundGate() {
+  return document.getElementById('campaignVideoSoundGate');
+}
+
+function finalPauseMusicForCampaign() {
+  if (!bgMusic) return;
+
+  if (!bgMusic.paused) {
+    bgMusic.pause();
+  }
+
+  if (musicButton) {
+    musicButton.textContent = '▶';
+  }
+}
+
+async function finalResumeMusicAfterCampaign() {
+  if (!bgMusic) return;
+
+  bgMusic.muted = false;
+  bgMusic.volume = 0.25;
+
+  try {
+    await bgMusic.play();
+
+    if (musicButton) {
+      musicButton.textContent = 'II';
+    }
+  }
+  catch {
+    /* Browser autoplay policy may still require interaction. */
+  }
+}
+
+async function finalPlayCampaignVideo(video) {
+  if (!video) return;
+
+  finalPauseMusicForCampaign();
+
+  video.muted = false;
+  video.volume = 1;
+
+  const gate = finalCampaignSoundGate();
+
+  if (gate) {
+    gate.hidden = true;
+  }
+
+  try {
+    await video.play();
+  }
+  catch {
+    video.pause();
+
+    if (gate) {
+      gate.hidden = false;
+    }
+  }
+}
+
+function finalHideCampaignSoundGate() {
+  const gate = finalCampaignSoundGate();
+
+  if (gate) {
+    gate.hidden = true;
+  }
+}
+
 function renderCampaignStory() {
   const {
     image,
@@ -7588,6 +7661,9 @@ function renderCampaignStory() {
 
   video.pause();
   video.removeAttribute('src');
+  video.load();
+
+  finalHideCampaignSoundGate();
 
   const story =
     campaignStoryAvailable[campaignStoryIndex];
@@ -7602,22 +7678,28 @@ function renderCampaignStory() {
   if (story.type === 'video') {
     video.hidden = false;
     video.src = story.src;
+    video.muted = false;
+    video.volume = 1;
 
     video.onloadeddata = function() {
       fallback.hidden = true;
-      video.play().catch(() => {});
+      finalPlayCampaignVideo(video);
     };
 
     video.onerror = function() {
       video.hidden = true;
       fallback.hidden = false;
+      finalResumeMusicAfterCampaign();
     };
 
     video.onended = function() {
+      finalResumeMusicAfterCampaign();
       nextCampaignStory();
     };
   }
   else {
+    finalResumeMusicAfterCampaign();
+
     image.hidden = false;
     image.src = story.src;
 
@@ -7701,10 +7783,14 @@ function closeCampaignStory() {
     video.pause();
   }
 
+  finalHideCampaignSoundGate();
+
   modal.hidden = true;
   modal.setAttribute('aria-hidden', 'true');
 
   markCampaignStorySeen();
+
+  finalResumeMusicAfterCampaign();
 }
 
 
@@ -7901,299 +7987,78 @@ renderDashboard = function(result) {
 };
 
 
+/* ---------- VIDEO SOUND FALLBACK ---------- */
+document.addEventListener('click', function(event) {
+  const gate = event.target.closest('#campaignVideoSoundGate');
 
-/* ==========================================================
-   FINAL MEDIA AUDIO + BIG GONG
-   - Video campaign memakai suara video
-   - Background music pause selama video
-   - Background music resume setelah video selesai
-   - Fallback tap-to-play untuk browser yang blok autoplay suara
-========================================================== */
+  if (!gate) return;
 
-let campaignMusicWasPlaying = false;
-let campaignVideoOwnsAudio = false;
+  const { video } = getCampaignEls();
 
-function finalCampaignSoundGate() {
-  return document.getElementById('campaignVideoSoundGate');
-}
+  if (!video) return;
 
-function finalPauseBackgroundMusicForVideo() {
-  if (!bgMusic) {
-    campaignMusicWasPlaying = false;
-    return;
-  }
-
-  campaignMusicWasPlaying =
-    !bgMusic.paused &&
-    !bgMusic.ended;
-
-  if (campaignMusicWasPlaying) {
-    bgMusic.pause();
-  }
-}
-
-function finalResumeBackgroundMusicAfterVideo() {
-  if (
-    !bgMusic ||
-    !campaignMusicWasPlaying
-  ) {
-    campaignMusicWasPlaying = false;
-    campaignVideoOwnsAudio = false;
-    return;
-  }
-
-  bgMusic
-    .play()
-    .catch(() => {});
-
-  campaignMusicWasPlaying = false;
-  campaignVideoOwnsAudio = false;
-}
-
-async function finalPlayCampaignVideoWithSound(video) {
-  if (!video) {
-    return;
-  }
-
-  finalPauseBackgroundMusicForVideo();
-
-  campaignVideoOwnsAudio = true;
+  gate.hidden = true;
+  finalPauseMusicForCampaign();
 
   video.muted = false;
   video.volume = 1;
 
-  const gate = finalCampaignSoundGate();
-
-  if (gate) {
-    gate.hidden = true;
-  }
-
-  try {
-    await video.play();
-  }
-  catch {
-    /*
-      Safari / Chrome mobile bisa memblokir autoplay bersuara
-      jika tidak ada user gesture. Tombol ini membuatnya tetap
-      bekerja di HP, tablet, dan laptop.
-    */
-    video.pause();
-
-    if (gate) {
-      gate.hidden = false;
-    }
-  }
-}
-
-function finalStopCampaignVideoAudio(video) {
-  if (video) {
-    video.pause();
-  }
-
-  const gate = finalCampaignSoundGate();
-
-  if (gate) {
-    gate.hidden = true;
-  }
-
-  if (campaignVideoOwnsAudio) {
-    finalResumeBackgroundMusicAfterVideo();
-  }
-}
-
-
-/* Override story renderer supaya audio sinkron */
-const finalMediaLegacyRenderCampaignStory =
-  renderCampaignStory;
-
-renderCampaignStory = function() {
-  const els = getCampaignEls();
-  const previousWasVideo =
-    campaignVideoOwnsAudio;
-
-  /*
-    Renderer lama akan mengganti source / pause video lama.
-    Resume music dulu jika kita pindah dari story video.
-  */
-  if (previousWasVideo) {
-    finalResumeBackgroundMusicAfterVideo();
-  }
-
-  finalMediaLegacyRenderCampaignStory();
-
-  const story =
-    campaignStoryAvailable[campaignStoryIndex];
-
-  if (
-    story &&
-    story.type === 'video' &&
-    els.video
-  ) {
-    els.video.muted = false;
-    els.video.volume = 1;
-
-    els.video.onloadeddata = function() {
-      if (els.fallback) {
-        els.fallback.hidden = true;
-      }
-
-      finalPlayCampaignVideoWithSound(
-        els.video
-      );
-    };
-
-    els.video.onended = function() {
-      finalResumeBackgroundMusicAfterVideo();
-      nextCampaignStory();
-    };
-  }
-};
-
-
-/* Close popup: video stop, music kembali */
-const finalMediaLegacyCloseCampaignStory =
-  closeCampaignStory;
-
-closeCampaignStory = function() {
-  const { video } = getCampaignEls();
-
-  finalStopCampaignVideoAudio(video);
-  finalMediaLegacyCloseCampaignStory();
-};
-
-
-/* Tombol tap-to-play jika autoplay suara diblokir */
-document.addEventListener(
-  'click',
-  function(event) {
-    const gate =
-      event.target.closest(
-        '#campaignVideoSoundGate'
-      );
-
-    if (!gate) {
-      return;
-    }
-
-    const { video } = getCampaignEls();
-
-    if (!video) {
-      return;
-    }
-
-    gate.hidden = true;
-
-    finalPauseBackgroundMusicForVideo();
-    campaignVideoOwnsAudio = true;
-
-    video.muted = false;
-    video.volume = 1;
-
-    video
-      .play()
-      .catch(() => {
-        gate.hidden = false;
-      });
-  }
-);
+  video.play().catch(function() {
+    gate.hidden = false;
+  });
+});
 
 
 /* ==========================================================
-   EXTRA GONG / SHIMMER
+   FINAL PREMIUM GONG
 ========================================================== */
 
-function playFinalGong() {
+function finalPremiumGong() {
   try {
     const ctx = getUiAudioContext();
-
-    if (!ctx) {
-      return;
-    }
+    if (!ctx) return;
 
     if (ctx.state === 'suspended') {
       ctx.resume();
     }
 
     const now = ctx.currentTime;
-
     const master = ctx.createGain();
+
     master.gain.setValueAtTime(.0001, now);
-    master.gain.exponentialRampToValueAtTime(.24, now + .025);
-    master.gain.exponentialRampToValueAtTime(.0001, now + 2.4);
+    master.gain.exponentialRampToValueAtTime(.21, now + .025);
+    master.gain.exponentialRampToValueAtTime(.0001, now + 2.45);
     master.connect(ctx.destination);
 
-    const partials = [
+    [
       [110.00, .12, 2.30],
       [164.81, .075, 1.95],
       [220.00, .055, 1.65],
       [329.63, .030, 1.30],
       [659.25, .014, .95]
-    ];
-
-    partials.forEach(([freq, gainValue, duration], index) => {
+    ].forEach(function(item, index) {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
 
-      osc.type =
-        index < 2
-          ? 'sine'
-          : 'triangle';
+      osc.type = index < 2 ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(item[0], now);
 
-      osc.frequency.setValueAtTime(freq, now);
-
-      gain.gain.setValueAtTime(gainValue, now);
-      gain.gain.exponentialRampToValueAtTime(
-        .0001,
-        now + duration
-      );
+      gain.gain.setValueAtTime(item[1], now);
+      gain.gain.exponentialRampToValueAtTime(.0001, now + item[2]);
 
       osc.connect(gain);
       gain.connect(master);
 
       osc.start(now);
-      osc.stop(now + duration + .05);
-    });
-
-    /* high shimmer */
-    [880, 1174.66, 1567.98].forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, now + .15 + i * .07);
-
-      gain.gain.setValueAtTime(.0001, now + .15 + i * .07);
-      gain.gain.exponentialRampToValueAtTime(
-        .022,
-        now + .19 + i * .07
-      );
-      gain.gain.exponentialRampToValueAtTime(
-        .0001,
-        now + .85 + i * .10
-      );
-
-      osc.connect(gain);
-      gain.connect(master);
-
-      osc.start(now + .15 + i * .07);
-      osc.stop(now + 1.1 + i * .10);
+      osc.stop(now + item[2] + .05);
     });
   }
-  catch {
-    /* enhancement only */
-  }
+  catch {}
 }
 
-
-/* Reward open = existing unlock sound + gong lebih besar */
-const finalMediaLegacyOpenReward =
-  finalOpenReward;
+const finalPremiumLegacyOpenReward = finalOpenReward;
 
 finalOpenReward = function(rank) {
-  finalMediaLegacyOpenReward(rank);
-
-  setTimeout(
-    playFinalGong,
-    70
-  );
+  finalPremiumLegacyOpenReward(rank);
+  setTimeout(finalPremiumGong, 70);
 };

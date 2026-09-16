@@ -7981,3 +7981,616 @@ canvas {
     animation: none !important;
   }
 }
+
+
+
+/* ==========================================================
+   FINAL PREMIUM RESPONSIVE — NO OVERLAP
+========================================================== */
+
+:root {
+  --final-topbar-h: 92px;
+  --final-nav-gap: 10px;
+  --final-nav-h: 60px;
+}
+
+.topbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+  background: linear-gradient(180deg, rgba(2,7,20,.99), rgba(2,7,20,.95)) !important;
+  border-bottom: 1px solid rgba(88,221,255,.18) !important;
+  box-shadow: 0 14px 40px rgba(0,0,0,.34), 0 0 34px rgba(85,140,255,.07) !important;
+  backdrop-filter: blur(24px) saturate(1.25) !important;
+}
+
+.app-navigation {
+  position: fixed !important;
+  top: calc(var(--final-topbar-h) + var(--final-nav-gap)) !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: 990 !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+  background: linear-gradient(135deg, rgba(4,12,32,.97), rgba(8,11,35,.97)) !important;
+  border: 1px solid rgba(97,150,255,.24) !important;
+  box-shadow: 0 16px 42px rgba(0,0,0,.30), 0 0 28px rgba(88,221,255,.08), inset 0 1px 0 rgba(255,255,255,.04) !important;
+  backdrop-filter: blur(22px) saturate(1.2) !important;
+}
+
+.page {
+  padding-top: calc(var(--final-topbar-h) + var(--final-nav-gap) + var(--final-nav-h) + 24px) !important;
+}
+
+.nav-item {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.nav-item::before {
+  content: "";
+  position: absolute;
+  inset: -70%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle, rgba(88,221,255,.34), transparent 42%);
+  transform: scale(.55);
+  transition: opacity .25s ease, transform .35s ease;
+}
+
+.nav-item:hover::before,
+.nav-item.active::before {
+  opacity: .85;
+  transform: scale(1);
+}
+
+.nav-item.active {
+  box-shadow: 0 8px 24px rgba(80,96,255,.30), 0 0 28px rgba(88,221,255,.18), inset 0 1px 0 rgba(255,255,255,.14) !important;
+}
+
+.brand-icon {
+  filter: drop-shadow(0 0 12px rgba(88,221,255,.58)) drop-shadow(0 0 27px rgba(147,104,255,.30)) !important;
+}
+
+.brand-icon span {
+  animation: finalBrandSpark 2.1s ease-in-out infinite;
+}
+
+@keyframes finalBrandSpark {
+  0%,100% { opacity: .70; box-shadow: 0 0 9px rgba(255,255,255,.80); }
+  50% { opacity: 1; box-shadow: 0 0 12px #fff, 0 0 27px rgba(88,221,255,.95), 0 0 46px rgba(147,104,255,.58); }
+}
+
+.home-rank-card {
+  isolation: isolate;
+}
+
+.home-rank-card::before {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .55;
+  filter: blur(44px);
+  animation: finalRankAura 3s ease-in-out infinite;
+}
+
+.home-rank-card.rank-warrior::before { background: radial-gradient(circle, rgba(120,160,210,.23), transparent 58%); }
+.home-rank-card.rank-elite::before { background: radial-gradient(circle, rgba(88,221,255,.30), transparent 58%); }
+.home-rank-card.rank-epic::before { background: radial-gradient(circle, rgba(147,104,255,.34), transparent 58%); }
+.home-rank-card.rank-legend::before { background: radial-gradient(circle, rgba(255,215,104,.34), transparent 58%); }
+.home-rank-card.rank-mythic::before,
+.home-rank-card.rank-mythic-honor::before,
+.home-rank-card.rank-mythic-glory::before {
+  background: radial-gradient(circle at 50% 42%, rgba(255,215,104,.26), transparent 34%), radial-gradient(circle at 52% 58%, rgba(147,104,255,.34), transparent 58%);
+}
+
+@keyframes finalRankAura {
+  0%,100% { opacity: .43; transform: scale(.94); }
+  50% { opacity: .78; transform: scale(1.04); }
+}
+
+.home-rank-card,
+.reward-card.revealed,
+.profile-rank-box {
+  box-shadow: 0 26px 60px rgba(0,0,0,.30), 0 0 30px rgba(88,221,255,.07), inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+.next-rank-track,
+.profile-game-progress {
+  position: relative;
+  overflow: hidden;
+}
+
+.next-rank-track::after,
+.profile-game-progress::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 34%;
+  left: -45%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.34), transparent);
+  animation: finalProgressShimmer 2.3s ease-in-out infinite;
+}
+
+@keyframes finalProgressShimmer {
+  0%,20% { left: -45%; }
+  75%,100% { left: 115%; }
+}
+
+.journey-card {
+  transition: transform .24s ease, border-color .24s ease, box-shadow .24s ease, filter .24s ease !important;
+}
+
+.journey-card.current {
+  box-shadow: 0 18px 42px rgba(0,0,0,.30), 0 0 26px rgba(88,221,255,.18) !important;
+}
+
+.journey-card.achieved {
+  box-shadow: 0 18px 42px rgba(0,0,0,.28), 0 0 22px rgba(91,229,189,.12) !important;
+}
+
+.journey-card.consistency-lock {
+  filter: saturate(.68) brightness(.86);
+}
+
+.rank-reward-dialog {
+  border-color: rgba(88,221,255,.58) !important;
+  box-shadow: 0 45px 130px rgba(0,0,0,.70), 0 0 30px rgba(88,221,255,.26), 0 0 86px rgba(147,104,255,.22), inset 0 0 44px rgba(88,221,255,.045) !important;
+}
+
+.rank-reward-photo-shell {
+  box-shadow: 0 0 0 8px rgba(88,221,255,.035), 0 0 32px rgba(88,221,255,.32), 0 0 72px rgba(147,104,255,.23), 0 24px 56px rgba(0,0,0,.40) !important;
+  animation: rewardPhotoPop .65s .12s cubic-bezier(.2,1,.25,1) both, finalRewardGlow 2s .8s ease-in-out infinite !important;
+}
+
+@keyframes finalRewardGlow {
+  0%,100% { filter: brightness(1); }
+  50% { filter: brightness(1.17) saturate(1.18); }
+}
+
+.campaign-story-dialog {
+  border-color: rgba(88,221,255,.56) !important;
+  box-shadow: 0 45px 130px rgba(0,0,0,.70), 0 0 30px rgba(88,221,255,.25), 0 0 84px rgba(147,104,255,.20) !important;
+}
+
+.campaign-story-dialog::after {
+  content: "";
+  position: absolute;
+  inset: -45%;
+  z-index: 6;
+  pointer-events: none;
+  opacity: .24;
+  background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,.18) 48%, transparent 58%);
+  transform: translateX(-58%) rotate(9deg);
+  animation: finalStoryShine 3.3s ease-in-out infinite;
+}
+
+@keyframes finalStoryShine {
+  0%,25% { transform: translateX(-62%) rotate(9deg); }
+  70%,100% { transform: translateX(62%) rotate(9deg); }
+}
+
+.campaign-video-sound-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: radial-gradient(circle, rgba(88,221,255,.13), transparent 36%), rgba(1,6,20,.62);
+  color: #fff;
+  font-family: var(--font-game);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+.campaign-video-sound-gate[hidden] { display: none !important; }
+
+.campaign-video-sound-gate span {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+  border: 1px solid rgba(88,221,255,.56);
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(59,154,255,.50), rgba(122,72,255,.54));
+  box-shadow: 0 0 24px rgba(88,221,255,.30), 0 0 50px rgba(147,104,255,.22);
+  font-size: 24px;
+}
+
+.season-banner {
+  border-color: rgba(88,221,255,.22) !important;
+  box-shadow: 0 28px 70px rgba(0,0,0,.26), 0 0 38px rgba(88,221,255,.07) !important;
+}
+
+.home-action-btn,
+.nav-item,
+.reward-card,
+.journey-card,
+.season-banner button,
+.rank-reward-close {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.home-action-btn:active,
+.nav-item:active,
+.reward-card:active,
+.journey-card:active,
+.season-banner button:active,
+.rank-reward-close:active {
+  transform: translateY(1px) scale(.985) !important;
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --final-topbar-h: 72px;
+    --final-nav-gap: 8px;
+    --final-nav-h: 50px;
+  }
+
+  .topbar {
+    min-height: var(--final-topbar-h) !important;
+    padding: 8px 14px !important;
+  }
+
+  .app-navigation {
+    top: calc(var(--final-topbar-h) + var(--final-nav-gap)) !important;
+    width: auto !important;
+    max-width: calc(100vw - 24px) !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    justify-content: flex-start !important;
+    scrollbar-width: none;
+  }
+
+  .app-navigation::-webkit-scrollbar { display: none; }
+
+  .page {
+    padding-top: calc(var(--final-topbar-h) + var(--final-nav-gap) + var(--final-nav-h) + 18px) !important;
+  }
+
+  .home-lobby {
+    gap: 24px !important;
+    padding: 38px 34px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --final-topbar-h: 60px;
+    --final-nav-gap: 6px;
+    --final-nav-h: 43px;
+  }
+
+  html,
+  body {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    font-size: 12px !important;
+    line-height: 1.48 !important;
+  }
+
+  .topbar {
+    min-height: 60px !important;
+    padding: 7px 9px !important;
+    gap: 7px !important;
+  }
+
+  .brand {
+    gap: 7px !important;
+    min-width: 0 !important;
+  }
+
+  .brand-icon {
+    width: 31px !important;
+    height: 38px !important;
+    flex: 0 0 31px !important;
+  }
+
+  .brand-title {
+    font-size: 13px !important;
+    white-space: nowrap !important;
+  }
+
+  .brand-subtitle {
+    font-size: 6px !important;
+    letter-spacing: .14em !important;
+  }
+
+  .user-panel {
+    gap: 5px !important;
+    min-width: 0 !important;
+  }
+
+  .user-info { display: none !important; }
+
+  .avatar {
+    width: 34px !important;
+    height: 34px !important;
+    flex: 0 0 34px !important;
+    border-radius: 10px !important;
+  }
+
+  .music-button {
+    width: 34px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+  }
+
+  .logout-button {
+    min-height: 34px !important;
+    padding: 0 8px !important;
+    font-size: 8px !important;
+    border-radius: 9px !important;
+  }
+
+  .app-navigation {
+    top: calc(var(--final-topbar-h) + var(--final-nav-gap)) !important;
+    width: calc(100vw - 10px) !important;
+    max-width: calc(100vw - 10px) !important;
+    min-height: 42px !important;
+    padding: 4px !important;
+    gap: 3px !important;
+    border-radius: 13px !important;
+    overflow-x: auto !important;
+  }
+
+  .nav-item {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+    min-height: 33px !important;
+    padding: 0 8px !important;
+    flex-direction: row !important;
+    gap: 4px !important;
+    border-radius: 9px !important;
+    font-size: 8px !important;
+  }
+
+  .nav-icon { font-size: 11px !important; }
+
+  .nav-label {
+    display: inline !important;
+    font-size: 8px !important;
+    white-space: nowrap !important;
+  }
+
+  .page {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding-top: calc(var(--final-topbar-h) + var(--final-nav-gap) + var(--final-nav-h) + 12px) !important;
+  }
+
+  .home-lobby {
+    width: calc(100% - 12px) !important;
+    min-height: auto !important;
+    margin-top: 8px !important;
+    padding: 20px 14px !important;
+    gap: 16px !important;
+    border-radius: 18px !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .home-welcome {
+    margin-top: 20px !important;
+    font-size: 13px !important;
+  }
+
+  .home-player-name {
+    font-size: clamp(27px, 9vw, 38px) !important;
+    line-height: 1.04 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .home-player-subtitle {
+    max-width: 100% !important;
+    font-size: 12px !important;
+  }
+
+  .home-user-meta {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .home-stat-grid {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .home-stat-card {
+    min-width: 0 !important;
+    padding: 10px 7px !important;
+    gap: 6px !important;
+  }
+
+  .home-stat-card .stat-icon {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 11px !important;
+  }
+
+  .home-stat-card span,
+  .home-stat-card small {
+    font-size: 7px !important;
+    overflow-wrap: anywhere;
+  }
+
+  .home-stat-card strong { font-size: 17px !important; }
+
+  .home-quick-actions {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .home-action-btn {
+    min-width: 0 !important;
+    flex: 1 1 30% !important;
+    padding: 0 8px !important;
+    font-size: 8px !important;
+  }
+
+  .home-rank-card {
+    min-height: 360px !important;
+    padding: 25px 16px !important;
+    border-radius: 20px !important;
+  }
+
+  .game-section,
+  .season-banner {
+    width: calc(100% - 12px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    border-radius: 18px !important;
+  }
+
+  .section-heading { gap: 12px !important; }
+  .section-heading h2 { font-size: clamp(20px, 7vw, 28px) !important; }
+  .section-heading p { font-size: 11px !important; }
+
+  .month-grid { gap: 7px !important; }
+
+  .month-card {
+    min-width: 0 !important;
+    padding: 13px 7px !important;
+  }
+
+  .month-name,
+  .month-card span,
+  .month-state { font-size: 7px !important; }
+
+  .month-value { font-size: 24px !important; }
+
+  .game-flow {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 7px !important;
+  }
+
+  .game-flow i { display: none !important; }
+
+  .journey-scroll,
+  .table-wrap,
+  .data-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .journey-track { min-width: max-content !important; }
+
+  .journey-card {
+    width: 145px !important;
+    min-width: 145px !important;
+  }
+
+  .mini-summary,
+  .point-page .mini-summary {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 7px !important;
+  }
+
+  .mini-summary article { min-width: 0 !important; }
+
+  .reward-card-grid { grid-template-columns: 1fr !important; }
+
+  .profile-hero {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+  }
+
+  .profile-rank-box { grid-column: auto !important; }
+
+  .campaign-story-modal { padding: 7px !important; }
+
+  .campaign-story-dialog {
+    width: min(92vw, 380px) !important;
+    max-height: 88dvh !important;
+    border-radius: 20px !important;
+  }
+
+  .rank-reward-dialog {
+    width: min(94vw, 460px) !important;
+    max-height: 90dvh !important;
+    overflow-y: auto !important;
+  }
+
+  .page-header h1,
+  .page-header p,
+  .section-heading h2,
+  .section-heading p,
+  .journey-note,
+  .journey-summary,
+  .reward-card,
+  .profile-rank-box,
+  .season-banner h2,
+  .season-banner p {
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .logout-button { display: none !important; }
+
+  .home-stat-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+
+  .home-stat-card:last-child { grid-column: 1 / -1; }
+}
+
+@media (max-height: 720px) and (min-width: 701px) {
+  :root {
+    --final-topbar-h: 68px;
+    --final-nav-gap: 7px;
+    --final-nav-h: 48px;
+  }
+
+  .topbar {
+    min-height: 68px !important;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+  }
+
+  .campaign-story-dialog {
+    max-height: 84dvh !important;
+    width: auto !important;
+  }
+}
+
+@media (hover: none) {
+  .nav-item:hover::before { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-icon span,
+  .home-rank-card::before,
+  .next-rank-track::after,
+  .profile-game-progress::after,
+  .rank-reward-photo-shell,
+  .campaign-story-dialog::after {
+    animation: none !important;
+  }
+}
