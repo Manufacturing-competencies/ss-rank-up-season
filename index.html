@@ -172,7 +172,7 @@
       type="button"
     >
       <span class="nav-icon">◆</span>
-      <span class="nav-label">Leaderboard</span>
+      <span class="nav-label">Point Approved</span>
     </button>
 
 
@@ -182,7 +182,7 @@
       type="button"
     >
       <span class="nav-icon">♛</span>
-      <span class="nav-label">Point Approved</span>
+      <span class="nav-label">Leaderboard</span>
     </button>
 
 
@@ -447,7 +447,7 @@
 
           <div
             id="seasonStatus"
-            class="season-status" locked
+            class="season-status locked"
           >
             LOCKED
           </div>
@@ -494,6 +494,71 @@
 
       </section>
 
+
+
+      <!-- ===================================================
+           NEXT MISSION / SEASON CONSISTENCY
+      ==================================================== -->
+
+      <section class="game-section mission-coach-section">
+
+        <div class="mission-coach-head">
+
+          <div>
+            <span class="section-kicker">NEXT MISSION</span>
+            <h2 id="nextMissionTitle">Complete your Monthly Quest</h2>
+            <p id="nextMissionText">
+              Selesaikan minimal 1 SS Approved Implementasi di setiap bulan.
+            </p>
+          </div>
+
+          <button
+            id="nextMissionButton"
+            class="mission-coach-action"
+            type="button"
+            data-home-target="database"
+          >
+            VIEW MY SS →
+          </button>
+
+        </div>
+
+        <div class="mission-coach-grid">
+
+          <article class="consistency-panel">
+            <span>SEASON CONSISTENCY</span>
+
+            <div
+              id="seasonConsistencyDots"
+              class="consistency-dots"
+              aria-label="Season consistency progress"
+            >
+              <i></i>
+              <i></i>
+              <i></i>
+            </div>
+
+            <strong id="seasonConsistencyText">0 / 3 MONTHS</strong>
+          </article>
+
+          <article class="mission-progress-panel">
+            <div class="mission-progress-head">
+              <span>MISSION PROGRESS</span>
+              <strong id="nextMissionPercent">0%</strong>
+            </div>
+
+            <div class="mission-progress-track">
+              <span id="nextMissionProgress"></span>
+            </div>
+
+            <small id="nextMissionHint">
+              Complete the Monthly Quest to unlock your full Rank.
+            </small>
+          </article>
+
+        </div>
+
+      </section>
 
       <!-- ===================================================
            MONTHLY MISSION
@@ -2068,10 +2133,9 @@
           class="campaign-story-fallback"
         >
           <span>SS RANK UP SEASON</span>
-          <strong>CAMPAIGN UPDATE</strong>
+          <strong>SEASON UPDATE</strong>
           <p>
-            Tambahkan foto atau video ukuran IG Story 9:16
-            pada folder assets/campaign.
+            Campaign media is currently unavailable.
           </p>
         </div>
 

@@ -349,6 +349,28 @@ const homeActionButtons =
     '[data-home-target]'
   );
 
+const nextMissionTitle =
+  document.getElementById('nextMissionTitle');
+
+const nextMissionText =
+  document.getElementById('nextMissionText');
+
+const seasonConsistencyDots =
+  document.getElementById('seasonConsistencyDots');
+
+const seasonConsistencyText =
+  document.getElementById('seasonConsistencyText');
+
+const nextMissionPercent =
+  document.getElementById('nextMissionPercent');
+
+const nextMissionProgress =
+  document.getElementById('nextMissionProgress');
+
+const nextMissionHint =
+  document.getElementById('nextMissionHint');
+
+
 
 /* ==========================================================
    DATABASE DOM
@@ -6821,7 +6843,15 @@ function finalRankState(source) {
     consistency,
     potentialRank,
     activeRank,
+
+    /* Backend/table compatible status */
     seasonStatus: consistency.isComplete ? 'WINNER' : 'FAILED',
+
+    /* User-facing status: clearer and less punitive */
+    displayStatus: consistency.isComplete
+      ? 'COMPLETED'
+      : (total > 0 ? 'LOCKED' : 'ACTIVE'),
+
     rankLocked: !consistency.isComplete && total >= 2
   };
 }
@@ -7097,12 +7127,23 @@ renderRank = function(progress) {
   }
 
   if (seasonStatus) {
-    seasonStatus.classList.remove('winner', 'failed');
-    seasonStatus.textContent = state.seasonStatus;
+    seasonStatus.classList.remove(
+      'winner',
+      'failed',
+      'locked',
+      'active'
+    );
+
+    seasonStatus.textContent = state.displayStatus;
+
     seasonStatus.classList.add(
-      state.seasonStatus === 'WINNER'
+      state.displayStatus === 'COMPLETED'
         ? 'winner'
-        : 'failed'
+        : (
+            state.displayStatus === 'LOCKED'
+              ? 'locked'
+              : 'active'
+          )
     );
   }
 
@@ -7114,6 +7155,97 @@ renderRank = function(progress) {
         : '';
   }
 };
+
+
+
+
+/* ---------- NEXT MISSION / SEASON CONSISTENCY ---------- */
+
+function finalRenderMissionCoach(progress) {
+  const source = progress || {};
+  const state = finalRankState(source);
+  const consistency = state.consistency;
+
+  const percent =
+    Math.round((consistency.completeCount / 3) * 100);
+
+  if (seasonConsistencyText) {
+    seasonConsistencyText.textContent =
+      consistency.completeCount + ' / 3 MONTHS';
+  }
+
+  if (seasonConsistencyDots) {
+    const dots = seasonConsistencyDots.querySelectorAll('i');
+
+    dots.forEach(function(dot, index) {
+      dot.classList.toggle(
+        'complete',
+        index < consistency.completeCount
+      );
+
+      dot.classList.toggle(
+        'current',
+        !consistency.isComplete &&
+        index === consistency.completeCount
+      );
+    });
+  }
+
+  if (nextMissionPercent) {
+    nextMissionPercent.textContent = percent + '%';
+  }
+
+  if (nextMissionProgress) {
+    nextMissionProgress.style.width = percent + '%';
+  }
+
+  if (consistency.isComplete) {
+    if (nextMissionTitle) {
+      nextMissionTitle.textContent = 'Season Mission Complete';
+    }
+
+    if (nextMissionText) {
+      nextMissionText.textContent =
+        'Konsistensi 3 bulan lengkap. Rank progression dan reward path sudah terbuka.';
+    }
+
+    if (nextMissionHint) {
+      nextMissionHint.textContent =
+        'Keep improving to strengthen your Point Approved and Leaderboard position.';
+    }
+
+    return;
+  }
+
+  const nextMonth =
+    consistency.missed.length
+      ? consistency.missed[0]
+      : null;
+
+  if (nextMissionTitle) {
+    nextMissionTitle.textContent =
+      nextMonth
+        ? 'Complete ' + nextMonth.name
+        : 'Complete your Monthly Quest';
+  }
+
+  if (nextMissionText) {
+    nextMissionText.textContent =
+      nextMonth
+        ? 'Target: minimal 1 SS Approved Implementasi di ' + nextMonth.name + '.'
+        : 'Selesaikan minimal 1 SS Approved Implementasi di setiap bulan.';
+  }
+
+  if (nextMissionHint) {
+    const remaining = 3 - consistency.completeCount;
+
+    nextMissionHint.textContent =
+      remaining +
+      ' monthly mission' +
+      (remaining === 1 ? '' : 's') +
+      ' remaining to unlock the full Rank path.';
+  }
+}
 
 
 /* ---------- HOME MONTHLY + NEXT TARGET ---------- */
@@ -7136,6 +7268,8 @@ renderHomeLobby = function(progress) {
   if (homeNextRankText) {
     homeNextRankText.textContent = next.text;
   }
+
+  finalRenderMissionCoach(progress || {});
 };
 
 
@@ -7218,14 +7352,14 @@ renderJourney = function(progress) {
       state.total +
       ' SS &nbsp;•&nbsp; ' +
       '<b>Season:</b> ' +
-      escapeHtml(state.seasonStatus);
+      escapeHtml(state.displayStatus);
   }
 
   if (journeyNote) {
     if (state.consistency.isComplete) {
       journeyNote.innerHTML =
         'Season Status: ' +
-        '<strong class="winner">WINNER</strong> — ' +
+        '<strong class="winner">COMPLETED</strong> — ' +
         'Monthly Quest complete. Rank progression is fully unlocked.';
     }
     else {
@@ -7235,7 +7369,7 @@ renderJourney = function(progress) {
 
       journeyNote.innerHTML =
         'Season Status: ' +
-        '<strong class="failed">FAILED</strong> — ' +
+        '<strong class="locked">LOCKED</strong> — ' +
         'Active Rank berhenti di <b>' +
         escapeHtml(state.activeRank) +
         '</b>. Potential Rank <b>' +
@@ -7324,14 +7458,26 @@ renderProfile = function(result) {
   }
 
   if (profileSeasonStatus) {
-    profileSeasonStatus.textContent = state.seasonStatus;
+    profileSeasonStatus.textContent = state.displayStatus;
+
     profileSeasonStatus.classList.toggle(
       'winner',
-      state.seasonStatus === 'WINNER'
+      state.displayStatus === 'COMPLETED'
     );
+
     profileSeasonStatus.classList.toggle(
       'failed',
-      state.seasonStatus !== 'WINNER'
+      false
+    );
+
+    profileSeasonStatus.classList.toggle(
+      'locked',
+      state.displayStatus === 'LOCKED'
+    );
+
+    profileSeasonStatus.classList.toggle(
+      'active',
+      state.displayStatus === 'ACTIVE'
     );
   }
 };
@@ -7492,27 +7638,14 @@ function campaignSessionKey() {
       .toUpperCase();
 }
 
+let campaignShownThisLoad = false;
+
 function shouldShowCampaignStory() {
-  try {
-    return sessionStorage.getItem(
-      campaignSessionKey()
-    ) !== '1';
-  }
-  catch {
-    return true;
-  }
+  return !campaignShownThisLoad;
 }
 
 function markCampaignStorySeen() {
-  try {
-    sessionStorage.setItem(
-      campaignSessionKey(),
-      '1'
-    );
-  }
-  catch {
-    /* ignore */
-  }
+  campaignShownThisLoad = true;
 }
 
 function clearCampaignStoryTimer() {
@@ -7748,17 +7881,58 @@ function previousCampaignStory() {
   renderCampaignStory();
 }
 
-function openCampaignStory() {
+async function finalCampaignMediaExists(story) {
+  if (!story || !story.src) {
+    return false;
+  }
+
+  try {
+    const response = await fetch(
+      story.src,
+      {
+        method: 'HEAD',
+        cache: 'no-store'
+      }
+    );
+
+    return response.ok;
+  }
+  catch {
+    return false;
+  }
+}
+
+async function openCampaignStory() {
   const { modal } = getCampaignEls();
 
   if (!modal || !shouldShowCampaignStory()) {
     return;
   }
 
+  const availability =
+    await Promise.all(
+      CAMPAIGN_STORIES.map(finalCampaignMediaExists)
+    );
+
   campaignStoryAvailable =
-    CAMPAIGN_STORIES.slice();
+    CAMPAIGN_STORIES.filter(
+      function(story, index) {
+        return availability[index];
+      }
+    );
+
+  /*
+    Production behavior:
+    kalau semua media campaign belum tersedia,
+    jangan tampilkan popup kosong / placeholder.
+  */
+  if (!campaignStoryAvailable.length) {
+    return;
+  }
 
   campaignStoryIndex = 0;
+
+  markCampaignStorySeen();
 
   modal.hidden = false;
   modal.setAttribute('aria-hidden', 'false');
@@ -7787,8 +7961,6 @@ function closeCampaignStory() {
 
   modal.hidden = true;
   modal.setAttribute('aria-hidden', 'true');
-
-  markCampaignStorySeen();
 
   finalResumeMusicAfterCampaign();
 }
@@ -8062,3 +8234,189 @@ finalOpenReward = function(rank) {
   finalPremiumLegacyOpenReward(rank);
   setTimeout(finalPremiumGong, 70);
 };
+
+
+/* ==========================================================
+   FINAL PROFESSIONAL UX
+   Error / retry / metric feedback
+========================================================== */
+
+(function initFinalProfessionalUx() {
+
+  const retryMap = {
+    databaseStatus: function() {
+      databaseLoaded = true;
+      loadDatabase();
+    },
+    pointStatus: function() {
+      pointLoaded = true;
+      loadPoint();
+    },
+    leaderboardStatus: function() {
+      leaderboardLoaded = true;
+      loadLeaderboard();
+    },
+    rewardStatus: function() {
+      rewardLoaded = true;
+      loadRewards();
+    }
+  };
+
+  function decorateStatus(el) {
+    if (!el) {
+      return;
+    }
+
+    const text =
+      String(el.textContent || '')
+        .trim()
+        .toLowerCase();
+
+    el.classList.remove(
+      'is-loading',
+      'is-error',
+      'is-empty',
+      'is-success'
+    );
+
+    const oldRetry =
+      el.parentElement &&
+      el.parentElement.querySelector(
+        '.inline-retry-button[data-for="' + el.id + '"]'
+      );
+
+    if (oldRetry) {
+      oldRetry.remove();
+    }
+
+    if (
+      text.includes('loading') ||
+      text.includes('memuat') ||
+      text.includes('menyiapkan')
+    ) {
+      el.classList.add('is-loading');
+      return;
+    }
+
+    if (
+      text.includes('gagal') ||
+      text.includes('error') ||
+      text.includes('tidak dapat')
+    ) {
+      el.classList.add('is-error');
+
+      const retry = retryMap[el.id];
+
+      if (retry && el.parentElement) {
+        const button = document.createElement('button');
+
+        button.type = 'button';
+        button.className = 'inline-retry-button';
+        button.dataset.for = el.id;
+        button.textContent = 'TRY AGAIN';
+
+        button.addEventListener(
+          'click',
+          function() {
+            playUiSound('click');
+            retry();
+          }
+        );
+
+        el.insertAdjacentElement('afterend', button);
+      }
+
+      return;
+    }
+
+    if (
+      text.includes('belum ada') ||
+      text.includes('tidak ada') ||
+      text.includes('kosong')
+    ) {
+      el.classList.add('is-empty');
+      return;
+    }
+
+    if (
+      text.includes('berhasil') ||
+      text.includes('tersimpan') ||
+      text.includes('selesai')
+    ) {
+      el.classList.add('is-success');
+    }
+  }
+
+  [
+    databaseStatus,
+    pointStatus,
+    leaderboardStatus,
+    rewardStatus,
+    profilePhotoStatus
+  ]
+    .filter(Boolean)
+    .forEach(function(el) {
+      decorateStatus(el);
+
+      const observer =
+        new MutationObserver(
+          function() {
+            decorateStatus(el);
+          }
+        );
+
+      observer.observe(
+        el,
+        {
+          childList: true,
+          subtree: true,
+          characterData: true
+        }
+      );
+    });
+
+  /*
+    Number micro-feedback: whenever a headline metric changes,
+    give it one subtle pulse instead of a constant animation.
+  */
+  [
+    homeSsSubmit,
+    homeSsDone,
+    homePointApproved,
+    pointTotal,
+    pointWinner,
+    pointLose,
+    pointApprovedSummary,
+    leaderboardTotalPlayers,
+    leaderboardMaxPlayers,
+    rewardWinnerCount,
+    rewardCategoryCount,
+    profileSsSubmit,
+    profileSsDone,
+    profilePointApproved,
+    profileLeaderboardPosition
+  ]
+    .filter(Boolean)
+    .forEach(function(el) {
+      const observer =
+        new MutationObserver(
+          function() {
+            el.classList.remove('metric-updated');
+
+            requestAnimationFrame(function() {
+              el.classList.add('metric-updated');
+            });
+          }
+        );
+
+      observer.observe(
+        el,
+        {
+          childList: true,
+          characterData: true,
+          subtree: true
+        }
+      );
+    });
+
+})();
