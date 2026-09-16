@@ -9136,3 +9136,361 @@ canvas {
     padding-right: 4px !important;
   }
 }
+
+/* ==========================================================
+   FINAL MOBILE LEADERBOARD / POINT APPROVED FIX
+   <= 500 px
+   - Your Position jadi vertical card rapi
+   - Top 10 jadi horizontal swipe carousel
+   - Detail kecil disederhanakan di mobile
+========================================================== */
+
+@media (max-width: 500px) {
+
+  /* ---------- YOUR POSITION ---------- */
+  .lb-player-card {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 14px !important;
+    padding: 16px 13px !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .lb-player-rank {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+
+  .lb-player-rank span {
+    font-size: 9px !important;
+  }
+
+  .lb-player-rank strong {
+    margin-top: 0 !important;
+    font-size: 28px !important;
+  }
+
+  .lb-player-identity {
+    display: grid !important;
+    grid-template-columns: 56px minmax(0,1fr) !important;
+    align-items: center !important;
+    gap: 11px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .lb-player-avatar {
+    width: 56px !important;
+    height: 56px !important;
+    flex: 0 0 56px !important;
+    border-radius: 16px !important;
+  }
+
+  .lb-player-identity > div:last-child {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .lb-player-identity h3 {
+    margin: 0 !important;
+    font-size: 15px !important;
+    line-height: 1.25 !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .lb-player-identity p {
+    margin-top: 4px !important;
+    font-size: 10px !important;
+    line-height: 1.35 !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .lb-player-score {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(111,145,225,.15) !important;
+  }
+
+  .lb-score-head {
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .lb-score-head span {
+    font-size: 8px !important;
+  }
+
+  .lb-score-head strong {
+    font-size: 22px !important;
+  }
+
+  .lb-score-head small {
+    font-size: 9px !important;
+  }
+
+  .lb-progress-label {
+    gap: 6px !important;
+    font-size: 8px !important;
+  }
+
+  /* ---------- TOP 10 SWIPE CAROUSEL ---------- */
+  .leaderboard-top-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .lb-top10 {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 10px !important;
+    width: calc(100% + 8px) !important;
+    max-width: none !important;
+    margin-top: 18px !important;
+    margin-right: -8px !important;
+    padding:
+      4px
+      max(18px, env(safe-area-inset-right))
+      14px
+      2px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-padding-left: 2px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .lb-top10::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .lb-top-card {
+    flex: 0 0 min(72vw, 210px) !important;
+    width: min(72vw, 210px) !important;
+    min-width: min(72vw, 210px) !important;
+    min-height: 260px !important;
+    padding: 16px 12px !important;
+    scroll-snap-align: start !important;
+    border-radius: 17px !important;
+  }
+
+  .lb-top-card:hover {
+    transform: none !important;
+  }
+
+  .lb-top-avatar {
+    width: 62px !important;
+    height: 62px !important;
+    margin: 13px auto 10px !important;
+    border-radius: 18px !important;
+  }
+
+  .lb-top-card h3 {
+    min-height: auto !important;
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .lb-top-card p {
+    min-height: auto !important;
+    margin-top: 5px !important;
+    font-size: 10px !important;
+    line-height: 1.35 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .lb-top-score {
+    margin-top: 10px !important;
+  }
+
+  .lb-top-score strong {
+    font-size: 22px !important;
+  }
+
+  .lb-top-score span,
+  .lb-top-footer {
+    font-size: 9px !important;
+  }
+
+  .lb-top-footer {
+    gap: 5px !important;
+  }
+
+  /* hint visual kalau card bisa digeser */
+  .leaderboard-top-section::after {
+    content: "← SWIPE TOP 10 →";
+    display: block;
+    margin-top: 7px;
+    color: #7183a8;
+    font-family: var(--font-game);
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-align: center;
+  }
+
+  /* ---------- HERO LEADERBOARD / POINT APPROVED ---------- */
+  .page-game-hero {
+    padding: 17px 12px !important;
+    gap: 13px !important;
+  }
+
+  .page-game-hero h1 {
+    font-size: clamp(22px, 7.6vw, 29px) !important;
+    line-height: 1.08 !important;
+  }
+
+  .page-game-hero p {
+    font-size: 10.5px !important;
+    line-height: 1.5 !important;
+  }
+
+  .game-rule-pill {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 12px !important;
+    padding: 8px 10px !important;
+    border-radius: 13px !important;
+    gap: 5px !important;
+    font-size: 8px !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Summary cards compact */
+  .page-game-hero .mini-summary {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 5px !important;
+  }
+
+  .page-game-hero .mini-summary article {
+    min-width: 0 !important;
+    padding: 10px 4px !important;
+    border-radius: 12px !important;
+  }
+
+  .page-game-hero .mini-summary span {
+    font-size: 6.5px !important;
+  }
+
+  .page-game-hero .mini-summary strong {
+    font-size: 18px !important;
+  }
+
+  /* ---------- MOBILE LISTS ---------- */
+  .lb-mobile-card,
+  .point-mobile-card {
+    border-radius: 15px !important;
+    padding: 13px 11px !important;
+  }
+
+  .lb-mobile-card *,
+  .point-mobile-card * {
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+  }
+}
+
+/* ==========================================================
+   SMALLER PHONE <= 360px
+========================================================== */
+
+@media (max-width: 360px) {
+
+  .lb-player-card {
+    padding: 14px 10px !important;
+  }
+
+  .lb-player-identity {
+    grid-template-columns: 48px minmax(0,1fr) !important;
+    gap: 9px !important;
+  }
+
+  .lb-player-avatar {
+    width: 48px !important;
+    height: 48px !important;
+    flex-basis: 48px !important;
+  }
+
+  .lb-player-rank strong {
+    font-size: 24px !important;
+  }
+
+  .lb-top-card {
+    flex-basis: min(78vw, 195px) !important;
+    width: min(78vw, 195px) !important;
+    min-width: min(78vw, 195px) !important;
+  }
+
+  .page-game-hero .mini-summary {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+  }
+
+  .game-rule-pill {
+    font-size: 7.5px !important;
+  }
+}
+
+/* ==========================================================
+   ULTRA SMALL <= 320px
+========================================================== */
+
+@media (max-width: 320px) {
+
+  .lb-player-rank {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+  }
+
+  .lb-player-identity {
+    grid-template-columns: 44px minmax(0,1fr) !important;
+  }
+
+  .lb-player-avatar {
+    width: 44px !important;
+    height: 44px !important;
+    flex-basis: 44px !important;
+  }
+
+  .lb-player-identity h3 {
+    font-size: 13px !important;
+  }
+
+  .lb-player-identity p {
+    font-size: 9px !important;
+  }
+
+  .lb-top-card {
+    flex-basis: 82vw !important;
+    width: 82vw !important;
+    min-width: 82vw !important;
+  }
+
+  .page-game-hero .mini-summary {
+    grid-template-columns: 1fr 1fr 1fr !important;
+  }
+
+  .page-game-hero .mini-summary article {
+    padding: 9px 2px !important;
+  }
+
+  .page-game-hero .mini-summary strong {
+    font-size: 16px !important;
+  }
+}
