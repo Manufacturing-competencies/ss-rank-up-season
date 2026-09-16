@@ -8726,3 +8726,413 @@ canvas {
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================
+   FINAL ULTRA-SMALL FIX — 500 PX KE BAWAH
+   Fokus utama: 300–500 px, tidak ada text squeeze / offside.
+========================================================== */
+
+@media (max-width: 500px) {
+
+  /* HERO POINT / LEADERBOARD / REWARD
+     WAJIB jadi 1 kolom. Ini penyebab utama teks turun per huruf. */
+  .page-game-hero,
+  .reward-hero {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    align-items: start !important;
+    gap: 16px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 18px 14px !important;
+    overflow: hidden !important;
+  }
+
+  .page-game-hero > *,
+  .reward-hero > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .page-game-hero h1,
+  .reward-hero h1 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-right: 0 !important;
+    font-size: clamp(23px, 8vw, 31px) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -.02em !important;
+
+    /* PENTING: jangan memecah kata per huruf */
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+  }
+
+  .page-game-hero p,
+  .reward-hero p {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: 11px !important;
+    line-height: 1.55 !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Summary di hero jangan berada di samping judul */
+  .page-game-hero .mini-summary,
+  .reward-hero .mini-summary {
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .page-game-hero .mini-summary article,
+  .reward-hero .mini-summary article {
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 12px 5px !important;
+  }
+
+  .page-game-hero .mini-summary span,
+  .reward-hero .mini-summary span {
+    font-size: 7px !important;
+    line-height: 1.2 !important;
+  }
+
+  .page-game-hero .mini-summary strong,
+  .reward-hero .mini-summary strong {
+    font-size: clamp(18px, 7vw, 24px) !important;
+  }
+
+  /* Reward reveal button */
+  .reward-reveal-button {
+    width: 100% !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+  }
+
+  /* PROFILE: 4 card tidak boleh berdesakan */
+  .profile-stat-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 6px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .profile-stat-grid article {
+    min-width: 0 !important;
+    padding: 13px 8px !important;
+  }
+
+  .profile-stat-grid span {
+    font-size: 8px !important;
+    line-height: 1.25 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .profile-stat-grid strong {
+    font-size: 20px !important;
+  }
+
+  /* Profile game score sebelumnya punya minmax(250px,1fr) */
+  .profile-game-card {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px 12px !important;
+  }
+
+  .profile-game-card > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Profile hero / copy */
+  .profile-hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    overflow: hidden !important;
+  }
+
+  .profile-copy {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .profile-copy h1 {
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Reward section */
+  .reward-card,
+  .reward-directory,
+  .reward-awards-section {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Card text jangan pecah per huruf */
+  .reward-card *,
+  .podium-card *,
+  .lb-top-card *,
+  .profile-page *,
+  .point-page *,
+  .leaderboard-page *,
+  .reward-page * {
+    word-break: normal;
+  }
+
+  /* Mini summary umum */
+  .mini-summary {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Section title jangan squeeze */
+  .section-heading,
+  .section-heading > div,
+  .page-header,
+  .page-header > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .section-heading h2,
+  .page-header h1 {
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+  }
+}
+
+/* ==========================================================
+   360 PX KE BAWAH
+========================================================== */
+
+@media (max-width: 360px) {
+
+  .page-game-hero,
+  .reward-hero {
+    padding: 15px 11px !important;
+    border-radius: 18px !important;
+  }
+
+  .page-game-hero h1,
+  .reward-hero h1 {
+    font-size: clamp(21px, 8.2vw, 27px) !important;
+  }
+
+  .page-game-hero .mini-summary,
+  .reward-hero .mini-summary {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 4px !important;
+  }
+
+  .page-game-hero .mini-summary article,
+  .reward-hero .mini-summary article {
+    padding: 10px 3px !important;
+  }
+
+  .profile-stat-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+
+  .profile-game-card {
+    padding: 13px 9px !important;
+  }
+
+  .reward-card {
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+  }
+}
+
+/* ==========================================================
+   320 PX KE BAWAH — TARGET 300 PX TEST
+========================================================== */
+
+@media (max-width: 320px) {
+
+  :root {
+    --final-topbar-h: 54px;
+    --final-nav-gap: 4px;
+    --final-nav-h: 38px;
+  }
+
+  .topbar {
+    min-height: 54px !important;
+    padding: 5px 6px !important;
+  }
+
+  .brand-icon {
+    width: 25px !important;
+    height: 31px !important;
+    flex: 0 0 25px !important;
+  }
+
+  .brand-title {
+    font-size: 10px !important;
+  }
+
+  .brand-subtitle {
+    font-size: 5px !important;
+  }
+
+  .avatar,
+  .music-button {
+    width: 29px !important;
+    height: 29px !important;
+    min-height: 29px !important;
+    flex-basis: 29px !important;
+  }
+
+  .logout-button {
+    display: none !important;
+  }
+
+  .app-navigation {
+    width: calc(100vw - 6px) !important;
+    max-width: calc(100vw - 6px) !important;
+    min-height: 37px !important;
+  }
+
+  .nav-item {
+    min-height: 29px !important;
+    padding: 0 6px !important;
+  }
+
+  .nav-label {
+    font-size: 6.5px !important;
+  }
+
+  .nav-icon {
+    font-size: 9px !important;
+  }
+
+  .page {
+    padding-top:
+      calc(
+        var(--final-topbar-h) +
+        var(--final-nav-gap) +
+        var(--final-nav-h) +
+        8px
+      ) !important;
+  }
+
+  /* Penting: hero 300px full width dan 1 kolom */
+  .page-game-hero,
+  .reward-hero {
+    grid-template-columns: 1fr !important;
+    padding: 14px 9px !important;
+    gap: 13px !important;
+  }
+
+  .page-game-hero h1,
+  .reward-hero h1 {
+    font-size: 22px !important;
+    line-height: 1.08 !important;
+  }
+
+  .page-game-hero p,
+  .reward-hero p {
+    font-size: 10px !important;
+  }
+
+  /* Summary jadi 1 row kecil, tetap readable */
+  .page-game-hero .mini-summary,
+  .reward-hero .mini-summary {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 3px !important;
+  }
+
+  .page-game-hero .mini-summary article,
+  .reward-hero .mini-summary article {
+    padding: 9px 2px !important;
+    border-radius: 10px !important;
+  }
+
+  .page-game-hero .mini-summary span,
+  .reward-hero .mini-summary span {
+    font-size: 6px !important;
+  }
+
+  .page-game-hero .mini-summary strong,
+  .reward-hero .mini-summary strong {
+    font-size: 17px !important;
+  }
+
+  /* Home */
+  .home-lobby,
+  .game-section,
+  .season-banner {
+    width: calc(100% - 6px) !important;
+    max-width: calc(100% - 6px) !important;
+  }
+
+  .home-player-name {
+    font-size: 23px !important;
+  }
+
+  .home-stat-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+
+  .home-stat-card:last-child {
+    grid-column: 1 / -1 !important;
+  }
+
+  .home-quick-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .month-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .game-flow {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Profile cards */
+  .profile-stat-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 4px !important;
+  }
+
+  .profile-stat-grid article {
+    padding: 11px 5px !important;
+  }
+
+  .profile-stat-grid span {
+    font-size: 7px !important;
+  }
+
+  .profile-stat-grid strong {
+    font-size: 18px !important;
+  }
+
+  .profile-game-card {
+    grid-template-columns: 1fr !important;
+    padding: 12px 7px !important;
+  }
+
+  /* Point / leaderboard / reward / profile container */
+  .data-page,
+  .point-page,
+  .leaderboard-page,
+  .reward-page,
+  .profile-page {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+}
